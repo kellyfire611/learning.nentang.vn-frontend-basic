@@ -1,0 +1,469 @@
+<!DOCTYPE html>
+<html lang="vi" class="h-100">
+
+<head>
+    <!-- Required meta tags -->
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+    <title>Nền tảng - Kiến thức cơ bản về WEB | Bảng tin</title>
+
+    <!-- Bootstrap CSS -->
+    <link rel="stylesheet" href="../vendor/bootstrap/css/bootstrap.min.css" type="text/css">
+    <!-- Font awesome -->
+    <link rel="stylesheet" href="../vendor/font-awesome/css/font-awesome.min.css" type="text/css">
+
+    <!-- Custom css - Các file css do chúng ta tự viết -->
+    <link rel="stylesheet" href="../assets/css/app.css" type="text/css">
+</head>
+
+<body>
+    <!-- header -->
+    <nav class="navbar navbar-expand-md navbar-dark fixed-top bg-dark">
+        <div class="container">
+            <a class="navbar-brand" href="https://nentang.vn">Nền tảng</a>
+            <div class="navbar-collapse collapse" id="navbarCollapse">
+                <ul class="navbar-nav mr-auto">
+                    <li class="nav-item active">
+                        <a class="nav-link" href="../index.html">Trang chủ <span class="sr-only">(current)</span></a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" href="https://nentang.vn">Quản trị</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" href="products.html">Sản phẩm</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" href="about.html">Giới thiệu</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" href="contact.html">Liên hệ</a>
+                    </li>
+                </ul>
+                <form class="form-inline mt-2 mt-md-0" method="get" action="search.html">
+                    <input class="form-control mr-sm-2" type="text" placeholder="Tìm kiếm" aria-label="Search"
+                        name="keyword_tensanpham">
+                    <button class="btn btn-outline-success my-2 my-sm-0" type="submit">Tìm kiếm</button>
+                </form>
+            </div>
+            <ul class="navbar-nav px-3">
+                <li class="nav-item text-nowrap">
+                    <a class="nav-link" href="cart.html">Giỏ hàng</a>
+                </li>
+                <li class="nav-item text-nowrap">
+                    <!-- Nếu chưa đăng nhập thì hiển thị nút Đăng nhập -->
+                    <a class="nav-link" href="login.html">Đăng nhập</a>
+                </li>
+            </ul>
+        </div>
+    </nav>
+    <!-- end header -->
+
+    <main role="main">
+        <!-- Block content - Đục lỗ trên giao diện bố cục chung, đặt tên là `content` -->
+        <div class="container mt-4">
+            <form name="frmTimKiem" method="get" action="#">
+                <h1 class="text-center">Tìm kiếm sản phẩm</h1>
+                <div class="row">
+                    <div class="col col-md-12">
+                        <h5 class="text-center">Cung cấp kiến thức nền tảng về Lập trình, Thiết kế Web, Cơ sở dữ liệu
+                        </h5>
+                        <h5 class="text-center">Giúp các bạn có niềm tin, hành trang kiến thức vững vàng trên con đường
+                            trở
+                            thành Nhà phát triển Phần mềm</h5>
+                        <div class="text-center">
+                            <button type="button" id="btnReset" class="btn btn-warning">Xóa bộ lọc</button>
+                            <button class="btn btn-primary btn-lg">Tìm kiếm <i class="fa fa-forward"
+                                    aria-hidden="true"></i></button>
+                        </div>
+                    </div>
+                </div>
+                <div class="row">
+                    <aside class="col-sm-4">
+                        <p>Bộ lọc </p>
+                        <div class="card">
+                            <!-- Tìm kiếm theo tên sản phẩm -->
+                            <article class="card-group-item">
+                                <header class="card-header">
+                                    <h6 class="title">Tên sản phẩm </h6>
+                                </header>
+                                <div class="filter-content">
+                                    <div class="card-body">
+                                        <input class="form-control" type="text" placeholder="Tìm kiếm"
+                                            aria-label="Search" name="keyword_tensanpham" value="">
+                                    </div> <!-- card-body.// -->
+                                </div>
+                            </article> <!-- // Tìm kiếm theo Tên sản phẩm -->
+
+                            <!-- Tìm kiếm theo Loại sản phẩm -->
+                            <article class="card-group-item">
+                                <header class="card-header">
+                                    <h6 class="title">Loại sản phẩm </h6>
+                                </header>
+                                <div class="filter-content">
+                                    <div class="card-body">
+                                        <div class="custom-control custom-checkbox">
+                                            <span class="float-right badge badge-light round">3</span>
+                                            <input type="checkbox" class="custom-control-input"
+                                                name="keyword_loaisanpham[]" value="1" id="chk-loaisanpham-1">
+                                            <label class="custom-control-label" for="chk-loaisanpham-1">Máy tính
+                                                bảng</label>
+                                        </div> <!-- form-check.// -->
+                                        <div class="custom-control custom-checkbox">
+                                            <span class="float-right badge badge-light round">1</span>
+                                            <input type="checkbox" class="custom-control-input"
+                                                name="keyword_loaisanpham[]" value="2" id="chk-loaisanpham-2">
+                                            <label class="custom-control-label" for="chk-loaisanpham-2">Máy tính xách
+                                                tay</label>
+                                        </div> <!-- form-check.// -->
+                                        <div class="custom-control custom-checkbox">
+                                            <span class="float-right badge badge-light round">4</span>
+                                            <input type="checkbox" class="custom-control-input"
+                                                name="keyword_loaisanpham[]" value="3" id="chk-loaisanpham-3">
+                                            <label class="custom-control-label" for="chk-loaisanpham-3">Điện
+                                                thoại</label>
+                                        </div> <!-- form-check.// -->
+                                        <div class="custom-control custom-checkbox">
+                                            <span class="float-right badge badge-light round">1</span>
+                                            <input type="checkbox" class="custom-control-input"
+                                                name="keyword_loaisanpham[]" value="4" id="chk-loaisanpham-4">
+                                            <label class="custom-control-label" for="chk-loaisanpham-4">Linh phụ
+                                                kiện</label>
+                                        </div> <!-- form-check.// -->
+                                    </div> <!-- card-body.// -->
+                                </div>
+                            </article> <!-- // Tìm kiếm theo Loại sản phẩm -->
+
+                            <!-- Tìm kiếm theo Nhà sản xuất -->
+                            <article class="card-group-item">
+                                <header class="card-header">
+                                    <h6 class="title">Nhà sản xuất </h6>
+                                </header>
+                                <div class="filter-content">
+                                    <div class="card-body">
+                                        <div class="custom-control custom-checkbox">
+                                            <span class="float-right badge badge-light round">3</span>
+                                            <input type="checkbox" class="custom-control-input"
+                                                name="keyword_nhasanxuat[]" value="1" id="chk-nhasanxuat-1">
+                                            <label class="custom-control-label" for="chk-nhasanxuat-1">Apple</label>
+                                        </div> <!-- form-check.// -->
+                                        <div class="custom-control custom-checkbox">
+                                            <span class="float-right badge badge-light round">3</span>
+                                            <input type="checkbox" class="custom-control-input"
+                                                name="keyword_nhasanxuat[]" value="2" id="chk-nhasanxuat-2">
+                                            <label class="custom-control-label" for="chk-nhasanxuat-2">Samsung</label>
+                                        </div> <!-- form-check.// -->
+                                        <div class="custom-control custom-checkbox">
+                                            <span class="float-right badge badge-light round">1</span>
+                                            <input type="checkbox" class="custom-control-input"
+                                                name="keyword_nhasanxuat[]" value="3" id="chk-nhasanxuat-3">
+                                            <label class="custom-control-label" for="chk-nhasanxuat-3">HTC</label>
+                                        </div> <!-- form-check.// -->
+                                        <div class="custom-control custom-checkbox">
+                                            <span class="float-right badge badge-light round">1</span>
+                                            <input type="checkbox" class="custom-control-input"
+                                                name="keyword_nhasanxuat[]" value="4" id="chk-nhasanxuat-4">
+                                            <label class="custom-control-label" for="chk-nhasanxuat-4">Nokia</label>
+                                        </div> <!-- form-check.// -->
+                                    </div> <!-- card-body.// -->
+                                </div>
+                            </article> <!-- // Tìm kiếm theo Nhà sản xuất -->
+
+                            <!-- Tìm kiếm theo Khuyến mãi -->
+                            <article class="card-group-item">
+                                <header class="card-header">
+                                    <h6 class="title">Khuyến mãi </h6>
+                                </header>
+                                <div class="filter-content">
+                                    <div class="card-body">
+                                    </div> <!-- card-body.// -->
+                                </div>
+                            </article> <!-- // Tìm kiếm theo Nhà sản xuất -->
+
+                            <!-- Tìm kiếm theo khoảng giá tiền -->
+                            <article class="card-group-item">
+                                <header class="card-header">
+                                    <h6 class="title">Khoảng tiền </h6>
+                                </header>
+                                <div class="filter-content">
+                                    <div class="card-body">
+                                        <div class="form-row">
+                                            <div class="form-group col-md-6">
+                                                <label>Từ</label>
+                                                <input type="range" class="custom-range" min="0" max="50000000"
+                                                    step="100000" id="sotientu" name="keyword_sotientu" value="0">
+                                                <span><span id="sotientu-text">0</span></span>
+                                            </div>
+                                            <div class="form-group col-md-6 text-right">
+                                                <label>Đến</label>
+                                                <input type="range" class="custom-range" min="0" max="50000000"
+                                                    step="100000" id="sotienden" name="keyword_sotienden"
+                                                    value="50000000">
+                                                <span><span id="sotienden-text">50000000</span></span>
+                                            </div>
+                                        </div>
+                                    </div> <!-- card-body.// -->
+                                </div>
+                            </article> <!-- // Tìm kiếm theo khoảng giá tiền -->
+
+                            <!-- Tìm kiếm theo màu sắc sản phẩm -->
+                            <article class="card-group-item">
+                                <header class="card-header">
+                                    <h6 class="title">Màu sắc (tùy chọn thêm)</h6>
+                                </header>
+                                <div class="filter-content">
+                                    <div class="card-body">
+                                        <label class="btn btn-danger">
+                                            <input class="" type="checkbox" value="">
+                                            <span class="form-check-label">Đỏ</span>
+                                        </label>
+                                        <label class="btn btn-success">
+                                            <input class="" type="checkbox" value="">
+                                            <span class="form-check-label">Xanh lá</span>
+                                        </label>
+                                        <label class="btn btn-primary">
+                                            <input class="" type="checkbox" value="">
+                                            <span class="form-check-label">Xanh dương</span>
+                                        </label>
+                                    </div> <!-- card-body.// -->
+                                </div>
+                            </article> <!-- // Tìm kiếm theo màu sắc sản phẩm -->
+                        </div> <!-- card.// -->
+                    </aside> <!-- col.// -->
+
+                    <!-- Giải thuật duyệt và render Danh sách sản phẩm theo dòng, cột của Bootstrap -->
+                    <div class="col-sm-8 mt-2">
+                        <div class="row">
+                            <div class="col-md-12">
+                                <h6>Tìm kiếm được 7 sản phẩm</h6>
+                            </div>
+                        </div>
+                        <div class="row">
+
+                            <div class="col-md-6">
+                                <div class="card mb-4 shadow-sm">
+                                    <a href="product-detail.html">
+                                        <img class="bd-placeholder-img card-img-top" width="100%" height="350"
+                                            src="../assets/img/product/samsung-s3.webp">
+                                    </a>
+                                    <div class="card-body">
+                                        <a href="product-detail.html">
+                                            <h5>Samsung Galaxy S3</h5>
+                                        </a>
+                                        <h6>Điện thoại</h6>
+                                        <p class="card-text">Sản phẩm của Samsung năm 2013</p>
+                                        <div class="d-flex justify-content-between align-items-center">
+                                            <div class="btn-group">
+                                                <a class="btn btn-sm btn-outline-secondary"
+                                                    href="product-detail.html">Xem
+                                                    chi tiết</a>
+                                            </div>
+                                            <small class="text-muted text-right">
+                                                <s>12,600,000.00</s>
+                                                <b>12,000,000.00 vnđ</b>
+                                            </small>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+
+                            <div class="col-md-6">
+                                <div class="card mb-4 shadow-sm">
+                                    <a href="product-detail.html">
+                                        <img class="bd-placeholder-img card-img-top" width="100%" height="350"
+                                            src="../assets/img/product/ipad4.png">
+                                    </a>
+                                    <div class="card-body">
+                                        <a href="product-detail.html">
+                                            <h5>Apple Ipad 4 Wifi 16GB</h5>
+                                        </a>
+                                        <h6>Máy tính bảng</h6>
+                                        <p class="card-text">CPU Dual-core Cortex-A9 tốc độ 1GHz</p>
+                                        <div class="d-flex justify-content-between align-items-center">
+                                            <div class="btn-group">
+                                                <a class="btn btn-sm btn-outline-secondary"
+                                                    href="product-detail.html">Xem
+                                                    chi tiết</a>
+                                            </div>
+                                            <small class="text-muted text-right">
+                                                <s>12,000,000.00</s>
+                                                <b>11,800,000.00 vnđ</b>
+                                            </small>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="row">
+
+                            <div class="col-md-6">
+                                <div class="card mb-4 shadow-sm">
+                                    <a href="product-detail.html">
+                                        <img class="bd-placeholder-img card-img-top" width="100%" height="350"
+                                            src="../assets/img/product/iphone5.jpg">
+                                    </a>
+                                    <div class="card-body">
+                                        <a href="product-detail.html">
+                                            <h5>Apple iPhone 5 16GB</h5>
+                                        </a>
+                                        <h6>Điện thoại</h6>
+                                        <p class="card-text">CPU: Dual-core 1 GHz</p>
+                                        <div class="d-flex justify-content-between align-items-center">
+                                            <div class="btn-group">
+                                                <a class="btn btn-sm btn-outline-secondary"
+                                                    href="product-detail.html">Xem
+                                                    chi tiết</a>
+                                            </div>
+                                            <small class="text-muted text-right">
+                                                <s>0.00</s>
+                                                <b>14,890,000.00 vnđ</b>
+                                            </small>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+
+                            <div class="col-md-6">
+                                <div class="card mb-4 shadow-sm">
+                                    <a href="product-detail.html">
+                                        <img class="bd-placeholder-img card-img-top" width="100%" height="350"
+                                            src="../assets/img/product/iphone5-white.jpeg">
+                                    </a>
+                                    <div class="card-body">
+                                        <a href="product-detail.html">
+                                            <h5>Apple iPhone 5 16GB White</h5>
+                                        </a>
+                                        <h6>Điện thoại</h6>
+                                        <p class="card-text">CPU: Dual-core 1 GHz - Màu trắng</p>
+                                        <div class="d-flex justify-content-between align-items-center">
+                                            <div class="btn-group">
+                                                <a class="btn btn-sm btn-outline-secondary"
+                                                    href="product-detail.html">Xem
+                                                    chi tiết</a>
+                                            </div>
+                                            <small class="text-muted text-right">
+                                                <s>0.00</s>
+                                                <b>14,990,000.00 vnđ</b>
+                                            </small>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="row">
+
+                            <div class="col-md-6">
+                                <div class="card mb-4 shadow-sm">
+                                    <a href="product-detail.html">
+                                        <img class="bd-placeholder-img card-img-top" width="100%" height="350"
+                                            src="../assets/img/product/samsung-galaxy-tab.jpg">
+                                    </a>
+                                    <div class="card-body">
+                                        <a href="product-detail.html">
+                                            <h5>Samsung Galaxy Tab 10.1 3G 16G</h5>
+                                        </a>
+                                        <h6>Máy tính bảng</h6>
+                                        <p class="card-text">Màn hình 10.1 inch cảm ứng đa điểm</p>
+                                        <div class="d-flex justify-content-between align-items-center">
+                                            <div class="btn-group">
+                                                <a class="btn btn-sm btn-outline-secondary"
+                                                    href="product-detail.html">Xem
+                                                    chi tiết</a>
+                                            </div>
+                                            <small class="text-muted text-right">
+                                                <s>12,000,000.00</s>
+                                                <b>10,990,000.00 vnđ</b>
+                                            </small>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+
+                            <div class="col-md-6">
+                                <div class="card mb-4 shadow-sm">
+                                    <a href="product-detail.html">
+                                        <img class="bd-placeholder-img card-img-top" width="100%" height="350"
+                                            src="../assets/img/product/nokia-asha-311.jpg">
+                                    </a>
+                                    <div class="card-body">
+                                        <a href="product-detail.html">
+                                            <h5>Nokia Asha 311</h5>
+                                        </a>
+                                        <h6>Điện thoại</h6>
+                                        <p class="card-text">Điện thoại di động Nokia Asha 311</p>
+                                        <div class="d-flex justify-content-between align-items-center">
+                                            <div class="btn-group">
+                                                <a class="btn btn-sm btn-outline-secondary"
+                                                    href="product-detail.html">Xem
+                                                    chi tiết</a>
+                                            </div>
+                                            <small class="text-muted text-right">
+                                                <s>3,000,000.00</s>
+                                                <b>2,699,000.00 vnđ</b>
+                                            </small>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="row">
+
+                            <div class="col-md-6">
+                                <div class="card mb-4 shadow-sm">
+                                    <a href="product-detail.html">
+                                        <img class="bd-placeholder-img card-img-top" width="100%" height="350"
+                                            src="../assets/img/product/samsung-galaxy-tab.jpg">
+                                    </a>
+                                    <div class="card-body">
+                                        <a href="product-detail.html">
+                                            <h5>Samsung Galaxy Tab 2 7.0</h5>
+                                        </a>
+                                        <h6>Máy tính bảng</h6>
+                                        <p class="card-text">Máy tính bảng Samsung Galaxy Tab 2 7.0 </p>
+                                        <div class="d-flex justify-content-between align-items-center">
+                                            <div class="btn-group">
+                                                <a class="btn btn-sm btn-outline-secondary"
+                                                    href="product-detail.html">Xem
+                                                    chi tiết</a>
+                                            </div>
+                                            <small class="text-muted text-right">
+                                                <s>7,950,000.00</s>
+                                                <b>7,500,000.00 vnđ</b>
+                                            </small>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+
+                        </div>
+                    </div>
+                </div> <!-- row.// -->
+            </form>
+        </div>
+        <!-- End block content -->
+    </main>
+
+    <!-- footer -->
+    <footer class="footer mt-auto py-3">
+        <div class="container">
+            <span>Bản quyền © bởi <a href="https://nentang.vn">Nền Tảng</a> - 2019.</span>
+            <span class="text-muted">Hành trang tới Tương lai</span>
+
+            <p class="float-right">
+                <a href="#">Về đầu trang</a>
+            </p>
+        </div>
+    </footer>
+    <!-- end footer -->
+
+    <!-- Optional JavaScript -->
+    <!-- jQuery first, then Popper.js, then Bootstrap JS -->
+    <script src="../vendor/jquery/jquery.min.js"></script>
+    <script src="../vendor/popperjs/popper.min.js"></script>
+    <script src="../vendor/bootstrap/js/bootstrap.min.js"></script>
+
+    <!-- Custom script - Các file js do mình tự viết -->
+    <script src="../assets/js/app.js"></script>
+
+</body>
+
+</html>

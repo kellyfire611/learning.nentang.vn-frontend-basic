@@ -8,12 +8,12 @@
     <title>Nền tảng - Kiến thức cơ bản về WEB | Bảng tin</title>
 
     <!-- Bootstrap CSS -->
-    <link rel="stylesheet" href="vendor/bootstrap/css/bootstrap.min.css" type="text/css">
+    <link rel="stylesheet" href="../vendor/bootstrap/css/bootstrap.min.css" type="text/css">
     <!-- Font awesome -->
-    <link rel="stylesheet" href="vendor/font-awesome/css/font-awesome.min.css" type="text/css">
+    <link rel="stylesheet" href="../vendor/font-awesome/css/font-awesome.min.css" type="text/css">
 
     <!-- Custom css - Các file css do chúng ta tự viết -->
-    <link rel="stylesheet" href="assets/css/app.css" type="text/css">
+    <link rel="stylesheet" href="../assets/css/app.css" type="text/css">
 </head>
 
 <body>
@@ -24,22 +24,22 @@
             <div class="navbar-collapse collapse" id="navbarCollapse">
                 <ul class="navbar-nav mr-auto">
                     <li class="nav-item active">
-                        <a class="nav-link" href="index.html">Trang chủ <span class="sr-only">(current)</span></a>
+                        <a class="nav-link" href="../index.html">Trang chủ <span class="sr-only">(current)</span></a>
                     </li>
                     <li class="nav-item">
                         <a class="nav-link" href="https://nentang.vn">Quản trị</a>
                     </li>
                     <li class="nav-item">
-                        <a class="nav-link" href="pages/products.html">Sản phẩm</a>
+                        <a class="nav-link" href="products.html">Sản phẩm</a>
                     </li>
                     <li class="nav-item">
-                        <a class="nav-link" href="pages/about.html">Giới thiệu</a>
+                        <a class="nav-link" href="about.html">Giới thiệu</a>
                     </li>
                     <li class="nav-item">
-                        <a class="nav-link" href="pages/contact.html">Liên hệ</a>
+                        <a class="nav-link" href="contact.html">Liên hệ</a>
                     </li>
                 </ul>
-                <form class="form-inline mt-2 mt-md-0" method="get" action="pages/search.html">
+                <form class="form-inline mt-2 mt-md-0" method="get" action="search.html">
                     <input class="form-control mr-sm-2" type="text" placeholder="Tìm kiếm" aria-label="Search"
                         name="keyword_tensanpham">
                     <button class="btn btn-outline-success my-2 my-sm-0" type="submit">Tìm kiếm</button>
@@ -47,117 +47,19 @@
             </div>
             <ul class="navbar-nav px-3">
                 <li class="nav-item text-nowrap">
-                    <a class="nav-link" href="pages/cart.html">Giỏ hàng</a>
+                    <a class="nav-link" href="cart.html">Giỏ hàng</a>
                 </li>
                 <li class="nav-item text-nowrap">
                     <!-- Nếu chưa đăng nhập thì hiển thị nút Đăng nhập -->
-                    <a class="nav-link" href="pages/login.html">Đăng nhập</a>
+                    <a class="nav-link" href="login.html">Đăng nhập</a>
                 </li>
             </ul>
         </div>
     </nav>
     <!-- end header -->
+
     <main role="main">
         <!-- Block content - Đục lỗ trên giao diện bố cục chung, đặt tên là `content` -->
-        <!-- Carousel - Slider -->
-        <div id="myCarousel" class="carousel slide" data-ride="carousel">
-            <ol class="carousel-indicators">
-                <li data-target="#myCarousel" data-slide-to="0" class="active"></li>
-                <li data-target="#myCarousel" data-slide-to="1" class=""></li>
-                <li data-target="#myCarousel" data-slide-to="2" class=""></li>
-            </ol>
-            <div class="carousel-inner">
-                <div class="carousel-item active">
-                    <img src="assets/img/slider/slider-1.jpg">
-                    <div class="container">
-                        <div class="carousel-caption text-left">
-                            <h1>Nền Tảng - Nơi mua sắm tuyệt vời</h1>
-                        </div>
-                    </div>
-                </div>
-                <div class="carousel-item">
-                    <img src="assets/img/slider/slider-2.jpg">
-                    <div class="container">
-                        <div class="carousel-caption">
-                            <h1>Hàng triệu sản phẩm - Lựa chọn mỏi tay</h1>
-                        </div>
-                    </div>
-                </div>
-                <div class="carousel-item">
-                    <img src="assets/img/slider/slider-3.jpg">
-                    <div class="container">
-                        <div class="carousel-caption text-right">
-                            <h1>Chất lượng là Hàng đầu.</h1>
-                        </div>
-                    </div>
-                </div>
-            </div>
-            <a class="carousel-control-prev" href="#myCarousel" role="button" data-slide="prev">
-                <span class="carousel-control-prev-icon" aria-hidden="true"></span>
-                <span class="sr-only">Previous</span>
-            </a>
-            <a class="carousel-control-next" href="#myCarousel" role="button" data-slide="next">
-                <span class="carousel-control-next-icon" aria-hidden="true"></span>
-                <span class="sr-only">Next</span>
-            </a>
-        </div>
-
-        <!-- Tính năng Marketing -->
-        <div class="container marketing">
-            <!-- Three columns of text below the carousel -->
-            <div class="row">
-                <div class="col-lg-4">
-                    <img class="bd-placeholder-img rounded-circle" width="140" height="140"
-                        src="assets/img/icon/icon-1.png">
-                    <h2>Đặt hàng</h2>
-                    <p>Chọn sản phẩm bạn yêu thích, và Đặt hàng.</p>
-                </div><!-- /.col-lg-4 -->
-                <div class="col-lg-4">
-                    <img class="bd-placeholder-img rounded-circle" width="140" height="140"
-                        src="assets/img/icon/icon-2.png">
-                    <h2>Tạo đơn hàng</h2>
-                    <p>Theo dõi đơn hàng của bạn.</p>
-                </div><!-- /.col-lg-4 -->
-                <div class="col-lg-4">
-                    <img class="bd-placeholder-img rounded-circle" width="140" height="140"
-                        src="assets/img/icon/icon-3.png">
-                    <h2>Giao hàng</h2>
-                    <p>Giao hàng tận nơi.</p>
-                </div><!-- /.col-lg-4 -->
-            </div><!-- /.row -->
-
-
-            <!-- START THE FEATURETTES -->
-            <hr class="featurette-divider">
-            <div class="row featurette">
-                <div class="col-md-7">
-                    <h2 class="featurette-heading">Đặt hàng, Tạo đơn hàng, Giao hàng <span class="text-muted">Nhanh
-                            chóng</span>
-                    </h2>
-                    <p class="lead">Nơi mua sắm tuyệt vời cho mọi lứa tuổi.</p>
-                </div>
-                <div class="col-md-5">
-                    <img src="assets/img/marketing/marketing-1.png">
-                </div>
-            </div>
-
-            <hr class="featurette-divider">
-            <div class="row featurette">
-                <div class="col-md-7 order-md-2">
-                    <h2 class="featurette-heading">Báo cáo Doanh thu tuyệt vời <span class="text-muted">Theo dõi đơn
-                            hàng của
-                            bạn.</span></h2>
-                    <p class="lead">Hệ thống theo dõi đơn hàng chi tiết, thông tin mọi lúc mọi nơi.</p>
-                </div>
-                <div class="col-md-5 order-md-1">
-                    <img src="assets/img/marketing/marketing-2.png">
-                </div>
-            </div>
-
-            <hr class="featurette-divider">
-            <!-- /END THE FEATURETTES -->
-        </div>
-
         <!-- Danh sách sản phẩm -->
         <section class="jumbotron text-center">
             <div class="container">
@@ -174,20 +76,20 @@
                 <div class="row">
                     <div class="col-md-4">
                         <div class="card mb-4 shadow-sm">
-                            <a href="pages/product-detail.html">
+                            <a href="product-detail.html">
                                 <img class="bd-placeholder-img card-img-top" width="100%" height="350"
-                                    src="assets/img/product/samsung-s3.webp">
+                                    src="../assets/img/product/samsung-s3.webp">
                             </a>
                             <div class="card-body">
-                                <a href="pages/product-detail.html">
+                                <a href="product-detail.html">
                                     <h5>Samsung Galaxy S3</h5>
                                 </a>
                                 <h6>Điện thoại</h6>
                                 <p class="card-text">Sản phẩm của Samsung năm 2013</p>
                                 <div class="d-flex justify-content-between align-items-center">
                                     <div class="btn-group">
-                                        <a class="btn btn-sm btn-outline-secondary"
-                                            href="pages/product-detail.html">Xem chi tiết</a>
+                                        <a class="btn btn-sm btn-outline-secondary" href="product-detail.html">Xem
+                                            chi tiết</a>
                                     </div>
                                     <small class="text-muted text-right">
                                         <s>12,600,000.00</s>
@@ -200,20 +102,20 @@
 
                     <div class="col-md-4">
                         <div class="card mb-4 shadow-sm">
-                            <a href="pages/product-detail.html">
+                            <a href="product-detail.html">
                                 <img class="bd-placeholder-img card-img-top" width="100%" height="350"
-                                    src="assets/img/product/ipad4.png">
+                                    src="../assets/img/product/ipad4.png">
                             </a>
                             <div class="card-body">
-                                <a href="pages/product-detail.html">
+                                <a href="product-detail.html">
                                     <h5>Apple Ipad 4 Wifi 16GB</h5>
                                 </a>
                                 <h6>Máy tính bảng</h6>
                                 <p class="card-text">CPU Dual-core Cortex-A9 tốc độ 1GHz</p>
                                 <div class="d-flex justify-content-between align-items-center">
                                     <div class="btn-group">
-                                        <a class="btn btn-sm btn-outline-secondary"
-                                            href="pages/product-detail.html">Xem chi tiết</a>
+                                        <a class="btn btn-sm btn-outline-secondary" href="product-detail.html">Xem
+                                            chi tiết</a>
                                     </div>
                                     <small class="text-muted text-right">
                                         <s>12,000,000.00</s>
@@ -226,20 +128,20 @@
 
                     <div class="col-md-4">
                         <div class="card mb-4 shadow-sm">
-                            <a href="pages/product-detail.html">
+                            <a href="product-detail.html">
                                 <img class="bd-placeholder-img card-img-top" width="100%" height="350"
-                                    src="assets/img/product/iphone5.jpg">
+                                    src="../assets/img/product/iphone5.jpg">
                             </a>
                             <div class="card-body">
-                                <a href="pages/product-detail.html">
+                                <a href="product-detail.html">
                                     <h5>Apple iPhone 5 16GB</h5>
                                 </a>
                                 <h6>Điện thoại</h6>
                                 <p class="card-text">CPU: Dual-core 1 GHz</p>
                                 <div class="d-flex justify-content-between align-items-center">
                                     <div class="btn-group">
-                                        <a class="btn btn-sm btn-outline-secondary"
-                                            href="pages/product-detail.html">Xem chi tiết</a>
+                                        <a class="btn btn-sm btn-outline-secondary" href="product-detail.html">Xem
+                                            chi tiết</a>
                                     </div>
                                     <small class="text-muted text-right">
                                         <s>0.00</s>
@@ -254,20 +156,20 @@
 
                     <div class="col-md-4">
                         <div class="card mb-4 shadow-sm">
-                            <a href="pages/product-detail.html">
+                            <a href="product-detail.html">
                                 <img class="bd-placeholder-img card-img-top" width="100%" height="350"
-                                    src="assets/img/product/iphone5-white.jpeg">
+                                    src="../assets/img/product/iphone5-white.jpeg">
                             </a>
                             <div class="card-body">
-                                <a href="pages/product-detail.html">
+                                <a href="product-detail.html">
                                     <h5>Apple iPhone 5 16GB White</h5>
                                 </a>
                                 <h6>Điện thoại</h6>
                                 <p class="card-text">CPU: Dual-core 1 GHz - Màu trắng</p>
                                 <div class="d-flex justify-content-between align-items-center">
                                     <div class="btn-group">
-                                        <a class="btn btn-sm btn-outline-secondary"
-                                            href="pages/product-detail.html">Xem chi tiết</a>
+                                        <a class="btn btn-sm btn-outline-secondary" href="product-detail.html">Xem
+                                            chi tiết</a>
                                     </div>
                                     <small class="text-muted text-right">
                                         <s>0.00</s>
@@ -280,20 +182,20 @@
 
                     <div class="col-md-4">
                         <div class="card mb-4 shadow-sm">
-                            <a href="pages/product-detail.html">
+                            <a href="product-detail.html">
                                 <img class="bd-placeholder-img card-img-top" width="100%" height="350"
-                                    src="assets/img/product/samsung-galaxy-tab-10.jpg">
+                                    src="../assets/img/product/samsung-galaxy-tab-10.jpg">
                             </a>
                             <div class="card-body">
-                                <a href="pages/product-detail.html">
+                                <a href="product-detail.html">
                                     <h5>Samsung Galaxy Tab 10.1 3G 16G</h5>
                                 </a>
                                 <h6>Máy tính bảng</h6>
                                 <p class="card-text">Màn hình 10.1 inch cảm ứng đa điểm</p>
                                 <div class="d-flex justify-content-between align-items-center">
                                     <div class="btn-group">
-                                        <a class="btn btn-sm btn-outline-secondary"
-                                            href="pages/product-detail.html">Xem chi tiết</a>
+                                        <a class="btn btn-sm btn-outline-secondary" href="product-detail.html">Xem
+                                            chi tiết</a>
                                     </div>
                                     <small class="text-muted text-right">
                                         <s>12,000,000.00</s>
@@ -306,20 +208,20 @@
 
                     <div class="col-md-4">
                         <div class="card mb-4 shadow-sm">
-                            <a href="pages/product-detail.html">
+                            <a href="product-detail.html">
                                 <img class="bd-placeholder-img card-img-top" width="100%" height="350"
-                                    src="assets/img/product/nokia-asha-311.jpg">
+                                    src="../assets/img/product/nokia-asha-311.jpg">
                             </a>
                             <div class="card-body">
-                                <a href="pages/product-detail.html">
+                                <a href="product-detail.html">
                                     <h5>Nokia Asha 311</h5>
                                 </a>
                                 <h6>Điện thoại</h6>
                                 <p class="card-text">Điện thoại di động Nokia Asha 311</p>
                                 <div class="d-flex justify-content-between align-items-center">
                                     <div class="btn-group">
-                                        <a class="btn btn-sm btn-outline-secondary"
-                                            href="pages/product-detail.html">Xem chi tiết</a>
+                                        <a class="btn btn-sm btn-outline-secondary" href="product-detail.html">Xem
+                                            chi tiết</a>
                                     </div>
                                     <small class="text-muted text-right">
                                         <s>3,000,000.00</s>
@@ -334,20 +236,20 @@
 
                     <div class="col-md-4">
                         <div class="card mb-4 shadow-sm">
-                            <a href="pages/product-detail.html">
+                            <a href="product-detail.html">
                                 <img class="bd-placeholder-img card-img-top" width="100%" height="350"
-                                    src="assets/img/product/samsung-galaxy-tab.jpg">
+                                    src="../assets/img/product/samsung-galaxy-tab.jpg">
                             </a>
                             <div class="card-body">
-                                <a href="pages/product-detail.html">
+                                <a href="product-detail.html">
                                     <h5>Samsung Galaxy Tab 2 7.0</h5>
                                 </a>
                                 <h6>Máy tính bảng</h6>
                                 <p class="card-text">Máy tính bảng Samsung Galaxy Tab 2 7.0 </p>
                                 <div class="d-flex justify-content-between align-items-center">
                                     <div class="btn-group">
-                                        <a class="btn btn-sm btn-outline-secondary"
-                                            href="pages/product-detail.html">Xem chi tiết</a>
+                                        <a class="btn btn-sm btn-outline-secondary" href="product-detail.html">Xem
+                                            chi tiết</a>
                                     </div>
                                     <small class="text-muted text-right">
                                         <s>7,950,000.00</s>
@@ -380,12 +282,12 @@
 
     <!-- Optional JavaScript -->
     <!-- jQuery first, then Popper.js, then Bootstrap JS -->
-    <script src="vendor/jquery/jquery.min.js"></script>
-    <script src="vendor/popperjs/popper.min.js"></script>
-    <script src="vendor/bootstrap/js/bootstrap.min.js"></script>
+    <script src="../vendor/jquery/jquery.min.js"></script>
+    <script src="../vendor/popperjs/popper.min.js"></script>
+    <script src="../vendor/bootstrap/js/bootstrap.min.js"></script>
 
     <!-- Custom script - Các file js do mình tự viết -->
-    <script src="assets/js/app.js"></script>
+    <script src="../assets/js/app.js"></script>
 
 </body>
 
