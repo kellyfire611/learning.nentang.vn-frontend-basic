@@ -1,21 +1,13 @@
-# [https://learning.nentang.vn](learning.nentang.vn)
+# [https://nentang.vn](https://nentang.vn)
 - Các bài học miễn phí về Lập trình
-- Học web PHP - Learning PHP
+- Học web Frontend cơ bản HTML-CSS-JS
+- Trang web demo [https://learning.nentang.vn](https://learning.nentang.vn)
 - Xem nhiều hơn tại [https://nentang.vn](https://nentang.vn)
 
 # Danh sách các bài học
-- Học về Twig - Template Engine quản lý giao diện của Symfony PHP.
-  - [Vi du 1](./php/twig/readme.md)
-  - [Bài học 1](./php/twig/readme-lession1.md)
-  - [Bài học 2](./php/twig/readme-lession2.md)
-  - [Bài học 3](./php/twig/readme-lession3.md)
-  - [Bài học 4](./php/twig/readme-lession4.md)
-  - [Bài học 5](./php/twig/readme-lession5.md)
-  - [Bài học 6](./php/twig/readme-lession6.md)
-  - [Bài học 7](./php/twig/readme-lession7.md)
-  - [Bài học 8](./php/twig/readme-lession8.md)
-  - [Bài học 9](./php/twig/readme-lession9.md)
-  - [Bài học 10](./php/twig/readme-lession10.md)
+- Học về Bootstrap Framework
+  - [Bài học 1 - Tạo bố cục sử dụng Bootstrap](./cou)
+  - [Bài học 2 - Tạo trang chủ bán hàng đơn giản](./php/twig/readme-lession2.md)
 
 # Các chương trình cần thiết để lập trình web
 - [Git for window](https://git-scm.com/download/win)
