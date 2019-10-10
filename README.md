@@ -6,8 +6,8 @@
 
 # Danh sách các bài học
 - Học về Bootstrap Framework
-  - [Bài học 1 - Tạo bố cục sử dụng Bootstrap](./cou)
-  - [Bài học 2 - Tạo trang chủ bán hàng đơn giản](./php/twig/readme-lession2.md)
+  - [Bài học 1 - Tạo bố cục sử dụng Bootstrap](./course-bootstrap/lesson1-tao-bo-cuc-su-dung-bootstrap/readme.md)
+  - [Bài học 2 - Tạo trang chủ bán hàng đơn giản](./course-bootstrap/lesson2-tao-trang-chu-ban-hang-don-gian/readme.md)
 
 # Các chương trình cần thiết để lập trình web
 - [Git for window](https://git-scm.com/download/win)
@@ -19,20 +19,11 @@
 
 # Cách clone source các bài học
 ## Step 1: clone source về máy
-- Các bạn có thể clone source đặt bất cứ đâu trong máy các bạn. Tuy nhiên, muốn chạy được ở nơi khác ngoài `htdocs` thì các bạn phải cấu hình `virtual host` đối với `XAMPP hay WAMPP` nhé.
-- Để đơn giản, các bạn nên clone source về thư mục `htdocs`
+- Các bạn có thể clone source đặt bất cứ đâu trong máy các bạn. 
 - Chạy câu lệnh
 ```
-git clone https://github.com/kellyfire611/learning.nentang.vn.git
+git clone https://github.com/kellyfire611/learning.nentang.vn-frontend-basic.git
 ```
 
-## Step 2: install các thư viện (package) cần thiết thông qua `composer`
-- Trỏ đường dẫn vào thư mục `/php/twig`, chạy câu lệnh sau để cài đặt
-```
-cd /php/twig
-composer install
-```
-
-## Step 3: thử nghiệm
-- Start service Apache của XAMPP hay WAMPP
-- Chạy đường dẫn sau để kiểm tra: [http://localhost/learning.nentang.vn/php/twig/](http://localhost/learning.nentang.vn/php/twig/)
+## Step 2: thử nghiệm
+- Mở file `index.html` của từng Project để xem. Có thể xem với Chrome, Firefox, Safari, IE, Edge ...

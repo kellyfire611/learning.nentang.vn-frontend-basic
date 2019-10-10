@@ -1,0 +1,36 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>Test SOAP</title>
+</head>
+
+<body>
+    <script>
+        var data =
+            "<soap:Envelope xmlns:xsi=\"http://www.w3.org/2001/XMLSchema-instance\" xmlns:xsd=\"http://www.w3.org/2001/XMLSchema\" xmlns:soap=\"http://schemas.xmlsoap.org/soap/envelope/\" xmlns:s=\"http://mynamespace/\">\n\t<soap:Header></soap:Header>\n\t<soap:Body>\n\t\t<ReadStaffAndBlng xmlns=\"http://tempuri.org/\">\n\t\t\t<userid>DvM/v5tACzk0TUdmS/WEgA==</userid>\n\t\t\t<userpw>DvM/v5tACzk0TUdmS/WEgA==</userpw>\n\t\t\t<objcd>1</objcd>\n\t\t\t<sdate>1990-01-01</sdate>\n\t\t\t<edate>2050-01-01</edate>\n\t\t</ReadStaffAndBlng>\n\t</soap:Body>\n</soap:Envelope>";
+
+        var xhr = new XMLHttpRequest();
+        xhr.withCredentials = false;
+
+        xhr.addEventListener("readystatechange", function () {
+            if (this.readyState === 4) {
+                console.log(this.responseText);
+            }
+        });
+
+        xhr.open("POST", "http://172.16.160.131/DataAccessSvcMobile.svc/basic");
+        xhr.setRequestHeader("Activationkey", "35a2f7b1a76042f0aa29c09fa4d8b484");
+        xhr.setRequestHeader("User", "choju");
+        xhr.setRequestHeader("Password", "longlife");
+        xhr.setRequestHeader("SOAPAction", "http://tempuri.org/IDataAccessSvcMobile/ReadStaffAndBlng");
+        xhr.setRequestHeader("Content-Type", "text/xml");
+
+        xhr.send(data);
+    </script>
+</body>
+
+</html>
