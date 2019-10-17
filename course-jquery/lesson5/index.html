@@ -1,0 +1,47 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>Học JQuery</title>
+
+    <style>
+        div {
+            position: absolute;
+            width: 50px;
+            height: 50px;
+            float: left;
+        }
+
+        .div1 {
+            background-color: red;
+            left: 0;
+        }
+
+        .div2 {
+            background-color: green;
+            left: 80px;
+        }
+    </style>
+</head>
+
+<body>
+    <p><button>Run</button></p>
+    <div class="div1"></div>
+    <div class="div2"></div>
+
+    <!-- Liên kết thư viện Jquery -->
+    <script src="vendor/jquery/jquery.min.js"></script>
+
+    <!-- Viết code Jquery -->
+    <script>
+        $("button").click(function () {
+            $("div.div1").slideUp(300).delay(800).fadeIn(400);
+            $("div.div2").slideUp(400).fadeIn(300);
+        });
+    </script>
+</body>
+
+</html>

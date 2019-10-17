@@ -1,0 +1,63 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>Học JQuery</title>
+
+    <style>
+        #nonSelected {
+            position: absolute;
+            top: 10px;
+            left: 10px;
+            width: 180px;
+            height: 180px;
+            background-color: #884333;
+            border-width: 1px;
+            border-style: dotted;
+            border-color: black;
+            padding: 10px;
+        }
+
+        #selected {
+            position: absolute;
+            top: 10px;
+            left: 200px;
+            width: 180px;
+            height: 180px;
+            background-color: #498933;
+            border-width: 1px;
+            border-style: dotted;
+            border-color: black;
+            padding: 10px;
+        }
+    </style>
+</head>
+
+<body>
+    <div id="nonSelected">
+        <button id="btnDefault" onclick="moveButton(this)" type="button">Button1</button>
+        <button id="btnPrimary" onclick="moveButton(this)" type="button">Button2</button>
+        <button id="btnDanger" onclick="moveButton(this)" type="button">Button3</button>
+    </div>
+    <div id="selected">
+    </div>
+
+    <!-- Liên kết thư viện Jquery -->
+    <script src="vendor/jquery/jquery.min.js"></script>
+
+    <!-- Viết code Jquery -->
+    <script>
+        function moveButton(elem) {
+            if ($(elem).parent().attr("id") == "nonSelected") {
+                $(elem).detach().appendTo('#selected');
+            } else {
+                $(elem).detach().appendTo('#nonSelected');
+            }
+        }
+    </script>
+</body>
+
+</html>
