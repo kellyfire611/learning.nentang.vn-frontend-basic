@@ -1,0 +1,98 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+    <title>Nền tảng căn bản về Javascript - nentang.vn</title>
+    <meta charset="utf-8" />
+    <meta name="keywords"
+        content="nền tảng, nen tang, học web, html5, html, css, js, javascript, jquery, hoc web can ban, học web căn bản" />
+    <meta name="description" content="Cung cấp nền tảng kiến thức căn bản về lập trình web HTML5, CSS3, JS" />
+
+    <style>
+        #frmGhiDanh {
+            width: 700px;
+            margin: 0 auto;
+            background: #eee;
+        }
+
+        #frmGhiDanh .tblThongTinCaNhan {
+            border-collapse: collapse;
+            width: 100%;
+            border-color: red;
+        }
+
+        #frmGhiDanh .tblThongTinCaNhan td {
+            padding: 5px;
+        }
+
+        #frmGhiDanh .tieude {
+            font-weight: bold;
+            text-align: right;
+        }
+    </style>
+</head>
+
+<body>
+    <h1>Nền tảng Kiến thức | https://nentang.vn</h1>
+
+    <form name="frmGhiDanh" id="frmGhiDanh" method="post" action="#">
+        <fieldset>
+            <legend align="center">Thông tin cá nhân</legend>
+            <table border="1" class="tblThongTinCaNhan">
+                <tr>
+                    <td class="tieude">Họ tên</td>
+                    <td>
+                        <input type="text" name="txtHoTen" id="txtHoTen" />
+                    </td>
+                </tr>
+                <tr>
+                    <td>Ngày/tháng/năm sinh</td>
+                    <td>
+                        Ngày sinh
+                        <select name="slNgaySinh" id="slNgaySinh">
+                            <script>
+                                for (var i = 1; i <= 31; i++) {
+                                    document.write('<option value="' + i + '">Ngày ' + i + '</option>');
+                                }
+                            </script>
+                        </select>
+
+                        Tháng sinh
+                        <select name="slThangSinh" id="slThangSinh">
+                            <script>
+                                for (var i = 1; i <= 12; i++) {
+                                    document.write('<option value="' + i + '">Tháng ' + i + '</option>');
+                                }
+                            </script>
+                        </select>
+
+                        Năm sinh
+                        <select name="slThangSinh" id="slThangSinh">
+                            <script>
+                                var objNgayGioHienTai = new Date();
+                                var namHienTai = objNgayGioHienTai.getFullYear();
+                                for (var i = namHienTai; i >= 1900; i--) {
+                                    document.write('<option value="' + i + '">Năm ' + i + '</option>');
+                                }
+                            </script>
+                        </select>
+                    </td>
+                </tr>
+                <tr>
+                    <td>Giới tính</td>
+                    <td>
+                        <!--
+                            Quy định trong dữ liệu
+                            - 0: Nam
+                            - 1: Nữ
+                        -->
+                        <input type="radio" name="rdGioiTinh" id="rdGioiTinh_1" value="0" /> Nam <br />
+                        <input type="radio" name="rdGioiTinh" id="rdGioiTinh_2" value="1" /> Nữ <br />
+                    </td>
+                </tr>
+            </table>
+        </fieldset>
+    </form>
+</body>
+
+</html>
