@@ -1,0 +1,30 @@
+#page-container {
+    width: 960px;
+    border-collapse: collapse;
+    margin: 0 auto;
+}
+
+#header {
+    background: #EE82EE;
+    height: 120px;
+}
+
+#menu {
+    background: #FFDEAD;
+    height: 120px;
+}
+
+#sidebar {
+    background: #F08080;
+    height: 120px;
+}
+
+#content {
+    background: #AFEEEE;
+    height: 120px;
+}
+
+#footer {
+    background: #B8860B;
+    height: 120px;
+}
