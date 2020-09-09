@@ -8,11 +8,15 @@
     .menucap2 {
         display: none;
         padding-left: 0px;
+        width: 300px;
+        background: #ccc;
     }
 
     .menucap1 li {
         list-style-type: none;
         float: left;
+        border: 1px solid red;
+        position: relative;
     }
 
     .menucap1 li a {
@@ -29,10 +33,12 @@
     /* Menu cấp 2 */
     .menucap1 li:hover ul {
         display: block;
+        position: absolute;
     }
 
     .menucap2 li {
         float: none;
+        border: none;
     }
 
     .menucap2 li a:hover {
