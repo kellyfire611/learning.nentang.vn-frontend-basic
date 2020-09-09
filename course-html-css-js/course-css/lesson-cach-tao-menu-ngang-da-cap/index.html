@@ -1,0 +1,68 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Học CSS - Cách tạo Menu ngang Đa cấp | Nentang.vn</title>
+    <style>
+    .menucap2 {
+        display: none;
+        padding-left: 0px;
+    }
+
+    .menucap1 li {
+        list-style-type: none;
+        float: left;
+    }
+
+    .menucap1 li a {
+        text-decoration: none;
+        color: black;
+        padding: 5px 10px;
+    }
+
+    .menucap1 li a:hover {
+        background: blue;
+        color: #fff;
+    }
+
+    /* Menu cấp 2 */
+    .menucap1 li:hover ul {
+        display: block;
+    }
+
+    .menucap2 li {
+        float: none;
+    }
+
+    .menucap2 li a:hover {
+        background: red;
+        color: yellow;
+    }
+  
+    </style>
+</head>
+<body>
+    <ul class="menucap1">
+        <li><a href="#">Trang chủ</a></li>
+        <li><a href="#">Giới thiệu</a>
+            <ul class="menucap2">
+                <li><a href="#">Lịch sử phát triển</a></li>
+                <li><a href="#">Hệ thống chi nhánh</a></li>
+                <li><a href="#">Hình thức thanh toán</a></li>
+            </ul>
+        </li>
+        <li><a href="#">Liên hệ</a></li>
+        <li><a href="#">Góp ý</a></li>
+        <li><a href="#">Quản trị</a>
+            <ul class="menucap2">
+                <li><a href="#">Danh mục sản phẩm</a></li>
+                <li><a href="#">Danh mục nhà sản xuất</a></li>
+                <li><a href="#">Danh mục hình thức thanh toán</a></li>
+            </ul>
+        </li>
+        <li><a href="#">Đăng ký</a></li>
+        <li><a href="#">Đăng nhập</a></li>
+    </ul>
+</body>
+</html>
