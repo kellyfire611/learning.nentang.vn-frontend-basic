@@ -29,6 +29,10 @@
             font-weight: bold;
             text-align: right;
         }
+
+        #frmGhiDanh #txtSoThichCaNhan {
+            width: 90%;
+        }
     </style>
 </head>
 
@@ -37,16 +41,16 @@
 
     <form name="frmGhiDanh" id="frmGhiDanh" method="post" action="#">
         <fieldset>
-            <legend align="center">Thông tin cá nhân</legend>
+            <legend align="center">Các thành phần nhập liệu (controls/fields) đơn giản (text, textarea, select)</legend>
             <table border="1" class="tblThongTinCaNhan">
                 <tr>
-                    <td class="tieude">Họ tên</td>
+                    <td class="tieude" width="150px">Họ tên</td>
                     <td>
                         <input type="text" name="txtHoTen" id="txtHoTen" />
                     </td>
                 </tr>
                 <tr>
-                    <td>Ngày/tháng/năm sinh</td>
+                    <td class="tieude">Ngày/tháng/năm sinh</td>
                     <td>
                         Ngày sinh
                         <select name="slNgaySinh" id="slNgaySinh">
@@ -79,19 +83,51 @@
                     </td>
                 </tr>
                 <tr>
-                    <td>Giới tính</td>
+                    <td class="tieude">Sở thích cá nhân</td>
+                    <td>
+                        <textarea name="txtSoThichCaNhan" id="txtSoThichCaNhan"></textarea>
+                    </td>
+                </tr>
+            </table>
+        </fieldset>
+        <fieldset>
+            <legend align="center">Các thành phần nhập liệu (controls/fields) (radio/checkbox) </legend>
+            <table border="1" class="tblThongTinCaNhan">
+                <tr>
+                    <td class="tieude" width="150px">Giới tính</td>
                     <td>
                         <!--
                             Quy định trong dữ liệu
                             - 0: Nam
                             - 1: Nữ
                         -->
-                        <input type="radio" name="rdGioiTinh" id="rdGioiTinh_1" value="0" /> Nam <br />
-                        <input type="radio" name="rdGioiTinh" id="rdGioiTinh_2" value="1" /> Nữ <br />
+                        <label><input type="radio" name="rdGioiTinh" id="rdGioiTinh_1" value="0" /> Nam </label>
+                        <br />
+                        <label><input type="radio" name="rdGioiTinh" id="rdGioiTinh_2" value="1" /> Nữ </label>
+                    </td>
+                </tr>
+                <tr>
+                    <td class="tieude">Đăng ký môn học</td>
+                    <td>
+                        <!--
+                            Quy định trong dữ liệu
+                            - W1: Khóa học Web căn bản HTML, CSS, JS
+                            - W2: Khóa học Web nâng cao MySQL, PHP
+                            - TD1: Khóa học Tư duy Giải thuật
+                        -->
+                        <label><input type="checkbox" name="chkMonHoc" id="chkMonHoc_1" value="W1" /> Khóa học Web căn bản HTML, CSS, JS </label>
+                        <br />
+                        <label><input type="checkbox" name="chkMonHoc" id="chkMonHoc_2" value="W2" /> Khóa học Web nâng cao MySQL, PHP </label>
+                        <br />
+                        <label><input type="checkbox" name="chkMonHoc" id="chkMonHoc_3" value="TD1" /> Khóa học Tư duy Giải thuật </label>
                     </td>
                 </tr>
             </table>
         </fieldset>
+        <center>
+            <input type="button" name="btnGoiDuLieu" id="btnGoiDuLieu" value="Gởi dữ liệu" />
+            <input type="reset" name="btnXoaTrangDuLieu" id="btnXoaTrangDuLieu" value="Xóa trắng dữ liệu" />
+        </center>
     </form>
 </body>
 
