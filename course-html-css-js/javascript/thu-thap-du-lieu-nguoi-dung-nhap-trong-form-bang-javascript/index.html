@@ -9,10 +9,38 @@
     <meta name="description" content="Cung cấp nền tảng kiến thức căn bản về lập trình web HTML5, CSS3, JS" />
 
     <style>
+        body {
+            height: 100vh;
+            background-color: #89d4cf;
+            background-image: linear-gradient(315deg, #89d4cf 0%, #6e45e1 74%);
+        }
+
+        .watermark {
+            color: #fff;
+            text-align: center;
+        }
+
         #frmGhiDanh {
             width: 700px;
             margin: 0 auto;
-            background: #eee;
+        }
+
+        #frmGhiDanh #thongtinDonGian {
+            border: 1px solid red;
+            background-color: #f1dfd1;
+            background-image: linear-gradient(315deg, #f1dfd1 0%, #f6f0ea 74%);
+        }
+
+        #frmGhiDanh .tblThongTinCaNhan {
+            border-collapse: collapse;
+            width: 100%;
+            border-color: red;
+        }
+
+        #frmGhiDanh #thongtinPhucTap {
+            border: 1px solid red;
+            background-color: #ebbe9b;
+            background-image: linear-gradient(315deg, #ebbe9b 0%, #e7a977 74%);
         }
 
         #frmGhiDanh .tblThongTinCaNhan {
@@ -33,20 +61,44 @@
         #frmGhiDanh #txtSoThichCaNhan {
             width: 90%;
         }
+
+        #frmGhiDanh #btnGoiDuLieu {
+            padding: 10px;
+            color: #fff;
+            font-weight: bold;
+            border: 1px solid #fff;
+            background-color: #27ae60;
+            cursor: pointer;
+        }
+
+        #frmGhiDanh #btnXoaTrangDuLieu {
+            padding: 10px;
+            color: #fff;
+            font-weight: bold;
+            border: 1px solid #fff;
+            background-color: #e74c3c;
+            cursor: pointer;
+        }
     </style>
 </head>
 
 <body>
-    <h1>Nền tảng Kiến thức | https://nentang.vn</h1>
+    <h1 class="watermark">Nền tảng Kiến thức | https://nentang.vn</h1>
 
     <form name="frmGhiDanh" id="frmGhiDanh" method="post" action="#">
-        <fieldset>
-            <legend align="center">Các thành phần nhập liệu (controls/fields) đơn giản (text, textarea, select)</legend>
+        <fieldset id="thongtinDonGian">
+            <h3 align="center">Các thành phần nhập liệu (controls/fields) đơn giản (text, textarea, select)</h3>
             <table border="1" class="tblThongTinCaNhan">
                 <tr>
                     <td class="tieude" width="150px">Họ tên</td>
                     <td>
                         <input type="text" name="txtHoTen" id="txtHoTen" />
+                    </td>
+                </tr>
+                <tr>
+                    <td class="tieude">Địa chỉ</td>
+                    <td>
+                        <input type="text" name="txtDiaChi" id="txtDiaChi" />
                     </td>
                 </tr>
                 <tr>
@@ -71,7 +123,7 @@
                         </select>
 
                         Năm sinh
-                        <select name="slThangSinh" id="slThangSinh">
+                        <select name="slNamSinh" id="slNamSinh">
                             <script>
                                 var objNgayGioHienTai = new Date();
                                 var namHienTai = objNgayGioHienTai.getFullYear();
@@ -85,13 +137,13 @@
                 <tr>
                     <td class="tieude">Sở thích cá nhân</td>
                     <td>
-                        <textarea name="txtSoThichCaNhan" id="txtSoThichCaNhan"></textarea>
+                        <textarea name="txtSoThichCaNhan" id="txtSoThichCaNhan" rows="5"></textarea>
                     </td>
                 </tr>
             </table>
         </fieldset>
-        <fieldset>
-            <legend align="center">Các thành phần nhập liệu (controls/fields) (radio/checkbox) </legend>
+        <fieldset id="thongtinPhucTap">
+            <h3 align="center">Các thành phần nhập liệu (controls/fields) (radio/checkbox) </h3>
             <table border="1" class="tblThongTinCaNhan">
                 <tr>
                     <td class="tieude" width="150px">Giới tính</td>
@@ -125,10 +177,52 @@
             </table>
         </fieldset>
         <center>
-            <input type="button" name="btnGoiDuLieu" id="btnGoiDuLieu" value="Gởi dữ liệu" />
+            <input type="button" name="btnGoiDuLieu" id="btnGoiDuLieu" value="Gởi dữ liệu" onclick="kiemtrathongtin()"/>
             <input type="reset" name="btnXoaTrangDuLieu" id="btnXoaTrangDuLieu" value="Xóa trắng dữ liệu" />
         </center>
     </form>
+
+    <script>
+        // Hàm Thu thập thông tin Người dùng nhập trong FORM
+        function kiemtrathongtin() {
+            // 1. Thu thập các thông tin từ các thành phần nhập liệu (controls/fields) đơn giản (text, textarea, select) 
+            var hoten = document.getElementById('txtHoTen').value;
+            var diachi = document.getElementById('txtDiaChi').value;
+            var ngaysinh = document.getElementById('slNgaySinh').value;
+            var thangsinh = document.getElementById('slThangSinh').value;
+            var namsinh = document.getElementById('slNamSinh').value;
+
+            // 2. Ghép thành chuỗi và hiển thị hộp thoại thông báo
+            var thongtinthuthap_dongian = 
+                  'Họ tên: ' + hoten + '\n'
+                + 'Địa chỉ: ' + diachi + '\n'
+                + 'Ngày sinh: ' + ngaysinh + '\n'
+                + 'Tháng sinh: ' + thangsinh + '\n'
+                + 'Năm sinh: ' + namsinh;
+            alert(thongtinthuthap_dongian);
+
+            // 3. Thu thập các thông tin từ thành phần nhập liệu phức tạp (controls/fields) (radio/checkbox)
+            // 3.1. Thu thập thông tin từ RADIO
+            debugger;
+            var giaTriGioitinh = 0; // Giả sử là 0: Nam
+
+            // Chúng ta không biết là có bao nhiêu RADIO được sử dụng trong cùng ngữ cảnh (CONTEXT - hay là được đặt name="" giống nhau)
+            // Do đó, cần phải sử dụng vòng lặp để duyệt qua các RADIO và kiểm tra trạng thái của chúng
+
+            var danhSachCacPhanTuRadio_GioiTinh = document.getElementsByName('rdGioiTinh');
+
+            // Duyệt vòng lặp, kiểm tra trạng thái từng phần tử
+            // Nếu phần từ nào đang ở trạng thái CHECK thì lấy giá trị của nó
+            for(var i = 0; i < danhSachCacPhanTuRadio_GioiTinh.length; i++) {
+                var phanTuHienTai = danhSachCacPhanTuRadio_GioiTinh[i];
+
+                if(phanTuHienTai.checked) {
+                    giaTriGioitinh = phanTuHienTai.value;
+                    break;
+                }
+            }
+        }
+    </script>
 </body>
 
 </html>
