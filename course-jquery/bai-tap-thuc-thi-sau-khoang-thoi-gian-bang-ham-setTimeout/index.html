@@ -1,0 +1,133 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <meta http-equiv="X-UA-Compatible" content="ie=edge" />
+  <title>Học JQuery | NenTang.vn</title>
+
+  <style>
+    /* Theme Nền sáng */
+    .nen-sang {
+      background: #fff;
+      color: #000;
+      border: 2px dashed red;
+      padding: 20px;
+    }
+
+    /* Theme Nền tối */
+    .nen-toi {
+      background: #000;
+      color: #fff;
+      border: 5px solid greenyellow;
+      padding: 10px;
+    }
+
+    /* Theme Nền Rock */
+    .nen-rock {
+      background: #8e44ad;
+      color: #0be881;
+      border: 5px solid #f1c40f;
+      padding: 5px;
+    }
+  </style>
+</head>
+
+<body>
+  <!-- Phần trình bày Giao diện HTML - START -->
+
+  <!-- Tạo vùng DIV trống, với id="noidung" -->
+  <div id="noidung"></div>
+
+  <!-- Tạo nút bấm chèn nội dung vào vùng đã cho trước div#noidung -->
+  <button type="button" name="btnHello" id="btnHello">Nội dung Hello</button>
+  <button type="button" name="btnBye" id="btnBye">Nội dung Bye</button>
+
+  <!-- Tạo control cho phép lựa chọn màu nền giao diện cho nguyên trang web -->
+  <br />
+  Màu nền:
+  <select name="slMauNen" id="slMauNen">
+    <option value="white">Màu trắng</option>
+    <option value="yellow">Màu vàng</option>
+    <option value="blue">Màu xanh</option>
+    <option value="red">Màu đỏ</option>
+  </select>
+
+  <!-- Tạo control cho phép lựa chọn tùy biến vùng đã cho trước div#noidung -->
+  <br />
+  Kiểu giao diện:
+  <select name="slKieuGiaoDien" id="slKieuGiaoDien">
+    <option value="nen-sang">Nền sáng</option>
+    <option value="nen-toi">Nền tối</option>
+    <option value="nen-rock">Nền ROCK</option>
+  </select>
+
+  <!-- Phần trình bày Giao diện HTML - END -->
+
+
+
+  <!-- Phần xử lý code JavaScript - START -->
+  <!-- Nên viết tất cả các đoạn xủ lý JavaScript vào phần cuối trang, trước khi đóng thẻ <body> là cách viết tốt nhất -->
+  <!-- Liên kết thư viện Jquery -->
+  <script src="vendor/jquery/jquery.min.js"></script>
+
+  <!-- Viết code Jquery -->
+  <script>
+    // Tìm đối tượng (element) nào đó => yêu cầu thực thi Hành động gì đó (Action)
+    // Cú pháp Jquery
+    // $(selector).action();
+
+    // Yêu cầu tiến trình Javascript đợi HTML render (vẽ ra giao diện) xong
+    // -> JS mới thực thi
+    $(document).ready(function (e) {
+      // Tìm đối tượng có id="btnHello" để đăng ký sự kiện click bằng JQUERY
+      $("#btnHello").click(function (e) {
+
+        // Nhờ JQUERY tìm đối tượng (element) có id="noidung"
+        // Thay thế nội dung bên trong đối tượng (element) tìm được bằng hàm $.html()
+        $("#noidung").html('<h1>Xin chào!</h1>');
+
+      })
+
+      // Tìm đối tượng có id="btnBye" để đăng ký sự kiện click bằng JQUERY
+      $("#btnBye").click(function (e) {
+
+        // Nhờ JQUERY tìm đối tượng (element) có id="noidung"
+        // Thay thế nội dung bên trong đối tượng (element) tìm được bằng hàm $.html()
+        $("#noidung").html('<h1>Good bye nhé!</h1>');
+
+      })
+
+      // Tìm đối tượng có id="slMauNen" để đăng ký sự kiện change bằng JQUERY
+      $("#slMauNen").change(function (e) {
+
+        // Nhờ JQUERY lấy giá trị của OPTION mà người dùng đang chọn
+        // Sử dụng hàm $.val()
+        var giatrimaunen = $('#slMauNen').val();
+
+        // Nhờ JQUERY tìm đối tượng (element) có tên thẻ là body
+        // Thay đổi thuộc tính CSS màu sắc của <body>
+        $("body").css('background-color', giatrimaunen);
+
+      });
+
+      // Tìm đối tượng có id="slKieuGiaoDien" để đăng ký sự kiện change bằng JQUERY
+      $("#slKieuGiaoDien").change(function (e) {
+
+        // Nhờ JQUERY lấy giá trị của OPTION mà người dùng đang chọn
+        // Sử dụng hàm $.val()
+        var kieugiaodien = $('#slKieuGiaoDien').val();
+
+        // Nhờ JQUERY tìm đối tượng (element) có id="noidung"
+        // Thay đổi thuộc tính class
+        $("#noidung").removeClass();
+        $("#noidung").addClass(kieugiaodien);
+
+      });
+    })
+  </script>
+  <!-- Phần xử lý code JavaScript - END -->
+</body>
+
+</html>

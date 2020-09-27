@@ -1,0 +1,83 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <meta http-equiv="X-UA-Compatible" content="ie=edge" />
+  <title>Học JQuery | NenTang.vn</title>
+</head>
+
+<body>
+  <!-- Phần trình bày Giao diện HTML - START -->
+
+  <h1>Chào mừng các bạn đến với Trang web!</h1>
+
+  Thời gian làm bài:
+  <div id="vungketqua">
+    60
+  </div>
+
+  <!-- Phần trình bày Giao diện HTML - END -->
+
+
+
+  <!-- Phần xử lý code JavaScript - START -->
+  <!-- Nên viết tất cả các đoạn xủ lý JavaScript vào phần cuối trang, trước khi đóng thẻ <body> là cách viết tốt nhất -->
+  <!-- Liên kết thư viện Jquery -->
+  <script src="vendor/jquery/jquery.min.js"></script>
+
+  <!-- Viết code Jquery -->
+  <script>
+    // Tìm đối tượng (element) nào đó => yêu cầu thực thi Hành động gì đó (Action)
+    // Cú pháp Jquery
+    // $(selector).action();
+
+    // Yêu cầu tiến trình Javascript đợi HTML render (vẽ ra giao diện) xong
+    // -> JS mới thực thi
+    $(document).ready(function (e) {
+
+      // Tạo biến phạm vi toàn cục
+      var boDemThoiGianChayLienTuc;  // Biến lưu trữ bộ đếm thời gian Interval
+      var tongsogiay = 5; // Tổng số giây muốn đếm ngược
+
+      // Hàm xử lý logic đếm ngược thời gian
+      // Hàm này sẽ được Bộ đếm thời gian Interval gọi đến sau mỗi 1s
+      function demnguoc() {
+
+        // Tổng số giây trừ đi 1
+        tongsogiay--;
+
+        // Nếu tổng số giây hiện tại <= 0
+        // => đã hết thời gian
+        if(tongsogiay <= 0) {
+          // Nhờ JQUERY tìm vùng div#vungketqua, cập nhật thành dòng chữ HTML mong muốn
+          var htmlStr = '<h1 style="color: red;">Đã hết thời gian! Vui lòng nộp bài!</h1>';
+          $('#vungketqua').html(htmlStr);
+
+          // Xóa bộ đếm thời gian, được lưu trong biến `boDemThoiGianChayLienTuc`
+          clearInterval(boDemThoiGianChayLienTuc);
+        }
+        else {
+          $('#vungketqua').html(tongsogiay);
+        }
+      }
+
+      // Sử dụng hàm setInterval() để thực thi hàm liên tục sau 1 khoảng thời gian (tính bằng milliseconds)
+      // Cứ sau 1s thì gọi hàm demnguoc()
+      // Bộ đếm thời gian được lưu trữ trong biến `boDemThoiGianChayLienTuc`
+      boDemThoiGianChayLienTuc = setInterval(
+        
+        // Liên tục gọi hàm
+        function() {
+          demnguoc();
+        },
+        1000 // 1000ms = 1s
+      
+      );
+    });
+  </script>
+  <!-- Phần xử lý code JavaScript - END -->
+</body>
+
+</html>

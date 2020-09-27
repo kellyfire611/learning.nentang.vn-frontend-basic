@@ -1,0 +1,69 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>Document</title>
+</head>
+<body>
+    <h1>Giải PTB1</h1>
+    <h1>ax - b = 0</h1>
+
+    <form name="frmPTB1" id="frmPTB1">
+        Số A: <input type="text" name="txtSoA" id="txtSoA" /><br />
+        Số B: <input type="text" name="txtSoB" id="txtSoB" /><br />
+        <input type="button" name="btnTinhToan" id="btnTinhToan" value="Tính toán" onclick="tinhtoan()" />
+    </form>
+
+    <script>
+    function tinhtoan() {
+        // 1. Thu thập thông người dùng
+        var a = document.getElementById('txtSoA').value;
+        var b = document.getElementById('txtSoB').value;
+
+        // 2. Kiểm tra ràng buộc dữ liệu (Valdation)
+        // 2.1. Kiểm tra số A (validate A)
+        // Không được rỗng (rule: required)
+        if(a == '') {
+            alert('Vui lòng nhập số A');
+            return;
+        }
+
+        // Phải là số (rule: must a number)
+        if( isNaN(a) ) {
+            alert('Chỉ được nhập số. Vui lòng kiểm tra lại số A!');
+            return;
+        }
+
+        // Chỉ được từ 0-100 (rule: range)
+        if(a < 0 || a > 100) {
+            alert('Chỉ được nhập số từ 0 - 100.');
+            return;
+        }
+
+        // 2.2. Kiểm tra số B (validate B)
+        // Không được rỗng (rule: required)
+        if(b == '') {
+            alert('Vui lòng nhập số B');
+            return;
+        }
+
+        // Phải là số (rule: must a number)
+        if( isNaN(b) ) {
+            alert('Chỉ được nhập số. Vui lòng kiểm tra lại số B!');
+            return;
+        }
+
+        // 3. Tính toán PTB1
+        // ax - b = 0 => x = b/a;
+        if(a == 0) {
+            alert('PT vô nghiệm');
+        } else {
+            var kq = b/a;
+            alert('nghiệm x là: ' + kq);
+        }
+    }
+    </script>
+</body>
+</html>

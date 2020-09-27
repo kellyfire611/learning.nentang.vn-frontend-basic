@@ -1,0 +1,173 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Document</title>
+</head>
+<body>
+  <h1>Thông tin Nhập điểm</h1>
+
+  <form name="frmThongTinDiem" id="frmThongTinDiem">
+    Họ tên: <input type="text" name="txtHoTen" id="txtHoTen" /><br />
+
+    Ngày sinh:
+    <select name="slNgay" id="slNgay">
+      <option value="">Vui lòng chọn Ngày sinh</option>
+      <script>
+        for(var i=1; i <= 31; i++) {
+          document.write('<option value="'+ i +'">ngày '+ i + '</option>');
+        }
+      </script>
+    </select>
+
+    Tháng sinh:
+    <select name="slThang" id="slThang">
+      <option value="">Vui lòng chọn Tháng sinh</option>
+      <script>
+        for(var i=1; i <= 12; i++) {
+          document.write('<option value="'+ i +'">Tháng '+ i + '</option>');
+        }
+      </script>
+    </select>
+
+    Năm sinh:
+    <select name="slNam" id="slNam">
+      <option value="">Vui lòng chọn Năm sinh</option>
+      <script>
+        for(var i=2020; i >= 1900; i--) {
+          document.write('<option value="'+ i +'">Năm '+ i + '</option>');
+        }
+      </script>
+    </select>
+
+    <br />
+    Điểm LT: <input type="text" name="diemLT" id="diemLT" /><br />
+    Điểm TH: <input type="text" name="diemTH" id="diemTH" /><br />
+
+    <input type="button" name="btnXetDiem" id="btnXetDiem" value="Xét điểm" onclick="xetketquathi()" />
+  </form>
+
+  <script>
+    function xetketquathi() {
+      debugger;
+      // 1. Thu thập dữ liệu người dùng
+      var hoten = document.getElementById('txtHoTen').value;
+      var ngaysinh = document.getElementById('slNgay').value;
+      var thangsinh = document.getElementById('slThang').value;
+      var namsinh = document.getElementById('slNam').value;
+      var diemTH = document.getElementById('diemTH').value;
+      var diemLT = document.getElementById('diemLT').value;
+
+      // 2. Kiểm tra ràng buộc dữ liệu (validation)
+      var loi = '';
+      // 2.1. Validate Họ tên
+      if(hoten == '') {
+        loi += 'Vui lòng nhập họ tên\n';
+      } else if(hoten.length < 3) {
+        loi += 'Vui lòng nhập họ tên > 3 ký tự\n';
+      } else if(hoten.length > 200) {
+        loi += 'Vui lòng nhập họ tên < 200 ký tự\n';
+      }
+
+      // 2.5. Validate Điểm LT
+      if(diemLT == '') {
+        loi += 'Vui lòng nhập điểm LT\n';
+      } else if( isNaN(diemLT) ) {
+        loi += 'Vui lòng nhập điểm LT là số\n';
+      } else if(diemLT < 0 || diemLT > 10) {
+        loi += 'Vui lòng nhập điểm LT từ 0 - 10\n';
+      }
+
+      // 2.6. Validate Điểm TH
+      if(diemTH == '') {
+        loi += 'Vui lòng nhập điểm TH\n';
+      } else if( isNaN(diemLT) ) {
+        loi += 'Vui lòng nhập điểm TH là số\n';
+      } else if(diemTH < 0 || diemTH > 10) {
+        loi += 'Vui lòng nhập điểm TH từ 0 - 10\n';
+      }
+
+      // Có lỗi do dữ liệu không hợp lệ
+      if(loi != '') {
+        alert(loi);
+        return;
+      }
+
+      // 3. Xử lý (đã chắc chắn dữ liệu là hợp lệ)
+      var diemLT_So = parseFloat(diemLT);
+      var diemTH_So = parseFloat(diemTH);
+      var diemTB = (diemLT_So + diemTH_So) / 2;
+
+      // Trường hợp điểm liệt
+      if(diemLT_So == 0 || diemTH_So == 0) {
+        alert('Kết quả: Rớt');
+        return;
+      } else {
+        if(diemLT_So >= 5 && diemTH >= 5) {
+          var thongbao = 'Kết quả: Đậu';
+          var loai = '';
+          if(diemTB >= 5 && diemTB < 7) {
+            loai = 'Trung Bình';
+          } else if(diemTB >= 7 && diemTB < 9) {
+            loai = 'Khá';
+          } else if(diemTB >= 9 && diemTB <= 10) {
+            loai = 'Giỏi';
+          } else {
+            loai = 'Không xét được!';
+          }
+
+          thongbao += 'Xếp loại' + loai;
+          alert(thongbao);
+        } else {
+            alert('Rớt');
+        }
+      }
+    }
+
+  </script>
+</body>
+</html>
+
+<!--
+
+  Viết chương trình xét loại Kết quả học viên
+
+Quy định và ràng buộc
+1. Họ tên: dạng text
+- Bắt buộc nhập
+- Chỉ được nhập từ 3 - 200 ký tự
+- Không được nhập tên là "admin", "hacker"
+
+2. Ngày sinh: dạng SELECT OPTION, sinh động các OPTION bằng vòng lặp trong JavaScript
+- Bắt buộc nhập
+
+3. Tháng sinh: dạng SELECT OPTION, sinh động các OPTION bằng vòng lặp trong JavaScript
+- Bắt buộc nhập
+
+4. Năm sinh: dạng SELECT OPTION, sinh động các OPTION bằng vòng lặp trong JavaScript
+- Bắt buộc nhập
+
+5. Điểm Lý Thuyết: dạng số number
+- Bắt buộc nhập
+- Phải là số
+- Chỉ được nhập từ 0-10
+
+6. Điểm Thực Hành: dạng số number
+- Bắt buộc nhập
+- Phải là số
+- Chỉ được nhập từ 0-10
+
+7. Có nút Button "Xét điểm"
+Quy tắc xét kết quả:
+- Nếu điềm LT > 5 và điểm TH > 5 thì Đậu
+- Nếu điểm LT = 0 hoặc điểm TH = 0 => Rớt
+
+Nếu Đậu:
+
+5-6: tb
+7-8: kha
+9-10: gioi
+
+
+-->

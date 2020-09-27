@@ -1,0 +1,158 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>Document</title>
+</head>
+<body>
+    <h1>Thu thập/Lấy dữ liệu từ FORM</h1>
+
+    <form name="frmDangKy" id="frmDangKy" method="post" action="#">
+        Họ tên:
+        <input type="text" name="txtHoTen" id="txtHoTen" />
+        <br />
+        Địa chỉ:
+        <input type="text" name="txtDiaChi" id="txtDiaChi" />
+        <br />
+        Ghi chú:
+        <textarea name="txtGhiChu" id="txtGhiChu"></textarea>
+        <br />
+        Chủ đề:
+        <select name="slGopY" id="slGopY">
+            <option value="1">Góp ý về Website</option>
+            <option value="2">Góp ý về Dịch vụ</option>
+            <option value="3">Góp ý về ....</option>
+        </select>
+        <br />
+        Tài liệu đính kèm:
+        <input type="file" name="fTaiLieu" id="fTaiLieu" />
+        <br />
+
+        Câu hỏi 1:<br />
+        <label><input type="radio" name="rdCau1" id="rdCau1_1" value="A" />Nội dung câu A</label><br />
+        <label><input type="radio" name="rdCau1" id="rdCau1_2" value="B" />Nội dung câu B</label><br />
+        <label><input type="radio" name="rdCau1" id="rdCau1_3" value="C" />Nội dung câu C</label><br />
+        <label><input type="radio" name="rdCau1" id="rdCau1_4" value="D" />Nội dung câu D</label><br />
+
+
+        <br />
+        Chọn môn đăng ký học: <br />
+        <label><input type="checkbox" name="chkMonHoc" id="chkMonHoc_1" value="W1" />học web 01</label><br />
+        <label><input type="checkbox" name="chkMonHoc" id="chkMonHoc_2" value="W2" />học web 02</label><br />
+        <label><input type="checkbox" name="chkMonHoc" id="chkMonHoc_3" value="W3" />học web 03</label><br />
+
+        <input type="button" name="btnGoiDuLieu" id="btnGoiDuLieu" value="Gởi dữ liệu" onclick="KiemTra()" />
+    </form>
+
+    <script>
+    function KiemTra() {
+        // Lấy dữ liệu
+        var hoten = document.getElementById('txtHoTen').value;
+        var diachi = document.getElementById('txtDiaChi').value;
+        var ghichu = document.getElementById('txtGhiChu').value;
+        var gopy = document.getElementById('slGopY').value;
+
+        // lấy dữ liệu radio
+        // 1. Tạo 1 biến nào đó, giả sử rỗng
+        var giatrilayduoccau1_radio = "";
+
+        // 2. Lấy tất cả phần tủ có cùng name=""
+        var danhsachcacPhanTuCungName = document.getElementsByName('rdCau1');
+
+        // 3. Duyệt qua tất cả các phần tử lấy được
+        for( var i=0; i < danhsachcacPhanTuCungName.length; i++ ) {
+
+            // 3.1. Lấy phần tử thứ i
+            var phantuHienTai = danhsachcacPhanTuCungName[i]; // i = 0
+
+            // 3.2. Nếu phần tử thứ i đang được check
+            if(phantuHienTai.checked) {
+
+                // Lấy giá trị của phần tử này
+                giatrilayduoccau1_radio = phantuHienTai.value;
+
+            }
+
+        }
+
+        // ------------------------------------------------------
+        // Lấy dữ liệu CHECKBOX
+        // 1. Tạo 1 biến nào đó, giả sử rỗng
+        var giatriMonHoc_checkbox = "";
+
+        // 2. Lấy tất cả phần tử có cùng name=""
+        var danhsachLuaChonMonHoc = document.getElementsByName('chkMonHoc');
+
+        // 3. Duyệt qua tất cả các phần tử lấy được
+        for(var i=0; i < danhsachLuaChonMonHoc.length; i++) {
+
+            // 3.1. Lấy phần tử thứ i
+            var phantuHienTai = danhsachLuaChonMonHoc[i];
+
+            // 3.2. Nếu phần tử thứ i đang được check
+            if(phantuHienTai.checked) {
+
+                // Lấy giá trị của phần tử này
+                giatriMonHoc_checkbox += phantuHienTai.value + ',';
+            }
+        }
+
+
+
+        // ---------------------------
+        var loi = '';
+        // kiểm tra giá trị của hoten
+        // Validation Kiểm tra ràng buộc dữ liệu
+        // - Không được rỗng ( rule required )
+        if(hoten == '') {
+            loi += 'Họ tên không được phép rỗng.\n';
+        }
+        // - phải nhập 3 ký tự trở lên (rule min)
+        else if(hoten.length < 3) {
+            loi += 'Vui lòng nhập họ tên > 3 ký tự\n';
+        }
+        // - Phải nhập < 50 ký tự (rule max)
+        else if (hoten.length > 50) {
+            loi += 'Vui lòng nhập họ tên < 50 ký tự\n';
+        }
+        // - không được nhập "admin" hoặc "cuong" (rule custom)
+        else if(hoten == "admin" || hoten == "cuong") {
+            loi += 'vui lòng nhập tên khác ngoài admin, cuong...\n';
+        }
+
+        // kiểm tra giá trị diachi
+        if(diachi == '') {
+            loi += 'Dia chi không được phép rỗng.\n';
+        } else if(diachi.length > 500) {
+            loi += 'Dia chi không được > 500 ký tự.\n';
+        }
+
+        
+
+        // In ra màn hình lỗi nếu có
+        if(loi == '') {
+            // Nhập liệu tất cả hợp lệ
+            var thongbao = 'Họ tên: ' + hoten + '\n'
+                + 'Địa chỉ: ' + diachi + '\n'
+                + 'Ghi chú: ' + ghichu + '\n'
+                + 'Góp ý:' + gopy
+                + 'Câu 1 lựa chọn là: ' + giatrilayduoccau1_radio
+                + 'Các môn học lựa chọn là: ' + giatriMonHoc_checkbox;
+        
+            alert(thongbao);
+        } else {
+
+            // in ra thông báo lỗi
+            alert(loi);
+        }
+
+
+       
+    }
+
+
+    </script>
+</body>
+</html>
