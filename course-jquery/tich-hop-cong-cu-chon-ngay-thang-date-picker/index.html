@@ -1,0 +1,192 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <meta http-equiv="X-UA-Compatible" content="ie=edge" />
+  <title>Học JQuery | NenTang.vn</title>
+
+  <!-- Liên kết CSS JQuery UI -->
+  <link href="vendor/jquery-ui/jquery-ui.min.css" type="text/css" rel="stylesheet" />
+
+  <style>
+    body {
+      height: 100vh;
+      background-color: #89d4cf;
+      background-image: linear-gradient(315deg, #89d4cf 0%, #6e45e1 74%);
+    }
+
+    .watermark {
+      color: #fff;
+      text-align: center;
+    }
+
+    #frmGhiDanh {
+      width: 968px;
+      margin: 0 auto;
+    }
+
+    #frmGhiDanh #thongtinDonGian {
+      border: 1px solid red;
+      background-color: #f1dfd1;
+      background-image: linear-gradient(315deg, #f1dfd1 0%, #f6f0ea 74%);
+    }
+
+    #frmGhiDanh .tblThongTinCaNhan {
+      border-collapse: collapse;
+      width: 100%;
+      border-color: red;
+    }
+
+    #frmGhiDanh #thongtinPhucTap {
+      border: 1px solid red;
+      background-color: #ebbe9b;
+      background-image: linear-gradient(315deg, #ebbe9b 0%, #e7a977 74%);
+    }
+
+    #frmGhiDanh .tblThongTinCaNhan {
+      border-collapse: collapse;
+      width: 100%;
+      border-color: red;
+    }
+
+    #frmGhiDanh .tblThongTinCaNhan td {
+      padding: 5px;
+    }
+
+    #frmGhiDanh .tieude {
+      font-weight: bold;
+      text-align: right;
+    }
+
+    #frmGhiDanh #txtSoThichCaNhan {
+      width: 90%;
+    }
+
+    #frmGhiDanh #btnGoiDuLieu {
+      padding: 10px;
+      color: #fff;
+      font-weight: bold;
+      border: 1px solid #fff;
+      background-color: #27ae60;
+      cursor: pointer;
+    }
+
+    #frmGhiDanh #btnXoaTrangDuLieu {
+      padding: 10px;
+      color: #fff;
+      font-weight: bold;
+      border: 1px solid #fff;
+      background-color: #e74c3c;
+      cursor: pointer;
+    }
+  </style>
+</head>
+
+<body>
+  <!-- Phần trình bày Giao diện HTML - START -->
+
+  <h1 class="watermark">Nền tảng Kiến thức | https://nentang.vn</h1>
+
+
+  <form name="frmGhiDanh" id="frmGhiDanh" method="post" action="#">
+    <fieldset id="thongtinDonGian">
+      <h3 align="center">Các thành phần nhập liệu (controls/fields) đơn giản (text, textarea, select)</h3>
+      <table border="1" class="tblThongTinCaNhan">
+        <tr>
+          <td class="tieude" width="150px">Họ tên</td>
+          <td>
+            <input type="text" name="txtHoTen" id="txtHoTen" />
+          </td>
+        </tr>
+        <tr>
+          <td class="tieude">Địa chỉ</td>
+          <td>
+            <input type="text" name="txtDiaChi" id="txtDiaChi" />
+          </td>
+        </tr>
+        <tr>
+          <td class="tieude">Ngày/tháng/năm sinh</td>
+          <td>
+            <input type="text" name="txtNgayThangNamSinh" id="txtNgayThangNamSinh" />
+          </td>
+        </tr>
+        <tr>
+          <td class="tieude">Sở thích cá nhân</td>
+          <td>
+            <textarea name="txtSoThichCaNhan" id="txtSoThichCaNhan" rows="5"></textarea>
+          </td>
+        </tr>
+      </table>
+    </fieldset>
+    <fieldset id="thongtinPhucTap">
+      <h3 align="center">Các thành phần nhập liệu (controls/fields) (radio/checkbox) </h3>
+      <table border="1" class="tblThongTinCaNhan">
+        <tr>
+          <td class="tieude" width="150px">Giới tính</td>
+          <td>
+            <!--
+              Quy định trong dữ liệu
+              - 0: Nam
+              - 1: Nữ
+            -->
+            <label><input type="radio" name="rdGioiTinh" id="rdGioiTinh_1" value="0" /> Nam </label>
+            <br />
+            <label><input type="radio" name="rdGioiTinh" id="rdGioiTinh_2" value="1" /> Nữ </label>
+          </td>
+        </tr>
+        <tr>
+          <td class="tieude">Đăng ký môn học</td>
+          <td>
+            <!--
+              Quy định trong dữ liệu
+              - W1: Khóa học Web căn bản HTML, CSS, JS
+              - W2: Khóa học Web nâng cao MySQL, PHP
+              - TD1: Khóa học Tư duy Giải thuật
+            -->
+            <label><input type="checkbox" name="chkMonHoc" id="chkMonHoc_1" value="W1" /> Khóa học Web căn bản HTML,
+              CSS, JS </label>
+            <br />
+            <label><input type="checkbox" name="chkMonHoc" id="chkMonHoc_2" value="W2" /> Khóa học Web nâng cao MySQL,
+              PHP </label>
+            <br />
+            <label><input type="checkbox" name="chkMonHoc" id="chkMonHoc_3" value="TD1" /> Khóa học Tư duy Giải thuật
+            </label>
+          </td>
+        </tr>
+      </table>
+    </fieldset>
+    <center>
+      <input type="button" name="btnGoiDuLieu" id="btnGoiDuLieu" value="Gởi dữ liệu" />
+      <input type="reset" name="btnXoaTrangDuLieu" id="btnXoaTrangDuLieu" value="Xóa trắng dữ liệu" />
+    </center>
+  </form>
+
+
+  <!-- Phần trình bày Giao diện HTML - END -->
+
+
+
+  <!-- Phần xử lý code JavaScript - START -->
+  <!-- Nên viết tất cả các đoạn xủ lý JavaScript vào phần cuối trang, trước khi đóng thẻ <body> là cách viết tốt nhất -->
+  <!-- Liên kết thư viện Jquery -->
+  <script src="vendor/jquery/jquery.min.js"></script>
+
+  <!-- Liên kết thư viện JQUERY UI -->
+  <script src="vendor/jquery-ui/jquery-ui.min.js"></script>
+
+  <!-- Viết code Jquery -->
+  <script>
+    // Yêu cầu JQUERY UI thay thế INPUT text có id="txtNgayThangNamSinh" thành công cụ chọn ngày tháng Date Picker
+    $('#txtNgayThangNamSinh').datepicker(
+      {
+        showButtonPanel: true,    // option hiển thị nút "Today", "Done"
+        dateFormat: 'dd/mm/yy'    // option Định dạng format ngày tháng; d: Day Ngày; m: Month tháng; y: Year năm
+      }
+    );
+  </script>
+  <!-- Phần xử lý code JavaScript - END -->
+</body>
+
+</html>
