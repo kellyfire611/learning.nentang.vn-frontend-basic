@@ -1,0 +1,224 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+  <title>Nền tảng căn bản về HTML5 đầu tiên - nentang.vn</title>
+  <meta charset="utf-8" />
+  <meta name="keywords" content="nền tảng, nen tang, học web, html5, html, css, js, hoc web can ban, học web căn bản" />
+  <meta name="description" content="Cung cấp nền tảng kiến thức căn bản về lập trình web HTML5, CSS3, JS" />
+</head>
+
+<body>
+  <h1>Đăng ký Thành viên</h1>
+
+  <form name="frmDangKyThanhVien" id="frmDangKyThanhVien" method="post" action="#">
+    <table border="1" width="800px" cellspacing="0" cellpadding="10px">
+      <!-- Họ tên row - Start -->
+      <tr>
+        <td width="100px">
+          <label for="txtHoTen">Họ tên:</label>
+        </td>
+        <td>
+          <input type="text" name="txtHoTen" id="txtHoTen" value="" required="required"
+            placeholder="Vui lòng nhập Họ tên" autofocus="autofocus" title="Nhập họ tên phải viết hoa toàn bộ" />
+        </td>
+      </tr>
+      <!-- Họ tên row - End -->
+      <!-- Mật khẩu row - Start -->
+      <tr>
+        <td>
+          <label for="txtMatKhau">Mật khẩu:</label>
+        </td>
+        <td>
+          <input type="password" name="txtMatKhau" id="txtMatKhau" value="" required="required"
+            placeholder="Vui lòng nhập Mật khẩu" maxlength="32" />
+        </td>
+      </tr>
+      <!-- Mật khẩu row - End -->
+      <!-- Giới tính row - Start -->
+      <tr>
+        <td>
+          Giới tính:
+        </td>
+        <td>
+          <label><input type="radio" name="rdGioiTinh" id="rdGioiTinh-1" value="1" checked="checked" /> Nam</label>
+          <label><input type="radio" name="rdGioiTinh" id="rdGioiTinh-2" value="2" /> Nữ</label>
+          <label><input type="radio" name="rdGioiTinh" id="rdGioiTinh-3" value="3" /> Không công bố</label>
+        </td>
+      </tr>
+      <!-- Giới tính row - End -->
+      <!-- Sở thích row - Start -->
+      <tr>
+        <td>
+          Sở thích:
+        </td>
+        <td>
+          <label><input type="checkbox" name="chkSoThich" id="chkSoThich-1" value="xp" checked="checked" /> Xem
+            phim</label><br />
+          <label><input type="checkbox" name="chkSoThich" id="chkSoThich-2" value="ds" /> Đọc sách</label><br />
+          <label><input type="checkbox" name="chkSoThich" id="chkSoThich-3" value="nn" checked="checked" /> Nghe
+            nhạc</label>
+        </td>
+      </tr>
+      <!-- Sở thích row - End -->
+      <!-- Tuổi row - Start -->
+      <tr>
+        <td>
+          <label for="numTuoi">Tuổi:</label>
+        </td>
+        <td>
+          <input type="number" name="numTuoi" id="numTuoi" min="15" max="80" step="1" value="15" />
+        </td>
+      </tr>
+      <!-- Tuổi row - End -->
+      <!-- Tìm kiếm row - Start -->
+      <tr>
+        <td>
+          <label for="txtTuKhoaTimKiem">Từ khóa tìm kiếm:</label>
+        </td>
+        <td>
+          <input type="search" name="txtTuKhoaTimKiem" id="txtTuKhoaTimKiem" />
+        </td>
+      </tr>
+      <!-- Tìm kiếm row - End -->
+      <!-- Giới thiệu bản thân row - Start -->
+      <tr>
+        <td>
+          <label for="txtGioiThieuBanThan">Giới thiệu bản thân:</label>
+        </td>
+        <td>
+          <textarea name="txtGioiThieuBanThan" id="txtGioiThieuBanThan" cols="80"
+            rows="10">Xin chào, tôi tên Cường...</textarea>
+        </td>
+      </tr>
+      <!-- Giới thiệu bản thân row - End -->
+      <!-- Email liên hệ row - Start -->
+      <tr>
+        <td>
+          <label for="txtEmail">Email có thể liên hệ:</label>
+        </td>
+        <td>
+          <input type="email" name="txtEmail" id="txtEmail" required="true" />
+        </td>
+      </tr>
+      <!-- Email liên hệ row - End -->
+      <!-- Địa chỉ web row - Start -->
+      <tr>
+        <td>
+          <label for="txtDiaChiWeb">Địa chỉ web của bạn:</label>
+        </td>
+        <td>
+          <input type="url" name="txtDiaChiWeb" id="txtDiaChiWeb" required="true" maxlength="255" />
+        </td>
+      </tr>
+      <!-- Địa chỉ web row - End -->
+      <!-- Nhập số Điện thoại row - Start -->
+      <tr>
+        <td>
+          <label for="txtSoDienThoai">Số điện thoại:</label>
+        </td>
+        <td>
+          <input type="tel" name="txtSoDienThoai" id="txtSoDienThoai" required="true" pattern="[0-9]{10,}" title="Định dạng là nhập là: Nhập 10 số trở lên xxxxxxxxxx" />
+        </td>
+      </tr>
+      <!-- Nhập số Điện thoại row - End -->
+      <!-- Các loại chọn Thời gian row - Start -->
+      <tr>
+        <td>
+          Các loại chọn Thời gian
+        </td>
+        <td>
+          <h3>Ngày tháng</h3>
+          Chọn ngày: <input type="date" name="dtChonNgay" id="dtChonNgay" min="2020-01-01" /><br />
+          Chọn tháng: <input type="month" name="dtChonThang" id="dtChonThang" /><br />
+          Chọn tuần: <input type="week" name="dtChonTuan" id="dtChonTuan" /><br />
+
+          <h3>Giờ</h3>
+          Chọn Giờ: <input type="time" name="dtChonGio" id="dtChonGio" /><br />
+          Chọn cả Ngày + Giờ: <input type="datetime-local" name="dtChonNgayGio" id="dtChonNgayGio" /><br />
+        </td>
+      </tr>
+      <!-- Các loại chọn ngày tháng row - End -->
+      <!-- Màu yêu thích row - Start -->
+      <tr>
+        <td>
+          <label for="pkrMauYeuThich">Màu yêu thích:</label>
+        </td>
+        <td>
+          <input type="color" name="pkrMauYeuThich" id="pkrpkrMauYeuThichMauSac" />
+        </td>
+      </tr>
+      <!-- Màu yêu thích row - End -->
+      <!-- TP/Tỉnh sinh sống row - Start -->
+      <tr>
+        <td>
+          <label for="txtThanhPhoThuongTru">Bạn đang sinh sống ở TP/Tỉnh nào?</label>
+        </td>
+        <td>
+          <input type="text" name="txtThanhPhoThuongTru" id="txtThanhPhoThuongTru" list="danhsachtinhthanhpho" />
+          <datalist id="danhsachtinhthanhpho">
+            <option value="Cần Thơ">CT</option>
+            <option value="Vĩnh Long">VL</option>
+            <option value="Hậu Giang">HG</option>
+            <option value="Cà Mau">CM</option>
+            <option value="Bạc Liêu">BL</option>
+            <option value="Sóc Trăng">ST</option>
+          </datalist>
+        </td>
+      </tr>
+      <!-- Quê quán row - End -->
+      <!-- Thanh đo lường row - Start -->
+      <tr>
+        <td>
+          Các ví dụ đo lường
+        </td>
+        <td>
+          <p>
+            Dung lượng ổ C: <meter id="disk_c" min="0" max="1000" value="200" low="200" high="700" optimum="500"></meter>200Mb trong 1Gb<br>
+          </p>
+          <p>Bạn đã được điểm (B) <meter min="0" max="100" value="84">B</meter> trong kỳ thi vừa Thiết kế Web.</p>
+        </td>
+      </tr>
+      <!-- Thanh đo lường row - End -->
+      <!-- Thanh tiến trình row - Start -->
+      <tr>
+        <td>
+          Các ví dụ tiến trình
+        </td>
+        <td>
+          <p>
+            Quá trình download file đã được: <progress value="35" max="100">35%</progress> 35%
+          </p>
+
+          <p>
+            Đang xử lý: <progress></progress>
+          </p>
+
+        </td>
+      </tr>
+      <!-- Thanh tiến trình row - End -->
+      <!-- Thanh âm lượng row - Start -->
+      <tr>
+        <td>
+          Âm lượng
+        </td>
+        <td>         
+          <input type="range" name="txtAmLuong" id="txtAmLuong" min="1" max="100" />
+        </td>
+      </tr>
+      <!-- Thanh âm lượng row - End -->
+
+
+      <!-- Nút bấm row - Start -->
+      <tr>
+        <td colspan="2" align="center">
+          <input type="submit" name="btnDangKy" id="btnDangKy" value="Đăng ký" />
+        </td>
+      </tr>
+      <!-- Nút bấm row - End -->
+
+    </table>
+  </form>
+</body>
+
+</html>
