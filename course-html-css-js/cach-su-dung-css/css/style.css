@@ -1,0 +1,9 @@
+/* 
+Tìm tất cả thẻ <p></p>, định dạng: 
+- Màu chữ: màu đỏ
+- Kích cỡ chữ: 30px
+*/
+p {
+  color: red;
+  font-size: 30px;
+}
