@@ -6,10 +6,16 @@
     <meta name="keywords" content="nền tảng, nen tang, học web, html5, html, css, js, javascript, jquery, hoc web can ban, học web căn bản" />
     <meta name="description" content="Cung cấp nền tảng kiến thức căn bản về lập trình web HTML5, CSS3, JS" />
 
-    <!-- Cách 1: sử dụng file CSS rời (External CSS), và liên kết vào trong file HTML bằng thẻ LINK -->
+    <!-- 
+      Cách 1: sử dụng file CSS rời (External CSS), và liên kết vào trong file HTML bằng thẻ LINK 
+      * Độ ưu tiên Thấp nhất (3)
+    -->
     <link href="css/style.css" type="text/css" rel="stylesheet" />
 
-    <!-- Cách 2: sử dụng đoạn code CSS bên trong file HTML (Internal CSS), sử dụng thẻ <style>CÚ PHÁP CSS</style> -->
+    <!-- 
+      Cách 2: sử dụng đoạn code CSS bên trong file HTML (Internal CSS), sử dụng thẻ <style>CÚ PHÁP CSS</style> 
+      * Độ ưu tiên Thứ 2 (2)
+    -->
     <style>
       /* 
       Tìm tất cả thẻ <p></p>, định dạng: 
@@ -29,6 +35,10 @@
       Đoạn văn bản 1
     </p>
 
+    <!-- 
+      Cách 3: sử dụng đoạn code CSS ngay chính phần tử (element) mong muốn (INLINE CSS), sử dụng THUỘC TÍNH style=""
+      * Độ ưu tiên Cao nhất (1)
+    -->
     <p style="color: pink; font-size: 50px;">
       Đoạn văn bản 2
     </p>
