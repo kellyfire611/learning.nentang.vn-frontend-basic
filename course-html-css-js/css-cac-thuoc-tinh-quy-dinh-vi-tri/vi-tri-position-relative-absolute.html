@@ -1,0 +1,52 @@
+<!DOCTYPE html>
+<html lang="vi">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Học CSS các thuộc tính quy định Vị trí | NenTang.vn</title>
+
+  <style>
+    /* Class quy định định dạng Khối DIV thứ 1 */
+    .div-cha {
+      width: 600px;
+      height: 300px;
+      background-color: #FF5733;
+      color: #fff;
+      
+      /* Thuộc tính "position" quy định vị trí của phần tử (element)
+      - relative: vị trÍ của phần tử (element) sẽ được so với Vị trí hiện tại theo thứ tự code
+      và sẽ làm GỐC TỌA ĐỘ cho các phần tử con có set thuộc tính position: absolute;
+      */
+      position: relative; 
+    }
+
+    .div-con {
+      width: 200px;
+      height: 100px;
+      background-color: #5dade2;
+      color: #fff;
+
+      /* Thuộc tính "position" quy định vị trí của phần tử (element)
+      - absolute: vị trÍ của phần tử (element) sẽ được với GỐC TỌA ĐỘ của phần tử CHA có set thuộc tính position: relative gần nhất, nếu tìm không thấy phần tử CHA nào sẽ lấy GỐC TỌA ĐỘ là thẻ BODY (tương đương như position: fixed;)
+      */
+      position: absolute;
+      bottom: 40px;
+      left: 60px;
+    }
+
+  </style>
+</head>
+<body>
+  <h1>Các thuộc tính Quy định Vị trí - position: relative|absolute;</h1>
+
+  <div class="div-cha">
+    <p>Nội dung trong DIV CHA</p>
+
+    <div class="div-con">
+      <p>Nội dung bên trong DIV CON</p>
+    </div>
+  </div>
+
+
+</body>
+</html>

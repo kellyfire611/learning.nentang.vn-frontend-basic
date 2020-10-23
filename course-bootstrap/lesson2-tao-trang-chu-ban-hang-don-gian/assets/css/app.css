@@ -1,14 +1,3 @@
-/* Tăng khoảng cách `padding-top` cho `body` để tránh bị che bởi thanh `navbar` */
-body {
-    padding-top: 54px;
-}
-
-@media (min-width: 992px) {
-    body {
-        padding-top: 56px;
-    }
-}
-
 /* Để các hình Slide được đẹp, không bị giựt mắt khi chuyển slide => tất cả các slide nên có chiều cao bằng nhau */
 .hinh-slider {
     width: 100%;
