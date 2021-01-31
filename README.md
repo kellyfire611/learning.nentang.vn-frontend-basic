@@ -4,6 +4,8 @@
 - Trang web demo [http://learning.nentang.vn](http://learning.nentang.vn)
 - Xem nhiều hơn tại [https://nentang.vn](https://nentang.vn)
 
+# Học là phải THỰC HÀNH ❤🧡💛💚💙💜🤎
+
 # Danh sách các bài học
 - Học về Bootstrap Framework
   - [Bài học 1 - Tạo bố cục sử dụng Bootstrap](./course-bootstrap/lesson1-tao-bo-cuc-su-dung-bootstrap/readme.md)
