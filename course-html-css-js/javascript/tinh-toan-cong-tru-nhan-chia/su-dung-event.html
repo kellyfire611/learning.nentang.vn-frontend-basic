@@ -1,0 +1,50 @@
+<!DOCTYPE html>
+<html lang="vi">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta name="keywords" content="nền tảng, nen tang, học web, html5, html, css, js, hoc web can ban, học web căn bản" />
+  <meta name="description" content="Cung cấp nền tảng kiến thức căn bản về lập trình web HTML5, CSS3, JS" />
+  <title>Chương trình Tính toán Cộng Trừ Nhân Chia | NenTang.vn</title>
+
+</head>
+<body>
+  <h1>Chương trình Tính toán + - * /</h1>
+
+  <script>
+    // Tạo biến a và b
+    // Sử dụng hàm prompt('Câu thông báo...') để hiển thị hộp thoại cho người dùng nhập giá trí
+    // Sử dụng hàm parseInt() để chuyển chuỗi string thành số nguyên (có thể tính toán số học được)
+    var a = parseInt(prompt('Mời nhập số a'));
+    var b = parseInt(prompt('Mời nhập số b'));
+
+    // Nhờ Javascript in đoạn HTML ra màn hình:
+    // - Hiển thị giá trị của biến a và b
+    document.write('Giá trị của biến <span style="color: red; font-weight: bold; font-size: 30px;">a=' + a + '</span><br />');
+    document.write('Giá trị của biến <span style="color: blue; font-weight: bold; font-size: 30px;">b=' + b + '</span><br />');
+  </script>
+
+  <!-- 
+    Tạo nút #btnTinhTong và gắn sự kiện onclick cho nút 
+    => Khi người dùng nhấp chuột (click) vào nút thì sẽ thực thi đoạn code Javascript bên trong thuộc tính onclick="...code js..."
+  -->
+  <button id="btnTinhTong" onclick="alert('Tổng a+b = ' + (a+b));">Tính +</button>
+
+  <!-- 
+    Tạo nút #btnTinhHieu và gắn sự kiện onclick cho nút 
+    => Khi người dùng nhấp chuột (click) vào nút thì sẽ thực thi đoạn code Javascript bên trong thuộc tính onclick="...code js..."
+  -->
+  <button id="btnTinhHieu" onclick="alert('Hiệu a-b = ' + (a-b));">Tính -</button>
+  
+  <!-- 
+    Tạo nút #btnTinhThuong và gắn sự kiện onclick cho nút 
+    => Khi người dùng nhấp chuột (click) vào nút thì sẽ thực thi đoạn code Javascript bên trong thuộc tính onclick="...code js..."
+  -->
+  <button id="btnTinhThuong" onclick="alert('Thương a/b = ' + (a/b));">Tính /</button>
+  <!-- 
+    Tạo nút #btnTinhTich và gắn sự kiện onclick cho nút 
+    => Khi người dùng nhấp chuột (click) vào nút thì sẽ thực thi đoạn code Javascript bên trong thuộc tính onclick="...code js..."
+  -->
+  <button id="btnTinhTich" onclick="alert('Tích a*b = ' + (a*b));">Tính -</button>
+</body>
+</html>

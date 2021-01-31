@@ -1,0 +1,88 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Test đóng cửa sổ</title>
+</head>
+
+<body>
+
+  <h1>Form Đăng nhập</h1>
+  <form>
+    Username: <input type="text" name="txtUsername" id="txtUsername" /><br />
+    Password: <input type="password" name="txtPassword" id="txtPassword" /><br />
+    <button type="submit" name="btnDangNhap" id="btnDangNhap">Đăng nhập</button>
+    <button type="button" name="btnDongCuaSoCach1" id="btnDongCuaSoCach1" class="click-me">Đóng cừa sổ Cách 1</button>
+    <button type="button" name="btnDongCuaSoCach2" id="btnDongCuaSoCach2" class="click-me">Đóng cừa sổ Cách 2</button>
+    <button type="button" name="btnDongCuaSoCach3" id="btnDongCuaSoCach3" class="click-me">Đóng cừa sổ Cách 3</button>
+    <button type="button" name="btnDongCuaSoCach4" id="btnDongCuaSoCach4" class="click-me">Đóng cừa sổ Cách 4</button>
+
+    <a href="#" onclick="setTimeout(function(){var ww = window.open(window.location, '_self'); ww.close(); }, 1000);">
+      If you click on this the window will be closed after 1000ms
+  </a>
+  </form>
+
+  <script>
+
+    function CloseWindow() {
+      window.close();
+    }
+
+    function CloseOpenerWindow() {
+      window.opener = window;
+      window.close();
+    }
+
+    function CloseOpenerHikks() {
+      window.opener = "HikksNotAtHome";
+      window.close();
+    }
+
+    function CloseWithWindowOpenTrick() {
+      var objWindow = window.open(location.href, "_self");
+      objWindow.close();
+
+      // open(location, '_self').close();
+    }
+
+    // Bắt sự kiện Event Click button 1
+    document.getElementById('btnDongCuaSoCach1').addEventListener('click', function (event) {
+      // Don't follow the link
+      event.preventDefault();
+
+      // Đóng cửa sổ
+      CloseWindow();
+    });
+
+    // Bắt sự kiện Event Click button 2
+    document.getElementById('btnDongCuaSoCach2').addEventListener('click', function (event) {
+      // Don't follow the link
+      event.preventDefault();
+
+      // Đóng cửa sổ
+      CloseOpenerWindow();
+    });
+
+    // Bắt sự kiện Event Click button 3
+    document.getElementById('btnDongCuaSoCach3').addEventListener('click', function (event) {
+      // Don't follow the link
+      event.preventDefault();
+
+      // Đóng cửa sổ
+      CloseOpenerHikks();
+    });
+
+    // Bắt sự kiện Event Click button 4
+    document.getElementById('btnDongCuaSoCach4').addEventListener('click', function (event) {
+      // Don't follow the link
+      event.preventDefault();
+
+      // Đóng cửa sổ
+      CloseWithWindowOpenTrick();
+    })
+  </script>
+</body>
+
+</html>

@@ -1,0 +1,41 @@
+<!DOCTYPE html>
+<html lang="vi">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta name="keywords" content="nền tảng, nen tang, học web, html5, html, css, js, hoc web can ban, học web căn bản" />
+  <meta name="description" content="Cung cấp nền tảng kiến thức căn bản về lập trình web HTML5, CSS3, JS" />
+  <title>Chương trình Tính toán Cộng Trừ Nhân Chia | NenTang.vn</title>
+
+</head>
+<body>
+  <h1>Chương trình Tính toán + - * /</h1>
+
+  <script>
+    // Tạo biến a và b
+    // Sử dụng hàm prompt('Câu thông báo...') để hiển thị hộp thoại cho người dùng nhập giá trí
+    // Sử dụng hàm parseInt() để chuyển chuỗi string thành số nguyên (có thể tính toán số học được)
+    var a = parseInt(prompt('Mời nhập số a'));
+    var b = parseInt(prompt('Mời nhập số b'));
+
+    // Nhờ Javascript in đoạn HTML ra màn hình:
+    // - Hiển thị giá trị của biến a và b
+    document.write('Giá trị của biến <span style="color: red; font-weight: bold; font-size: 30px;">a=' + a + '</span><br />');
+    document.write('Giá trị của biến <span style="color: blue; font-weight: bold; font-size: 30px;">b=' + b + '</span><br />');
+
+    // Tính toán + - * /
+    var tong = a + b;
+    var hieu = a - b;
+    var thuong = a - b;
+    var tich = a / b;
+
+    // Nhờ Javascript in đoạn HTML ra màn hình:
+    // - Hiển thị giá trị của kết quả Tổng, Hiệu, Thương, Tích
+    document.write('<h2>Kết quả Tính toán</h2>');
+    document.write('Tổng của a+b = <span style="color: green; font-weight: bold; font-size: 30px;">' + tong + '</span><br />');
+    document.write('Hiệu của a+b = <span style="color: green; font-weight: bold; font-size: 30px;">' + hieu + '</span><br />');
+    document.write('Thương của a+b = <span style="color: green; font-weight: bold; font-size: 30px;">' + thuong + '</span><br />');
+    document.write('Tích của a+b = <span style="color: green; font-weight: bold; font-size: 30px;">' + tich + '</span><br />');
+  </script>
+</body>
+</html>
