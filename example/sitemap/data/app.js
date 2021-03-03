@@ -1,8 +1,5 @@
 var GOOGLE_MAP_API_KEY = 'AIzaSyDXhL7KLg0QZMsbvNy1R2BXnFzGl1ETFUY';
-var dataVaVo;
-var dataVaVo_MienBac;
-var dataVaVo_MienTrung;
-var dataVaVo_MienNam;
+let dataGarage;
 
 // extend lodash
 _.mixin({
@@ -43,47 +40,57 @@ var parseExcel = function (file) {
       raw: true
     });
 
-    // Generate marker
+    // Init map and Generate marker
+    dataGarage = data;
+    initMap();
   }
   oReq.send();
 };
 
-function generateMenu_MienBac() {
-  if (!dataVaVo_MienBac)
+function generateMarker(map) {
+  if (!dataGarage)
     return;
 
-  let uniqueTinhThanhArray = _.mapPick(dataVaVo_MienBac, ['tinh_thanh']);
-  uniqueTinhThanhArray = _.uniqBy(uniqueTinhThanhArray, 'tinh_thanh');
-
-  let totalItem = uniqueTinhThanhArray.length;
-  let itemPerGroup = 6;
-  let start = 0;
-  let index = 0;
-  let htmlStr = '<div class="row row-cols-1">';
-  htmlStr += '<div class="col">';
-  uniqueTinhThanhArray.forEach(function (item) {
-    let htmlMenu = '';
-    if ((index == 0) || (index % itemPerGroup == 0)) {
-      // htmlMenu += '<div class="col">';
-    }
-    htmlMenu += '<ul>';
-    htmlMenu += `
-      <li><a href="#" data-id="mien_bac" data-tinh_thanh="${item.tinh_thanh}" class="mnuItemTinhThanh">${item.tinh_thanh}</a></li>
-    `;
-    htmlMenu += '</ul>';
-
-    if ((index % itemPerGroup) == (itemPerGroup - 1) || ((index + 1) == totalItem)
-    ) {
-      // htmlMenu += '</div>';
-    }
-
-    htmlStr += htmlMenu;
-    index++;
+  dataGarage.forEach(function (item) {
+    const contentString =
+      '<div id="content">' +
+      '<div id="siteNotice">' +
+      "</div>" +
+      '<h1 id="firstHeading" class="firstHeading">'+ item.garage_ten +'</h1>' +
+      '<div id="bodyContent">' +
+      "<p>" +
+      item.tinh_thanh
+      "</p>" +
+      "</div>" +
+      "</div>";
+    const infowindow = new google.maps.InfoWindow({
+      content: contentString,
+    });
+    const marker = new google.maps.Marker({
+      position: {lat: item.latitude, lng: item.longitude },
+      map,
+      title: item.garage_ten,
+    });
+    marker.addListener("click", () => {
+      infowindow.open(map, marker);
+    });
   });
-  htmlStr += '</div>';
-  htmlStr += '</div>';
+}
 
-  $('#mnuMienBac').html(htmlStr);
+// This example displays a marker at the center of Australia.
+// When the user clicks the marker, an info window opens.
+function initMap() {
+  // Generate marker
+  if (!dataGarage)
+    return;
+
+  const firstItem = dataGarage[0];
+  const uluru = { lat: firstItem.latitude, lng: firstItem.longitude };
+  const map = new google.maps.Map(document.getElementById("map"), {
+    zoom: 9,
+    center: uluru,
+  });
+  generateMarker(map);
 }
 
 // jQuery code
