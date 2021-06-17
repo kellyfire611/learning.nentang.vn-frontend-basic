@@ -1,0 +1,97 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta name="keywords" content="Nền tảng,HTML,CSS,XML,JavaScript, Lập trình C#, Lập trình, Web, Kiến thức, Đồ án">
+  <meta name="author" content="Dương Nguyễn Phú Cường">
+  <meta name="description"
+    content="Cung cấp các kiến thức Nền tảng, cơ bản về Lập trình, Lập trình web, Lập trình di động, Cơ sở dữ liệu, ...">
+  <meta property="og:locale" content="vi_VN">
+  <meta property="og:type" content="website">
+  <meta property="og:title" content="Nền tảng Kiến thức">
+  <meta property="og:description"
+    content="Cung cấp các kiến thức Nền tảng, cơ bản về Lập trình, Lập trình web, Lập trình di động, Cơ sở dữ liệu, ...">
+  <meta property="og:url" content="https://nentang.vn/">
+  <meta property="og:site_name" content="Nền tảng Kiến thức">
+  <title>Tạo thanh trượt bằng CSS | NenTang.vn</title>
+
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.3/css/all.min.css"
+    integrity="sha512-iBBXm8fW90+nuLcSKlbmrPcLa0OT92xO1BIsZ+ywDWZCvqsWgccV3gFoRBv0z+8dLJgyAHIhR35VZc2oM/gI1w=="
+    crossorigin="anonymous" referrerpolicy="no-referrer" />
+
+  <style>
+    .slide-in {
+      z-index: 10;
+      /* to position it in front of the other content */
+      position: absolute;
+      overflow: hidden;
+      /* to prevent scrollbar appearing */
+    }
+
+    .slide-in.from-left {
+      left: 0;
+    }
+
+    .slide-in.from-right {
+      right: 0;
+    }
+
+    .slide-in-content {
+      padding: 5px 20px;
+      background: #eee;
+      transition: transform .25s ease;
+      /* our nice transition */
+    }
+
+    .slide-in.from-left .slide-in-content {
+      transform: translateX(-100%);
+      -webkit-transform: translateX(-100%);
+    }
+
+    .slide-in.from-right .slide-in-content {
+      transform: translateX(100%);
+      -webkit-transform: translateX(100%);
+    }
+
+    .slide-in.show .slide-in-content {
+      transform: translateX(0);
+      -webkit-transform: translateX(0);
+    }
+  </style>
+</head>
+
+<body>
+
+  <div class="slide-in from-left">
+    <div class="slide-in-content">
+      <ul>
+        <li>Lorem</li>
+        <li>Ipsum</li>
+        <li>Dolor</li>
+      </ul>
+    </div>
+  </div>
+
+  <div class="slide-in from-right">
+    <div class="slide-in-content">
+      <ul>
+        <li>One</li>
+        <li>Two</li>
+        <li>Three</li>
+      </ul>
+    </div>
+  </div>
+
+  <button id="toggle" style="position:absolute; top: 120px;">Toggle</button>
+
+  <script src="https://ajax.googleapis.com/ajax/libs/jquery/2.1.1/jquery.min.js"></script>
+  <script>
+    $('#toggle').click(function () {
+      $('.slide-in').toggleClass('show');
+    });
+  </script>
+</body>
+
+</html>

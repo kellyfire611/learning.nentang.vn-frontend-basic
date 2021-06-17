@@ -1,0 +1,193 @@
+$social-share-item-width: 40px;
+$social-share-item-height: 40px;
+
+@mixin equilateral-triangle($direction, $size, $color) {
+  width: 0;
+  height: 0;
+  @if $direction == 'up' {
+      border-left: em($size) solid transparent;
+      border-right: em($size) solid transparent;
+      border-bottom: em($size) solid $color;
+  }
+  @else if $direction == 'down' {
+      border-left: em($size) solid transparent;
+      border-right: em($size) solid transparent;
+      border-top: em($size) solid $color;
+  }
+  @else if $direction == 'right' {
+      border-top: em($size) solid transparent;
+      border-bottom: em($size) solid transparent;
+      border-left: em($size) solid $color;
+  }
+  @else if $direction == 'left' {
+      border-top: em($size) solid transparent;
+      border-bottom: em($size) solid transparent;
+      border-right: em($size) solid $color;
+  }
+}
+
+.social-share-container {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  flex-direction: column;
+  border: 1px solid red;
+  position: fixed;
+  top: 50%;
+  transform: translateY(-50%);
+
+  &.from-left {
+    left: 0px;
+
+    .social-share-wrapper {
+      position: relative;
+
+      &:hover {
+        .social-share-title {
+          display: block;
+        }
+      }
+
+      .social-share-title {
+        font-size: 0.8rem;
+        margin: 0px;
+        padding: 0px;
+        position: absolute;
+        top: 0px;
+        left: 0px;
+        width: auto;
+        transform: translateY(-100%);
+        white-space: nowrap;
+        display: none;
+      }
+
+      .social-share-menu {
+        list-style: none;
+        padding: 0px;
+        margin: 0px;
+
+        .social-share-list-item {
+          height: $social-share-item-height;
+          width: $social-share-item-width;
+          padding: 0px;
+          margin: 0px;
+
+          .fa {
+            text-align: center;
+            line-height: $social-share-item-height;
+          }
+
+          a {
+            width: $social-share-item-width;
+            height: $social-share-item-height;
+            display: block;
+            text-decoration: none;
+            color: #000;
+            position: relative;
+
+            span {
+              width: 0;
+              left: $social-share-item-width;
+              padding: 0;
+              position: absolute;
+              overflow: hidden;
+              font-family: "Roboto", sans-serif;
+              font-size: 18px;
+              font-weight: bold;
+              letter-spacing: 0.6;
+              white-space: nowrap;
+              line-height: $social-share-item-height;
+              transition: 0.25s ease;
+            }
+          }
+
+          a:hover span {
+            width: auto;
+            padding: 0 20px;
+            overflow: visible;
+          }
+        }
+      }
+    }
+  }
+
+  &.from-right {
+    right: 0px;
+
+    .social-share-wrapper {
+      position: relative;
+
+      .social-share-title {
+        font-size: 0.8rem;
+        margin: 0px;
+        padding: 0px;
+        position: absolute;
+        top: 0px;
+        left: -100%;
+        display: none;
+
+        &:hover {
+          display: block;
+        }
+      }
+
+      .social-share-menu {
+        list-style: none;
+        padding: 0px;
+        margin: 0px;
+
+        .social-share-list-item {
+          height: $social-share-item-height;
+          width: $social-share-item-width;
+          padding: 0px;
+          margin: 0px;
+
+          .fa {
+            text-align: center;
+            line-height: $social-share-item-height;
+          }
+
+          a {
+            width: $social-share-item-width;
+            height: $social-share-item-height;
+            display: block;
+            text-decoration: none;
+            color: #000;
+            position: relative;
+
+            span {
+              width: 0;
+              left: $social-share-item-width;
+              padding: 0;
+              position: absolute;
+              overflow: hidden;
+              font-family: "Roboto", sans-serif;
+              font-size: 18px;
+              font-weight: bold;
+              letter-spacing: 0.6;
+              white-space: nowrap;
+              line-height: $social-share-item-height;
+              transition: 0.25s ease;
+              transform: translateX(calc(-100% - 40px));
+            }
+          }
+
+          a:hover span {
+            width: auto;
+            padding: 0 20px;
+            overflow: visible;
+          }
+        }
+      }
+    }
+  }
+
+  .home,
+  .home span {
+    background: #132a13;
+  }
+  .about,
+  .about span {
+    background: #a324ca;
+  }
+}
