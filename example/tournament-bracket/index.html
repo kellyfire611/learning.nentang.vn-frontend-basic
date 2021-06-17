@@ -1,0 +1,242 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+    <title>Tournament Bracket Generator</title>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.6.0/jquery.min.js"
+        integrity="sha512-894YE6QWD5I59HgZOGReFYm4dnWc1Qt5NtvYSaNcOP+u1T9qYdvdihz0PPSiiqn/+/3e7Jo4EaG7TubfWGUrMQ=="
+        crossorigin="anonymous" referrerpolicy="no-referrer"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery-bracket/0.11.1/jquery.bracket.min.js"
+        integrity="sha512-BgJKmxJA3rvUEa00GOdL9BJm5+lu6V7Gx2K0qWDitRi0trcA+kS/VYJuzlqlwGJ0eUeIopW4T9faczsg8hzE/g=="
+        crossorigin="anonymous" referrerpolicy="no-referrer"></script>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/jquery-bracket/0.11.1/jquery.bracket.min.css"
+        integrity="sha512-8QbEO8yS//4kwUDxGu/AS49R2nVILw83kYCtgxBYk+Uw0B9S4R0RgSwvhGLwMaZuYzhhR5ZHR9dA2cDgphRTgg=="
+        crossorigin="anonymous" referrerpolicy="no-referrer" />
+
+    <script type="text/javascript">
+        $(function () {
+            var demos = ['save', 'save1', 'final']
+            $.each(demos, function (i, d) {
+                var demo = $('div#' + d)
+                $('<div class="demo"></div>').appendTo(demo)
+            })
+        })
+    </script>
+</head>
+
+<body>
+    <div id="main">
+        <div id="save" style="display: inline-block;">
+
+        </div>
+        <div id="final" style="display: inline-block;">
+
+        </div>
+        <div id="save1" style="display: inline-block;float: right">
+
+        </div>
+
+    </div>
+
+    <script type="text/javascript">
+        var finalData = {
+            teams: [
+                [
+                    { name: "Team 6", flag: 'in' },
+                    { name: "Team 27", flag: 'in' }
+                ],
+            ],
+            results: [[[1, 0]]]
+        }
+        var saveData1 = {
+            teams: [
+                [
+                    { name: "Team 6", flag: 'in' },
+                    { name: "Team 27", flag: 'in' }
+                ],
+                [
+                    { name: "Team 7", flag: 'in' },
+                    { name: "Team 26", flag: 'in' }
+                ],
+                [
+                    { name: "Team 8", flag: 'in' },
+                    { name: "Team 25", flag: 'in' }
+                ],
+                [
+                    { name: "Team 9", flag: 'in' },
+                    { name: "Team 24", flag: 'in' }
+                ],
+                [
+                    { name: "Team 10", flag: 'in' },
+                    { name: "Team 23", flag: 'in' }
+                ],
+                [
+                    { name: "Team 11", flag: 'in' },
+                    { name: "Team 22", flag: 'in' }
+                ],
+                [
+                    { name: "Team 12", flag: 'in' },
+                    { name: "Team 21", flag: 'in' }
+                ],
+                [
+                    { name: "Team 5", flag: 'in' },
+                    { name: "Team 28", flag: 'in' }
+                ],
+            ],
+
+
+            results: [[[1, 0], [1, 0], [1, 0], [1, 0], [1, 0], [1, 0], [1, 0], [1, 0]], [[1, 0], [1, 0], [1, 0], [1, 0]], [[1, 0], [1, 0]], [[1, 0, 'Final']]],
+        }
+        var saveData = {
+            "teams": [
+                [
+                    { name: "Team1", flag: 'in' },
+                    "BYE"
+                ],
+                [
+                    { name: "Team 13", flag: 'in' },
+                    { name: "Team 20", flag: 'in' }
+                ],
+                [
+                    { name: "Team 14", flag: 'in' },
+                    { name: "Team 19", flag: 'in' }
+                ],
+                [
+                    { name: "Team 2", flag: 'in' },
+                    "BYE"
+                ],
+                [
+                    { name: "Team 3", flag: 'in' },
+                    "BYE"
+                ],
+                [
+                    { name: "Team 15", flag: 'in' },
+                    { name: "Team 18", flag: 'in' }
+                ],
+                [
+                    { name: "Team 16", flag: 'in' },
+                    { name: "Team 17", flag: 'in' }
+                ],
+                [
+                    { name: "Team 4", flag: 'in' },
+                    "BYE"
+                ],
+            ],
+
+            results: [[[1, 0], [1, 0], [1, 0], [1, 0], [1, 0], [1, 0], [1, 0], [1, 0]], [[1, 0], [1, 0], [1, 0], [1, 0]], [[1, 0], [1, 0]], [[0, 1]]],
+        };
+        /* Called whenever bracket is modified
+         *
+         * data:     changed bracket object in format given to init
+         * userData: optional data given when bracket is created.
+         */
+        function saveFn(data, userData) {
+            var json = jQuery.toJSON(data)
+
+            $('#saveOutput').text(JSON.stringify(data, null, 2))
+            /* You probably want to do something like this
+             jQuery.ajax("rest/"+userData, {contentType: 'application/json',
+             dataType: 'json',
+             type: 'post',
+             data: json})
+             */
+        }
+
+        /*for flag*/
+        /* Edit function is called when team label is clicked */
+        function edit_fn(container, data, doneCb) {
+            var input = $('<input type="text">')
+            input.val(data ? data.flag + ':' + data.name : '')
+            container.html(input)
+            input.focus()
+            input.blur(function () {
+                var inputValue = input.val()
+                if (inputValue.length === 0) {
+                    doneCb(null); // Drop the team and replace with BYE
+                } else {
+                    var flagAndName = inputValue.split(':') // Expects correct input
+                    doneCb({ flag: flagAndName[0], name: flagAndName[1] })
+                }
+            })
+        }
+
+        /* Render function is called for each team label when data is changed, data
+         * contains the data object given in init and belonging to this slot.
+         *
+         * 'state' is one of the following strings:
+         * - empty-bye: No data or score and there won't team advancing to this place
+         * - empty-tbd: No data or score yet. A team will advance here later
+         * - entry-no-score: Data available, but no score given yet
+         * - entry-default-win: Data available, score will never be given as opponent is BYE
+         * - entry-complete: Data and score available
+         */
+        function render_fn(container, data, score, state) {
+            switch (state) {
+                case "empty-bye":
+                    container.append("No team")
+                    return;
+                case "empty-tbd":
+                    container.append("Upcoming")
+                    return;
+
+                case "entry-no-score":
+                case "entry-default-win":
+                case "entry-complete":
+                    container.append('<img src="assets/images/' + data.flag + '.png" /> ').append(data.name)
+                    return;
+            }
+        }
+
+        $(function () {
+            $('div#save .demo').bracket({
+                teamWidth: 80,
+                scoreWidth: 20,
+                matchMargin: 10,
+                roundMargin: 30,
+                centerConnectors: true,
+                init: saveData,
+                save: function () { }, /* without save() labels are disabled */
+                decorator: {
+                    edit: edit_fn,
+                    render: render_fn
+                }
+            })
+        })
+        $(function () {
+            $('div#save1 .demo').bracket({
+                dir: 'rl',
+                teamWidth: 80,
+                scoreWidth: 20,
+                matchMargin: 10,
+                roundMargin: 30,
+                centerConnectors: true,
+                init: saveData1,
+                save: function () { }, /* without save() labels are disabled */
+                decorator: {
+                    edit: edit_fn,
+                    render: render_fn
+                }
+            })
+        })
+        $(function () {
+            $('div#final .demo').bracket({
+                dir: 'rl',
+                teamWidth: 80,
+                scoreWidth: 20,
+                matchMargin: 10,
+                roundMargin: 0,
+                centerConnectors: true,
+                init: finalData,
+                save: function () { }, /* without save() labels are disabled */
+                decorator: {
+                    edit: edit_fn,
+                    render: render_fn
+                }
+            })
+        })
+
+
+    </script>
+</body>
+
+</html>
