@@ -12,7 +12,6 @@
   -webkit-box-direction: normal;
       -ms-flex-direction: column;
           flex-direction: column;
-  border: 1px solid red;
   position: fixed;
   top: 50%;
   -webkit-transform: translateY(-50%);
@@ -52,38 +51,38 @@
 }
 
 .social-share-container.from-left .social-share-wrapper .social-share-menu .social-share-list-item {
-  height: 40px;
-  width: 40px;
+  height: 30px;
+  width: 30px;
   padding: 0px;
   margin: 0px;
 }
 
 .social-share-container.from-left .social-share-wrapper .social-share-menu .social-share-list-item .fa {
   text-align: center;
-  line-height: 40px;
+  line-height: 30px;
 }
 
 .social-share-container.from-left .social-share-wrapper .social-share-menu .social-share-list-item a {
-  width: 40px;
-  height: 40px;
+  width: 30px;
+  height: 30px;
   display: block;
   text-decoration: none;
-  color: #000;
+  color: #fff;
   position: relative;
 }
 
 .social-share-container.from-left .social-share-wrapper .social-share-menu .social-share-list-item a span {
   width: 0;
-  left: 40px;
+  left: 30px;
   padding: 0;
   position: absolute;
   overflow: hidden;
   font-family: "Roboto", sans-serif;
-  font-size: 18px;
+  font-size: 0.8rem;
   font-weight: bold;
   letter-spacing: 0.6;
   white-space: nowrap;
-  line-height: 40px;
+  line-height: 30px;
   -webkit-transition: 0.25s ease;
   transition: 0.25s ease;
 }
@@ -102,18 +101,22 @@
   position: relative;
 }
 
+.social-share-container.from-right .social-share-wrapper:hover .social-share-title {
+  display: block;
+}
+
 .social-share-container.from-right .social-share-wrapper .social-share-title {
   font-size: 0.8rem;
   margin: 0px;
   padding: 0px;
   position: absolute;
   top: 0px;
-  left: -100%;
+  right: 0px;
+  width: auto;
+  -webkit-transform: translateY(-100%);
+          transform: translateY(-100%);
+  white-space: nowrap;
   display: none;
-}
-
-.social-share-container.from-right .social-share-wrapper .social-share-title:hover {
-  display: block;
 }
 
 .social-share-container.from-right .social-share-wrapper .social-share-menu {
@@ -123,42 +126,42 @@
 }
 
 .social-share-container.from-right .social-share-wrapper .social-share-menu .social-share-list-item {
-  height: 40px;
-  width: 40px;
+  height: 30px;
+  width: 30px;
   padding: 0px;
   margin: 0px;
 }
 
 .social-share-container.from-right .social-share-wrapper .social-share-menu .social-share-list-item .fa {
   text-align: center;
-  line-height: 40px;
+  line-height: 30px;
 }
 
 .social-share-container.from-right .social-share-wrapper .social-share-menu .social-share-list-item a {
-  width: 40px;
-  height: 40px;
+  width: 30px;
+  height: 30px;
   display: block;
   text-decoration: none;
-  color: #000;
+  color: #fff;
   position: relative;
 }
 
 .social-share-container.from-right .social-share-wrapper .social-share-menu .social-share-list-item a span {
   width: 0;
-  left: 40px;
+  left: 30px;
   padding: 0;
   position: absolute;
   overflow: hidden;
   font-family: "Roboto", sans-serif;
-  font-size: 18px;
+  font-size: 0.8rem;
   font-weight: bold;
   letter-spacing: 0.6;
   white-space: nowrap;
-  line-height: 40px;
+  line-height: 30px;
   -webkit-transition: 0.25s ease;
   transition: 0.25s ease;
-  -webkit-transform: translateX(calc(-100% - 40px));
-          transform: translateX(calc(-100% - 40px));
+  -webkit-transform: translateX(calc(-100% - 30px));
+          transform: translateX(calc(-100% - 30px));
 }
 
 .social-share-container.from-right .social-share-wrapper .social-share-menu .social-share-list-item a:hover span {
@@ -169,11 +172,16 @@
 
 .social-share-container .home,
 .social-share-container .home span {
-  background: #132a13;
+  background: #0fc20f;
 }
 
-.social-share-container .about,
-.social-share-container .about span {
+.social-share-container .facebook,
+.social-share-container .facebook span {
+  background: #2c20d4;
+}
+
+.social-share-container .contact,
+.social-share-container .contact span {
   background: #a324ca;
 }
 /*# sourceMappingURL=app.css.map */

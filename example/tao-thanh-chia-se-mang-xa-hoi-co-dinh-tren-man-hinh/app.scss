@@ -1,5 +1,6 @@
-$social-share-item-width: 40px;
-$social-share-item-height: 40px;
+$social-share-item-width: 30px;
+$social-share-item-height: 30px;
+$social-share-item-font-size: 0.8rem;
 
 @mixin equilateral-triangle($direction, $size, $color) {
   width: 0;
@@ -31,7 +32,6 @@ $social-share-item-height: 40px;
   align-items: center;
   justify-content: center;
   flex-direction: column;
-  border: 1px solid red;
   position: fixed;
   top: 50%;
   transform: translateY(-50%);
@@ -82,7 +82,7 @@ $social-share-item-height: 40px;
             height: $social-share-item-height;
             display: block;
             text-decoration: none;
-            color: #000;
+            color: #fff;
             position: relative;
 
             span {
@@ -92,7 +92,7 @@ $social-share-item-height: 40px;
               position: absolute;
               overflow: hidden;
               font-family: "Roboto", sans-serif;
-              font-size: 18px;
+              font-size: $social-share-item-font-size;
               font-weight: bold;
               letter-spacing: 0.6;
               white-space: nowrap;
@@ -117,18 +117,23 @@ $social-share-item-height: 40px;
     .social-share-wrapper {
       position: relative;
 
+      &:hover {
+        .social-share-title {
+          display: block;
+        }
+      }
+
       .social-share-title {
         font-size: 0.8rem;
         margin: 0px;
         padding: 0px;
         position: absolute;
         top: 0px;
-        left: -100%;
+        right: 0px;
+        width: auto;
+        transform: translateY(-100%);
+        white-space: nowrap;
         display: none;
-
-        &:hover {
-          display: block;
-        }
       }
 
       .social-share-menu {
@@ -152,7 +157,7 @@ $social-share-item-height: 40px;
             height: $social-share-item-height;
             display: block;
             text-decoration: none;
-            color: #000;
+            color: #fff;
             position: relative;
 
             span {
@@ -162,13 +167,13 @@ $social-share-item-height: 40px;
               position: absolute;
               overflow: hidden;
               font-family: "Roboto", sans-serif;
-              font-size: 18px;
+              font-size: $social-share-item-font-size;
               font-weight: bold;
               letter-spacing: 0.6;
               white-space: nowrap;
               line-height: $social-share-item-height;
               transition: 0.25s ease;
-              transform: translateX(calc(-100% - 40px));
+              transform: translateX(calc(-100% - 30px));
             }
           }
 
@@ -184,10 +189,14 @@ $social-share-item-height: 40px;
 
   .home,
   .home span {
-    background: #132a13;
+    background: #0fc20f;
   }
-  .about,
-  .about span {
+  .facebook,
+  .facebook span {
+    background: #2c20d4;
+  }
+  .contact,
+  .contact span {
     background: #a324ca;
   }
 }
