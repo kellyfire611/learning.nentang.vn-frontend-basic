@@ -1,0 +1,15 @@
+.box-cha {
+    width: 400px; 
+    height: 400px;
+    background-color: #F8CECC;
+    border: 5px solid #B85450;
+}
+
+.box-con {
+    width: 100px; 
+    height: 100px;
+    background-color: #D5E8D4;
+    border: 1px dashed #82B366;
+    margin: 10px;
+    float: left;
+}
