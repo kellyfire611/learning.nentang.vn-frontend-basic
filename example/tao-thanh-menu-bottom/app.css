@@ -1,0 +1,164 @@
+.nentang-menu-container {
+  -webkit-transition: 0.25s ease;
+  transition: 0.25s ease;
+}
+
+.nentang-menu-container * {
+  -webkit-box-sizing: border-box;
+          box-sizing: border-box;
+}
+
+.nentang-menu-container.from-bottom {
+  position: fixed;
+  bottom: 0px;
+  left: 0px;
+}
+
+.nentang-menu-container.show-content {
+  bottom: 300px;
+}
+
+.nentang-menu-container .nentang-menu-wrapper {
+  position: relative;
+}
+
+.nentang-menu-container .nentang-menu-wrapper:hover .nentang-menu-title {
+  display: block;
+}
+
+.nentang-menu-container .nentang-menu-wrapper .nentang-menu-title {
+  font-size: 0.8rem;
+  margin: 0px;
+  padding: 0px;
+  position: absolute;
+  top: 0px;
+  left: 0px;
+  width: auto;
+  -webkit-transform: translateY(-100%);
+          transform: translateY(-100%);
+  white-space: nowrap;
+  display: none;
+}
+
+.nentang-menu-container .nentang-menu-content {
+  display: -webkit-box;
+  display: -ms-flexbox;
+  display: flex;
+  list-style: none;
+  margin: 0px;
+  padding: 0px;
+}
+
+.nentang-menu-container .nentang-menu-content .nentang-menu-list-item {
+  position: relative;
+}
+
+.nentang-menu-container .nentang-menu-content .nentang-menu-list-item a {
+  display: -webkit-box;
+  display: -ms-flexbox;
+  display: flex;
+  text-decoration: none;
+  color: #fff;
+}
+
+.nentang-menu-container .nentang-menu-content .nentang-menu-list-item a i.fa {
+  font-size: 0.8rem;
+  font-weight: bold;
+  width: 30px;
+  height: 30px;
+  line-height: 30px;
+  text-align: center;
+  border-right: 1px solid #fff;
+}
+
+.nentang-menu-container .nentang-menu-content .nentang-menu-list-item a span {
+  width: 0px;
+  padding: 0px;
+  margin: 0px;
+  height: 30px;
+  overflow: hidden;
+  font-family: "Roboto", sans-serif;
+  font-size: 0.8rem;
+  font-weight: bold;
+  letter-spacing: 0.6;
+  white-space: nowrap;
+  line-height: 30px;
+  -webkit-transition: 0.25s ease;
+  transition: 0.25s ease;
+}
+
+.nentang-menu-container .nentang-menu-content .nentang-menu-list-item a:hover span {
+  width: auto;
+  padding: 0 20px;
+  overflow: visible;
+  border-right: 1px solid red;
+}
+
+.nentang-menu-container .nentang-menu-content .nentang-menu-list-item.active::before {
+  content: "";
+  position: absolute;
+  left: 0px;
+  top: -3px;
+  background-color: transparent;
+  border-bottom: solid 3px red;
+  width: 100%;
+  z-index: 3;
+}
+
+.nentang-menu-container .nentang-menu-content .nentang-menu-list-item.active span {
+  width: auto;
+  padding: 0 20px;
+  overflow: visible;
+  border-right: 1px solid red;
+}
+
+.nentang-menu-container .nentang-menu-content .home,
+.nentang-menu-container .nentang-menu-content .home span {
+  background: #0fc20f;
+}
+
+.nentang-menu-container .nentang-menu-content .facebook,
+.nentang-menu-container .nentang-menu-content .facebook span {
+  background: #2c20d4;
+}
+
+.nentang-menu-container .nentang-menu-content .contact,
+.nentang-menu-container .nentang-menu-content .contact span {
+  background: #a324ca;
+}
+
+.nentang-menu-content-container {
+  position: fixed;
+  width: 100%;
+  bottom: -200px;
+  left: 0px;
+  -webkit-transition: 0.25s ease;
+  transition: 0.25s ease;
+  visibility: hidden;
+  z-index: 3;
+}
+
+.nentang-menu-content-container * {
+  -webkit-box-sizing: border-box;
+          box-sizing: border-box;
+}
+
+.nentang-menu-content-container .nentang-menu-list-item-content {
+  border: 1px solid red;
+  top: 100%;
+  left: 0px;
+  width: 100%;
+  min-height: 200px;
+  height: 200px;
+  background: #000;
+}
+
+.show-content .nentang-menu-container.from-bottom {
+  bottom: 200px;
+}
+
+.show-content .nentang-menu-content-container {
+  visibility: visible;
+  bottom: 0px;
+}
+/*# sourceMappingURL=app.css.map */

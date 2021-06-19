@@ -1,0 +1,87 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta name="keywords" content="Nền tảng,HTML,CSS,XML,JavaScript, Lập trình C#, Lập trình, Web, Kiến thức, Đồ án">
+  <meta name="author" content="Dương Nguyễn Phú Cường">
+  <meta name="description"
+    content="Cung cấp các kiến thức Nền tảng, cơ bản về Lập trình, Lập trình web, Lập trình di động, Cơ sở dữ liệu, ...">
+  <meta property="og:locale" content="vi_VN">
+  <meta property="og:type" content="website">
+  <meta property="og:title" content="Nền tảng Kiến thức">
+  <meta property="og:description"
+    content="Cung cấp các kiến thức Nền tảng, cơ bản về Lập trình, Lập trình web, Lập trình di động, Cơ sở dữ liệu, ...">
+  <meta property="og:url" content="https://nentang.vn/">
+  <meta property="og:site_name" content="Nền tảng Kiến thức">
+  <title>Tạo thanh menu bottom | NenTang.vn</title>
+
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.3/css/all.min.css"
+    integrity="sha512-iBBXm8fW90+nuLcSKlbmrPcLa0OT92xO1BIsZ+ywDWZCvqsWgccV3gFoRBv0z+8dLJgyAHIhR35VZc2oM/gI1w=="
+    crossorigin="anonymous" referrerpolicy="no-referrer" />
+  <link rel="stylesheet" href="app.css" type="text/css">
+</head>
+
+<body>
+  <div id="menu-bottom" class="nentang-menu">
+    <div class="nentang-menu-container from-bottom">
+      <div class="nentang-menu-wrapper">
+        <h2 class="nentang-menu-title">Menu Tiện ích</h2>
+        <ul class="nentang-menu-content">
+          <li class="nentang-menu-list-item">
+            <a href="#" id="menu-1" class="home">
+              <i class="fa fa-home"></i>
+              <span>Trang chủ</span>
+            </a>
+          </li>
+          <li class="nentang-menu-list-item">
+            <a href="#" id="menu-2" class="facebook">
+              <i class="fa fa-user"></i>
+              <span>Chia sẻ Facebook</span>
+            </a>
+          </li>
+        </ul>
+      </div>
+    </div>
+
+    <div class="nentang-menu-content-container">
+      <div id="content-menu-1" class="nentang-menu-list-item-content">
+        aaaaaaaaaaaa
+      </div>
+    </div>
+  </div>
+
+
+
+
+  <button type="button" id="btnShow">Show</button>
+  <script>
+    function initNenTangMenuBottom() {
+      var menuLinkEles = document.querySelectorAll('.nentang-menu-list-item a');
+      [].forEach.call(menuLinkEles, function (menuEle) {
+        menuEle.addEventListener("click", function () {
+          let menuId = this.id;
+          let menuListParent = this.parentElement;
+          if(menuListParent) {
+            menuListParent.classList.toggle('active');
+          }
+
+          let menuContentEle = document.getElementById('content-' + menuId);
+          if (menuContentEle) {
+            menuContentEle.classList.toggle('active');
+          }
+
+          let nentangMenu = this.closest('.nentang-menu');
+          if(nentangMenu) {
+            nentangMenu.classList.toggle('show-content');
+          }
+        });
+      });
+    }
+
+    initNenTangMenuBottom();
+  </script>
+</body>
+
+</html>
