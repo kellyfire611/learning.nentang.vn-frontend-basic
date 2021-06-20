@@ -61,7 +61,7 @@
   color: #fff;
 }
 
-.nentang-menu-container .nentang-menu-content .nentang-menu-list-item a i.fa {
+.nentang-menu-container .nentang-menu-content .nentang-menu-list-item a .fa, .nentang-menu-container .nentang-menu-content .nentang-menu-list-item a .fab, .nentang-menu-container .nentang-menu-content .nentang-menu-list-item a .fas, .nentang-menu-container .nentang-menu-content .nentang-menu-list-item a .far {
   font-size: 0.8rem;
   font-weight: bold;
   width: 30px;
@@ -130,12 +130,15 @@
 .nentang-menu-content-container {
   position: fixed;
   width: 100%;
-  bottom: -200px;
+  bottom: -300px;
   left: 0px;
   -webkit-transition: 0.25s ease;
   transition: 0.25s ease;
   visibility: hidden;
   z-index: 3;
+  overflow: auto;
+  border: 1px solid red;
+  color: #fff;
 }
 
 .nentang-menu-content-container * {
@@ -144,17 +147,21 @@
 }
 
 .nentang-menu-content-container .nentang-menu-list-item-content {
-  border: 1px solid red;
   top: 100%;
   left: 0px;
   width: 100%;
-  min-height: 200px;
-  height: 200px;
+  min-height: 300px;
+  height: 300px;
   background: #000;
+  display: none;
+}
+
+.nentang-menu-content-container .nentang-menu-list-item-content.active {
+  display: block;
 }
 
 .show-content .nentang-menu-container.from-bottom {
-  bottom: 200px;
+  bottom: 300px;
 }
 
 .show-content .nentang-menu-content-container {

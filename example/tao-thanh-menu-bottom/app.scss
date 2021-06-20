@@ -59,7 +59,7 @@ $nentang-menu-item-content-height: 300px;
         color: #fff;
         // border: 3px solid red;
 
-        i.fa {
+        .fa, .fab, .fas, .far {
           font-size: $nentang-menu-item-font-size;
           font-weight: bold;
           width: 30px;
@@ -133,30 +133,37 @@ $nentang-menu-item-content-height: 300px;
 .nentang-menu-content-container {
   position: fixed;
   width: 100%;
-  bottom: -200px;
+  bottom: -300px;
   left: 0px;
   transition: 0.25s ease;
   visibility: hidden;
   z-index: 3;
+  overflow: auto;
+  border: 1px solid red;
+  color: #fff;
   
   * {
     box-sizing: border-box;
   }
 
   .nentang-menu-list-item-content {
-    border: 1px solid red;
     top: 100%;
     left: 0px;
     width: 100%;
-    min-height: 200px;
-    height: 200px;
+    min-height: 300px;
+    height: 300px;
     background: #000;
+    display: none;
+
+    &.active {
+      display: block;
+    }
   }
 }
 
 .show-content {
   .nentang-menu-container.from-bottom {
-    bottom: 200px;
+    bottom: 300px;
   }
 
   .nentang-menu-content-container {

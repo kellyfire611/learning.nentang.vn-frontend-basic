@@ -49,6 +49,9 @@
       <div id="content-menu-1" class="nentang-menu-list-item-content">
         aaaaaaaaaaaa
       </div>
+      <div id="content-menu-2" class="nentang-menu-list-item-content">
+        bbbb
+      </div>
     </div>
   </div>
 
@@ -57,26 +60,101 @@
 
   <button type="button" id="btnShow">Show</button>
   <script>
+    let nentangMenuBottomActivated;
     function initNenTangMenuBottom() {
       var menuLinkEles = document.querySelectorAll('.nentang-menu-list-item a');
       [].forEach.call(menuLinkEles, function (menuEle) {
         menuEle.addEventListener("click", function () {
-          let menuId = this.id;
-          let menuListParent = this.parentElement;
-          if(menuListParent) {
-            menuListParent.classList.toggle('active');
-          }
-
-          let menuContentEle = document.getElementById('content-' + menuId);
-          if (menuContentEle) {
-            menuContentEle.classList.toggle('active');
-          }
-
-          let nentangMenu = this.closest('.nentang-menu');
-          if(nentangMenu) {
-            nentangMenu.classList.toggle('show-content');
-          }
+          toggleClassNenTangMenuBottom(this);
         });
+      });
+    }
+
+    function toggleClassNenTangMenuBottom(currentMenuEle) {
+      //div.nentang-menu
+      let nentangMenu = currentMenuEle.closest('.nentang-menu');
+      if (!nentangMenu) {
+        return;
+      }
+
+      // li
+      let currentMenuId = currentMenuEle.id;
+      let currentMenuListParent = currentMenuEle.parentElement;
+      if (!currentMenuListParent) {
+        return;
+      }
+
+      let currentMenuContentEle = document.getElementById('content-' + currentMenuId);
+      if (!currentMenuContentEle) {
+        return;
+      }
+
+      let isContainerOpening = false;
+      isContainerOpening = nentangMenu.classList.contains('show-content');
+      if (!isContainerOpening) {
+        nentangMenu.classList.toggle('show-content', true);
+        currentMenuListParent.classList.toggle('active', true);
+        currentMenuContentEle.classList.toggle('active', true);
+        nentangMenuBottomActivated = currentMenuEle;
+      } else {
+        // Click đúng element đang mở thì được phép tắt
+        if (currentMenuEle == nentangMenuBottomActivated) {
+          nentangMenu.classList.toggle('show-content', false);
+          currentMenuListParent.classList.toggle('active', false);
+          currentMenuContentEle.classList.toggle('active', false);
+          nentangMenuBottomActivated = null;
+        } else {
+          // Click phần tử link khác mà container đang mở
+          // Active phần tử khác
+          currentMenuListParent.classList.toggle('active', true);
+          currentMenuContentEle.classList.toggle('active', true);
+
+          // Deactive phần tử cũ
+          // li
+          let activatedMenuId = nentangMenuBottomActivated.id;
+          let activatedMenuListParent = nentangMenuBottomActivated.parentElement;
+          if (!activatedMenuListParent) {
+            return;
+          }
+
+          let activatedMenuContentEle = document.getElementById('content-' + activatedMenuId);
+          if (!activatedMenuContentEle) {
+            return;
+          }
+          activatedMenuListParent.classList.toggle('active', false);
+          activatedMenuContentEle.classList.toggle('active', false);
+
+          // Lưu lại phần tử đang kích hoạt mới
+          nentangMenuBottomActivated = currentMenuEle;
+        }
+      }
+
+      // Hide all others
+      var menuLinkEles = document.querySelectorAll('.nentang-menu-list-item a');
+      [].forEach.call(menuLinkEles, function (menuEle) {
+        if (menuEle == nentangMenuBottomActivated) {
+          return;
+        }
+
+        //div.nentang-menu
+        let menuId = menuEle.id;
+        let nentangMenu = menuEle.closest('.nentang-menu');
+        if (!nentangMenu) {
+          return;
+        }
+
+        let menuListParent = menuEle.parentElement;
+        if (!menuListParent) {
+          return;
+        }
+
+        let menuContentEle = document.getElementById('content-' + menuId);
+        if (!menuContentEle) {
+          return;
+        }
+
+        menuListParent.classList.toggle('active', false);
+        menuContentEle.classList.toggle('active', false);
       });
     }
 
