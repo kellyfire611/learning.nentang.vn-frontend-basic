@@ -1,0 +1,152 @@
+<!DOCTYPE html>
+<html lang="vi">
+
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta name="keywords" content="Nền tảng,HTML,CSS,XML,JavaScript, Lập trình C#, Lập trình, Web, Kiến thức, Đồ án">
+  <meta name="author" content="Dương Nguyễn Phú Cường">
+  <meta name="description"
+    content="Cung cấp các kiến thức Nền tảng, cơ bản về Lập trình, Lập trình web, Lập trình di động, Cơ sở dữ liệu, ...">
+  <meta property="og:locale" content="vi_VN">
+  <meta property="og:type" content="website">
+  <meta property="og:title" content="Nền tảng Kiến thức">
+  <meta property="og:description"
+    content="Cung cấp các kiến thức Nền tảng, cơ bản về Lập trình, Lập trình web, Lập trình di động, Cơ sở dữ liệu, ...">
+  <meta property="og:url" content="https://nentang.vn/">
+  <meta property="og:site_name" content="Nền tảng Kiến thức">
+  <title>Học cách thiết kế layout responsive Bootstrap | NenTang.vn</title>
+
+  <!-- Liên kết CSS Bootstrap -->
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@4.6.0/dist/css/bootstrap.min.css"
+    integrity="sha384-B0vP5xmATw1+K9KRQjQERJvTumQW0nPEzvF6L/Z6nronJ3oUOFUFpCjEUQouq2+l" crossorigin="anonymous">
+
+  <style>
+    /* Class quy định định dạng Khối DIV thứ 1 */
+    .box1 {
+      height: 200px;
+      background-color: #FFE6CC;
+      border: 3px solid #D79B00;
+      color: #000;
+    }
+
+    /* Class quy định định dạng Khối DIV thứ 2 */
+    .box2 {
+      height: 200px;
+      background-color: #DAE8FC;
+      border: 3px solid #6C8EBF;
+      color: #000;
+    }
+
+    /* Class quy định định dạng Khối DIV thứ 3 */
+    .box3 {
+      height: 200px;
+      background-color: #60A917;
+      border: 1px solid #2D7600;
+      color: #fff;
+    }
+    
+    /* Class quy định định dạng Khối DIV thứ 4 */
+    .box4 {
+      height: 200px;
+      background-color: #D80073;
+      border: 1px solid #A50040;
+      color: #fff;
+    }
+
+    /* Class quy định định dạng Khối DIV thứ 5 */
+    .box5 {
+      height: 200px;
+      background-color: #0050EF;
+      border: 1px solid #001DBC;
+      color: #fff;
+    }
+
+    /* Class quy định định dạng Khối DIV thứ 6 */
+    .box6 {
+      height: 200px;
+      background-color: #A20025;
+      border: 1px solid #6F0000;
+      color: #fff;
+    }
+  </style>
+</head>
+
+<body>
+  <div class="container">
+    <div class="row">
+      <!-- Cột box 1, sẽ tùy biến theo màn hình:
+      - Nếu là thiết bị mobile thì sẽ là cột 12         => cần áp dụng class col-12
+      - Nếu là thiết bị tablet trở lên thì sẽ là cột 6  => cần áp dụng class col-md-6
+      - Nếu là thiết bị desktop trờ lên thì sẽ là cột 3 => cần áp dụng class col-lg-3
+      => Kết hợp tất cả ta sẽ có cột có thể tùy biến cho cả 3 thiết bị 
+      (nên viết code theo thứ tự áp dụng chiều rộng từ nhỏ đến lớn: mobile -> tablet -> desktop)
+        col-12 col-md-6 col-lg-3
+      -->
+      <div class="box1 col-12 col-md-6 col-lg-3">Box 1</div>
+
+      <!-- Cột box 2, sẽ tùy biến theo màn hình:
+      - Nếu là thiết bị mobile thì sẽ là cột 12         => cần áp dụng class col-12
+      - Nếu là thiết bị tablet trở lên thì sẽ là cột 6  => cần áp dụng class col-md-6
+      - Nếu là thiết bị desktop trờ lên thì sẽ là cột 9 => cần áp dụng class col-lg-9
+      => Kết hợp tất cả ta sẽ có cột có thể tùy biến cho cả 3 thiết bị 
+      (nên viết code theo thứ tự áp dụng chiều rộng từ nhỏ đến lớn: mobile -> tablet -> desktop)
+        col-12 col-md-6 col-lg-9
+      -->
+      <div class="box2 col-12 col-md-6 col-lg-9">Box 2</div>
+    </div>
+
+    <div class="row">
+      <!-- Cột box 3, sẽ tùy biến theo màn hình:
+      - Nếu là thiết bị mobile thì sẽ là cột 12         => cần áp dụng class col-12
+      - Nếu là thiết bị tablet trở lên thì sẽ là cột 6  => cần áp dụng class col-md-6
+      - Nếu là thiết bị desktop trờ lên thì sẽ là cột 3 => cần áp dụng class col-lg-3
+      => Kết hợp tất cả ta sẽ có cột có thể tùy biến cho cả 3 thiết bị 
+      (nên viết code theo thứ tự áp dụng chiều rộng từ nhỏ đến lớn: mobile -> tablet -> desktop)
+        col-12 col-md-6 col-lg-3
+      -->
+      <div class="box3 col-12 col-md-6 col-lg-3">Box 3</div>
+
+      <!-- Cột box 4, sẽ tùy biến theo màn hình:
+      - Nếu là thiết bị mobile thì sẽ là cột 12         => cần áp dụng class col-12
+      - Nếu là thiết bị tablet trở lên thì sẽ là cột 6  => cần áp dụng class col-md-6
+      - Nếu là thiết bị desktop trờ lên thì sẽ là cột 3 => cần áp dụng class col-lg-3
+      => Kết hợp tất cả ta sẽ có cột có thể tùy biến cho cả 3 thiết bị 
+      (nên viết code theo thứ tự áp dụng chiều rộng từ nhỏ đến lớn: mobile -> tablet -> desktop)
+        col-12 col-md-6 col-lg-3
+      -->
+      <div class="box4 col-12 col-md-6 col-lg-3">Box 4</div>
+
+      <!-- Cột box 5, sẽ tùy biến theo màn hình:
+      - Nếu là thiết bị mobile thì sẽ là cột 6          => cần áp dụng class col-6
+      - Nếu là thiết bị tablet trở lên thì sẽ là cột 6  => cần áp dụng class col-md-6
+      - Nếu là thiết bị desktop trờ lên thì sẽ là cột 3 => cần áp dụng class col-lg-3
+      => Kết hợp tất cả ta sẽ có cột có thể tùy biến cho cả 3 thiết bị 
+      (nên viết code theo thứ tự áp dụng chiều rộng từ nhỏ đến lớn: mobile -> tablet -> desktop)
+        col-6 col-md-6 col-lg-3
+      -->
+      <div class="box5 col-6 col-md-6 col-lg-3">Box 5</div>
+
+      <!-- Cột box 6, sẽ tùy biến theo màn hình:
+      - Nếu là thiết bị mobile thì sẽ là cột 6          => cần áp dụng class col-6
+      - Nếu là thiết bị tablet trở lên thì sẽ là cột 6  => cần áp dụng class col-md-6
+      - Nếu là thiết bị desktop trờ lên thì sẽ là cột 3 => cần áp dụng class col-lg-3
+      => Kết hợp tất cả ta sẽ có cột có thể tùy biến cho cả 3 thiết bị 
+      (nên viết code theo thứ tự áp dụng chiều rộng từ nhỏ đến lớn: mobile -> tablet -> desktop)
+        col-6 col-md-6 col-lg-3
+      -->
+      <div class="box6 col-6 col-md-6 col-lg-3">Box 6</div>
+    </div>
+  </div>
+  
+
+  <!-- Liên kết JavaScript Bootstrap -->
+  <script src="https://code.jquery.com/jquery-3.5.1.slim.min.js"
+    integrity="sha384-DfXdz2htPH0lsSSs5nCTpuj/zy4C+OGpamoFVy38MVBnE+IbbVYUew+OrCXaRkfj"
+    crossorigin="anonymous"></script>
+  <script src="https://cdn.jsdelivr.net/npm/bootstrap@4.6.0/dist/js/bootstrap.bundle.min.js"
+    integrity="sha384-Piv4xVNRyMGpqkS2by6br4gNJ7DXjqk09RmUpJ8jgGtD7zP9yug3goQfGII0yAns"
+    crossorigin="anonymous"></script>
+</body>
+
+</html>
