@@ -1,0 +1,145 @@
+﻿<html>
+<head>
+    <meta charset="utf-8" />
+    <title>Bài ôn tập</title>
+
+    <link href="css/style.css" type="text/css" rel="stylesheet" />
+    <script src="js/main.js"></script>
+    <script src="js/ckeditor/ckeditor.js"></script>
+</head>
+
+<body style="background-color: #efefef">
+    <table class="layoutTable">
+        <!-- Dòng 1, phân vùng #header -->
+        <tr>
+            <!-- Gom 2 cột của dòng 1 lại -->
+            <td colspan="2">
+                <div id="header">
+                    <img src="images/logo.gif" />
+                </div>
+            </td>
+        </tr>
+
+        <!-- Dòng 2, phân vùng #menu -->
+        <tr>
+            <!-- Gom 2 cột của dòng 2 lại -->
+            <td colspan="2">
+                <div id="mnuMain">
+                    <ul>
+                        <li><a href="#">TRANG CHỦ</a></li>
+                        <li>
+                            <a href="#">GIỚI THIỆU</a>
+                            <ul>
+                                <li><a href="#">CÔNG TY</a></li>
+                                <li><a href="#">HÌNH THỨC THANH TOÁN</a></li>
+                                <li><a href="#">CÁC ĐỐI TÁC</a></li>
+                            </ul>
+                        </li>
+                        <li><a href="#">GIỎ HÀNG</a></li>
+                        <li><a href="#">VIDEOS</a></li>
+                        <li><a href="#">DIỄN ĐÀN</a></li>
+                        <li><a href="#">GÓP Ý</a></li>
+                    </ul>
+                </div>
+            </td>
+        </tr>
+
+        <!-- Dòng 3, phân vùng #content -->
+        <tr id="content">
+            <!-- Cột 1, phân vùng #content_left -->
+            <td>
+                <form id="frmDatMay" name="frmDatMay" method="post">
+                    <table class="fullWidthTable">
+                        <tr>
+                            <td>Họ và tên:</td>
+                            <td><input type="text" name="txtHoVaTen" id="txtHoVaTen" />*</td>
+                        </tr>
+                        <tr>
+                            <td>Địa chỉ email:</td>
+                            <td><input type="text" name="txtEmail" id="txtEmail" />*</td>
+                        </tr>
+                        <tr>
+                            <td>Địa chỉ:</td>
+                            <td><input type="text" name="txtDiaChi" id="txtDiaChi" /></td>
+                        </tr>
+                        <tr>
+                            <td>Danh mục thời trang:</td>
+                            <td>
+                                <select name="slDanhMuc" id="slDanhMuc">
+                                    <option value="">Chọn danh mục</option>
+                                    <option value="1">Thời trang Nam</option>
+                                    <option value="2">Thời trang Nữ</option>
+                                </select>*
+                            </td>
+                        </tr>
+                        <tr>
+                            <td>Giới tính:</td>
+                            <td>
+                                <input type="radio" name="gioiTinh" value="Nam" />Nam
+                                <input type="radio" name="gioiTinh" value="Nữ" />Nữ *<br />
+                            </td>
+                        </tr>
+                        <tr>
+                            <td>Nội dung yêu cầu:</td>
+                            <td>
+                                <textarea class="ckeditor" name="txtNoiDung" id="txtNoiDung" cols="45" rows="5"></textarea>
+                                <script language="javascript">
+                                    CKEDITOR.replace('txtNoiDung');
+                                </script>
+                            </td>
+                        </tr>
+                        <tr>
+                            <td colspan="2" align="center"><center><input type="button" name="btnDatMay" id="btnDatMay" value="Gởi yêu cầu đặt may" onclick="KiemTraDuLieu();" /></center></td>
+                        </tr>
+                    </table>
+                </form>
+            </td>
+
+            <!-- Cột 2, phân vùng #content_right -->
+            <td>
+                <table class="fullWidthTable">
+                    <tr>
+                        <td>
+                            <h2 class="tieuDeLon">DANH MỤC</h2>
+                        </td>
+                    </tr>
+                    <tr>
+                        <td>
+                            <div class="danhMuc">
+                                <ul>
+                                    <li><a href="#">THỜI TRANG CÔNG SỞ</a></li>
+                                    <li><a href="#">THỜI TRANG NAM</a></li>
+                                    <li><a href="#">THỜI TRANG DẠ HỘI</a></li>
+                                    <li><a href="#">THỜI TRANG TRẺ</a></li>
+                                    <li><a href="datmay.html">ĐẶT MAY</a></li>
+                                </ul>
+                            </div>
+                        </td>
+                    </tr>
+                </table>
+            </td>
+        </tr>
+
+        <!-- Dòng 4, phân vùng #footer -->
+        <tr id="footer">
+            <!-- Gom 2 cột của dòng 1 lại -->
+            <td colspan="2">
+                <table class="fullWidthTable">
+                    <tr>
+                        <td width="310px">
+                            <img src="images/footer_logo.gif" />
+                        </td>
+                        <td>
+                            <p class="diaChiLienHe">
+                                BẢN QUYỀN &copy; 2017 BỞI WEBFASHION VIỆT NAM<br />
+                                ĐỊA CHỈ: 01 - HÒA BÌNH- CẦN THƠ<br />
+                                ĐIỆN THOẠI: 07103. 201020
+                            </p>
+                        </td>
+                    </tr>
+                </table>
+            </td>
+        </tr>
+    </table>
+</body>
+</html>
