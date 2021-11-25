@@ -1,0 +1,210 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta name="keywords" content="Nền tảng,HTML,CSS,XML,JavaScript, Lập trình C#, Lập trình, Web, Kiến thức, Đồ án">
+  <meta name="author" content="Dương Nguyễn Phú Cường">
+  <meta name="description"
+    content="Cung cấp các kiến thức Nền tảng, cơ bản về Lập trình, Lập trình web, Lập trình di động, Cơ sở dữ liệu, ...">
+  <meta property="og:locale" content="vi_VN">
+  <meta property="og:type" content="website">
+  <meta property="og:title" content="Nền tảng Kiến thức">
+  <meta property="og:description"
+    content="Cung cấp các kiến thức Nền tảng, cơ bản về Lập trình, Lập trình web, Lập trình di động, Cơ sở dữ liệu, ...">
+  <meta property="og:url" content="https://nentang.vn/">
+  <meta property="og:site_name" content="Nền tảng Kiến thức">
+  <title>Bài tập Thiết kế bố cục Trang web Cắt Layout bằng CSS Grid | NenTang.vn</title>
+
+  <style>
+    div {
+      border: 1px solid red;
+    }
+
+    .container {
+      display: grid;
+      grid-template-rows: 100vh;
+      grid-template-columns: [col-left] 1fr [col-center] 1fr [col-right] 1fr;
+      column-gap: 20px;
+      height: 100vh;
+    }
+
+    /* Định dạng cột trái - START */
+    .col-left {
+      display: grid;
+      grid-template-rows: 1fr 1fr;
+    }
+
+    /* Định dạng cột trái - END */
+
+    /* Định dạng cho bài viết nổi bật - START */
+    .feature-article {}
+
+    .feature-article .feature-article-img {
+      width: 100%;
+    }
+
+    .feature-article .feature-article-info {}
+
+    .feature-article .feature-article-title {}
+
+    /* Định dạng cho bài viết nổi bật - END */
+
+    /* Định dạng cột giữa - START */
+    .col-center {
+      display: grid;
+      grid-template-rows: repeat(6, 1fr);
+      row-gap: 20px;
+    }
+
+    /* Định dạng cột giữa - END */
+
+    /* Định dạng cho bài viết - START */
+    .article {}
+
+    .article .article-img {
+      width: 100%;
+    }
+
+    .article .article-info {}
+
+    .article .article-title {}
+
+    /* Định dạng cho bài viết - END */
+  </style>
+</head>
+
+<body>
+
+  <div class="container">
+    <!-- Cột trái - START -->
+    <div class="col-left">
+      <!-- Bài viết nổi bật 1 - START -->
+      <div class="feature-article">
+        <img src="https://nentang.vn/wp-content/uploads/2021/09/bun-dau-mam-tom.jpg" class="feature-article-img" />
+        <div class="feature-article-info">
+          <span>05/11/2021</span>
+          |
+          <span>11h28 Sáng</span>
+        </div>
+        <div class="feature-article-title">
+          <h3>Tiêu đề bài viết bún đậu mắm tôm</h3>
+        </div>
+      </div>
+      <!-- Bài viết nổi bật 1 - END -->
+
+      <!-- Bài viết nổi bật 2 - START -->
+      <div class="feature-article">
+        <img src="https://nentang.vn/wp-content/uploads/2021/09/lau-de.jpg" class="feature-article-img" />
+        <div class="feature-article-info">
+          <span>05/11/2021</span>
+          |
+          <span>11h28 Sáng</span>
+        </div>
+        <div class="feature-article-title">
+          <h3>Tiêu đề bài viết Lẩu dê</h3>
+        </div>
+      </div>
+      <!-- Bài viết nổi bật 2 - END -->
+    </div>
+    <!-- Cột trái - END -->
+
+    <!-- Cột giữa - START -->
+    <div class="col-center">
+      <!-- Bài viết 1 - START -->
+      <div class="article">
+        <img src="https://nentang.vn/wp-content/uploads/2021/09/lau-de.jpg" class="article-img" />
+        <div class="article-info">
+          <span>05/11/2021</span>
+          |
+          <span>11h28 Sáng</span>
+        </div>
+        <div class="article-title">
+          <h3>Tiêu đề bài viết Lẩu dê</h3>
+        </div>
+      </div>
+      <!-- Bài viết 1 - END -->
+
+      <!-- Bài viết 2 - START -->
+      <div class="article">
+        <img src="https://nentang.vn/wp-content/uploads/2021/09/lau-de.jpg" class="article-img" />
+        <div class="article-info">
+          <span>05/11/2021</span>
+          |
+          <span>11h28 Sáng</span>
+        </div>
+        <div class="article-title">
+          <h3>Tiêu đề bài viết Lẩu dê</h3>
+        </div>
+      </div>
+      <!-- Bài viết 2 - END -->
+
+      <!-- Bài viết 3 - START -->
+      <div class="article">
+        <img src="https://nentang.vn/wp-content/uploads/2021/09/lau-de.jpg" class="article-img" />
+        <div class="article-info">
+          <span>05/11/2021</span>
+          |
+          <span>11h28 Sáng</span>
+        </div>
+        <div class="article-title">
+          <h3>Tiêu đề bài viết Lẩu dê</h3>
+        </div>
+      </div>
+      <!-- Bài viết 3 - END -->
+
+      <!-- Bài viết 4 - START -->
+      <div class="article">
+        <img src="https://nentang.vn/wp-content/uploads/2021/09/lau-de.jpg" class="article-img" />
+        <div class="article-info">
+          <span>05/11/2021</span>
+          |
+          <span>11h28 Sáng</span>
+        </div>
+        <div class="article-title">
+          <h3>Tiêu đề bài viết Lẩu dê</h3>
+        </div>
+      </div>
+      <!-- Bài viết 4 - END -->
+
+      <!-- Bài viết 5 - START -->
+      <div class="article">
+        <img src="https://nentang.vn/wp-content/uploads/2021/09/lau-de.jpg" class="article-img" />
+        <div class="article-info">
+          <span>05/11/2021</span>
+          |
+          <span>11h28 Sáng</span>
+        </div>
+        <div class="article-title">
+          <h3>Tiêu đề bài viết Lẩu dê</h3>
+        </div>
+      </div>
+      <!-- Bài viết 5 - END -->
+
+      <!-- Bài viết 6 - START -->
+      <div class="article">
+        <img src="https://nentang.vn/wp-content/uploads/2021/09/lau-de.jpg" class="article-img" />
+        <div class="article-info">
+          <span>05/11/2021</span>
+          |
+          <span>11h28 Sáng</span>
+        </div>
+        <div class="article-title">
+          <h3>Tiêu đề bài viết Lẩu dê</h3>
+        </div>
+      </div>
+      <!-- Bài viết 6 - END -->
+    </div>
+    <!-- Cột giữa - END -->
+
+    <!-- Cột phải - START -->
+    <div class="col-right">
+
+    </div>
+    <!-- Cột phải - END -->
+  </div>
+
+</body>
+
+</html>

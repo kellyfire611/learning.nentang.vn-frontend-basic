@@ -1,0 +1,209 @@
+<!DOCTYPE html>
+<html lang="vi">
+
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="keywords" content="Nền tảng,HTML,CSS,XML,JavaScript, Lập trình C#, Lập trình, Web, Kiến thức, Đồ án">
+    <meta name="author" content="Dương Nguyễn Phú Cường">
+    <meta name="description"
+        content="Cung cấp các kiến thức Nền tảng, cơ bản về Lập trình, Lập trình web, Lập trình di động, Cơ sở dữ liệu, ...">
+    <meta property="og:locale" content="vi_VN">
+    <meta property="og:type" content="website">
+    <meta property="og:title" content="Nền tảng Kiến thức">
+    <meta property="og:description"
+        content="Cung cấp các kiến thức Nền tảng, cơ bản về Lập trình, Lập trình web, Lập trình di động, Cơ sở dữ liệu, ...">
+    <meta property="og:url" content="https://nentang.vn/">
+    <meta property="og:site_name" content="Nền tảng Kiến thức">
+    <title>Bài tập kiểm tra Ràng buộc dữ liệu Validation JavaScript | NenTang.vn</title>
+    <style>
+        .table-datmon {
+            border-collapse: collapse;
+        }
+
+        #btnDatHang {
+            background: blue;
+            color: #fff;
+            padding: 5px;
+            border: 1px solid blue;
+            border-radius: 10px;
+        }
+
+        #vungketqua {
+            border: 2px solid red;
+        }
+
+        .batbuocnhap {
+            color: red;
+            font-weight: bold;
+            font-size: 1.5rem;
+        }
+    </style>
+</head>
+
+<body>
+    <h1>Form đặt món ăn/món uống</h1>
+    <form name="frmDatMon" id="frmDatMon" method="post" action="#">
+        <table class="table-datmon" border="1" width="500px" cellpadding="5px">
+            <tr>
+                <td width="150px">
+                    <label>Họ tên</label>
+                    <span class="batbuocnhap">*</span>
+                </td>
+                <td>
+                    <input type="text" name="txtHoTen" id="txtHoTen" />
+                </td>
+            </tr>
+            <tr>
+                <td width="150px">
+                    <label>Địa chỉ giao hàng</label>
+                    <span class="batbuocnhap">*</span>
+                </td>
+                <td>
+                    <input type="text" name="txtDiaChi" id="txtDiaChi" />
+                </td>
+            </tr>
+            <tr>
+                <td width="150px">
+                    <label>Số điện thoại</label>
+                    <span class="batbuocnhap">*</span>
+                </td>
+                <td>
+                    <input type="text" name="txtSoDienThoai" id="txtSoDienThoai" />
+                </td>
+            </tr>
+            <tr>
+                <td width="150px">
+                    <label>Lựa chọn giao hàng</label>
+                    <span class="batbuocnhap">*</span>
+                </td>
+                <td>
+                    <label><input type="radio" name="rdLuaChonGiaoHang" id="rdLuaChonGiaoHang_1" value="now" /> Giao
+                        hàng ngay (+30k)</label>
+                    <br />
+                    <label><input type="radio" name="rdLuaChonGiaoHang" id="rdLuaChonGiaoHang_2" value="delay" /> Giao
+                        hàng khi có thể (miễn phí)</label>
+                </td>
+            </tr>
+            <tr>
+                <td width="150px">
+                    <label>Lựa chọn Topping</label>
+                </td>
+                <td>
+                    <label><input type="checkbox" name="chkTopping" id="chkTopping_1" value="5000" /> Bánh plan
+                        (5k)</label><br />
+                    <label><input type="checkbox" name="chkTopping" id="chkTopping_2" value="3000" /> Cafe thêm
+                        (3k)</label><br />
+                    <label><input type="checkbox" name="chkTopping" id="chkTopping_3" value="7000" /> Trân châu
+                        (7k)</label><br />
+                    <label><input type="checkbox" name="chkTopping" id="chkTopping_4" value="1000" /> Uống nóng
+                        (1k)</label>
+                </td>
+            </tr>
+            <tr>
+                <td colspan="2" align="center">
+                    <button type="button" name="btnDatHang" id="btnDatHang" onclick="layThongTinDatHang();">Đặt
+                        hàng</button>
+                </td>
+            </tr>
+        </table>
+    </form>
+    <div id="vungketqua"></div>
+
+    <script>
+        function layThongTinDatHang() {
+            // 1. Thu thập thông tin người dùng đã nhập trên FORM
+            var hoten = document.getElementById('txtHoTen').value;
+            var diachi = document.getElementById('txtDiaChi').value;
+            var dienthoai = document.getElementById('txtSoDienThoai').value;
+
+            // 1.1. Thu thập thông tin của Radio
+            var luaChonGiaoHang = '';
+            var listElementLuaChonGiaoHang = document.getElementsByName('rdLuaChonGiaoHang');
+            var tongSoPhanTuRadioVuaTimDuoc = listElementLuaChonGiaoHang.length;
+            for (var i = 0; i < tongSoPhanTuRadioVuaTimDuoc; i++) {
+                var phanTuDangXet = listElementLuaChonGiaoHang[i];
+                if (phanTuDangXet.checked) {
+                    luaChonGiaoHang = phanTuDangXet.value;
+                }
+            }
+
+            // 1.2. Thu thập thông tin của Checkbox
+            debugger;
+            var luaChonTopping = '';
+            var listElementLuaChonTopping = document.getElementsByName('chkTopping');
+            var tongSoPhanTuCheckboxVuaTimDuoc = listElementLuaChonTopping.length;
+            for (var i = 0; i < tongSoPhanTuCheckboxVuaTimDuoc; i++) {
+                var phanTuDangXet = listElementLuaChonTopping[i];
+                if (phanTuDangXet.checked) {
+                    luaChonTopping += phanTuDangXet.value + ',';
+                }
+            }
+
+            //2. Kiểm tra ràng buộc dữ liệu (VALIDATION)
+            var error = '';
+            //2.1. Kiểm tra dữ liệu ô Họ tên
+            // Validate Họ tên
+            // Rule 1: Required
+            if (hoten == '') {
+                error += 'Họ tên không được rỗng. Vui lòng nhập Họ tên đầy đủ.<br/>';
+            }
+            // Rule 2: Min 3
+            else if (hoten.length < 3) {
+                error += 'Họ tên phải từ 3 ký tự trở lên...<br />';
+            }
+            // Rule 3: Max 20
+            else if (hoten.length > 20) {
+                error += 'Họ tên phải ít hơn 20 ký tự...<br />';
+            }
+
+            // Validate Địa chỉ
+            // Rule 1: Required
+            if (diachi == '') {
+                error += 'Vui lòng nhập địa chỉ... <br />';
+            }
+
+            // Validate Số điện thoại
+            if (dienthoai == '') {
+                error += 'Vui lòng nhập số điện thoại... <br />';
+            }
+
+            // Validate Lựa chọn Giao hàng
+            if (luaChonGiaoHang == '') {
+                error += 'Vui lòng chọn hình thức giao hàng mong muốn... <br />';
+            }
+
+            // Quyết định hiển thị cái gì??
+            if (error == '') // Dữ liệu hợp lệ VALID
+            {
+                // 3.1. Hiển thị kết quả
+                var htmlThongTin = '';
+                htmlThongTin += 'Cám ơn bạn đã đặt hàng của quán chúng tôi. Thông tin của bạn vừa đặt là:';
+                htmlThongTin += '<ul>';
+                htmlThongTin += '<li>Họ tên: ' + hoten + '</li>';
+                htmlThongTin += '<li>Địa chỉ: ' + diachi + '</li>';
+                htmlThongTin += '<li>SĐT: ' + dienthoai + '</li>';
+
+                if (luaChonGiaoHang == 'now') {
+                    htmlThongTin += '<li>Bạn đã lựa chọn hình thức Giao hàng ngay</li>';
+                } else if (luaChonGiaoHang == 'delay') {
+                    htmlThongTin += '<li>Bạn đã lựa chọn hình thức Trễ (cam kết trong vòng 4h trở lại)</li>';
+                }
+
+                htmlThongTin += '<li>Bạn đã lựa chọn các topping, sẽ được tính thêm giá sau: ' + luaChonTopping + '</li>';
+
+                htmlThongTin += '</ul>';
+
+                // 2.1. Tìm đối tượng (element) có ID #vungketqua -> chèn vào bên trong HTML mong muốn
+                document.getElementById('vungketqua').innerHTML = htmlThongTin;
+            }
+            else // Dữ liệu đang bị vi phạm INVALID
+            {
+                // 2.1. Tìm đối tượng (element) có ID #vungketqua -> chèn vào bên trong HTML mong muốn
+                document.getElementById('vungketqua').innerHTML = error;
+            }
+        }
+    </script>
+</body>
+
+</html>

@@ -1,0 +1,60 @@
+<!DOCTYPE html>
+<html lang="vi">
+
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="keywords" content="Nền tảng,HTML,CSS,XML,JavaScript, Lập trình C#, Lập trình, Web, Kiến thức, Đồ án">
+    <meta name="author" content="Dương Nguyễn Phú Cường">
+    <meta name="description"
+        content="Cung cấp các kiến thức Nền tảng, cơ bản về Lập trình, Lập trình web, Lập trình di động, Cơ sở dữ liệu, ...">
+    <meta property="og:locale" content="vi_VN">
+    <meta property="og:type" content="website">
+    <meta property="og:title" content="Nền tảng Kiến thức">
+    <meta property="og:description"
+        content="Cung cấp các kiến thức Nền tảng, cơ bản về Lập trình, Lập trình web, Lập trình di động, Cơ sở dữ liệu, ...">
+    <meta property="og:url" content="https://nentang.vn/">
+    <meta property="og:site_name" content="Nền tảng Kiến thức">
+    <title>Bài tập Tạo và sử dụng các hàm tiện ích trong JavaScript | NenTang.vn</title>
+    <!-- Liên kết file JS -->
+    <script src="ham_tien_ich.js"></script>
+
+    <style>
+.so {
+    color: red;
+    font-weight: bold;
+}
+.ketqua {
+    color: green;
+    font-weight: bold;
+}
+    </style>
+</head>
+
+<body>
+    <h1>Học cách tạo và sử dụng hàm trong JavaScript</h1>
+
+    <script>
+        // Gọi hàm hiển thị câu chào mừng
+        hien_thi_cau_chao_mung('Phú Cường');
+
+        // Tính trung bình cộng
+        var num1 = 5;
+        var num2 = 6;
+        var num3 = 7;
+        var ketqua_pheptinh_trungbinhcong = tinh_trung_binh_cong(num1, num2, num3);
+        document.write('Trung bình cộng của 3 số <span class="so">'+ num1 +', '+ num2 +', '+ num3 +'</span> là <span class="ketqua">'+ ketqua_pheptinh_trungbinhcong +'</span><br />');
+
+        // Tính bình phương
+        var number = 9;
+        var ketqua_pheptinh_binhphuong = tinh_binh_phuong(number);
+        document.write('Bình phương của số <span class="so">'+ number +'</span> là <span class="ketqua">'+ ketqua_pheptinh_binhphuong +'</span><br />');
+
+        // Tính lập phương
+        var number = 4;
+        var ketqua_pheptinh_lapphuong = tinh_lap_phuong(number);
+        document.write('Lập phương của số <span class="so">'+ number +'</span> là <span class="ketqua">'+ ketqua_pheptinh_lapphuong +'</span><br />');
+    </script>
+</body>
+
+</html>

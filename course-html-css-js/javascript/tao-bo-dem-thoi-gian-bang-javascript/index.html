@@ -1,0 +1,120 @@
+<!DOCTYPE html>
+<html lang="vi">
+
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="keywords" content="Nền tảng,HTML,CSS,XML,JavaScript, Lập trình C#, Lập trình, Web, Kiến thức, Đồ án">
+    <meta name="author" content="Dương Nguyễn Phú Cường">
+    <meta name="description"
+        content="Cung cấp các kiến thức Nền tảng, cơ bản về Lập trình, Lập trình web, Lập trình di động, Cơ sở dữ liệu, ...">
+    <meta property="og:locale" content="vi_VN">
+    <meta property="og:type" content="website">
+    <meta property="og:title" content="Nền tảng Kiến thức">
+    <meta property="og:description"
+        content="Cung cấp các kiến thức Nền tảng, cơ bản về Lập trình, Lập trình web, Lập trình di động, Cơ sở dữ liệu, ...">
+    <meta property="og:url" content="https://nentang.vn/">
+    <meta property="og:site_name" content="Nền tảng Kiến thức">
+    <title>Bài tập Tạo bộ đếm thời gian trong JavaScript | NenTang.vn</title>
+    <style>
+        #clockdiv h2 {
+            font-family: 'Roboto';
+            font-weight: 50;
+            color: #034688;
+            text-align: center;
+            font-size: 1px;
+            margin: 0 0 6px
+        }
+
+        #clockdiv {
+            font-family: sans-serif;
+            color: #fff;
+            background: rgba(255, 255, 255, 0);
+            display: inline-block;
+            font-weight: 10;
+            text-align: center;
+            font-size: 15px;
+            margin: 0px auto;
+            padding: 1px;
+            width: 100%
+        }
+
+        #clockdiv>div {
+            padding: 2px 2px;
+            border-radius: 3px;
+            background: #034688;
+            display: inline-block
+        }
+
+        #clockdiv div>span {
+            padding: 0;
+            border-radius: 3px;
+            font-size: 15px;
+            display: inline-block
+        }
+
+        #clockdiv.smalltext {
+            padding-top: 5px;
+            font-size: 10px
+        }
+    </style>
+</head>
+
+<body>
+    <div id="clockdiv">
+        <div>
+            <span class="minutes"></span>
+            <div class="smalltext">Minutes</div>
+        </div>
+        <div>
+            <span class="seconds"></span>
+            <div class="smalltext">Seconds</div>
+        </div>
+    </div>
+    <script type='text/javascript'>
+        //<![CDATA[
+        function getTimeRemaining(endtime) {
+            var t = Date.parse(endtime) - Date.parse(new Date());
+            var seconds = Math.floor((t / 1000) % 60);
+            var minutes = Math.floor((t / 1000 / 60));
+            return {
+                'total': t,
+                'minutes': minutes,
+                'seconds': seconds
+            };
+        }
+        function initializeClock(id, endtime) {
+            var clock = document.getElementById(id);
+            var minutesSpan = clock.querySelector('.minutes');
+            var secondsSpan = clock.querySelector('.seconds');
+            function updateClock() {
+                var t = getTimeRemaining(endtime);
+                minutesSpan.innerHTML = ('0' + t.minutes).slice(-2);
+                secondsSpan.innerHTML = ('0' + t.seconds).slice(-2);
+                if (t.total <= 0) {
+                    clearInterval(timeinterval);
+                }
+            }
+            updateClock();
+            var timeinterval = setInterval(updateClock, 1000);
+        }
+        // Đơn vị thời gian là miliseconds
+        //                    Thời gian hiện tại       + thêm mấy miliseconds
+        //                                                giờ   phút  giây
+        // var deadline = new Date(Date.parse(new Date()) + (1.5 * 60 * 60 * 1000));
+
+        // 15' = 15 * 60 * 1000 milisecond
+        var deadline = new Date(Date.parse(new Date()) + (15 * 60 * 1000));
+
+        // 45' = 45 * 60 * 1000 milisecond
+        var deadline = new Date(Date.parse(new Date()) + (45 * 60 * 1000));
+
+        // 60' = 60 * 60 * 1000 milisecond
+        var deadline = new Date(Date.parse(new Date()) + (45 * 60 * 1000));
+        
+        initializeClock('clockdiv', deadline);
+        //]]>
+    </script>
+</body>
+
+</html>
