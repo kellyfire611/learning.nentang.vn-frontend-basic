@@ -1,0 +1,124 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta name="keywords" content="Nền tảng,HTML,CSS,XML,JavaScript, Lập trình C#, Lập trình, Web, Kiến thức, Đồ án">
+  <meta name="author" content="Dương Nguyễn Phú Cường">
+  <meta name="description"
+    content="Cung cấp các kiến thức Nền tảng, cơ bản về Lập trình, Lập trình web, Lập trình di động, Cơ sở dữ liệu, ...">
+  <meta property="og:locale" content="vi_VN">
+  <meta property="og:type" content="website">
+  <meta property="og:title" content="Nền tảng Kiến thức">
+  <meta property="og:description"
+    content="Cung cấp các kiến thức Nền tảng, cơ bản về Lập trình, Lập trình web, Lập trình di động, Cơ sở dữ liệu, ...">
+  <meta property="og:url" content="https://nentang.vn/">
+  <meta property="og:site_name" content="Nền tảng Kiến thức">
+  <title>Bài tập Một vài Định dạng Phổ biến được áp dụng với CSS PSEUDO CLASS | NenTang.vn</title>
+
+  <link href="css/app.css" type="text/css" rel="stylesheet" />
+</head>
+
+<body>
+  <h1>Danh sách Sinh viên</h1>
+
+  <table border="1" width="464" cellspacing="0" class="table-danhsachsinhvien" style="border-style: solid;">
+    <caption>
+      <span style="color: rgb(255, 0, 255);"><strong>Danh sách sinh viên</strong></span>
+    </caption>
+    <thead>
+      <tr>
+        <td style="text-align: center;"><span style="color: rgb(255, 0, 0);"><strong>STT</strong></span></td>
+        <td style="text-align: center;"><span style="color: rgb(255, 0, 0);"><strong>MSSV</strong></span></td>
+        <td style="text-align: center;"><span style="color: rgb(255, 0, 0);"><strong>Họ và tên</strong></span></td>
+        <td style="text-align: center;"><span style="color: rgb(255, 0, 0);"><strong>Ngày sinh</strong></span></td>
+        <td style="text-align: center;"><span style="color: rgb(255, 0, 0);"><strong>Điểm LT</strong></span></td>
+        <td style="text-align: center;"><span style="color: rgb(255, 0, 0);"><strong>Điểm TH</strong></span></td>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td style="text-align: center;">1</td>
+        <td>NT001</td>
+        <td>Nguyễn Văn A</td>
+        <td>11/06/1989</td>
+        <td style="text-align: right;">8</td>
+        <td style="text-align: right;">8</td>
+      </tr>
+      <tr>
+        <td style="text-align: center;">2</td>
+        <td>NT002</td>
+        <td>Trần Văn B</td>
+        <td>05/02/1987</td>
+        <td style="text-align: right;">4</td>
+        <td style="text-align: right;">9</td>
+      </tr>
+      <tr>
+        <td style="text-align: center;">3</td>
+        <td>NT002</td>
+        <td>Nguyễn Thị C</td>
+        <td>25/01/1993</td>
+        <td style="text-align: right;">9</td>
+        <td style="text-align: right;">4</td>
+      </tr>
+      <tr>
+        <td style="text-align: center;">4</td>
+        <td>NT004</td>
+        <td>Dương Trung D</td>
+        <td>15/04/1993</td>
+        <td style="text-align: right;">10</td>
+        <td style="text-align: right;">5</td>
+      </tr>
+      <tr>
+        <td style="text-align: center;">5</td>
+        <td>NT005</td>
+        <td>Nguyễn Bé E</td>
+        <td>07/06/1983</td>
+        <td style="text-align: right;">6</td>
+        <td style="text-align: right;">7</td>
+      </tr>
+    </tbody>
+  </table>
+
+  <hr />
+  <h1>Phân biệt :nth-child và :nth-of-type</h1>
+  <div class="vidu">
+    <h3>Tiêu đề</h3>
+    <p>Nguyễn Văn A</p>
+    <span>Hello, tôi là nội dung thẻ span</span>
+    <p>Dương Nguyễn Phú Cường</p>                 <!-- Chúng ta muốn chọn phần tử này để định dạng -->
+  </div>
+
+  <hr />
+  <h1>Định dạng CSS PSEUDO áp dụng trong FORM</h1>
+  <form name="frmDangNhap" id="frmDangNhap" method="post" action="#" class="form-dangnhap">
+    <table>
+      <tr>
+        <td>Email đăng nhập:</td>
+        <td>
+          <input type="email" name="txtEmail" id="txtEmail" placeholder="Nhập email" class="control" required />
+        </td>
+      </tr>
+      <tr>
+        <td>Mật khẩu:</td>
+        <td>
+          <input type="password" name="txtMatKhau" id="txtMatKhau" placeholder="Nhập mật khẩu" class="control" required />
+        </td>
+      </tr>
+      <tr>
+        <td>Họ tên Đầy đủ:</td>
+        <td>
+          <input type="text" name="txtHoTen" id="txtHoTen" placeholder="Nhập họ tên" class="control" />
+        </td>
+      </tr>
+      <tr>
+        <td colspan="2">
+          <button name="btnDangNhap" id="btnDangNhap" type="submit">Đăng nhập</button>
+        </td>
+      </tr>
+    </table>
+  </form>
+</body>
+
+</html>

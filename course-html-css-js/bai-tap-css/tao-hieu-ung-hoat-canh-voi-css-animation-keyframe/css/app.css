@@ -1,0 +1,137 @@
+.tieude {
+  color: #000;
+  background: #ccc;
+  transition: color 2s, background 2s;
+}
+.tieude:hover {
+  color: yellow;
+  background: red;
+}
+
+.promotion {
+  border: 1px solid red;
+  border-radius: 10px;
+  padding: 5px;
+  margin-top: 1rem;
+  margin-bottom: 1rem;
+  font-weight: bold;
+  position: relative;
+}
+.promotion .promotion-text {
+  background: red;
+  color: yellow;
+  position: absolute;
+  animation: crazy-animation-text 300ms infinite;
+}
+
+/* Tạo hoạt cảnh với name "crazy-animation-text" 
+- Thời gian 5s
+- Có tất cả 6 frame (Trạng thái/Thời điểm)
+*/
+@keyframes crazy-animation-text {
+  0% { 
+    transform: translateY(0px);
+  }
+  25% { 
+    transform: translateY(-5px);
+  }
+  50% { 
+    transform: translateY(-10px);
+  }
+  75% { 
+    transform: translateY(-5px);
+  }
+  100% { 
+    transform: translateY(-0px);
+  }
+}
+
+.spinner-container {
+  width: 200px;
+  height: 200px;
+  box-sizing: border-box;
+  border: 1px solid #000;
+  position: relative;
+}
+.spinner-container .spinner-icon {
+  width: 50px;
+  height: 50px;
+  box-sizing: border-box;
+  border: 1px solid red;
+  
+  position: absolute;
+  /*
+  Công thức canh giữa:
+  top: (Chiều cao CHA / 2) - (chiều cao CON / 2);
+  left (Chiều rộng CHA / 2) - (chiều rộng CON / 2);
+  */
+  /* Trạng thái 1 (GÓC 12H)
+  top: 0px;
+  left: (Chiều rộng CHA / 2) - (chiều rộng CON / 2) */
+  /* top: 0px;
+  left: 75px;  */
+
+  /* Trạng thái 2 (GÓC 3H)
+  top: (Chiều cao CHA / 2) - (chiều cao CON / 2)
+  left: (Chiều rộng CHA) - (chiều rộng CON) */
+  /* top: 75px;
+  left: 150px;  */
+
+  /* Trạng thái 3 (GÓC 6H)
+  top: (Chiều cao CHA) - (chiều cao CON)
+  left: (Chiều rộng CHA / 2) - (chiều rộng CON / 2) */
+  /* top: 150px;
+  left: 75px;  */
+
+  /* Trạng thái 4 (GÓC 9H)
+  top: (Chiều cao CHA / 2) - (chiều cao CON / 2)
+  left: 0PX */
+  /* top: 75px;
+  left: 0px;  */
+
+  animation: spinner-animation 4s infinite;
+}
+
+@keyframes spinner-animation {
+  0% {
+    top: 0px;
+    left: 75px;
+  }
+  25% {
+    top: 75px;
+    left: 150px
+  }
+  50% {
+    top: 150px;
+    left: 75px; 
+  }
+  75% {
+    top: 75px;
+    left: 0px;
+  }
+  100% {
+    top: 0px;
+    left: 75px;
+  }
+}
+
+.loader {
+  border: 16px solid #f3f3f3;
+  border-radius: 50%;
+  border-top: 16px solid #3498db;
+  width: 120px;
+  height: 120px;
+
+  /* animation: spin 2s linear infinite; */
+}
+
+/* Safari */
+@-webkit-keyframes spin {
+  0% { -webkit-transform: rotate(0deg); }
+  100% { -webkit-transform: rotate(360deg); }
+}
+
+@keyframes spin {
+  0% { transform: rotate(0deg); }
+  100% { transform: rotate(360deg); }
+}

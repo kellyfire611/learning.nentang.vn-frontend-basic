@@ -1,0 +1,52 @@
+/* Tô màu dòng chẵn */
+.table-danhsachsinhvien tbody tr:nth-child(2n) {
+  background: rgb(241 169 222);
+}
+/* Tô màu dòng lẻ */
+.table-danhsachsinhvien tbody tr:nth-child(2n+1) {
+  background: rgb(216 235 214);
+}
+
+/*
+Chọn phần tử thỏa mãn điều kiện sau để định dạng:
+- Là con thứ 2 của CHA
+- Có thẻ là P
+=> nếu thỏa mãn thì định dạng, nếu không thì thôi.
+*/
+.vidu p:nth-child(2) {
+  background: red;
+}
+
+/*
+Chọn phần tử thỏa mãn điều kiện sau để định dạng:
+- Có kiểu thẻ là P
+- Là con có cùng kiểu thứ 2 của CHA
+*/
+.vidu p:nth-of-type(2) {
+  background: blue;
+  color: #fff;
+}
+
+/* Chrome, Edge */
+.form-dangnhap ::-webkit-input-placeholder {
+  color: green;
+}
+
+/* Internet Explorer 10-11 */
+:-ms-input-placeholder { 
+  color: green;
+}
+
+::placeholder {
+  color: green;
+}
+
+.form-dangnhap .control:focus {
+  border: 2px solid rgb(41, 115, 234);
+  background-color: rgb(198 229 76);
+  color: #fff;
+}
+.form-dangnhap .control:required {
+  border-left: 5px solid red;
+}
+
