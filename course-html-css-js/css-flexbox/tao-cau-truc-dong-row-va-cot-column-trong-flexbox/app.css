@@ -1,0 +1,27 @@
+* {
+  box-sizing: border-box;
+}
+.row-container-flex {
+  border: 10px dashed #6600CC;
+  display: flex;
+}
+.column-item-wrapper {
+  background: #F8CECC;
+  border: 3px solid #B85450;
+  flex: 1 1 auto;
+  flex-basis: 20%; /* Giữ cho chiều rộng các cột bằng nhau */
+
+  padding: 20px;
+}
+.item {
+  background: #CDEB8B;
+  width: 100%;
+  border-radius: 20px;
+  border: 1px solid #000;
+  height: 120px;
+
+  /* Canh giữa phần tử con bên trong .item */
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
