@@ -103,6 +103,10 @@ btnSubmit.addEventListener("click", function () {
 
   renderTableData(petArr);
   resetForm();
+
+  // Lưu trữ dữ liệu Danh sách Pet array vào LocalStorate với key="petData"
+  // Gọi hàm vừa viết trong file "script/storage.js"
+  saveToStorage("petData", petArr);
 });
 
 // Hiển thị danh sách thú cưng
@@ -160,7 +164,28 @@ function deletePet(x) {
       if (petArr[i].id === x) {
         petArr.splice(i, 1);
         renderTableData(petArr);
+
+        // Sau khi xóa dòng dữ liệu -> tiến hành cập nhập lại dữ liệu trong LocalStorage
+        // Lưu trữ dữ liệu Danh sách Pet array vào LocalStorate với key="petData"
+        // Gọi hàm vừa viết trong file "script/storage.js"
+        saveToStorage("petData", petArr);
       }
     }
   }
 }
+
+// Hiển thị danh sách Pet Data đã lưu trữ trong LocalStorage ngay khi vừa load xong trang web
+// Do dữ liệu lưu trữ trong LocalStorage chỉ là String -> nên cần convert sang Array để hiển thị
+// Sử dụng hàm JSON.parse('string') -> sẽ chuyển từ string sang array
+var dataString = getFromStorage("petData");
+var dataArr = JSON.parse(dataString);
+
+petArr.splice(0, petArr.length); // Clear toàn bộ PetArr trước khi render lại table
+for (let i = 0; i < dataArr.length; i++) {
+  let pet = dataArr[i];
+  pet.date = new Date(pet.date);
+
+  // Add vào petArr
+  petArr.push(pet);
+}
+renderTableData(petArr); // Hiển thị lại Table
