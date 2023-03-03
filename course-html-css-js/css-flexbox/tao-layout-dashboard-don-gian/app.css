@@ -1,0 +1,47 @@
+body {
+  margin: 0;
+}
+
+.header {
+  background: #08f;
+  height: 50px;
+  padding: 5px;
+}
+
+.content {
+  background: #ccc;
+  border: 3px solid red;
+  display: flex;
+  flex-grow: 1;
+  flex-direction: row;
+}
+
+.main {
+  display: flex;
+  flex-grow: 1;
+  flex-direction: column;
+}
+
+.breadcrumb {
+  background: yellow;
+  border: 3px solid white;
+  display: flex;
+  height: 40px;
+}
+
+.sidebar {
+  width: 380px;
+  background-color: #888;
+  display: flex;
+}
+
+.nav {
+  background-color: #fcf;
+  height: 40px;
+  border: 3px solid green;
+}
+
+.main-content {
+  border: 3px solid purple;
+  flex-grow: 1;
+}
