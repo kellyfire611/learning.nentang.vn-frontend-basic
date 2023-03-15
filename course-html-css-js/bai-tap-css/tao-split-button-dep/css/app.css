@@ -1,0 +1,141 @@
+.bookmark {
+  box-sizing: border-box;
+  border: 1px solid red;
+}
+.bookmark .bookmark-control-type {
+  border: 1px solid red;
+  background: blue;
+  color: #fff;
+}
+.bookmark .bookmark-display-text {
+  border: 1px solid red;
+  background: blue;
+  color: #fff;
+}
+.bookmark .bookmark-key {
+  border: 1px solid red;
+  background: blue;
+  color: #fff;
+}
+.bookmark .bookmark-modifiers {
+  border: 1px solid red;
+  background: blue;
+  color: #fff;
+}
+
+
+/***************/
+/* body {
+  height: 100vh;
+  margin: 0;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  background: #DCE0E8;
+} */
+
+.multi-button {
+  display: flex;
+  justify-content: space-between;
+  width: 315px;
+}
+
+button {
+  border-radius: 10px;
+  font-size: 16px;
+  padding: 0;
+  width: 100px;
+  cursor: pointer;
+  transition: 0.3s ease;
+  background: rgba(120, 113, 130, 0.9);
+  color: #fff;
+  border: 2px solid transparent;
+  font-weight: 600;
+  margin: 0;
+  overflow: hidden;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+
+button:hover {
+  position: relative;
+  background: #fff;
+  color: rgba(120, 113, 130, 0.9);
+  border: 2px solid rgba(120, 113, 130, 0.9);
+}
+
+.btn__text {
+  padding: 6px 8px;
+}
+
+.btn__icon {
+  background: #787182;
+  color: #fff;
+  height: 25px;
+  align-items: center;
+  display: flex;
+  padding: 6px 12px;
+  transition: 0.3s ease;
+}
+
+button:hover .btn__icon {
+  background: #f9f9f9;
+  color: rgba(120, 113, 130, 0.9);
+}
+
+
+/************/
+* {
+  box-sizing: border-box;
+}
+.bookmark {
+  background: yellow;
+  color: red;
+  font-size: 0.8rem;
+  cursor: pointer;
+}
+.bookmark:hover {
+  background: blue;
+  color: #fff;
+}
+.bookmark {
+  position: relative;
+}
+.bookmark::before {
+  content: attr(data-control-type) "\f0c9";
+  font-size: 0.5rem;
+  color: #000;
+}
+.bookmark::after {
+  display: block;
+  opacity: 0;
+  visibility: hidden;
+  position: absolute;
+  content: attr(data-control-type);
+  padding: 2px;
+  font-size: 0.7rem;
+  top: -2px;
+  left: 0px;
+  transform: translateX(0%) translateY(-100%);
+  border: 0.5px dashed #fff;
+  background: #000;
+  color: #fff;
+  white-space: nowrap;
+  z-index: 2;
+  border-radius: 2px;
+  transition: opacity 0.2s cubic-bezier(0.64, 0.09, 0.08, 1), transform 0.2s cubic-bezier(0.64, 0.09, 0.08, 1);
+}
+.bookmark:hover::after {
+  display: block;
+  opacity: 1;
+  visibility: visible;
+}
+
+/* TABLE */
+.bookmark-table {
+  border-collapse: collapse;
+}
+.bookmark-table th, .bookmark-table td {
+  border: 1px solid red;
+}

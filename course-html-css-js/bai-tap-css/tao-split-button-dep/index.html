@@ -1,0 +1,91 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta name="keywords" content="Nền tảng,HTML,CSS,XML,JavaScript, Lập trình C#, Lập trình, Web, Kiến thức, Đồ án">
+  <meta name="author" content="Dương Nguyễn Phú Cường">
+  <meta name="description"
+    content="Cung cấp các kiến thức Nền tảng, cơ bản về Lập trình, Lập trình web, Lập trình di động, Cơ sở dữ liệu, ...">
+  <meta property="og:locale" content="vi_VN">
+  <meta property="og:type" content="website">
+  <meta property="og:title" content="Nền tảng Kiến thức">
+  <meta property="og:description"
+    content="Cung cấp các kiến thức Nền tảng, cơ bản về Lập trình, Lập trình web, Lập trình di động, Cơ sở dữ liệu, ...">
+  <meta property="og:url" content="https://nentang.vn/">
+  <meta property="og:site_name" content="Nền tảng Kiến thức">
+  <title>Bài tập Tạo Split button đẹp | NenTang.vn</title>
+
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.3.0/css/all.min.css" integrity="sha512-SzlrxWUlpfuzQ+pcUCosxcglQRNAq/DZjVsC0lE40xsADsfeQoEypE+enwcOiGjk/bSuGGKHEyjSoQ1zVisanQ==" crossorigin="anonymous" referrerpolicy="no-referrer" />
+  <link href="css/app.css" type="text/css" rel="stylesheet" />
+</head>
+
+<body>
+  <h1>Danh sách Button</h1>
+<!-- 
+  <div>
+    <span class="bookmark">
+      <span class="bookmark-control-type">TEXT</span>
+      <span class="bookmark-display-text">Họ tên</span>
+      <span class="bookmark-key">canhan.hoten</span>
+      <span class="bookmark-modifiers">{readonly:true;min:0;max:0}</span>
+    </span>
+  </div>
+
+  <div class="multi-button">
+    <button class="bookmark">
+      <span class="btn__text">Cut</span>
+      <span class="btn__icon"><i class="fas fa-cut"></i></span>
+    </button>
+  </div> -->
+
+
+  Tên đơn vị:
+  <span class="bookmark" data-control-type="text" data-display-text="Tên đơn vị" data-key="tochuc.tendonvi"
+    data-bookmark-modifiers="{minlength:3;maxlength:50}">Tên đơn vị</span>
+  <br />
+  Checkbox lựa chọn: 
+  <br />
+  - Lựa chọn 1: <span class="bookmark" data-control-type="checkbox" data-display-text="Lựa chọn đồng ý các điều khoản" data-key="hoso.luachoncheckbox.0"
+  data-bookmark-modifiers="{required: true}">Lựa chọn đồng ý các điều khoản</span>
+  <br />
+  - Lựa chọn 2: <span class="bookmark" data-control-type="checkbox" data-display-text="Lựa chọn không đồng ý điều khoản" data-key="hoso.luachoncheckbox.1"
+  data-bookmark-modifiers="{required: true}">Lựa chọn không đồng ý điều khoản</span>
+
+  <br />
+  Table nhiều dòng
+  <table class="bookmark-table" data-control-type="table" data-display-text="Table danh sách Sinh viên"
+    data-key="dssinhvien">
+    <tr>
+      <th>STT</th>
+      <th>Họ tên</th>
+      <th>Điểm LT</th>
+      <th>Điểm TH</th>
+    </tr>
+    <tr class="bookmark-table-row" data-control-type="table-row">
+      <td>
+        <span class="bookmark" data-control-type="number" data-display-text="STT" data-key="stt"
+          data-bookmark-modifiers="{min:0;max:100}">STT</span>
+      </td>
+      <td>
+        <span class="bookmark" data-control-type="text" data-display-text="Họ tên" data-key="hoten"
+          data-bookmark-modifiers="{minlength:3;maxlength:50}">Họ tên</span>
+      </td>
+      <td>
+        <span class="bookmark" data-control-type="number" data-display-text="Điểm LT" data-key="diemlt"
+          data-bookmark-modifiers="{min:0;max:100}">Điểm LT</span>
+      </td>
+      <td>
+        <span class="bookmark" data-control-type="number" data-display-text="Điểm TH" data-key="diemth"
+          data-bookmark-modifiers="{min:0;max:100}">Điểm TH</span>
+      </td>
+    </tr>
+  </table>
+
+  <i class="fa-solid fa-bars"></i>
+
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.3.0/js/all.min.js" integrity="sha512-2bMhOkE/ACz21dJT8zBOMgMecNxx0d37NND803ExktKiKdSzdwn+L7i9fdccw/3V06gM/DBWKbYmQvKMdAA9Nw==" crossorigin="anonymous" referrerpolicy="no-referrer"></script>
+</body>
+
+</html>
