@@ -94,16 +94,23 @@ button:hover .btn__icon {
   color: red;
   font-size: 0.8rem;
   cursor: pointer;
-}
-.bookmark:hover {
-  background: blue;
-  color: #fff;
-}
-.bookmark {
   position: relative;
 }
+.bookmark[data-control-type="text"]::before {
+  font-family: 'Font Awesome 6 Free';
+  content: '\f15b';
+  font-size: 0.5rem;
+  color: #000;
+}
+.bookmark[data-control-type="number"]::before {
+  font-family: 'Font Awesome 6 Free';
+  content: '\f15b';
+  font-size: 0.5rem;
+  color: #000;
+}
 .bookmark::before {
-  content: attr(data-control-type) "\f0c9";
+  font-family: 'Font Awesome 6 Free';
+  content: '\f004';
   font-size: 0.5rem;
   color: #000;
 }
@@ -112,7 +119,7 @@ button:hover .btn__icon {
   opacity: 0;
   visibility: hidden;
   position: absolute;
-  content: attr(data-control-type);
+  content: attr(data-control-type) '|' attr(data-key);
   padding: 2px;
   font-size: 0.7rem;
   top: -2px;
@@ -126,6 +133,10 @@ button:hover .btn__icon {
   border-radius: 2px;
   transition: opacity 0.2s cubic-bezier(0.64, 0.09, 0.08, 1), transform 0.2s cubic-bezier(0.64, 0.09, 0.08, 1);
 }
+.bookmark:hover {
+  background: blue;
+  color: #fff;
+}
 .bookmark:hover::after {
   display: block;
   opacity: 1;
@@ -135,7 +146,32 @@ button:hover .btn__icon {
 /* TABLE */
 .bookmark-table {
   border-collapse: collapse;
+  position: relative;
 }
 .bookmark-table th, .bookmark-table td {
-  border: 1px solid red;
+  border: 1px solid #000;
+}
+.bookmark-table::after {
+  display: block;
+  opacity: 0;
+  visibility: hidden;
+  position: absolute;
+  content: attr(data-control-type) '|' attr(data-key);
+  padding: 2px;
+  font-size: 0.7rem;
+  top: -2px;
+  left: 0px;
+  transform: translateX(0%) translateY(-100%);
+  border: 0.5px dashed #fff;
+  background: #000;
+  color: #fff;
+  white-space: nowrap;
+  z-index: 2;
+  border-radius: 2px;
+  transition: opacity 0.2s cubic-bezier(0.64, 0.09, 0.08, 1), transform 0.2s cubic-bezier(0.64, 0.09, 0.08, 1);
+}
+.bookmark-table:hover::after {
+  display: block;
+  opacity: 1;
+  visibility: visible;
 }
