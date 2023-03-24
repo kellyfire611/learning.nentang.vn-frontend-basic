@@ -85,3 +85,163 @@
 </body>
 
 </html>
+
+
+/*
+<table class="bookmark-table w-100">
+  <tr>
+    <td class="text-center font-bold">CỘNG HÒA XÃ HỘI CHỦ NGHĨA VIỆT NAM</td>
+  </tr>
+  <tr>
+    <td class="text-center font-bold">Độc lập - Tự do - Hạnh phúc</td>
+  </tr>
+  <tr>
+    <td class="text-center">----------------------</td>
+  </tr>
+  <tr>
+    <td></td>
+  </tr>
+  <tr>
+    <td class="text-center font-bold">TỜ KHAI</td>
+  </tr>
+  <tr>
+    <td class="text-center font-bold">CẤP BẢN SAO TRÍCH LỤC HỘ TỊCH</td>
+  </tr>
+  <tr>
+    <td class="text-center">Kính gửi: <sup>(1)</sup>
+      <span class="bookmark" style="width: 400px;" data-control-type="text" data-display-text="Kính gửi" data-key="kinhgui" data-bookmark-modifiers="{minlength:3;maxlength:50}">Kính gửi</span>
+    </td>
+  </tr>
+</table>
+<br />
+<table class="bookmark-table w-100">
+  <tr>
+    <td><b>Họ, chữ đệm, tên người yêu cầu:</b>
+      <span class="bookmark" style="width: 300px;" data-control-type="text" data-display-text="Họ tên người yêu cầu" data-key="canhan.hoten" data-bookmark-modifiers="{minlength:3;maxlength:50}">Họ tên người yêu cầu
+        <div class="bookmark-error-contain">
+          <span class="bookmark-error" data-validation-rule="required">Họ tên bắt buộc nhập</span>
+      <span class="bookmark-error" data-validation-rule="min">Họ tên từ {X} ký tự</span>
+      <span class="bookmark-error" data-validation-rule="max">Họ tên nhỏ hơn {X} ký tự</span>
+      </div>
+      </span>
+    </td>
+  </tr>
+  <tr>
+    <td>Nơi cư trú: <sup>(2)</sup>
+      <span class="bookmark" data-control-type="textarea" data-display-text="Nơi cư trú" data-key="canhan.noicutru" data-bookmark-modifiers="{minlength:3;maxlength:50}">Nơi cư trú</span>
+    </td>
+  </tr>
+  <tr>
+    <td>
+      Tuổi: <sup>(4):
+        <span class="bookmark" style="width: 100px;" data-control-type="text" data-display-text="Tuổi" data-key="canhan.tuoi" data-bookmark-modifiers="{minlength:3;maxlength:50}">Tuổi</span>
+      </td>
+    </tr>
+  <tr>
+    <td>Giấy tờ tùy thân: <sup>(3)</sup>
+      <span class="bookmark" data-control-type="textarea" data-display-text="Giấy tờ tùy thân" data-key="canhan.giaytotuythan" data-bookmark-modifiers="{minlength:3;maxlength:50}">Giấy tờ tùy thân</span>
+    </td>
+  </tr>
+  <tr>
+    <td>Quan hệ với người được cấp bản sao Trích lục hộ tịch:
+      <span class="bookmark" data-control-type="text" data-display-text="Quan hệ với người được cấp bản sao Trích lục hộ tịch" data-key="canhan.moiquanhe" data-bookmark-modifiers="{minlength:3;maxlength:50}">Quan hệ với người được cấp bản sao Trích lục hộ tịch</span>
+    </td>
+  </tr>
+  <tr>
+    <td><b>Đề nghị cơ quan cấp bản sao Trích lục hộ tịch:</b>
+      <span class="bookmark" data-control-type="text" data-display-text="Trích lục hộ tịch" data-key="giayto.trichluchotich" data-bookmark-modifiers="{minlength:3;maxlength:50}">Trích lục hộ tịch</span>
+      <b>cho người có tên dưới đây:</b>
+    </td>
+  </tr>
+  <tr>
+    <td>
+      Lựa chọn SELECTION Loại Giấy tờ:
+      <span class="bookmark-select" data-control-type="select" data-display-text="Lựa chọn Selection" data-key="giayto.luachon" data-bookmark-modifiers="{required: true}">Lựa chọn loại giấy tờ
+        <span class="bookmark-select-option" data-control-type="select-option" data-value="cccd">Căn cước công dân</span>
+      <span class="bookmark-select-option" data-control-type="select-option" data-value="cmnd">Chứng minh nhân dân</span>
+      <span class="bookmark-select-option" data-control-type="select-option" data-value="khaisinh">Giấy khai sinh</span>
+      </span>
+    </td>
+  </tr>
+  <tr>
+    <td>
+      Lựa chọn SELECTION Lấy từ Server:
+      <span class="bookmark-select" data-control-type="select" data-display-text="Lựa chọn Selection" data-key="giayto.luachon" data-bookmark-modifiers="{required: true}"
+      data-server-key="system.list_user"
+      >Lựa chọn lấy từ Server</span>
+    </td>
+  </tr>
+</table>
+
+<h2>Radio và checkbox</h2>
+Radio
+<div class="bookmark" data-control-type="radioGroup" data-key="Gioitinh">
+  <div class="bookmark-radio" data-control-type="radio" data-display-text="Nữ" data-value="Nu"></div>
+  <div class="bookmark-radio" data-control-type="radio" data-display-text="Nam" data-value="Nam"></div>
+</div>
+CheckBox
+<div class="bookmark" data-control-type="checkboxGroup" data-key="SoThich">
+  <div class="bookmark-checkbox" data-control-type="checkbox" data-display-text="Nghe nhạc" data-key="ngheNhac"></div>
+  <div class="bookmark-checkbox" data-control-type="checkbox" data-display-text="Xem Phim" data-key="XemPhim"></div>
+  <div class="bookmark-checkbox" data-control-type="checkbox" data-display-text="Gym" data-key="gym"></div>
+</div>
+selectOptions:
+<div class="bookmark" data-control-type="selectOptions" data-key="chonnguoidaidien">
+  <div class="bookmark-select" data-control-type="select" data-display-text="Nghe nhạc" data-key="ngheNhac"></div>
+  <div class="bookmark-select" data-control-type="select" data-display-text="Xem Phim" data-key="XemPhim"></div>
+  <div class="bookmark-select" data-control-type="select" data-display-text="Gym" data-key="gym"></div>
+</div>
+
+<br />
+<table class="bookmark-table w-100 table-bordered" data-control-type="table"
+  data-display-text="Table danh sách Sinh viên 2" data-key="dslienhe">
+  <tr>
+    <th>MSSV</th>
+    <th>Họ tên</th>
+    <th>Địa chỉ</th>
+  </tr>
+  <tr class="bookmark-table-row" data-control-type="table-row">
+    <td>
+      <span class="bookmark w-100" data-control-type="number" data-display-text="MSSV" data-key="mssv" data-bookmark-modifiers='{min:0,max:100}'>MSSV</span>
+    </td>
+    <td>
+      <span class="bookmark w-100" data-control-type="text" data-display-text="Họ tên" data-key="hoten" data-bookmark-modifiers="{min:3,max:50}">Họ tên</span>
+    </td>
+    <td>
+      <span class="bookmark w-100" data-control-type="number" data-display-text="Địa chỉ" data-key="diachi" data-bookmark-modifiers="{min:0,max:100}">Địa chỉ</span>
+    </td>
+  </tr>
+  <tr>
+</table>
+<br />
+<table class="bookmark-table w-100">
+  <tr>
+    <td class="w-25"></td>
+    <td class="w-75 text-center">
+      Làm tại:
+      <span class="bookmark" style="width: 100px;" data-control-type="text" data-display-text="Làm tại" data-key="noichon.lamtai" data-bookmark-modifiers="{minlength:3;maxlength:50}">Làm tại</span>
+      , ngày
+      <span class="bookmark" style="width: 50px;" data-control-type="text" data-display-text="Ngày" data-key="ngay" data-bookmark-modifiers="{minlength:3;maxlength:50}"
+      data-server-key="system.current_datetime" data-server-key-format="dd"
+      >Ngày</span>
+      , tháng
+      <span class="bookmark" style="width: 50px;" data-control-type="text" data-display-text="Tháng" data-key="thang" data-bookmark-modifiers="{minlength:3;maxlength:50}"
+      data-server-key="system.current_datetime" data-server-key-format="MM">Tháng</span>
+      , năm
+      <span class="bookmark" style="width: 50px;" data-control-type="text" data-display-text="Năm" data-key="nam" data-bookmark-modifiers="{minlength:3;maxlength:50}"
+      data-server-key="system.current_datetime" data-server-key-format="yyyy">Năm</span>
+      <br />
+      <b>Người yêu cầu</b>
+      <br />
+      <i>(ký và ghi rõ họ, chữ đệm, tên)</i>
+      <br />
+      <br />
+      <br />
+      <br />
+      <br />
+      <span class="bookmark text-center" data-control-type="text" data-display-text="Họ tên người yêu cầu" data-key="hotennguoiyeucau" data-bookmark-modifiers="{minlength:3;maxlength:50}"
+      data-server-key="system.current_user.fullname">Họ tên người yêu cầu</span>
+    </td>
+  </tr>
+</table>
+*/
