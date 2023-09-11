@@ -1,0 +1,63 @@
+<!DOCTYPE html>
+<html lang="vi">
+
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta name="keywords" content="Nền tảng,HTML,CSS,XML,JavaScript, Lập trình C#, Lập trình, Web, Kiến thức, Đồ án">
+  <meta name="author" content="Dương Nguyễn Phú Cường">
+  <meta name="description"
+    content="Cung cấp các kiến thức Nền tảng, cơ bản về Lập trình, Lập trình web, Lập trình di động, Cơ sở dữ liệu, ...">
+  <meta property="og:locale" content="vi_VN">
+  <meta property="og:type" content="website">
+  <meta property="og:title" content="Nền tảng Kiến thức">
+  <meta property="og:description"
+    content="Cung cấp các kiến thức Nền tảng, cơ bản về Lập trình, Lập trình web, Lập trình di động, Cơ sở dữ liệu, ...">
+  <meta property="og:url" content="https://nentang.vn/">
+  <meta property="og:site_name" content="Nền tảng Kiến thức">
+  <title>Bài tập JavaScript Canvas | NenTang.vn</title>
+  <style>
+    canvas {
+      border: 1px solid red;
+    }
+  </style>
+</head>
+
+<body>
+
+  <h1>Học JavaScript Canvas</h1>
+  <h3>Vẽ hình chữ nhật có đường chéo</h3>
+
+  <canvas width="400px" height="300px" id="mCanvas"></canvas>
+
+  <script>
+    window.onload = function() {
+      var canvas  = document.getElementById("mCanvas");
+      var ctext = canvas.getContext("2d");
+
+      // Vẽ hình chữ nhật
+      ctext.beginPath();
+      ctext.rect(50, 50, 200, 100);
+      ctext.fillStyle = "DarkBlue";
+      ctext.fill();
+
+      // Vẽ đường chéo X1
+      ctext.beginPath(); // bắt đầu vẽ
+      ctext.moveTo(50, 50);
+      ctext.lineTo(250, 150);
+      ctext.lineWidth = 5;
+      ctext.strokeStyle = "yellow";
+      ctext.stroke();
+
+      // Vẽ đường chéo X2
+      ctext.beginPath(); // bắt đầu vẽ
+      ctext.moveTo(250, 50);
+      ctext.lineTo(50, 150);
+      ctext.lineWidth = 5;
+      ctext.strokeStyle = "pink";
+      ctext.stroke();
+    }
+  </script>
+</body>
+
+</html>
