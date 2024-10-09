@@ -1,0 +1,137 @@
+/* Các CSS chỉ áp dụng khi IN ẤN */
+@media print {
+  @page {
+    size: 210mm 297mm;
+  }
+  .chi-hienthi-khi-in {
+    display: block;
+  }
+  .chi-hienthi-khi-xem-tren-manhinh {
+    display: none;
+  }
+}
+
+/* Các CSS chỉ hiển thị trên THIẾT BỊ MÀN HÌNH */
+@media screen {
+  body {
+    background-color: rgba(0, 0, 0, 0.3);
+  }
+  .sheet {
+    margin: 5mm auto;
+    background: #fff;
+    box-sizing: border-box;
+    border: 1px solid red;
+  }
+  .chi-hienthi-khi-in {
+    display: none;
+  }
+  .chi-hienthi-khi-xem-tren-manhinh {
+    display: block;
+  }
+}
+
+/* Các CSS áp dụng cho cả SCREEN và PRINT */
+* {
+  font-size: 10px;
+}
+table td, table th {
+  vertical-align: middle;
+  padding: 0.25mm;
+}
+.A4 {
+  width: 210mm;
+  height: 297mm;
+}
+.K80 {
+  width: 80mm;
+  /* height: 3276mm; */
+}
+.le-giay-vua-phai {
+  padding: 4mm;
+}
+.khung-table {
+  border-collapse: collapse;
+  width: 100%;
+}
+.khung-table.co-ke-khung td, .khung-table.co-ke-khung th {
+  border: 1px solid #000;
+}
+.khung-table.khung-dutnet td, .khung-table.khung-dutnet th {
+  border: 1px dashed red;
+}
+.khung-table .row-header td {
+  font-weight: bold;
+}
+.anh-logo {
+  width: 12mm;
+  height: 12mm;
+}
+.col-ten-congty {
+  text-align: center;
+}
+.col-label {
+  width: 50mm;
+}
+.title {
+  text-decoration: underline;
+  font-weight: bold;
+  font-style: italic;
+}
+.value {
+  font-weight: bold;
+}
+.ten-sanpham {
+  font-weight: bold;
+}
+.ten-chuyenmuc {
+  font-style: italic;
+}
+.col-stt {
+  width: 15mm;
+  text-align: center;
+}
+.col-sanpham {
+  width: auto;
+  text-align: left;
+}
+.col-soluong {
+  text-align: right;
+}
+.col-dongia {
+  text-align: right;
+}
+.col-thanhtien {
+  text-align: right;
+}
+
+.col-tongthanhtien-text {
+  text-align: right;
+  font-weight: bold;
+}
+.col-tongthanhtien-number {
+  text-align: right;
+  font-weight: bold;
+}
+
+.footer {
+  border: 1px dashed red;
+  text-align: center;
+}
+.khung-quangcao {
+  width: 50%;
+  margin: auto;
+  border: 2px solid black;
+  background: #fff;
+  padding: 2mm;
+  border-radius: 5px;
+  box-shadow: 5px 5px 5px #b058e7;
+}
+.khung-quangcao .nhacnho {
+  color: red;
+  text-align: center;
+}
+.khung-quangcao img {
+  width: 100%;
+  height: 150px;
+  object-fit: contain;
+}
