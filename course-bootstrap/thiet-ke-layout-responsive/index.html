@@ -17,6 +17,9 @@
   <meta property="og:site_name" content="Nền tảng Kiến thức">
   <title>Học cách thiết kế layout responsive Bootstrap | NenTang.vn</title>
 
+  <!-- NenTang vendor CSS -->
+  <link rel="stylesheet" href="https://libs.nentang.vn/web/nentang/wireframe/nentang-wireframe-jquery-plugin.css">
+
   <!-- Liên kết CSS Bootstrap -->
   <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@4.6.0/dist/css/bootstrap.min.css"
     integrity="sha384-B0vP5xmATw1+K9KRQjQERJvTumQW0nPEzvF6L/Z6nronJ3oUOFUFpCjEUQouq2+l" crossorigin="anonymous">
@@ -45,7 +48,7 @@
       border: 1px solid #2D7600;
       color: #fff;
     }
-    
+
     /* Class quy định định dạng Khối DIV thứ 4 */
     .box4 {
       height: 200px;
@@ -73,7 +76,7 @@
 </head>
 
 <body>
-  <div class="container">
+  <div class="container" data-wf-enable="true">
     <div class="row">
       <!-- Cột box 1, sẽ tùy biến theo màn hình:
       - Nếu là thiết bị mobile thì sẽ là cột 12         => cần áp dụng class col-12
@@ -138,7 +141,7 @@
       <div class="box6 col-6 col-md-6 col-lg-3">Box 6</div>
     </div>
   </div>
-  
+
 
   <!-- Liên kết JavaScript Bootstrap -->
   <script src="https://code.jquery.com/jquery-3.5.1.slim.min.js"
@@ -147,6 +150,10 @@
   <script src="https://cdn.jsdelivr.net/npm/bootstrap@4.6.0/dist/js/bootstrap.bundle.min.js"
     integrity="sha384-Piv4xVNRyMGpqkS2by6br4gNJ7DXjqk09RmUpJ8jgGtD7zP9yug3goQfGII0yAns"
     crossorigin="anonymous"></script>
+
+  <!-- NenTang vendor JS -->
+  <script src="https://libs.nentang.vn/web/randomcolour/randomColor.js"></script>
+  <script src="https://libs.nentang.vn/web/nentang/wireframe/nentang-wireframe-jquery-plugin.js"></script>
 </body>
 
 </html>

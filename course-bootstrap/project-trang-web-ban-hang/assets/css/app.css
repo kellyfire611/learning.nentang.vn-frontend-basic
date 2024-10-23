@@ -1,32 +1,24 @@
-/* GLOBAL STYLES
--------------------------------------------------- */
-/* Padding below the footer and lighter body text */
+:root {
+  --bg-primary-color: #ffffff;
+}
 
+/* GLOBAL STYLES */
 body {
-    color: #5a5a5a;
-  }
-  
-  
-  /* CUSTOMIZE THE CAROUSEL
-    -------------------------------------------------- */
-  
-  /* Carousel base class */
-  .carousel {
-    margin-bottom: 4rem;
-  }
-  
-  /* Since positioning the image, we need to help out the caption */
-  .carousel-caption {
-    bottom: 3rem;
-    z-index: 10;
-    color: white;
-    text-shadow: 2px 2px 5px black;
-    
-  }
-  
-  
-  /* Declare heights because of positioning of img element */
-  .carousel-item {
+  color: #5a5a5a;
+  background: var(--bg-primary-color);
+}
+
+/* CUSTOMIZE THE CAROUSEL */
+/* Since positioning the image, we need to help out the caption */
+.carousel-caption {
+  bottom: 3rem;
+  z-index: 10;
+  color: white;
+  text-shadow: 2px 2px 5px black;
+}
+
+/* Declare heights because of positioning of img element */
+/* .carousel-item {
     height: 42rem;
   }
   
@@ -37,67 +29,137 @@ body {
     min-width: 100%;
     height: 42rem;
   }
-  
-  
-  /* MARKETING CONTENT
-    -------------------------------------------------- */
-  
-  /* Center align the text within the three columns below the carousel */
-  .marketing .col-lg-4 {
-    margin-bottom: 1.5rem;
-    text-align: center;
-  }
-  
-  .marketing h2 {
-    font-weight: 400;
-  }
-  
-  .marketing .col-lg-4 p {
-    margin-right: .75rem;
-    margin-left: .75rem;
-  }
-  
-  
-  /* Featurettes
+   */
+
+/* MARKETING CONTENT */
+/* Center align the text within the three columns below the carousel */
+.marketing .col-lg-4 {
+  text-align: center;
+}
+
+.marketing h2 {
+  font-weight: 400;
+}
+
+.marketing .col-lg-4 p {
+  margin-right: 0.75rem;
+  margin-left: 0.75rem;
+}
+
+/* features
     ------------------------- */
-  
-  .featurette-divider {
-    margin: 5rem 0;
-    /* Space out the Bootstrap <hr> more */
-  }
-  
-  /* Thin out the marketing headings */
-  .featurette-heading {
-    font-weight: 300;
-    line-height: 1;
-    letter-spacing: -.05rem;
-  }
-  
-  
-  /* RESPONSIVE CSS
+
+.feature-divider {
+  margin: 5rem 0;
+  /* Space out the Bootstrap <hr> more */
+}
+
+/* Thin out the marketing headings */
+.feature-heading {
+  font-weight: 300;
+  line-height: 1;
+  letter-spacing: -0.05rem;
+}
+
+/* RESPONSIVE CSS
     -------------------------------------------------- */
-  
-  @media (min-width: 40em) {
-  
-    /* Bump up size of carousel content */
-    .carousel-caption p {
-      margin-bottom: 1.25rem;
-      font-size: 1.25rem;
-      line-height: 1.4;
-    }
-  
-    .featurette-heading {
-      font-size: 50px;
-    }
-  }
-  
-  @media (min-width: 62em) {
-    .featurette-heading {
-      margin-top: 7rem;
-    }
+
+/* @media (min-width: 40em) {
+  .carousel-caption p {
+    margin-bottom: 1.25rem;
+    font-size: 1.25rem;
+    line-height: 1.4;
   }
 
-  .hinhdaidien {
-    width: 150px;
-    height: 150px;
+  .feature-heading {
+    font-size: 50px;
+  }
+}
+
+@media (min-width: 62em) {
+  .feature-heading {
+    margin-top: 7rem;
+  }
+} */
+
+/* X-Small devices (portrait phones, less than 576px)
+No media query for `xs` since this is the default in Bootstrap */
+.neta-slider-img {
+  height: 120px;
+  object-fit: cover;
+  object-position: center;
+}
+.neta-carousel-text {
+  background-color: red;
+  font-size: 2rem;
+}
+.neta-card-img-container {
+  border: 1px solid red;
+  height: 120px;
+}
+.neta-card-img {
+  width: 100%;
+  height: 100%;
+  object-fit: contain;
+}
+.neta-product-name-text {
+  font-size: 1rem;
+}
+.neta-product-category-text {
+  color: #7a7a7a;
+  font-size: 0.8rem;
+}
+.neta-product-description-text {
+  font-size: 0.8rem;
+}
+.neta-product-old-price-text {
+  font-size: 0.7rem;
+}
+.neta-product-new-price-text {
+  font-size: 1rem;
+  color: red;
+}
+
+/* Small devices (landscape phones, 576px and up) */
+@media (min-width: 576px) {
+  .neta-slider-img {
+    height: 140px;
+    object-fit: cover;
+  }
+}
+
+/* Medium devices (tablets, 768px and up) */
+@media (min-width: 768px) {
+  .neta-slider-img {
+    height: 120px;
+    object-fit: cover;
+  }
+}
+
+/* Large devices (desktops, 992px and up) */
+@media (min-width: 992px) {
+  .neta-slider-img {
+    height: 120px;
+    object-fit: cover;
+  }
+}
+
+/* X-Large devices (large desktops, 1200px and up) */
+@media (min-width: 1200px) {
+  .neta-slider-img {
+    height: 120px;
+    object-fit: cover;
+  }
+}
+
+/* XX-Large devices (larger desktops, 1400px and up) */
+@media (min-width: 1400px) {
+  .neta-slider-img {
+    height: 120px;
+    object-fit: cover;
+  }
+  .neta-carousel-text {
+    background-color: red;
+    font-size: 2rem;
+  }
 }
