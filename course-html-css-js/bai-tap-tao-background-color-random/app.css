@@ -1,0 +1,23 @@
+body {
+  /* border: 1px solid red; */
+  margin-top: 10%;
+  padding: 0;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  height: 50vh;
+  text-align: center;
+  /* width: 100%; */
+  background: linear-gradient(to right, #ff0000, #ffff00);
+}
+
+input {
+  cursor: pointer;
+  margin-left: 8%;
+}
+
+h1,
+h2 {
+  font-family: "Courier New", Courier;
+  letter-spacing: 0.5rem;
+}
