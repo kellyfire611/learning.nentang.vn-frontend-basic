@@ -1,0 +1,160 @@
+<!DOCTYPE html>
+<html lang="vi">
+
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta name="keywords" content="Nền tảng,HTML,CSS,XML,JavaScript, Lập trình C#, Lập trình, Web, Kiến thức, Đồ án">
+  <meta name="author" content="Dương Nguyễn Phú Cường">
+  <meta name="description"
+    content="Cung cấp các kiến thức Nền tảng, cơ bản về Lập trình, Lập trình web, Lập trình di động, Cơ sở dữ liệu, ...">
+  <meta property="og:locale" content="vi_VN">
+  <meta property="og:type" content="website">
+  <meta property="og:title" content="Nền tảng Kiến thức">
+  <meta property="og:description"
+    content="Cung cấp các kiến thức Nền tảng, cơ bản về Lập trình, Lập trình web, Lập trình di động, Cơ sở dữ liệu, ...">
+  <meta property="og:url" content="https://nentang.vn/">
+  <meta property="og:site_name" content="Nền tảng Kiến thức">
+  <title>Tạo background fullpage | NenTang.vn</title>
+
+  <!-- Liên kết CSS Google Fonts -->
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link
+    href="https://fonts.googleapis.com/css2?family=Lora:ital,wght@0,400..700;1,400..700&family=Nunito+Sans:ital,opsz,wght@0,6..12,200..1000;1,6..12,200..1000&family=Nunito:ital,wght@0,200..1000;1,200..1000&family=Pinyon+Script&family=Playfair+Display:ital,wght@0,400..900;1,400..900&display=swap"
+    rel="stylesheet">
+
+  <!-- Liên kết CSS tự viết của dự án -->
+  <link href="assets/css/app.css" type="text/css" rel="stylesheet" />
+</head>
+
+<body>
+  <div class="book-section">
+    <p class="intro">Xây dựng bởi ❤️ <a href="https://github.com/kellyfire611" target="_blank">NenTang</a></p>
+    <div class="container">
+      <!-- Page 4 & page 5 -->
+      <div class="right">
+        <figure class="back" id="back-cover"></figure>
+        <figure class="front">
+          <div class="content">
+            <div class="content">
+              <!-- Cập nhật thông tin trang 4 -->
+              <h3>Kinh nghiệm của bạn</h3>
+
+            </div>
+          </div>
+          <span class="page-number">Trang 4</span>
+        </figure>
+      </div>
+
+      <!-- Page 2 & page 3 -->
+      <div class="right">
+        <figure class="back">
+          <div class="content">
+            <!-- Cập nhật thông tin trang 3 -->
+            <h3>Sở thích của bạn</h3>
+
+
+          </div>
+          <span class="page-number">Trang 3</span>
+        </figure>
+        <figure class="front">
+          <!-- Cập nhật thông tin trang 2 -->
+          <h3>Các hình ảnh cá nhân minh họa ...</h3>
+          <div class="div-center h-100">
+            <div class="gallery">
+              <img src="assets/img/avatar-1.jpg" alt="a wolve">
+              <img src="assets/img/bg-1.jpg" alt="a cloudy sky">
+
+              <img src="assets/img/avatar-2.jpg" alt="a tiger">
+              <img src="assets/img/bg-2.jpg" alt="a forest in the snow">
+
+              <img src="assets/img/avatar-3.jpg" alt="a lioness">
+              <img src="assets/img/bg-3.jpg" alt="a forest">
+
+              <img src="assets/img/avatar-4.jpg" alt="those kind of dog and wolve at the same time">
+              <img src="assets/img/bg-4.jpg" alt="the sea">
+
+              <img src="assets/img/avatar-5.jpg" alt="a bear">
+            </div>
+          </div>
+          <span class="page-number">Trang 2</span>
+        </figure>
+      </div>
+
+      <!-- Page cover & page 1 -->
+      <div class="right">
+        <figure class="back">
+          <div class="content">
+            <!-- Cập nhật thông tin trang 1 -->
+            <h3>Giới thiệu bản thân</h3>
+            <ul>
+              <li>Họ tên: ...</li>
+              <li>Năm sinh: ...</li>
+              <li>Giới tính: ...</li>
+              <li>Các thông tin liên hệ ......</li>
+            </ul>
+          </div>
+          <span class="page-number">Trang 1</span>
+        </figure>
+        <figure class="front" id="cover">
+          <h1>Giới thiệu bản thân</h1>
+          <p>Thông tin giới thiệu bản thân của bạn</p>
+        </figure>
+      </div>
+
+    </div>
+    <button onclick="turnLeft()">Lật sang trái</button>
+    <button onclick="turnRight()">Lật sang phải</button>
+    <br />
+  </div>
+
+  <!-- Liên kết thư viện JavaScript JQUERY -->
+  <script src="assets/vendors/jquery/jquery.min.js"></script>
+
+  <!-- DEMO Custom 1: Animate CSS -->
+  <link href="assets/vendors/animate-css/animate.min.css" type="text/css" rel="stylesheet" />
+
+  <!-- DEMO Custom 2: Animate on scroll -->
+  <link href="assets/vendors/aos/aos.css" type="text/css" rel="stylesheet" />
+  <script src="assets/vendors/aos/aos.js"></script>
+  <script>
+    AOS.init();
+  </script>
+
+  <!-- DEMO Custom 3: Typewritter JS -->
+  <script src="assets/vendors/typewritter/core.js"></script>
+  <script>
+    var appTw = document.getElementById('typewritter-container');
+
+    var typewriter = new Typewriter(appTw, {
+      loop: true,
+      delay: 75,
+    });
+
+    typewriter
+      .pauseFor(1000)
+      .typeString('Thiết kế <span style="font-size: 2rem;font-weight: bold; text-decoration: underline;">Frontend</span> là một trong những công việc <br />')
+      .pauseFor(300)
+      .typeString('<strong style="font-size: 2.5rem;">Nhàm chán?</strong>')
+      .pauseFor(3000)
+      .deleteChars(10)
+      .typeString('<strong style="font-size: 2.5rem;color: red;">Không hề nhé!!!</strong>')
+      .pauseFor(3000)
+      .deleteChars(15)
+      .typeString('<strong><span style="font-size: 2.5rem;color: #27ae60;">Thú vị 💜</span></strong>')
+      .pauseFor(3000)
+      .deleteChars(9)
+      .typeString('<strong><span style="font-size: 2.5rem;color: #a581ea;">Sáng tạo 💙</span></strong>')
+      .pauseFor(3000)
+      .deleteChars(11)
+      .typeString('<strong><span style="font-size: 2.5rem;color: #125c9e;">Đầy màu sắc 💖</span></strong>')
+      .pauseFor(10000)
+      .start();
+  </script>
+
+  <!-- Liên kết JS do dự án tự viết -->
+  <script src="assets/js/app.js"></script>
+</body>
+
+</html>
