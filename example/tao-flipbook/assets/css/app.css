@@ -1,0 +1,162 @@
+body {
+  margin: 0;
+  background-color: #ffecc6;
+}
+* {
+  box-sizing: border-box;
+  font-size: 18px;
+  font-family: "Nunito", serif;
+}
+h1, h2, h3, h4, h5, h6 {
+  font-family: "Lora", serif;
+  text-align: center;
+}
+.book-section {
+  height: 100vh;
+  width: 100%;
+  padding: 40px 0;
+  text-align: center;
+}
+.book-section > .container {
+  height: 700px;
+  width: 800px;
+  position: relative;
+  left: 50%;
+  transform: translateX(-50%);
+  border-radius: 2%;
+  margin-bottom: 30px;
+  perspective: 1200px;
+}
+.book-section > .container .content {
+  text-align: left;
+}
+.container > .right {
+  position: absolute;
+  height: 100%;
+  width: 50%;
+  transition: 0.7s ease-in-out;
+  transform-style: preserve-3d;
+}
+.book-section > .container > .right {
+  right: 0;
+  transform-origin: left;
+  border-radius: 10px 0 0 10px;
+}
+.book-section > .container > .right .page-number {
+  position: absolute;
+  bottom: 3px;
+  right: 3px;
+  font-size: 0.7rem;
+}
+.right > figure.front,
+.right > figure.back {
+  margin: 0;
+  padding: 5px;
+  height: 100%;
+  width: 100%;
+  position: absolute;
+  left: 0;
+  top: 0;
+  background-size: 200%;
+  background-repeat: no-repeat;
+  backface-visibility: hidden;
+  background-color: white;
+  overflow: hidden;
+}
+.right > figure.front {
+  background-position: right;
+  border-radius: 0 10px 10px 0;
+  box-shadow: 2px 2px 15px -2px rgba(0, 0, 0, 0.2);
+}
+.right > figure.back {
+  background-position: left;
+  border-radius: 10px 0 0 10px;
+  box-shadow: -2px 2px 15px -2px rgba(0, 0, 0, 0.2);
+  transform: rotateY(180deg);
+}
+.flip {
+  transform: rotateY(-180deg);
+}
+/* .flip::before {
+  content: "";
+  position: absolute;
+  top: 0;
+  left: 0;
+  z-index: 10;
+  width: 100%;
+  height: 100%;
+  border-radius: 0 10px 10px 0;
+  background-color: rgba(0, 0, 0, 0.075);
+} */
+.book-section > button {
+  border: 2px solid #ef9f00;
+  background-color: transparent;
+  color: #ef9f00;
+  padding: 10px 20px;
+  border-radius: 5px;
+  cursor: pointer;
+  margin: 10px;
+  transition: 0.3s ease-in-out;
+}
+.book-section > button:focus,
+.book-section > button:active {
+  outline: none;
+}
+.book-section > p {
+  color: rgba(0, 0, 0, 0.7);
+  font-family: calibri;
+  font-size: 2rem;
+}
+.book-section > p > a {
+  text-decoration: none;
+  color: #ef9f00;
+  font-size: 2rem;
+}
+.book-section > button:hover {
+  background-color: #ef9f00;
+  color: #fff;
+}
+.front#cover,
+.back#back-cover {
+  background-color: #ffcb63;
+  font-family: calibri;
+  text-align: left;
+  padding: 0 30px;
+}
+.front#cover h1 {
+  color: #000;
+  font-size: 2.5rem;
+}
+.front#cover p {
+  color: rgba(0, 0, 0, 0.8);
+  font-size: 1.8rem;
+  font-family: "Pinyon Script", serif;
+}
+.img-fluid {
+  width: 100%;
+  object-fit: cover;
+}
+.div-center {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+.h-100 {
+  height: 100%;
+}
+.typewritter-demo {
+  font-size: 1.2rem;
+}
+.typewritter-demo span {
+  font-size: 1.2rem;
+}
+.btn-enroll {
+  background: red;
+  padding: 10px;
+  border-radius: 15px;
+  color: #fff;
+  font-weight: bold;
+  border: 1px solid #fff;
+  font-size: 1.2rem;
+  cursor: pointer;
+}
