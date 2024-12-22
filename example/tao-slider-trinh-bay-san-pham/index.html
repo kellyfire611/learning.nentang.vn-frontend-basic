@@ -1,0 +1,157 @@
+<!DOCTYPE html>
+<html lang="vi">
+
+  <head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="keywords" content="Nền tảng,HTML,CSS,XML,JavaScript, Lập trình C#, Lập trình, Web, Kiến thức, Đồ án">
+    <meta name="author" content="Dương Nguyễn Phú Cường">
+    <meta name="description"
+      content="Cung cấp các kiến thức Nền tảng, cơ bản về Lập trình, Lập trình web, Lập trình di động, Cơ sở dữ liệu, ...">
+    <meta property="og:locale" content="vi_VN">
+    <meta property="og:type" content="website">
+    <meta property="og:title" content="Nền tảng Kiến thức">
+    <meta property="og:description"
+      content="Cung cấp các kiến thức Nền tảng, cơ bản về Lập trình, Lập trình web, Lập trình di động, Cơ sở dữ liệu, ...">
+    <meta property="og:url" content="https://nentang.vn/">
+    <meta property="og:site_name" content="Nền tảng Kiến thức">
+    <title>Tạo slider trình bày Sản phẩm | NenTang.vn</title>
+
+    <!-- Liên kết CSS Google Fonts -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link
+      href="https://fonts.googleapis.com/css2?family=Lora:ital,wght@0,400..700;1,400..700&family=Nunito+Sans:ital,opsz,wght@0,6..12,200..1000;1,6..12,200..1000&family=Nunito:ital,wght@0,200..1000;1,200..1000&family=Pinyon+Script&family=Playfair+Display:ital,wght@0,400..900;1,400..900&display=swap"
+      rel="stylesheet">
+
+    <!-- Liên kết CSS tự viết của dự án -->
+    <link href="assets/css/app.css" type="text/css" rel="stylesheet" />
+  </head>
+
+  <body>
+    <div id="logo-container">
+      <img src="assets/img/logo-NENTANG.VN.png" class="logo" />
+    </div>
+
+    <section class="page-wrapper" id="wannabedev">
+      <div class="slider">
+        <ul class="slider-list">
+          <li class="slider-list__item slider-list__item_active">
+            <span class="back__element">
+              <img
+                src="https://wannabedev.io/_posts/circular-slider-with-anime-js/demo/assets/img/back_apple_002.png" />
+            </span>
+            <span class="main__element">
+              <img
+                src="assets/img/khoa-hoc-HTML-CSS-JS-Bootstrap.png" />
+            </span>
+            <span class="front__element">
+              <img
+                src="https://wannabedev.io/_posts/circular-slider-with-anime-js/demo/assets/img/front_apple_002.png" />
+            </span>
+            <span class="title__element">
+              <span class="title">apple</span>
+            </span>
+            <span class="more__element">
+              <span class="content">
+                <span class="headline">apple</span>
+                <span class="excerpt">Lorem ipsum dolor, sit amet consectetur adipisicing elit. Illo ratione nisi
+                  perferendis? Nemo in accusamus cupiditate officiis.</span>
+                <span class="link">
+                  <div class="fill"></div>
+                  <a href="#">Open catalog</a>
+                </span>
+              </span>
+            </span>
+          </li>
+
+          <li class="slider-list__item">
+            <span class="back__element">
+              <img
+                src="https://wannabedev.io/_posts/circular-slider-with-anime-js/demo/assets/img/back_grapes_001.png" />
+            </span>
+            <span class="main__element">
+              <img
+                src="https://wannabedev.io/_posts/circular-slider-with-anime-js/demo/assets/img/bottle_grapes_001.png" />
+            </span>
+            <span class="front__element">
+              <img
+                src="https://wannabedev.io/_posts/circular-slider-with-anime-js/demo/assets/img/front_grapes_001.png" />
+            </span>
+            <span class="title__element">
+              <span class="title">grapes</span>
+            </span>
+            <span class="more__element">
+              <span class="content">
+                <span class="headline">grapes</span>
+                <span class="excerpt">Lorem ipsum dolor, sit amet consectetur adipisicing elit. Illo ratione nisi
+                  perferendis? Nemo in accusamus cupiditate officiis.</span>
+                <span class="link">
+                  <div class="fill fill-dark"></div>
+                  <a href="#">Open catalog</a>
+                </span>
+              </span>
+            </span>
+          </li>
+
+          <li class="slider-list__item">
+            <span class="back__element">
+              <img
+                src="https://wannabedev.io/_posts/circular-slider-with-anime-js/demo/assets/img/back_strawberry_003.png" />
+            </span>
+            <span class="main__element">
+              <img
+                src="https://wannabedev.io/_posts/circular-slider-with-anime-js/demo/assets/img/bottle_strawberry_003.png" />
+            </span>
+            <span class="front__element">
+              <img
+                src="https://wannabedev.io/_posts/circular-slider-with-anime-js/demo/assets/img/front_strawberry_003.png" />
+            </span>
+            <span class="title__element">
+              <span class="title">strawberry</span>
+            </span>
+            <span class="more__element">
+              <span class="content">
+                <span class="headline">strawberry</span>
+                <span class="excerpt">Lorem ipsum dolor, sit amet consectetur adipisicing elit. Illo ratione nisi
+                  perferendis? Nemo in accusamus cupiditate officiis.</span>
+                <span class="link">
+                  <div class="fill"></div>
+                  <a href="#">Open catalog</a>
+                </span>
+              </span>
+            </span>
+          </li>
+
+        </ul>
+
+        <div class="slider__nav-bar">
+          <a class="nav-control"></a>
+          <a class="nav-control"></a>
+          <a class="nav-control"></a>
+        </div>
+
+        <div class="slider__controls">
+          <a class="slider__arrow slider__arrow_prev"></a>
+          <a class="slider__arrow slider__arrow_next"></a>
+        </div>
+
+      </div>
+
+    </section>
+
+    <div id="credit">
+      Cảm hứng từ ví dụ Anime.JS -
+      <a href="https://codepen.io/uxrajk/pen/ZEPXGZO">CodePen</a>
+    </div>
+
+    <!-- Liên kết thư viện JavaScript JQUERY -->
+    <script src="assets/vendors/jquery/jquery.min.js"></script>
+    <!-- Liên kết thư viện AnimeJS -->
+    <script src="assets/vendors/animejs/anime.min.js"></script>
+
+    <!-- Liên kết JS do dự án tự viết -->
+    <script src="assets/js/app.js"></script>
+  </body>
+
+</html>

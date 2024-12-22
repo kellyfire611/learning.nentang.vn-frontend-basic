@@ -132,6 +132,15 @@ h1, h2, h3, h4, h5, h6 {
   font-size: 1.8rem;
   font-family: "Pinyon Script", serif;
 }
+.back#back-cover h1 {
+  color: #000;
+  font-size: 2.5rem;
+}
+.back#back-cover p {
+  color: rgba(0, 0, 0, 0.8);
+  font-size: 1.8rem;
+  font-family: "Pinyon Script", serif;
+}
 .img-fluid {
   width: 100%;
   object-fit: cover;
@@ -140,6 +149,14 @@ h1, h2, h3, h4, h5, h6 {
   display: flex;
   justify-content: center;
   align-items: center;
+  width: 100%;
+  height: 100%;
+}
+.display-flex-row {
+  flex-direction: row;
+}
+.display-flex-column {
+  flex-direction: column;
 }
 .h-100 {
   height: 100%;

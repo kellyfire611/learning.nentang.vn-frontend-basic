@@ -1,0 +1,232 @@
+// Anime.js implementation of the Diagonal Thumbnail Slideshow Animation
+// Inspired from https://tympanus.net/codrops/2020/09/01/diagonal-thumbnail-slideshow-animation/
+
+*,
+*:before,
+*:after {
+  box-sizing: border-box;
+  margin: 0;
+  padding: 0;
+  font-size: 18px;
+  font-family: "Nunito", serif;
+}
+
+html,
+body {
+  font-family: "Nunito", sans-serif;
+  line-height: 1.65;
+}
+
+h1, h2, h3, h4, h5, h6 {
+  font-family: "Lora", serif;
+  text-align: center;
+}
+
+$black: #0a0908;
+$gunmetal: #22333b;
+$almond: #eae0d5;
+$khaki: #c6ac8f;
+$umber: #5e503f;
+
+@mixin filter {
+  position: relative;
+  -webkit-filter: contrast(110%) brightness(110%) saturate(130%);
+  filter: contrast(110%) brightness(110%) saturate(130%);
+  &::before {
+    content: "";
+    display: block;
+    height: 100%;
+    width: 100%;
+    top: 0;
+    left: 0;
+    position: absolute;
+    pointer-events: none;
+    mix-blend-mode: screen;
+    background: rgba(243, 106, 188, 0.3);
+  }
+}
+
+a {
+  color: $khaki;
+  text-decoration: none;
+}
+
+.slider {
+  height: 100vh;
+  width: 100vw;
+  background-color: $black;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  color: white;
+  position: relative;
+  overflow: hidden;
+  transition: background-color 2s;
+  .credits {
+    position: absolute;
+    top: 2rem;
+    left: 2rem;
+    line-height: 1.65;
+    z-index: 10;
+    max-width: 400px;
+  }
+}
+
+.slider .item .imgs {
+  position: relative;
+  width: 60%;
+  padding-top: 60%;
+  .grid {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    display: grid;
+    grid-template-columns: repeat(12, 1fr);
+    grid-template-rows: repeat(12, 1fr);
+    grid-column-gap: 32px;
+    grid-row-gap: 32px;
+    transform: rotate(-20deg);
+    opacity: 0.65;
+  }
+}
+
+.slider .item {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  .img {
+    width: 100%;
+    height: 100%;
+    position: relative;
+    will-change: transform;
+    will-change: opacity;
+    img {
+      position: absolute;
+      top: 0;
+      width: 100%;
+      height: 100%;
+      object-fit: cover;
+      @include filter;
+    }
+  }
+  .img-1 {
+    grid-area: 1 / 1 / 7 / 5;
+  }
+  .img-2 {
+    grid-area: 2 / 5 / 7 / 13;
+  }
+  .img-3 {
+    grid-area: 7 / 1 / 12 / 9;
+  }
+  .img-4 {
+    grid-area: 7 / 9 / 13 / 13;
+  }
+
+  .content {
+    position: absolute;
+    z-index: 2;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    line-height: 1.15;
+    font-size: 8rem;
+    font-weight: 700;
+    .wrap {
+      text-align: center;
+      text-shadow: 1px 1px 4px rgba($black, 0.2);
+      width: 100%;
+      max-width: 600px;
+      line-height: 1;
+      .letter {
+        display: inline-block;
+      }
+    }
+  }
+}
+
+.slider .nav {
+  .next,
+  .prev {
+    height: 2rem;
+    width: 2rem;
+    position: absolute;
+    top: calc(50% - 1rem);
+    cursor: pointer;
+    z-index: 3;
+    transition: transform 0.3s;
+  }
+
+  .next {
+    right: 2rem;
+    background-image: url("data:image/svg+xml,%3C?xml version='1.0' encoding='utf-8'?%3E %3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='white'%3E%3Cpath d='M 19 8 L 19 11 L 1 11 L 1 13 L 19 13 L 19 16 L 23 12 L 19 8 z' fill='white'/%3E%3C/svg%3E");
+    &:hover {
+      transform: translateX(0.5rem);
+    }
+  }
+
+  .prev {
+    left: 2rem;
+    background-image: url("data:image/svg+xml,%3C?xml version='1.0' encoding='utf-8'?%3E %3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='white'%3E%3Cpath d='M 5 8 L 1 12 L 5 16 L 5 13 L 23 13 L 23 11 L 5 11 L 5 8 z' fill='white'/%3E%3C/svg%3E");
+
+    &:hover {
+      transform: translateX(-0.5rem);
+    }
+  }
+
+  .explore-btn {
+    z-index: 4;
+    position: absolute;
+    bottom: 2rem;
+    left: calc(50% - 4rem);
+    width: 8em;
+    text-align: center;
+    padding: 1rem 0;
+    border: solid 2px white;
+    background: transparent;
+    color: white;
+    transition: background-color 0.3s;
+    cursor: pointer;
+    &:hover {
+      color: $black;
+      background: white;
+    }
+  }
+}
+
+.slider .item:not(.is-active) {
+  opacity: 0;
+  pointer-events: none;
+}
+
+#logo-container {
+  position: fixed;
+  z-index: 10;
+  width: 150px;
+  height: 150px;
+  top: 10px;
+  right: 10px;
+
+  & img {
+    width: 100%;
+  }
+}
+#credit {
+  color: #fff;
+  position: fixed;
+  bottom: 0px;
+  left: 0px;
+  z-index: 10;
+  font-size: 0.7rem;
+  padding: 3px;
+}

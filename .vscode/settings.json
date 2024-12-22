@@ -1,4 +1,18 @@
 {
   "liveServer.settings.port": 7777,
-  "files.autoSave": "off"
+  "files.autoSave": "off",
+  "liveSassCompile.settings.autoprefix": [],
+  "liveSassCompile.settings.excludeList": [
+    "/**/node_modules/**",
+    "/.vscode/**"
+  ],
+  "liveSassCompile.settings.generateMap": false,
+  "liveSassCompile.settings.formats": [
+    {
+      "format": "expanded",
+      "extensionName": ".css",
+      "savePath": null,
+      "savePathReplacementPairs": null
+    }
+  ]
 }

@@ -1,35 +1,21 @@
 .social-share-container {
-  display: -webkit-box;
-  display: -ms-flexbox;
   display: flex;
-  -webkit-box-align: center;
-      -ms-flex-align: center;
-          align-items: center;
-  -webkit-box-pack: center;
-      -ms-flex-pack: center;
-          justify-content: center;
-  -webkit-box-orient: vertical;
-  -webkit-box-direction: normal;
-      -ms-flex-direction: column;
-          flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  flex-direction: column;
   position: fixed;
   top: 50%;
-  -webkit-transform: translateY(-50%);
-          transform: translateY(-50%);
+  transform: translateY(-50%);
 }
-
 .social-share-container.from-left {
   left: 0px;
 }
-
 .social-share-container.from-left .social-share-wrapper {
   position: relative;
 }
-
 .social-share-container.from-left .social-share-wrapper:hover .social-share-title {
   display: block;
 }
-
 .social-share-container.from-left .social-share-wrapper .social-share-title {
   font-size: 0.8rem;
   margin: 0px;
@@ -38,30 +24,25 @@
   top: 0px;
   left: 0px;
   width: auto;
-  -webkit-transform: translateY(-100%);
-          transform: translateY(-100%);
+  transform: translateY(-100%);
   white-space: nowrap;
   display: none;
 }
-
 .social-share-container.from-left .social-share-wrapper .social-share-menu {
   list-style: none;
   padding: 0px;
   margin: 0px;
 }
-
 .social-share-container.from-left .social-share-wrapper .social-share-menu .social-share-list-item {
   height: 30px;
   width: 30px;
   padding: 0px;
   margin: 0px;
 }
-
 .social-share-container.from-left .social-share-wrapper .social-share-menu .social-share-list-item .fa {
   text-align: center;
   line-height: 30px;
 }
-
 .social-share-container.from-left .social-share-wrapper .social-share-menu .social-share-list-item a {
   width: 30px;
   height: 30px;
@@ -70,7 +51,6 @@
   color: #fff;
   position: relative;
 }
-
 .social-share-container.from-left .social-share-wrapper .social-share-menu .social-share-list-item a span {
   width: 0;
   left: 30px;
@@ -83,28 +63,22 @@
   letter-spacing: 0.6;
   white-space: nowrap;
   line-height: 30px;
-  -webkit-transition: 0.25s ease;
   transition: 0.25s ease;
 }
-
 .social-share-container.from-left .social-share-wrapper .social-share-menu .social-share-list-item a:hover span {
   width: auto;
   padding: 0 20px;
   overflow: visible;
 }
-
 .social-share-container.from-right {
   right: 0px;
 }
-
 .social-share-container.from-right .social-share-wrapper {
   position: relative;
 }
-
 .social-share-container.from-right .social-share-wrapper:hover .social-share-title {
   display: block;
 }
-
 .social-share-container.from-right .social-share-wrapper .social-share-title {
   font-size: 0.8rem;
   margin: 0px;
@@ -113,30 +87,25 @@
   top: 0px;
   right: 0px;
   width: auto;
-  -webkit-transform: translateY(-100%);
-          transform: translateY(-100%);
+  transform: translateY(-100%);
   white-space: nowrap;
   display: none;
 }
-
 .social-share-container.from-right .social-share-wrapper .social-share-menu {
   list-style: none;
   padding: 0px;
   margin: 0px;
 }
-
 .social-share-container.from-right .social-share-wrapper .social-share-menu .social-share-list-item {
   height: 30px;
   width: 30px;
   padding: 0px;
   margin: 0px;
 }
-
 .social-share-container.from-right .social-share-wrapper .social-share-menu .social-share-list-item .fa {
   text-align: center;
   line-height: 30px;
 }
-
 .social-share-container.from-right .social-share-wrapper .social-share-menu .social-share-list-item a {
   width: 30px;
   height: 30px;
@@ -145,7 +114,6 @@
   color: #fff;
   position: relative;
 }
-
 .social-share-container.from-right .social-share-wrapper .social-share-menu .social-share-list-item a span {
   width: 0;
   left: 30px;
@@ -158,30 +126,23 @@
   letter-spacing: 0.6;
   white-space: nowrap;
   line-height: 30px;
-  -webkit-transition: 0.25s ease;
   transition: 0.25s ease;
-  -webkit-transform: translateX(calc(-100% - 30px));
-          transform: translateX(calc(-100% - 30px));
+  transform: translateX(calc(-100% - 30px));
 }
-
 .social-share-container.from-right .social-share-wrapper .social-share-menu .social-share-list-item a:hover span {
   width: auto;
   padding: 0 20px;
   overflow: visible;
 }
-
 .social-share-container .home,
 .social-share-container .home span {
   background: #0fc20f;
 }
-
 .social-share-container .facebook,
 .social-share-container .facebook span {
   background: #2c20d4;
 }
-
 .social-share-container .contact,
 .social-share-container .contact span {
   background: #a324ca;
 }
-/*# sourceMappingURL=app.css.map */
