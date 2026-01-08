@@ -1,0 +1,83 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <title>Nền tảng căn bản về Javascript - nentang.vn</title>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <meta name="author" content="Nentang.vn" />
+    <meta name="keywords" content="học web, thiết kế web, khung hình ảnh, CSS frames, CSS border, frame ảnh, responsive image frame, phong cách khung ảnh, tutorial CSS, hướng dẫn CSS" />
+    <meta name="description" content="Hướng dẫn tạo các khung (frame) cho hình ảnh bằng CSS — nhiều style đẹp, responsive, dễ áp dụng cho dự án web và bài tập học viên." />
+    <!-- Open Graph / Social -->
+    <meta property="og:title" content="Tạo khung ảnh bằng CSS — Ví dụ & hướng dẫn" />
+    <meta property="og:description" content="Bộ mẫu khung ảnh CSS: polaroid, shadow, double-border, rounded, neon, vintage và nhiều hơn — có mã ví dụ để học viên thực hành." />
+    <meta property="og:type" content="website" />
+    <meta property="og:image" content="https://picsum.photos/1200/630" />
+    <meta name="twitter:card" content="summary_large_image" />
+    <link href="css/style.css" type="text/css" rel="stylesheet" />
+    <link href="frames.css" type="text/css" rel="stylesheet" />
+  </head>
+  <body>
+    <h1>Tạo khung border frame cho các hình ảnh</h1>
+    <p>Để tạo khung border frame cho hình ảnh, bạn có thể sử dụng thuộc tính CSS <code>border</code>. Dưới đây là ví dụ về cách tạo khung cho một hình ảnh:</p>
+    
+    <section class="frames-demo">
+      <h2>Mẫu khung ảnh (demos)</h2>
+      <p>Thử thay đường dẫn ảnh bằng ảnh của bạn hoặc dịch vụ placeholder như <a href="https://picsum.photos">picsum.photos</a>.</p>
+
+      <div class="frame-grid">
+        <figure>
+          <div class="frame frame-simple"><img src="https://picsum.photos/400/300?random=1" alt="Simple frame"/></div>
+          <figcaption>Simple border</figcaption>
+        </figure>
+
+        <figure>
+          <div class="frame frame-rounded"><img src="https://picsum.photos/400/300?random=2" alt="Rounded frame"/></div>
+          <figcaption>Rounded + shadow</figcaption>
+        </figure>
+
+        <figure>
+          <div class="frame frame-polaroid"><img src="https://picsum.photos/400/300?random=3" alt="Polaroid"/></div>
+          <figcaption>Polaroid</figcaption>
+        </figure>
+
+        <figure>
+          <div class="frame frame-double"><img src="https://picsum.photos/400/300?random=4" alt="Double border"/></div>
+          <figcaption>Double border</figcaption>
+        </figure>
+
+        <figure>
+          <div class="frame frame-matte"><img src="https://picsum.photos/400/300?random=5" alt="Matte frame"/></div>
+          <figcaption>Matte (khung passepartout)</figcaption>
+        </figure>
+
+        <figure>
+          <div class="frame frame-circle"><img src="https://picsum.photos/400/400?random=6" alt="Circle frame"/></div>
+          <figcaption>Circle avatar</figcaption>
+        </figure>
+
+        <figure>
+          <div class="frame frame-neon"><img src="https://picsum.photos/400/300?random=7" alt="Neon frame"/></div>
+          <figcaption>Neon glow</figcaption>
+        </figure>
+
+        <figure>
+          <div class="frame frame-vintage"><img src="https://picsum.photos/400/300?random=8" alt="Vintage frame"/></div>
+          <figcaption>Vintage / film</figcaption>
+        </figure>
+
+        <figure>
+          <div class="frame frame-gradient"><img src="https://picsum.photos/400/300?random=9" alt="Gradient border"/></div>
+          <figcaption>Gradient border</figcaption>
+        </figure>
+
+        <figure>
+          <div class="frame frame-ribbon"><img src="https://picsum.photos/400/300?random=10" alt="Ribbon frame"/></div>
+          <figcaption>Ribbon label</figcaption>
+        </figure>
+      </div>
+
+      <p>Copy lớp (class) tương ứng vào thẻ chứa ảnh để áp dụng hiệu ứng: <code>&lt;div class="frame frame-polaroid"&gt;&lt;img src="..."/&gt;&lt;/div&gt;</code></p>
+    </section>
+
+  </body>
+</html>

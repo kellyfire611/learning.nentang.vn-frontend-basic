@@ -1,0 +1,62 @@
+/* frames.css - collection of image frame styles for learning */
+:root{
+  --frame-bg:#fff;
+  --accent:#ff6b6b;
+  --muted:#f2f2f2;
+}
+body{font-family:system-ui,Segoe UI,Roboto,Helvetica,Arial,sans-serif;color:#222}
+.frames-demo{max-width:1100px;margin:18px auto;padding:0 16px}
+.frames-demo h2{margin-top:0}
+.frame-grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(200px,1fr));gap:18px}
+figure{margin:0;text-align:center;font-size:0.95rem}
+figcaption{margin-top:8px;color:#444}
+.frame{display:block;overflow:visible;background:var(--frame-bg);padding:8px}
+.frame img{display:block;width:100%;height:auto;border-radius:0}
+
+/* 1. Simple border */
+.frame-simple{border:6px solid #e6e6e6}
+
+/* 2. Rounded + soft shadow */
+.frame-rounded{border-radius:12px;box-shadow:0 8px 20px rgba(0,0,0,0.12);overflow:hidden}
+.frame-rounded img{border-radius:8px}
+
+/* 3. Polaroid */
+.frame-polaroid{background:#fff;padding:12px 12px 36px;border:1px solid #ddd;box-shadow:0 10px 30px rgba(0,0,0,0.15);position:relative}
+.frame-polaroid::after{content:"";position:absolute;left:14px;bottom:8px;width:calc(100% - 28px);height:10px;background:linear-gradient(90deg,rgba(0,0,0,0.06),rgba(0,0,0,0));transform:skewX(-10deg);}
+
+/* 4. Double border */
+.frame-double{padding:10px;border:6px solid #fff;box-shadow:0 0 0 4px #dcdcdc inset}
+.frame-double img{display:block}
+
+/* 5. Matte / passepartout */
+.frame-matte{background:linear-gradient(#fff,#fff);padding:30px;border:1px solid #ccc}
+.frame-matte img{box-shadow:0 6px 16px rgba(0,0,0,0.08)}
+
+/* 6. Circle avatar */
+.frame-circle{width:180px;height:180px;padding:6px;border-radius:50%;overflow:hidden;margin:0 auto}
+.frame-circle img{width:100%;height:100%;object-fit:cover;border-radius:50%}
+
+/* 7. Neon glow */
+.frame-neon{padding:6px;border-radius:8px;background:linear-gradient(180deg,#0f172a,#021025)}
+.frame-neon img{border-radius:6px;box-shadow:0 0 18px rgba(99,102,241,0.55), inset 0 0 8px rgba(99,102,241,0.18)}
+
+/* 8. Vintage film */
+.frame-vintage{background:#fff;padding:10px;border:6px solid #f3e6d6;box-shadow:0 6px 18px rgba(0,0,0,0.12);filter:sepia(0.08)}
+.frame-vintage img{display:block}
+
+/* 9. Gradient border using mask */
+.frame-gradient{position:relative;padding:6px;border-radius:10px}
+.frame-gradient::before{content:"";position:absolute;inset:0;padding:4px;border-radius:12px;background:linear-gradient(135deg,#ff6b6b,#845ec2);-webkit-mask:linear-gradient(#000,#000) content-box, linear-gradient(#000,#000);mask:linear-gradient(#000,#000) content-box, linear-gradient(#000,#000);-webkit-mask-composite: xor;pointer-events:none}
+.frame-gradient img{border-radius:8px;display:block}
+
+/* 10. Ribbon label */
+.frame-ribbon{position:relative;border-radius:6px;overflow:hidden}
+.frame-ribbon::before{content:"NEW";position:absolute;left:8px;top:8px;background:var(--accent);color:#fff;padding:6px 10px;font-weight:700;border-radius:4px;font-size:0.8rem;box-shadow:0 4px 10px rgba(0,0,0,0.12)}
+
+/* Responsive tweaks */
+@media (max-width:520px){.frame-circle{width:120px;height:120px}.frame{padding:6px}}
+
+/* helper: sample code style (if needed later) */
+code{background:#f9f9f9;border-radius:4px;padding:2px 6px;font-family:ui-monospace, SFMono-Regular, Menlo, Monaco, 'Roboto Mono', monospace}
+
+/* end frames.css */
