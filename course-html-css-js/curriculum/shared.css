@@ -1,0 +1,104 @@
+/* Shared styles for all curriculum pages */
+* { box-sizing: border-box; margin: 0; padding: 0; }
+body { font-family: 'Segoe UI', Tahoma, sans-serif; background: #f7fafc; color: #2d3748; }
+
+/* Header */
+.page-header {
+  padding: 36px 24px 28px;
+  color: white;
+  text-align: center;
+}
+.page-header .breadcrumb { font-size: 0.85rem; opacity: 0.8; margin-bottom: 10px; }
+.page-header .breadcrumb a { color: rgba(255,255,255,0.85); text-decoration: none; }
+.page-header .breadcrumb a:hover { text-decoration: underline; }
+.page-header h1 { font-size: 2rem; margin-bottom: 6px; }
+.page-header p { font-size: 0.95rem; opacity: 0.9; }
+
+/* Module-specific header colors */
+.module-1 { background: linear-gradient(135deg, #f093fb, #f5576c); }
+.module-2 { background: linear-gradient(135deg, #4facfe, #00f2fe); }
+.module-3 { background: linear-gradient(135deg, #43e97b, #38f9d7); }
+.module-4 { background: linear-gradient(135deg, #fa709a, #fee140); }
+.module-5 { background: linear-gradient(135deg, #a18cd1, #fbc2eb); }
+
+/* Container */
+.container { max-width: 1000px; margin: 0 auto; padding: 32px 24px; }
+
+/* Exercise list grid */
+.exercises-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
+  gap: 16px;
+  margin-top: 24px;
+}
+
+/* Exercise card */
+.exercise-card {
+  background: white;
+  border-radius: 12px;
+  padding: 20px;
+  box-shadow: 0 2px 12px rgba(0,0,0,0.07);
+  border-left: 4px solid #e2e8f0;
+  text-decoration: none;
+  color: inherit;
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+  transition: transform 0.15s, box-shadow 0.15s, border-color 0.15s;
+}
+.exercise-card:hover { transform: translateY(-3px); box-shadow: 0 6px 20px rgba(0,0,0,0.12); }
+.exercise-card .num { font-size: 0.78rem; color: #a0aec0; font-weight: 600; text-transform: uppercase; }
+.exercise-card h3 { font-size: 0.98rem; color: #2d3748; line-height: 1.4; }
+.exercise-card p { font-size: 0.82rem; color: #718096; line-height: 1.5; }
+.exercise-card .tags { display: flex; gap: 6px; flex-wrap: wrap; margin-top: 4px; }
+.exercise-card .tag {
+  font-size: 0.72rem; background: #edf2f7; color: #4a5568;
+  padding: 2px 8px; border-radius: 10px;
+}
+
+/* Color variants */
+.module-1 .exercise-card:hover, .card-m1:hover { border-color: #f5576c; }
+.module-2 .exercise-card:hover, .card-m2:hover { border-color: #00f2fe; }
+.module-3 .exercise-card:hover, .card-m3:hover { border-color: #38f9d7; }
+.module-4 .exercise-card:hover, .card-m4:hover { border-color: #fa709a; }
+.module-5 .exercise-card:hover, .card-m5:hover { border-color: #a18cd1; }
+
+/* Exercise detail page */
+.exercise-page { max-width: 860px; margin: 40px auto; padding: 0 24px; }
+.exercise-box {
+  background: white; border-radius: 16px;
+  box-shadow: 0 4px 24px rgba(0,0,0,0.09); overflow: hidden;
+}
+.exercise-box .ex-head { padding: 28px 32px; }
+.exercise-box .ex-head h1 { font-size: 1.5rem; margin-bottom: 6px; }
+.exercise-box .ex-head p { color: #718096; font-size: 0.93rem; }
+.exercise-box .ex-desc {
+  padding: 24px 32px; border-top: 1px solid #f0f4f8; background: #fafbff;
+  font-size: 0.93rem; line-height: 1.8; color: #4a5568;
+}
+.exercise-box .ex-desc h3 { margin: 16px 0 8px; color: #2d3748; }
+.exercise-box .ex-desc ul { padding-left: 20px; }
+.exercise-box .ex-desc li { margin-bottom: 4px; }
+.exercise-box .ex-work { padding: 28px 32px; }
+.exercise-box .ex-work h3 { font-size: 1rem; color: #2d3748; margin-bottom: 16px; }
+
+/* Code preview area */
+.preview-area {
+  background: #1a202c; border-radius: 10px; padding: 20px;
+  min-height: 100px;
+}
+.preview-area iframe { width: 100%; border: none; border-radius: 6px; background: white; }
+
+/* Back button */
+.btn-back {
+  display: inline-flex; align-items: center; gap: 6px;
+  text-decoration: none; color: #5a67d8; font-size: 0.9rem; font-weight: 600;
+  margin-bottom: 20px; padding: 8px 16px; background: white;
+  border-radius: 8px; box-shadow: 0 2px 8px rgba(0,0,0,0.08);
+  transition: background 0.15s;
+}
+.btn-back:hover { background: #ebf4ff; }
+
+/* Section title */
+.section-title { font-size: 1.2rem; color: #4a5568; margin-bottom: 4px; }
+.section-subtitle { font-size: 0.88rem; color: #a0aec0; margin-bottom: 20px; }

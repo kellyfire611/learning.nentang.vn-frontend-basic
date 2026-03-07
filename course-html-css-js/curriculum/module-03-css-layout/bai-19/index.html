@@ -1,0 +1,28 @@
+﻿<!DOCTYPE html><html lang='vi'><head><meta charset='UTF-8'/><title>Bai 19 - CSS Grid Named Areas</title><link rel='stylesheet' href='../../shared.css'/></head><body><div class='page-header module-3'><div class='breadcrumb'><a href='../../index.html'>Trang Chu</a>  <a href='../index.html'>Module 3</a>  Bai 19</div><h1>Bai 19: CSS Grid Named Areas</h1></div><div class='exercise-page'><div class='exercise-box'><div class='ex-work'><pre style='background:#1a202c;color:#e2e8f0;padding:20px;border-radius:8px;font-size:.88rem;line-height:1.7;overflow-x:auto;white-space:pre-wrap'>.page {
+  display: grid;
+  grid-template-areas:
+    'header  header  header'
+    'sidebar content content'
+    'footer  footer  footer';
+  grid-template-columns: 250px 1fr 1fr;
+  grid-template-rows: 60px auto 60px;
+  min-height: 100vh;
+}
+
+/* Gan vung cho phan tu */
+.header  { grid-area: header;  background: #2d3748; }
+.sidebar { grid-area: sidebar; background: #f7fafc; }
+.content { grid-area: content; padding: 24px; }
+.footer  { grid-area: footer;  background: #2d3748; }
+
+/* Responsive: thay doi areas theo man hinh */
+@media (max-width: 640px) {
+  .page {
+    grid-template-areas:
+      'header'
+      'content'
+      'sidebar'
+      'footer';
+    grid-template-columns: 1fr;
+  }
+}</pre></div></div><a href='../index.html' class='btn-back' style='margin-top:20px;'> Quay lai</a></div></body></html>

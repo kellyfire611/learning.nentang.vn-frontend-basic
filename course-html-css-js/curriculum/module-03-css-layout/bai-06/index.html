@@ -1,0 +1,23 @@
+﻿<!DOCTYPE html><html lang='vi'><head><meta charset='UTF-8'/><title>Bai 06 - Z-index va Stacking Context</title><link rel='stylesheet' href='../../shared.css'/></head><body><div class='page-header module-3'><div class='breadcrumb'><a href='../../index.html'>Trang Chu</a>  <a href='../index.html'>Module 3</a>  Bai 06</div><h1>Bai 06: Z-index va Stacking Context</h1><p>Module 3  CSS Layout & Responsive</p></div><div class='exercise-page'><div class='exercise-box'><div class='ex-work'><pre style='background:#1a202c;color:#e2e8f0;padding:20px;border-radius:8px;font-size:.88rem;line-height:1.7;overflow-x:auto;white-space:pre-wrap'>/* Z-index: chieu sau - so lon hien ra truoc */
+.phia-sau { z-index: 1; }
+.phia-truoc { z-index: 10; }
+.tren-cung  { z-index: 1000; }
+
+/* Chi hoat dong voi position != static */
+.co-z-index { position: relative; z-index: 5; }
+
+/* He thong z-index */
+:root {
+  --z-dropdown: 100;
+  --z-sticky: 200;
+  --z-fixed: 300;
+  --z-modal-backdrop: 400;
+  --z-modal: 500;
+  --z-tooltip: 600;
+}
+
+/* Stacking context moi duoc tao boi:
+  position != static + z-index != auto
+  opacity < 1
+  transform != none
+  filter != none */</pre></div></div><a href='../index.html' class='btn-back' style='margin-top:20px;'> Quay lai</a></div></body></html>

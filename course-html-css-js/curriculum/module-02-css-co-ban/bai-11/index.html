@@ -1,0 +1,27 @@
+﻿<!DOCTYPE html><html lang='vi'><head><meta charset='UTF-8'/><meta name='viewport' content='width=device-width,initial-scale=1'/><title>Bai 11 - CSS Gradient</title><link rel='stylesheet' href='../../shared.css'/></head><body><div class='page-header module-2'><div class='breadcrumb'><a href='../../index.html'>Trang Chu</a>  <a href='../index.html'>Module 2</a>  Bai 11</div><h1>Bai 11: CSS Gradient</h1><p>Module 2  CSS Co Ban</p></div><div class='exercise-page'><div class='exercise-box'><div class='ex-work'><h3>Yeu cau va Code mau:</h3><pre style='background:#1a202c;color:#e2e8f0;padding:20px;border-radius:8px;font-size:.88rem;line-height:1.7;overflow-x:auto;white-space:pre-wrap'>/* Linear Gradient */
+.bg-doc  { background: linear-gradient(to bottom, #667eea, #764ba2); }
+.bg-ngang { background: linear-gradient(to right, #f093fb, #f5576c); }
+.bg-cheo { background: linear-gradient(135deg, #4facfe, #00f2fe); }
+
+/* Nhieu mau */
+.cau-vong {
+  background: linear-gradient(to right,
+    red, orange, yellow, green, blue, indigo, violet
+  );
+}
+
+/* Radial Gradient - tu giua ra ngoai */
+.radial {
+  background: radial-gradient(circle, #fff 0%, #5a67d8 100%);
+}
+
+/* Repeating Gradient - tao soc */
+.soc {
+  background: repeating-linear-gradient(
+    45deg,
+    #f0f0f0 0px, #f0f0f0 10px,
+    #e0e0e0 10px, #e0e0e0 20px
+  );
+}
+
+/* YEU CAU: Tao 6 div voi 6 nen gradient dep khac nhau */</pre></div></div><a href='../index.html' class='btn-back' style='margin-top:20px;'> Quay lai</a></div></body></html>

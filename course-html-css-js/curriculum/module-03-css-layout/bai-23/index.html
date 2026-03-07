@@ -1,0 +1,25 @@
+﻿<!DOCTYPE html><html lang='vi'><head><meta charset='UTF-8'/><title>Bai 23 - Mobile-first Design</title><link rel='stylesheet' href='../../shared.css'/></head><body><div class='page-header module-3'><div class='breadcrumb'><a href='../../index.html'>Trang Chu</a>  <a href='../index.html'>Module 3</a>  Bai 23</div><h1>Bai 23: Mobile-first Design</h1></div><div class='exercise-page'><div class='exercise-box'><div class='ex-work'><pre style='background:#1a202c;color:#e2e8f0;padding:20px;border-radius:8px;font-size:.88rem;line-height:1.7;overflow-x:auto;white-space:pre-wrap'>/* MOBILE FIRST: Bat dau tu mobile nho nhat, them dan len */
+
+/* Base (mobile): tat ca style cho < 640px */
+.container { padding: 0 16px; }
+.card-grid { display: grid; gap: 16px; }
+/* Mac dinh: 1 cot */
+
+/* Tablet: tu 640px */
+@media (min-width: 640px) {
+  .container { max-width: 720px; margin: auto; }
+  .card-grid { grid-template-columns: repeat(2, 1fr); } /* 2 cot */
+}
+
+/* Desktop: tu 1024px */
+@media (min-width: 1024px) {
+  .container { max-width: 1200px; }
+  .card-grid { grid-template-columns: repeat(4, 1fr); } /* 4 cot */
+}
+
+/* Large Desktop: tu 1440px */
+@media (min-width: 1440px) {
+  .container { max-width: 1400px; }
+}
+
+/* YEU CAU: Redesign trang chu theo mobile-first */</pre></div></div><a href='../index.html' class='btn-back' style='margin-top:20px;'> Quay lai</a></div></body></html>

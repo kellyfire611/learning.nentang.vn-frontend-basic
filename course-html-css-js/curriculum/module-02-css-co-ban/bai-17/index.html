@@ -1,0 +1,45 @@
+﻿<!DOCTYPE html><html lang='vi'><head><meta charset='UTF-8'/><meta name='viewport' content='width=device-width,initial-scale=1'/><title>Bai 17 - Pseudo-element before after</title><link rel='stylesheet' href='../../shared.css'/></head><body><div class='page-header module-2'><div class='breadcrumb'><a href='../../index.html'>Trang Chu</a>  <a href='../index.html'>Module 2</a>  Bai 17</div><h1>Bai 17: Pseudo-element before after</h1><p>Module 2  CSS Co Ban</p></div><div class='exercise-page'><div class='exercise-box'><div class='ex-work'><h3>Yeu cau va Code mau:</h3><pre style='background:#1a202c;color:#e2e8f0;padding:20px;border-radius:8px;font-size:.88rem;line-height:1.7;overflow-x:auto;white-space:pre-wrap'>/* ::before va ::after - them noi dung trang tri */
+/* Luon can "content" de hien thi */
+
+/* Them bieu tuong truoc tieu de */
+h2::before {
+  content: " ";
+}
+
+/* Them gach ngang dep */
+.tieu-de::after {
+  content: "";
+  display: block;
+  width: 60px;
+  height: 3px;
+  background: #5a67d8;
+  margin-top: 8px;
+}
+
+/* Tao chuyen dan */
+a::after { content: " "; }
+
+/* Tao badge "HOT" */
+.san-pham::before {
+  content: "HOT";
+  position: absolute;
+  top: 8px; right: 8px;
+  background: red;
+  color: white;
+  font-size: 10px;
+  padding: 2px 6px;
+  border-radius: 10px;
+}
+
+/* Tao overlay trang tri */
+.hinh-dep::after {
+  content: "";
+  position: absolute;
+  inset: 0;
+  background: rgba(90,103,216,0.2);
+  transition: opacity 0.3s;
+  opacity: 0;
+}
+.hinh-dep:hover::after { opacity: 1; }
+
+/* YEU CAU: Tao menu voi > truoc muc active, them tooltip sau icon */</pre></div></div><a href='../index.html' class='btn-back' style='margin-top:20px;'> Quay lai</a></div></body></html>

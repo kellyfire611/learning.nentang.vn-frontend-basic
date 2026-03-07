@@ -1,0 +1,15 @@
+﻿<!DOCTYPE html><html lang='vi'><head><meta charset='UTF-8'/><title>Bai 12 - Flexbox order va align-self</title><link rel='stylesheet' href='../../shared.css'/></head><body><div class='page-header module-3'><div class='breadcrumb'><a href='../../index.html'>Trang Chu</a>  <a href='../index.html'>Module 3</a>  Bai 12</div><h1>Bai 12: Flexbox order va align-self</h1></div><div class='exercise-page'><div class='exercise-box'><div class='ex-work'><pre style='background:#1a202c;color:#e2e8f0;padding:20px;border-radius:8px;font-size:.88rem;line-height:1.7;overflow-x:auto;white-space:pre-wrap'>/* order: thay doi thu tu hien thi (mac dinh = 0) */
+.vat-1 { order: 3; } /* hien thi sau cung */
+.vat-2 { order: 1; } /* hien thi dau tien */
+.vat-3 { order: 2; } /* hien thi giua */
+
+/* align-self: ghi de align-items cho TUNG item */
+.container { display: flex; align-items: center; }
+.item-dac-biet { align-self: flex-end; } /* item nay o cuoi */
+.item-top      { align-self: flex-start; }
+.item-gian     { align-self: stretch; }
+
+/* Ung dung: Pin footer xuong cuoi */
+.page { display: flex; flex-direction: column; min-height: 100vh; }
+.main-content { flex: 1; } /* chiem phan con lai */
+.footer { /* tu dong xuong cuoi */ }</pre></div></div><a href='../index.html' class='btn-back' style='margin-top:20px;'> Quay lai</a></div></body></html>

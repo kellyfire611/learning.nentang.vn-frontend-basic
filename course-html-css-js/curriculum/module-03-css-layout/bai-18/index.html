@@ -1,0 +1,21 @@
+﻿<!DOCTYPE html><html lang='vi'><head><meta charset='UTF-8'/><title>Bai 18 - CSS Grid column va row span</title><link rel='stylesheet' href='../../shared.css'/></head><body><div class='page-header module-3'><div class='breadcrumb'><a href='../../index.html'>Trang Chu</a>  <a href='../index.html'>Module 3</a>  Bai 18</div><h1>Bai 18: CSS Grid column va row span</h1></div><div class='exercise-page'><div class='exercise-box'><div class='ex-work'><pre style='background:#1a202c;color:#e2e8f0;padding:20px;border-radius:8px;font-size:.88rem;line-height:1.7;overflow-x:auto;white-space:pre-wrap'>.grid {
+  display: grid;
+  grid-template-columns: repeat(4, 1fr);
+  gap: 16px;
+}
+
+/* Du lieu nam o cot 1 den cot 3 */
+.banner { grid-column: 1 / 3; }      /* cot 1 va 2 */
+.banner { grid-column: 1 / span 2; } /* cung ket qua */
+.banner { grid-column: 1 / -1; }     /* tu cot 1 den cuoi */
+
+/* Du lieu nam o hang 1 den hang 3 */
+.sidebar { grid-row: 1 / 3; }        /* keo dai 2 hang */
+
+/* Phong to ca 2 chieu */
+.featured {
+  grid-column: span 2;
+  grid-row: span 2;
+}
+
+/* YEU CAU: Tao trang tin tuc kieu bento-box voi cac bai viet khac kich thuoc */</pre></div></div><a href='../index.html' class='btn-back' style='margin-top:20px;'> Quay lai</a></div></body></html>

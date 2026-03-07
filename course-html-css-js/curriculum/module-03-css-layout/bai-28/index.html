@@ -1,0 +1,30 @@
+﻿<!DOCTYPE html><html lang='vi'><head><meta charset='UTF-8'/><title>Bai 28 - Holy Grail Layout</title><link rel='stylesheet' href='../../shared.css'/></head><body><div class='page-header module-3'><div class='breadcrumb'><a href='../../index.html'>Trang Chu</a>  <a href='../index.html'>Module 3</a>  Bai 28</div><h1>Bai 28: Holy Grail Layout</h1></div><div class='exercise-page'><div class='exercise-box'><div class='ex-work'><pre style='background:#1a202c;color:#e2e8f0;padding:20px;border-radius:8px;font-size:.88rem;line-height:1.7;overflow-x:auto;white-space:pre-wrap'>/* Holy Grail: Header, 3 cot (nav-content-sidebar), Footer */
+
+/* Voi CSS Grid (hien dai) */
+.page {
+  display: grid;
+  grid-template:
+    'header header header' auto
+    'nav    main   aside' 1fr
+    'footer footer footer' auto
+    / 200px 1fr 200px;
+  min-height: 100vh;
+}
+.header { grid-area: header; }
+.nav    { grid-area: nav; }
+.main   { grid-area: main; }
+.aside  { grid-area: aside; }
+.footer { grid-area: footer; }
+
+/* Responsive: xep chong tren mobile */
+@media (max-width: 768px) {
+  .page {
+    grid-template:
+      'header' auto
+      'nav'    auto
+      'main'   1fr
+      'aside'  auto
+      'footer' auto
+      / 1fr;
+  }
+}</pre></div></div><a href='../index.html' class='btn-back' style='margin-top:20px;'> Quay lai</a></div></body></html>

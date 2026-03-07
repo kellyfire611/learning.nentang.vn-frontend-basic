@@ -1,0 +1,29 @@
+﻿<!DOCTYPE html><html lang='vi'><head><meta charset='UTF-8'/><title>Bai 26 - CSS Animation keyframes</title><link rel='stylesheet' href='../../shared.css'/></head><body><div class='page-header module-2'><div class='breadcrumb'><a href='../../index.html'>Trang Chu</a>  <a href='../index.html'>Module 2</a>  Bai 26</div><h1>Bai 26: CSS Animation keyframes</h1></div><div class='exercise-page'><div class='exercise-box'><div class='ex-work'><pre style='background:#1a202c;color:#e2e8f0;padding:20px;border-radius:8px;font-size:.88rem;line-height:1.7;overflow-x:auto;white-space:pre-wrap'>/* Khai bao animation */
+@keyframes nhay-len {
+  0%   { transform: translateY(0); }
+  50%  { transform: translateY(-20px); }
+  100% { transform: translateY(0); }
+}
+
+@keyframes xoay {
+  from { transform: rotate(0deg); }
+  to   { transform: rotate(360deg); }
+}
+
+@keyframes mo-dan {
+  from { opacity: 0; transform: translateY(20px); }
+  to   { opacity: 1; transform: translateY(0); }
+}
+
+@keyframes nhip-tim {
+  0%, 100% { transform: scale(1); }
+  50%       { transform: scale(1.2); }
+}
+
+/* Ap dung animation */
+.hieu-ung-nhay  { animation: nhay-len 0.6s ease infinite; }
+.hieu-ung-xoay  { animation: xoay 2s linear infinite; }
+.hieu-ung-mo    { animation: mo-dan 0.5s ease forwards; }
+.hieu-ung-tim   { animation: nhip-tim 1s ease infinite; }
+
+/* YEU CAU: Tao loading spinner, animated card, fade-in content */</pre></div></div><a href='../index.html' class='btn-back' style='margin-top:20px;'> Quay lai</a></div></body></html>

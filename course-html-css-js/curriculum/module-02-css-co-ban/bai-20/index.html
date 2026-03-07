@@ -1,0 +1,33 @@
+﻿<!DOCTYPE html><html lang='vi'><head><meta charset='UTF-8'/><meta name='viewport' content='width=device-width,initial-scale=1'/><title>Bai 20 - CSS Variables Custom Properties</title><link rel='stylesheet' href='../../shared.css'/></head><body><div class='page-header module-2'><div class='breadcrumb'><a href='../../index.html'>Trang Chu</a>  <a href='../index.html'>Module 2</a>  Bai 20</div><h1>Bai 20: CSS Variables Custom Properties</h1><p>Module 2  CSS Co Ban</p></div><div class='exercise-page'><div class='exercise-box'><div class='ex-work'><h3>Yeu cau va Code mau:</h3><pre style='background:#1a202c;color:#e2e8f0;padding:20px;border-radius:8px;font-size:.88rem;line-height:1.7;overflow-x:auto;white-space:pre-wrap'>:root {
+  /* Khai bao bien CSS o level cao nhat */
+  --mau-chinh: #5a67d8;
+  --mau-phu: #764ba2;
+  --mau-nen: #f7fafc;
+  --mau-van-ban: #2d3748;
+
+  --font-co-ban: 16px;
+  --font-lon: 1.5rem;
+
+  --khoang-cach-s: 8px;
+  --khoang-cach-m: 16px;
+  --khoang-cach-l: 32px;
+
+  --radius: 8px;
+  --bong: 0 4px 16px rgba(0,0,0,0.1);
+}
+
+/* Su dung bien */
+.btn {
+  background-color: var(--mau-chinh);
+  padding: var(--khoang-cach-s) var(--khoang-cach-m);
+  border-radius: var(--radius);
+  font-size: var(--font-co-ban);
+}
+
+/* Ghi de bien trong scope con */
+.dark-mode {
+  --mau-nen: #1a202c;
+  --mau-van-ban: #f7fafc;
+}
+
+/* YEU CAU: Tao he thong mau (color system) voi bien CSS, tao ca dark/light theme */</pre></div></div><a href='../index.html' class='btn-back' style='margin-top:20px;'> Quay lai</a></div></body></html>

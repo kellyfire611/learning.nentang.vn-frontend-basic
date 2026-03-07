@@ -1,0 +1,12 @@
+﻿<!DOCTYPE html><html lang='vi'><head><meta charset='UTF-8'/><title>Bai 22 - Tao Navigation Bar don gian</title><link rel='stylesheet' href='../../shared.css'/></head><body><div class='page-header module-2'><div class='breadcrumb'><a href='../../index.html'>Trang Chu</a>  <a href='../index.html'>Module 2</a>  Bai 22</div><h1>Bai 22: Tao Navigation Bar don gian</h1></div><div class='exercise-page'><div class='exercise-box'><div class='ex-work'><pre style='background:#1a202c;color:#e2e8f0;padding:20px;border-radius:8px;font-size:.88rem;line-height:1.7;overflow-x:auto;white-space:pre-wrap'>nav { background:#2d3748; padding:0 24px; }
+nav ul { list-style:none; margin:0; padding:0; display:flex; }
+nav ul li a { display:block; color:white; text-decoration:none; padding:16px 20px; transition:background .2s; }
+nav ul li a:hover { background:#4a5568; }
+nav ul li a.active { background:#5a67d8; }
+/* Hamburger cho mobile */
+.hamburger { display:none; background:none; border:none; color:white; font-size:1.5rem; }
+@media (max-width:768px) {
+  .hamburger { display:block; }
+  nav ul { display:none; flex-direction:column; }
+  nav ul.open { display:flex; }
+}</pre></div></div><a href='../index.html' class='btn-back' style='margin-top:20px;'> Quay lai</a></div></body></html>

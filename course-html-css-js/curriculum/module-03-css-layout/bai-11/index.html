@@ -1,0 +1,18 @@
+﻿<!DOCTYPE html><html lang='vi'><head><meta charset='UTF-8'/><title>Bai 11 - Flexbox flex-grow shrink basis</title><link rel='stylesheet' href='../../shared.css'/></head><body><div class='page-header module-3'><div class='breadcrumb'><a href='../../index.html'>Trang Chu</a>  <a href='../index.html'>Module 3</a>  Bai 11</div><h1>Bai 11: Flexbox flex-grow shrink basis</h1></div><div class='exercise-page'><div class='exercise-box'><div class='ex-work'><pre style='background:#1a202c;color:#e2e8f0;padding:20px;border-radius:8px;font-size:.88rem;line-height:1.7;overflow-x:auto;white-space:pre-wrap'>.container { display: flex; }
+
+/* flex-grow: ty le phong to khi co khong gian thua */
+.col-1 { flex-grow: 1; } /* phan thua chia deu */
+.col-2 { flex-grow: 2; } /* nhan gap doi phan thua */
+
+/* flex-shrink: ty le thu nho khi thieu khong gian */
+.khong-thu { flex-shrink: 0; } /* khong bao gio thu nho */
+.thu-nhieu { flex-shrink: 2; } /* thu nho gap doi */
+
+/* flex-basis: kich thuoc ban dau */
+.co-dinh { flex-basis: 200px; }
+.phan-tram { flex-basis: 33.333%; }
+
+/* Shorthand flex: grow shrink basis */
+.col { flex: 1 1 0%; }      /* grow=1, shrink=1, basis=0 */
+.co-dinh { flex: 0 0 200px; } /* khong thay doi kich thuoc */
+.tu-do { flex: 1; }          /* grow=1, shrink=1, basis=0 */</pre></div></div><a href='../index.html' class='btn-back' style='margin-top:20px;'> Quay lai</a></div></body></html>

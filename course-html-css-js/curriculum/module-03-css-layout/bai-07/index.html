@@ -1,0 +1,26 @@
+﻿<!DOCTYPE html><html lang='vi'><head><meta charset='UTF-8'/><title>Bai 07 - Overflow hidden scroll auto</title><link rel='stylesheet' href='../../shared.css'/></head><body><div class='page-header module-3'><div class='breadcrumb'><a href='../../index.html'>Trang Chu</a>  <a href='../index.html'>Module 3</a>  Bai 07</div><h1>Bai 07: Overflow hidden scroll auto</h1><p>Module 3  CSS Layout & Responsive</p></div><div class='exercise-page'><div class='exercise-box'><div class='ex-work'><pre style='background:#1a202c;color:#e2e8f0;padding:20px;border-radius:8px;font-size:.88rem;line-height:1.7;overflow-x:auto;white-space:pre-wrap'>/* Clip noi dung tran */
+.clip { overflow: hidden; }
+
+/* Thanh cuon (luon hien) */
+.scroll { overflow: scroll; }
+
+/* Thanh cuon (chi hien khi can) */
+.hop-long {
+  height: 200px;
+  overflow: auto;  /* khuyen dung */
+}
+
+/* Chi cuon theo 1 huong */
+.ngang { overflow-x: auto; overflow-y: hidden; }
+.doc   { overflow-y: auto; overflow-x: hidden; }
+
+/* Ung dung: table responsive */
+.table-wrap { overflow-x: auto; }  /* table cuon ngang */
+.table-wrap table { min-width: 600px; }
+
+/* Clip text tran */
+.ellipsis {
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;  /* hien ... */
+}</pre></div></div><a href='../index.html' class='btn-back' style='margin-top:20px;'> Quay lai</a></div></body></html>

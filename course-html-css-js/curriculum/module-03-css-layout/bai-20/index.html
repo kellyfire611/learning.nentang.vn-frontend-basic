@@ -1,0 +1,23 @@
+﻿<!DOCTYPE html><html lang='vi'><head><meta charset='UTF-8'/><title>Bai 20 - CSS Grid auto-fill va auto-fit</title><link rel='stylesheet' href='../../shared.css'/></head><body><div class='page-header module-3'><div class='breadcrumb'><a href='../../index.html'>Trang Chu</a>  <a href='../index.html'>Module 3</a>  Bai 20</div><h1>Bai 20: CSS Grid auto-fill va auto-fit</h1></div><div class='exercise-page'><div class='exercise-box'><div class='ex-work'><pre style='background:#1a202c;color:#e2e8f0;padding:20px;border-radius:8px;font-size:.88rem;line-height:1.7;overflow-x:auto;white-space:pre-wrap'>/* auto-fill: tao cot rong ngay ca khi khong co item */
+.auto-fill {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(200px, 1fr));
+}
+
+/* auto-fit: keo gian cot con lai khi it item */
+.auto-fit {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+}
+
+/* Khac biet: auto-fill giu cot trong, auto-fit bo cot trong */
+
+/* Pattern hay dung nhat cho responsive card */
+.card-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
+  gap: 24px;
+}
+/* Hoan toan responsive KHONG can media queries! */
+
+/* YEU CAU: Tao thu vien anh, so sanh auto-fill va auto-fit */</pre></div></div><a href='../index.html' class='btn-back' style='margin-top:20px;'> Quay lai</a></div></body></html>

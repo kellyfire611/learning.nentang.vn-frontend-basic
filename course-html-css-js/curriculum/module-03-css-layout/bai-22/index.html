@@ -1,0 +1,24 @@
+﻿<!DOCTYPE html><html lang='vi'><head><meta charset='UTF-8'/><title>Bai 22 - Media Queries co ban</title><link rel='stylesheet' href='../../shared.css'/></head><body><div class='page-header module-3'><div class='breadcrumb'><a href='../../index.html'>Trang Chu</a>  <a href='../index.html'>Module 3</a>  Bai 22</div><h1>Bai 22: Media Queries co ban</h1></div><div class='exercise-page'><div class='exercise-box'><div class='ex-work'><pre style='background:#1a202c;color:#e2e8f0;padding:20px;border-radius:8px;font-size:.88rem;line-height:1.7;overflow-x:auto;white-space:pre-wrap'>/* Diem ngat pho bien */
+/* Mobile:  < 640px  */
+/* Tablet:  640-1024px */
+/* Desktop: > 1024px */
+
+/* Desktop-first (viet cho desktop truoc, thu nho lai) */
+.container { width: 1200px; }
+@media (max-width: 1024px) { .container { width: 100%; padding: 0 20px; } }
+@media (max-width: 640px)  { .container { padding: 0 16px; } }
+
+/* Ket hop dieu kien */
+@media (min-width: 640px) and (max-width: 1024px) {
+  /* Chi ap dung cho tablet */
+}
+
+/* Theo huong man hinh */
+@media (orientation: landscape) { /* man hinh ngang */ }
+@media (orientation: portrait)  { /* man hinh doc */ }
+
+/* Chieu cao */
+@media (max-height: 500px) { .hero { height: auto; padding: 40px; } }
+
+/* In an */
+@media print { .no-print { display: none; } }</pre></div></div><a href='../index.html' class='btn-back' style='margin-top:20px;'> Quay lai</a></div></body></html>

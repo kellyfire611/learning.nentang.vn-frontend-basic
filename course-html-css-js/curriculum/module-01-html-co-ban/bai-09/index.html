@@ -1,0 +1,61 @@
+<!DOCTYPE html>
+<html lang="vi">
+<head>
+  <meta charset="UTF-8" /><meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Bài 09 – Chèn hình ảnh img</title>
+  <link rel="stylesheet" href="../../shared.css" />
+</head>
+<body>
+  <div class="page-header module-1">
+    <div class="breadcrumb"><a href="../../index.html">Trang Chủ</a> &rsaquo; <a href="../index.html">Module 1</a> &rsaquo; Bài 09</div>
+    <h1>Bài 09: Chèn hình ảnh &lt;img&gt;</h1>
+    <p>Module 1 – HTML Cơ Bản</p>
+  </div>
+  <div class="exercise-page">
+    <div class="exercise-box">
+      <div class="ex-head"><h1>📝 Yêu cầu bài tập</h1><p>Hiển thị hình ảnh đúng cách với các thuộc tính cần thiết.</p></div>
+      <div class="ex-desc">
+        <h3>Yêu cầu</h3>
+        <ul>
+          <li>Tạo trang "Bộ Sưu Tập Hình Ảnh" với ít nhất 6 hình ảnh</li>
+          <li>Mỗi hình phải có thuộc tính <code>alt</code> mô tả nội dung</li>
+          <li>Sử dụng hình từ internet (dùng picsum.photos hoặc via.placeholder.com)</li>
+          <li>Thử dùng: <code>width</code>, <code>height</code> để kiểm soát kích thước</li>
+          <li>Dùng <code>title</code> để hiển thị tooltip khi hover</li>
+          <li>Tạo hình ảnh là liên kết (bọc img trong thẻ a)</li>
+        </ul>
+        <h3>Kiến thức cần nhớ</h3>
+        <ul>
+          <li><code>src</code> — đường dẫn hình (URL hoặc đường dẫn local)</li>
+          <li><code>alt</code> — văn bản thay thế khi hình không load được (quan trọng cho accessibility)</li>
+          <li><code>width</code>/<code>height</code> — đặt kích thước (px hoặc %)</li>
+          <li>Chỉ đặt 1 trong 2 để hình tự scale đúng tỷ lệ</li>
+        </ul>
+      </div>
+      <div class="ex-work">
+        <h3>✏️ Code mẫu:</h3>
+        <pre style="background:#1a202c;color:#e2e8f0;padding:20px;border-radius:8px;font-size:0.88rem;line-height:1.7;overflow-x:auto;">&lt;h1&gt;🖼️ Bộ Sưu Tập Hình Ảnh Thiên Nhiên&lt;/h1&gt;
+
+&lt;!-- Hình ảnh cơ bản --&gt;
+&lt;img src="https://picsum.photos/400/300?random=1"
+     alt="Phong cảnh thiên nhiên 1"
+     width="400"
+     title="Nhấn để xem đầy đủ" /&gt;
+
+&lt;!-- Hình ảnh là liên kết --&gt;
+&lt;a href="https://picsum.photos/800/600?random=2" target="_blank"&gt;
+  &lt;img src="https://picsum.photos/400/300?random=2"
+       alt="Phong cảnh thiên nhiên 2"
+       width="400" /&gt;
+&lt;/a&gt;
+
+&lt;!-- Hình từ local --&gt;
+&lt;img src="./images/my-photo.jpg"
+     alt="Ảnh của tôi"
+     width="300" /&gt;</pre>
+      </div>
+    </div>
+    <a href="../index.html" class="btn-back" style="margin-top:20px;">← Quay lại danh sách</a>
+  </div>
+</body>
+</html>

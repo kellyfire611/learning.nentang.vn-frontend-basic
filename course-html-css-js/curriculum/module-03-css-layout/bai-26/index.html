@@ -1,0 +1,21 @@
+﻿<!DOCTYPE html><html lang='vi'><head><meta charset='UTF-8'/><title>Bai 26 - Responsive Typography</title><link rel='stylesheet' href='../../shared.css'/></head><body><div class='page-header module-3'><div class='breadcrumb'><a href='../../index.html'>Trang Chu</a>  <a href='../index.html'>Module 3</a>  Bai 26</div><h1>Bai 26: Responsive Typography</h1></div><div class='exercise-page'><div class='exercise-box'><div class='ex-work'><pre style='background:#1a202c;color:#e2e8f0;padding:20px;border-radius:8px;font-size:.88rem;line-height:1.7;overflow-x:auto;white-space:pre-wrap'>/* Phuong phap 1: clamp() - co dinh min va max */
+h1 { font-size: clamp(1.5rem, 5vw, 3rem); }
+p  { font-size: clamp(0.9rem, 2vw, 1.1rem); }
+
+/* Phuong phap 2: Media queries */
+h1 { font-size: 1.8rem; }
+@media (min-width: 640px)  { h1 { font-size: 2.2rem; } }
+@media (min-width: 1024px) { h1 { font-size: 3rem; } }
+
+/* Phuong phap 3: Vw (viewport width) */
+h1 { font-size: 5vw; } /* 5% chieu rong man hinh */
+/* Nhuoc diem: qua nho tren mobile, qua lon tren widescreen */
+
+/* Fluid Typography - ket hop vw va clamp */
+:root {
+  --font-base: clamp(0.9rem, 0.85rem + 0.25vw, 1rem);
+  --font-lg:   clamp(1.1rem, 1rem + 0.5vw, 1.25rem);
+  --font-xl:   clamp(1.5rem, 1rem + 2.5vw, 2.5rem);
+}
+
+/* YEU CAU: Tao he thong font co dang (type scale) responsive hoan toan */</pre></div></div><a href='../index.html' class='btn-back' style='margin-top:20px;'> Quay lai</a></div></body></html>

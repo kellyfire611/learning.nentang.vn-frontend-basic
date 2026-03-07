@@ -1,0 +1,23 @@
+﻿<!DOCTYPE html><html lang='vi'><head><meta charset='UTF-8'/><title>Bai 04 - Position relative va absolute</title><link rel='stylesheet' href='../../shared.css'/></head><body><div class='page-header module-3'><div class='breadcrumb'><a href='../../index.html'>Trang Chu</a>  <a href='../index.html'>Module 3</a>  Bai 04</div><h1>Bai 04: Position relative va absolute</h1><p>Module 3  CSS Layout & Responsive</p></div><div class='exercise-page'><div class='exercise-box'><div class='ex-work'><pre style='background:#1a202c;color:#e2e8f0;padding:20px;border-radius:8px;font-size:.88rem;line-height:1.7;overflow-x:auto;white-space:pre-wrap'>/* relative - di chuyen tuong doi vi tri ban dau */
+.hop { position: relative; top: 20px; left: 30px; }
+/* Nhung van chiem khong gian cu */
+
+/* absolute - dinh vi theo cha gan nhat co position */
+.cha { position: relative; } /* lam moc cho con */
+.con { position: absolute; top: 10px; right: 10px; }
+
+/* Ung dung thuc te: Badge tren anh */
+.san-pham { position: relative; }
+.badge {
+  position: absolute;
+  top: 8px; right: 8px;
+  background: red; color: white;
+  padding: 4px 8px; border-radius: 10px;
+}
+
+/* Ung dung: Can giua tuyet doi */
+.trung-tam {
+  position: absolute;
+  top: 50%; left: 50%;
+  transform: translate(-50%, -50%);
+}</pre></div></div><a href='../index.html' class='btn-back' style='margin-top:20px;'> Quay lai</a></div></body></html>

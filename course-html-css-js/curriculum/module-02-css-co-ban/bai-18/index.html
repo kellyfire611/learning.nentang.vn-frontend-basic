@@ -1,0 +1,23 @@
+﻿<!DOCTYPE html><html lang='vi'><head><meta charset='UTF-8'/><meta name='viewport' content='width=device-width,initial-scale=1'/><title>Bai 18 - CSS Selector nang cao</title><link rel='stylesheet' href='../../shared.css'/></head><body><div class='page-header module-2'><div class='breadcrumb'><a href='../../index.html'>Trang Chu</a>  <a href='../index.html'>Module 2</a>  Bai 18</div><h1>Bai 18: CSS Selector nang cao</h1><p>Module 2  CSS Co Ban</p></div><div class='exercise-page'><div class='exercise-box'><div class='ex-work'><h3>Yeu cau va Code mau:</h3><pre style='background:#1a202c;color:#e2e8f0;padding:20px;border-radius:8px;font-size:.88rem;line-height:1.7;overflow-x:auto;white-space:pre-wrap'>/* Child combinator (>) - chi phan tu con truc tiep */
+nav > ul { list-style: none; }           /* ul trong nav */
+.card > .title { font-weight: bold; }    /* .title la con truc tiep */
+
+/* Adjacent sibling (+) - ngay sau */
+h2 + p { font-size: 1.1em; color: #555; }   /* p ngay sau h2 */
+
+/* General sibling (~) - tat ca phan tu sau */
+h2 ~ p { margin-left: 20px; }
+
+/* Attribute Selector */
+[type="text"]       { border: 1px solid #ccc; }
+[href^="https"]     { color: green; }   /* bat dau bang https */
+[href$=".pdf"]      { color: red; }     /* ket thuc bang .pdf */
+[href*="google"]    { font-weight: bold; } /* chua google */
+[class~="active"]   { background: blue; }  /* co class "active" */
+[lang|="en"]        { font-family: serif; } /* lang bat dau bang en */
+
+/* :not() - loai tru */
+li:not(:last-child) { border-bottom: 1px solid #eee; }
+input:not([type="submit"]) { border-radius: 4px; }
+
+/* YEU CAU: Viet CSS selector chon dung phan tu theo yeu cau (khong them class) */</pre></div></div><a href='../index.html' class='btn-back' style='margin-top:20px;'> Quay lai</a></div></body></html>

@@ -1,0 +1,34 @@
+﻿<!DOCTYPE html><html lang='vi'><head><meta charset='UTF-8'/><title>Bai 29 - Khung hinh anh Image Frame</title><link rel='stylesheet' href='../../shared.css'/></head><body><div class='page-header module-2'><div class='breadcrumb'><a href='../../index.html'>Trang Chu</a>  <a href='../index.html'>Module 2</a>  Bai 29</div><h1>Bai 29: Khung hinh anh Image Frame</h1></div><div class='exercise-page'><div class='exercise-box'><div class='ex-work'><pre style='background:#1a202c;color:#e2e8f0;padding:20px;border-radius:8px;font-size:.88rem;line-height:1.7;overflow-x:auto;white-space:pre-wrap'>/* Khung anh don gian */
+.hinh-co-vien { border: 5px solid white; box-shadow: 0 4px 12px rgba(0,0,0,.2); }
+
+/* Khung co canh */
+.polaroid {
+  background: white;
+  padding: 12px 12px 32px;
+  box-shadow: 0 4px 12px rgba(0,0,0,.2);
+  transform: rotate(-3deg);
+  transition: transform .2s;
+}
+.polaroid:hover { transform: rotate(0deg) scale(1.05); }
+
+/* Hinh tron */
+.avatar {
+  width: 100px; height: 100px;
+  border-radius: 50%;
+  border: 4px solid #5a67d8;
+  object-fit: cover;
+}
+
+/* Hieu ung Zoom khi hover */
+.zoom-wrap { overflow: hidden; border-radius: 12px; }
+.zoom-wrap img { transition: transform .4s; }
+.zoom-wrap:hover img { transform: scale(1.1); }
+
+/* Caption overlay */
+.hinh-caption { position: relative; display: inline-block; }
+.hinh-caption .caption {
+  position: absolute; bottom: 0; left: 0; right: 0;
+  background: rgba(0,0,0,.6); color: white;
+  padding: 10px; transform: translateY(100%); transition: transform .3s;
+}
+.hinh-caption:hover .caption { transform: translateY(0); }</pre></div></div><a href='../index.html' class='btn-back' style='margin-top:20px;'> Quay lai</a></div></body></html>

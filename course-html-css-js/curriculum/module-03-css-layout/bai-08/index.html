@@ -1,0 +1,19 @@
+﻿<!DOCTYPE html><html lang='vi'><head><meta charset='UTF-8'/><title>Bai 08 - Flexbox Container co ban</title><link rel='stylesheet' href='../../shared.css'/></head><body><div class='page-header module-3'><div class='breadcrumb'><a href='../../index.html'>Trang Chu</a>  <a href='../index.html'>Module 3</a>  Bai 08</div><h1>Bai 08: Flexbox Container co ban</h1><p>Module 3  CSS Layout & Responsive</p></div><div class='exercise-page'><div class='exercise-box'><div class='ex-work'><pre style='background:#1a202c;color:#e2e8f0;padding:20px;border-radius:8px;font-size:.88rem;line-height:1.7;overflow-x:auto;white-space:pre-wrap'>/* Kich hoat Flexbox */
+.container { display: flex; }
+
+/* Huong sap xep (Main Axis) */
+.hang   { flex-direction: row; }    /* mac dinh, trai -> phai */
+.cot    { flex-direction: column; } /* tren -> duoi */
+.hang-ngược { flex-direction: row-reverse; }
+.cot-nguoc  { flex-direction: column-reverse; }
+
+/* Xuong dong khi het cho */
+.tu-dong { flex-wrap: wrap; }    /* tu dong xuong dong */
+.mot-dong { flex-wrap: nowrap; }  /* mac dinh, khong xuong dong */
+
+/* Shorthand */
+.flex { flex-flow: row wrap; } /* direction + wrap */
+
+/* Khoang cach giua items */
+.gap { gap: 16px; }          /* tat ca huong */
+.gap-xy { row-gap: 16px; column-gap: 24px; }</pre></div></div><a href='../index.html' class='btn-back' style='margin-top:20px;'> Quay lai</a></div></body></html>

@@ -1,0 +1,24 @@
+﻿<!DOCTYPE html><html lang='vi'><head><meta charset='UTF-8'/><title>Bai 16 - CSS Grid grid-template-columns</title><link rel='stylesheet' href='../../shared.css'/></head><body><div class='page-header module-3'><div class='breadcrumb'><a href='../../index.html'>Trang Chu</a>  <a href='../index.html'>Module 3</a>  Bai 16</div><h1>Bai 16: CSS Grid grid-template-columns</h1></div><div class='exercise-page'><div class='exercise-box'><div class='ex-work'><pre style='background:#1a202c;color:#e2e8f0;padding:20px;border-radius:8px;font-size:.88rem;line-height:1.7;overflow-x:auto;white-space:pre-wrap'>.grid {
+  display: grid;
+}
+
+/* 3 cot bang nhau */
+.three-col { grid-template-columns: 1fr 1fr 1fr; }
+.three-col-2 { grid-template-columns: repeat(3, 1fr); } /* ngan hon */
+
+/* Cot co dinh + tu do */
+.sidebar-layout { grid-template-columns: 250px 1fr; }
+.sidebar-2 { grid-template-columns: 250px 1fr 280px; }
+
+/* Ket hop don vi */
+.mix { grid-template-columns: 200px 1fr 2fr auto; }
+
+/* minmax() - co dinh min va max */
+.responsive-grid {
+  grid-template-columns: repeat(auto-fill, minmax(250px, 1fr));
+}
+
+/* fit-content */
+.fit { grid-template-columns: fit-content(300px) 1fr; }
+
+/* YEU CAU: Tao layout 12 cot kieu Bootstrap bang CSS Grid */</pre></div></div><a href='../index.html' class='btn-back' style='margin-top:20px;'> Quay lai</a></div></body></html>

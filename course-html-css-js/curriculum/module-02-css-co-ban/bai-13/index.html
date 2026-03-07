@@ -1,0 +1,25 @@
+﻿<!DOCTYPE html><html lang='vi'><head><meta charset='UTF-8'/><meta name='viewport' content='width=device-width,initial-scale=1'/><title>Bai 13 - Box Shadow va Text Shadow</title><link rel='stylesheet' href='../../shared.css'/></head><body><div class='page-header module-2'><div class='breadcrumb'><a href='../../index.html'>Trang Chu</a>  <a href='../index.html'>Module 2</a>  Bai 13</div><h1>Bai 13: Box Shadow va Text Shadow</h1><p>Module 2  CSS Co Ban</p></div><div class='exercise-page'><div class='exercise-box'><div class='ex-work'><h3>Yeu cau va Code mau:</h3><pre style='background:#1a202c;color:#e2e8f0;padding:20px;border-radius:8px;font-size:.88rem;line-height:1.7;overflow-x:auto;white-space:pre-wrap'>/* Box Shadow */
+/* offset-x | offset-y | blur | spread | color */
+.bong-nhe { box-shadow: 0 2px 8px rgba(0,0,0,0.1); }
+.bong-vua { box-shadow: 0 4px 16px rgba(0,0,0,0.2); }
+.bong-manh { box-shadow: 0 8px 32px rgba(0,0,0,0.3); }
+
+/* Bong vo - khong mo */
+.bong-sharp { box-shadow: 4px 4px 0 #000; }
+
+/* Nhieu bong */
+.nhieu-bong {
+  box-shadow:
+    0 2px 4px rgba(0,0,0,0.1),
+    0 8px 16px rgba(0,0,0,0.1),
+    0 16px 32px rgba(0,0,0,0.05);
+}
+
+/* Bong trong (inset) */
+.bong-trong { box-shadow: inset 0 2px 8px rgba(0,0,0,0.2); }
+
+/* Text Shadow */
+h1 { text-shadow: 2px 2px 4px rgba(0,0,0,0.3); }
+.text-glow { text-shadow: 0 0 10px #5a67d8, 0 0 20px #5a67d8; }
+
+/* YEU CAU: Tao 6 card voi 6 kieu shadow khac nhau, hover thay doi shadow */</pre></div></div><a href='../index.html' class='btn-back' style='margin-top:20px;'> Quay lai</a></div></body></html>

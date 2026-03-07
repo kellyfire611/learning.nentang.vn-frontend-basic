@@ -1,0 +1,21 @@
+﻿<!DOCTYPE html><html lang='vi'><head><meta charset='UTF-8'/><meta name='viewport' content='width=device-width,initial-scale=1'/><title>Bai 16 - Pseudo-class nth-child first last</title><link rel='stylesheet' href='../../shared.css'/></head><body><div class='page-header module-2'><div class='breadcrumb'><a href='../../index.html'>Trang Chu</a>  <a href='../index.html'>Module 2</a>  Bai 16</div><h1>Bai 16: Pseudo-class nth-child first last</h1><p>Module 2  CSS Co Ban</p></div><div class='exercise-page'><div class='exercise-box'><div class='ex-work'><h3>Yeu cau va Code mau:</h3><pre style='background:#1a202c;color:#e2e8f0;padding:20px;border-radius:8px;font-size:.88rem;line-height:1.7;overflow-x:auto;white-space:pre-wrap'>/* :first-child va :last-child */
+li:first-child { font-weight: bold; color: #5a67d8; }
+li:last-child  { border-bottom: none; }
+
+/* :nth-child(n) - chon theo vi tri */
+li:nth-child(2)    { color: red; }     /* chi phan tu thu 2 */
+li:nth-child(odd)  { background: #f7fafc; } /* hang le */
+li:nth-child(even) { background: #edf2f7; } /* hang chan (bang xe soc) */
+li:nth-child(3n)   { color: green; }   /* moi 3 phan tu */
+
+/* :nth-last-child - dem tu cuoi */
+li:nth-last-child(1) { /* phan tu cuoi cung */ }
+
+/* :only-child - phan tu duy nhat */
+p:only-child { font-size: 1.2em; }
+
+/* Un dung: bang soc mau xen ke */
+tr:nth-child(even) { background-color: #f8f9fa; }
+tr:hover           { background-color: #e8f4fd; }
+
+/* YEU CAU: Tao bang 10 hang voi mau soc, dong hover doi mau */</pre></div></div><a href='../index.html' class='btn-back' style='margin-top:20px;'> Quay lai</a></div></body></html>

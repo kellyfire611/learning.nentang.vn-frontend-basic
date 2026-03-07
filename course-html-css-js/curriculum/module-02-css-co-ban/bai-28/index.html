@@ -1,0 +1,27 @@
+﻿<!DOCTYPE html><html lang='vi'><head><meta charset='UTF-8'/><title>Bai 28 - CSS Filter</title><link rel='stylesheet' href='../../shared.css'/></head><body><div class='page-header module-2'><div class='breadcrumb'><a href='../../index.html'>Trang Chu</a>  <a href='../index.html'>Module 2</a>  Bai 28</div><h1>Bai 28: CSS Filter</h1></div><div class='exercise-page'><div class='exercise-box'><div class='ex-work'><pre style='background:#1a202c;color:#e2e8f0;padding:20px;border-radius:8px;font-size:.88rem;line-height:1.7;overflow-x:auto;white-space:pre-wrap'>img { transition: filter 0.3s; }
+
+/* Bo lot co ban */
+.lam-mo       { filter: blur(5px); }
+.trang-den    { filter: grayscale(100%); }
+.sepia        { filter: sepia(80%); }
+.sang         { filter: brightness(130%); }
+.toi          { filter: brightness(70%); }
+.tuong-phan   { filter: contrast(150%); }
+.khoi         { filter: hue-rotate(90deg); }
+.dao-mau      { filter: invert(100%); }
+.bao-hoa      { filter: saturate(2); }
+.bo-sang      { filter: opacity(0.5); }
+
+/* Bong do vat (theo hinh dang thuc) */
+.bong-vat {
+  filter: drop-shadow(4px 4px 8px rgba(0,0,0,0.5));
+}
+
+/* Ket hop nhieu filter */
+.hinh-nghe-thuat {
+  filter: sepia(50%) brightness(110%) contrast(110%);
+}
+
+/* Hover bo filter */
+.hinh:hover { filter: none; }
+/* YEU CAU: Tao gallery - hover de xem mau goc, mac dinh hien trang den */</pre></div></div><a href='../index.html' class='btn-back' style='margin-top:20px;'> Quay lai</a></div></body></html>

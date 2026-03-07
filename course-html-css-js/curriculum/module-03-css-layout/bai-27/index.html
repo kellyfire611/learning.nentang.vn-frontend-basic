@@ -1,0 +1,25 @@
+﻿<!DOCTYPE html><html lang='vi'><head><meta charset='UTF-8'/><title>Bai 27 - Menu ngang da cap</title><link rel='stylesheet' href='../../shared.css'/></head><body><div class='page-header module-3'><div class='breadcrumb'><a href='../../index.html'>Trang Chu</a>  <a href='../index.html'>Module 3</a>  Bai 27</div><h1>Bai 27: Menu ngang da cap</h1></div><div class='exercise-page'><div class='exercise-box'><div class='ex-work'><pre style='background:#1a202c;color:#e2e8f0;padding:20px;border-radius:8px;font-size:.88rem;line-height:1.7;overflow-x:auto;white-space:pre-wrap'>/* CSS-only Dropdown Menu */
+nav ul { list-style: none; display: flex; margin: 0; padding: 0; }
+nav ul li { position: relative; }
+nav ul li a { display: block; padding: 14px 20px; color: white; text-decoration: none; }
+nav ul li:hover > a { background: #5a67d8; }
+
+/* Dropdown phan 2 (cap 2) */
+nav ul ul {
+  display: none; /* an mac dinh */
+  position: absolute; top: 100%; left: 0;
+  background: #2d3748; min-width: 200px;
+  box-shadow: 0 8px 24px rgba(0,0,0,.2);
+}
+nav ul li:hover > ul { display: block; } /* hien khi hover */
+
+/* Dropdown cap 3 - sang phai */
+nav ul ul ul { left: 100%; top: 0; }
+nav ul ul li:hover > ul { display: block; }
+
+/* Animation mo */
+nav ul ul {
+  opacity: 0; visibility: hidden;
+  transition: opacity .2s, visibility .2s;
+}
+nav ul li:hover > ul { opacity: 1; visibility: visible; }</pre></div></div><a href='../index.html' class='btn-back' style='margin-top:20px;'> Quay lai</a></div></body></html>

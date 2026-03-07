@@ -1,0 +1,185 @@
+<!DOCTYPE html>
+<html lang="vi">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Bài Tập HTML CSS JS - Chương Trình Học</title>
+  <style>
+    * { box-sizing: border-box; margin: 0; padding: 0; }
+    body { font-family: 'Segoe UI', sans-serif; background: #f0f4f8; color: #2d3748; }
+    header {
+      background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+      color: white; text-align: center; padding: 48px 24px;
+    }
+    header h1 { font-size: 2.5rem; margin-bottom: 8px; }
+    header p { font-size: 1.1rem; opacity: 0.9; }
+    .container { max-width: 1100px; margin: 0 auto; padding: 40px 24px; }
+    .modules-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+      gap: 28px; margin-top: 32px;
+    }
+    .module-card {
+      background: white; border-radius: 16px; overflow: hidden;
+      box-shadow: 0 4px 20px rgba(0,0,0,0.08);
+      transition: transform 0.2s, box-shadow 0.2s;
+    }
+    .module-card:hover { transform: translateY(-4px); box-shadow: 0 8px 30px rgba(0,0,0,0.15); }
+    .module-header { padding: 24px; color: white; }
+    .module-card:nth-child(1) .module-header { background: linear-gradient(135deg, #f093fb, #f5576c); }
+    .module-card:nth-child(2) .module-header { background: linear-gradient(135deg, #4facfe, #00f2fe); }
+    .module-card:nth-child(3) .module-header { background: linear-gradient(135deg, #43e97b, #38f9d7); }
+    .module-card:nth-child(4) .module-header { background: linear-gradient(135deg, #fa709a, #fee140); }
+    .module-card:nth-child(5) .module-header { background: linear-gradient(135deg, #a18cd1, #fbc2eb); }
+    .module-level { font-size: 0.8rem; text-transform: uppercase; letter-spacing: 1px; opacity: 0.85; margin-bottom: 8px; }
+    .module-header h2 { font-size: 1.4rem; margin-bottom: 4px; }
+    .module-header p { font-size: 0.9rem; opacity: 0.9; }
+    .module-body { padding: 20px 24px 24px; }
+    .exercise-count {
+      display: inline-block; background: #ebf8ff; color: #3182ce;
+      font-size: 0.85rem; font-weight: 600; padding: 4px 12px;
+      border-radius: 20px; margin-bottom: 16px;
+    }
+    .topics { list-style: none; margin-bottom: 20px; }
+    .topics li {
+      font-size: 0.88rem; padding: 5px 0;
+      border-bottom: 1px solid #f7fafc; color: #4a5568;
+      display: flex; align-items: center; gap: 8px;
+    }
+    .topics li::before { content: "→"; color: #a0aec0; font-size: 0.8rem; }
+    .btn-enter {
+      display: block; text-align: center; text-decoration: none;
+      background: #5a67d8; color: white; padding: 12px;
+      border-radius: 8px; font-weight: 600; font-size: 0.95rem;
+      transition: background 0.2s;
+    }
+    .btn-enter:hover { background: #4c51bf; }
+    .legend { display: flex; gap: 20px; flex-wrap: wrap; margin-bottom: 8px; }
+    .legend-item { display: flex; align-items: center; gap: 8px; font-size: 0.9rem; }
+    .dot {
+      width: 12px; height: 12px; border-radius: 50%;
+      display: inline-block;
+    }
+    h2.section-title {
+      font-size: 1.5rem; color: #2d3748; margin-bottom: 8px;
+    }
+    .subtitle { color: #718096; margin-bottom: 24px; }
+  </style>
+</head>
+<body>
+  <header>
+    <h1>🎓 Chương Trình Bài Tập HTML CSS JS</h1>
+    <p>Lộ trình học từ dễ đến khó — 5 Module — 150 Bài Tập</p>
+  </header>
+
+  <div class="container">
+    <div class="legend">
+      <div class="legend-item"><span class="dot" style="background:#f5576c"></span> Module 1 – Dễ nhất</div>
+      <div class="legend-item"><span class="dot" style="background:#00f2fe"></span> Module 2 – Dễ</div>
+      <div class="legend-item"><span class="dot" style="background:#38f9d7"></span> Module 3 – Trung bình</div>
+      <div class="legend-item"><span class="dot" style="background:#fee140"></span> Module 4 – Trung bình khó</div>
+      <div class="legend-item"><span class="dot" style="background:#fbc2eb"></span> Module 5 – Khó</div>
+    </div>
+    <p class="subtitle">Mỗi module khoảng 30 bài tập, tăng dần độ khó.</p>
+
+    <div class="modules-grid">
+
+      <div class="module-card">
+        <div class="module-header">
+          <div class="module-level">★☆☆☆☆ Dễ nhất</div>
+          <h2>Module 1: HTML Cơ Bản</h2>
+          <p>Xây dựng nền tảng vững chắc với HTML</p>
+        </div>
+        <div class="module-body">
+          <span class="exercise-count">30 bài tập</span>
+          <ul class="topics">
+            <li>Cấu trúc trang HTML, thẻ tiêu đề, đoạn văn</li>
+            <li>Định dạng văn bản, danh sách</li>
+            <li>Liên kết, hình ảnh, bảng</li>
+            <li>Form và các thẻ input</li>
+            <li>Thẻ HTML5 ngữ nghĩa (semantic)</li>
+          </ul>
+          <a href="module-01-html-co-ban/index.html" class="btn-enter">Vào Module 1 →</a>
+        </div>
+      </div>
+
+      <div class="module-card">
+        <div class="module-header">
+          <div class="module-level">★★☆☆☆ Dễ</div>
+          <h2>Module 2: CSS Cơ Bản</h2>
+          <p>Tạo kiểu và trang trí trang web</p>
+        </div>
+        <div class="module-body">
+          <span class="exercise-count">30 bài tập</span>
+          <ul class="topics">
+            <li>Selector, màu sắc, font chữ</li>
+            <li>Box model, margin, padding, border</li>
+            <li>Background, shadow, opacity</li>
+            <li>Pseudo-class, pseudo-element</li>
+            <li>Transition, Animation, Transform</li>
+          </ul>
+          <a href="module-02-css-co-ban/index.html" class="btn-enter">Vào Module 2 →</a>
+        </div>
+      </div>
+
+      <div class="module-card">
+        <div class="module-header">
+          <div class="module-level">★★★☆☆ Trung Bình</div>
+          <h2>Module 3: CSS Layout & Responsive</h2>
+          <p>Dựng bố cục và thiết kế responsive</p>
+        </div>
+        <div class="module-body">
+          <span class="exercise-count">30 bài tập</span>
+          <ul class="topics">
+            <li>Float, Clearfix, Display</li>
+            <li>Position (relative, absolute, fixed)</li>
+            <li>Flexbox toàn tập</li>
+            <li>CSS Grid toàn tập</li>
+            <li>Media Queries & Responsive design</li>
+          </ul>
+          <a href="module-03-css-layout/index.html" class="btn-enter">Vào Module 3 →</a>
+        </div>
+      </div>
+
+      <div class="module-card">
+        <div class="module-header">
+          <div class="module-level">★★★★☆ Trung Bình Khó</div>
+          <h2>Module 4: JavaScript Cơ Bản</h2>
+          <p>Lập trình tương tác với JavaScript</p>
+        </div>
+        <div class="module-body">
+          <span class="exercise-count">30 bài tập</span>
+          <ul class="topics">
+            <li>Biến, toán tử, kiểu dữ liệu</li>
+            <li>Điều kiện, vòng lặp, hàm</li>
+            <li>Mảng và String methods</li>
+            <li>DOM manipulation</li>
+            <li>Sự kiện và xử lý Form</li>
+          </ul>
+          <a href="module-04-javascript-co-ban/index.html" class="btn-enter">Vào Module 4 →</a>
+        </div>
+      </div>
+
+      <div class="module-card">
+        <div class="module-header">
+          <div class="module-level">★★★★★ Khó</div>
+          <h2>Module 5: JavaScript Nâng Cao</h2>
+          <p>JavaScript hiện đại và các dự án thực tế</p>
+        </div>
+        <div class="module-body">
+          <span class="exercise-count">30 bài tập</span>
+          <ul class="topics">
+            <li>Object, Class, OOP, Closure</li>
+            <li>Promise, Async/Await, Fetch API</li>
+            <li>localStorage, JSON, Regex</li>
+            <li>Event bubbling, Debounce</li>
+            <li>Dự án thực tế: Todo, Calculator, Slider...</li>
+          </ul>
+          <a href="module-05-javascript-nang-cao/index.html" class="btn-enter">Vào Module 5 →</a>
+        </div>
+      </div>
+
+    </div>
+  </div>
+</body>
+</html>

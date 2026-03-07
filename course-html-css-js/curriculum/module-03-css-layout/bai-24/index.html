@@ -1,0 +1,22 @@
+﻿<!DOCTYPE html><html lang='vi'><head><meta charset='UTF-8'/><title>Bai 24 - Responsive Navigation</title><link rel='stylesheet' href='../../shared.css'/></head><body><div class='page-header module-3'><div class='breadcrumb'><a href='../../index.html'>Trang Chu</a>  <a href='../index.html'>Module 3</a>  Bai 24</div><h1>Bai 24: Responsive Navigation</h1></div><div class='exercise-page'><div class='exercise-box'><div class='ex-work'><pre style='background:#1a202c;color:#e2e8f0;padding:20px;border-radius:8px;font-size:.88rem;line-height:1.7;overflow-x:auto;white-space:pre-wrap'>/* Desktop Nav */
+.nav { display: flex; justify-content: space-between; align-items: center; padding: 0 24px; }
+.nav-menu { display: flex; list-style: none; gap: 24px; }
+.hamburger { display: none; }
+
+/* Mobile Nav */
+@media (max-width: 768px) {
+  .hamburger { display: block; cursor: pointer; }
+  .nav-menu {
+    display: none; /* an di mac dinh */
+    flex-direction: column;
+    position: absolute; top: 60px; left: 0; right: 0;
+    background: white; padding: 20px;
+    box-shadow: 0 4px 12px rgba(0,0,0,.1);
+  }
+  .nav-menu.open { display: flex; } /* hien khi JavaScript toggle class */
+}
+
+/* JavaScript can de toggle open class */
+/* document.querySelector('.hamburger').addEventListener('click', () => {
+  document.querySelector('.nav-menu').classList.toggle('open');
+}); */</pre></div></div><a href='../index.html' class='btn-back' style='margin-top:20px;'> Quay lai</a></div></body></html>

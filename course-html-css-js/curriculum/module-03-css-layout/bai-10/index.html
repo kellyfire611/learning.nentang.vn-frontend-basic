@@ -1,0 +1,21 @@
+﻿<!DOCTYPE html><html lang='vi'><head><meta charset='UTF-8'/><title>Bai 10 - Flexbox align-items va align-content</title><link rel='stylesheet' href='../../shared.css'/></head><body><div class='page-header module-3'><div class='breadcrumb'><a href='../../index.html'>Trang Chu</a>  <a href='../index.html'>Module 3</a>  Bai 10</div><h1>Bai 10: Flexbox align-items va align-content</h1><p>Module 3  CSS Layout & Responsive</p></div><div class='exercise-page'><div class='exercise-box'><div class='ex-work'><pre style='background:#1a202c;color:#e2e8f0;padding:20px;border-radius:8px;font-size:.88rem;line-height:1.7;overflow-x:auto;white-space:pre-wrap'>/* Can chinh tren CROSS AXIS (vuong goc voi main axis) */
+
+/* align-items: moi hang rieng le */
+.stretch     { align-items: stretch; }      /* gian ra day (mac dinh) */
+.flex-start   { align-items: flex-start; }   /* sat tren */
+.flex-end     { align-items: flex-end; }     /* sat duoi */
+.center       { align-items: center; }       /* giua (rat hay dung!) */
+.baseline     { align-items: baseline; }     /* chung baseline */
+
+/* align-content: nhieu hang cung luc */
+/* Chi hoat dong khi flex-wrap: wrap va co nhieu hang */
+.content-center  { align-content: center; }
+.content-between { align-content: space-between; }
+
+/* Tuyet chieu: Can giua hoan toan */
+.can-giua {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  /* min-height: 100vh; */
+}</pre></div></div><a href='../index.html' class='btn-back' style='margin-top:20px;'> Quay lai</a></div></body></html>

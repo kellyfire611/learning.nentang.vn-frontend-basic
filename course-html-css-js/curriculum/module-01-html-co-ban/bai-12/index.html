@@ -1,0 +1,44 @@
+﻿<!DOCTYPE html>
+<html lang="vi">
+<head>
+  <meta charset="UTF-8" /><meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Bài 12  Liên kết neo (Anchor Link)</title>
+  <link rel="stylesheet" href="../../shared.css" />
+</head>
+<body>
+  <div class="page-header module-1">
+    <div class="breadcrumb"><a href="../../index.html">Trang Chủ</a> &rsaquo; <a href="../index.html">Module 1</a> &rsaquo; Bài 12</div>
+    <h1>Bài 12: Liên kết neo (Anchor Link)</h1>
+    <p>Module 1  HTML Cơ Bản</p>
+  </div>
+  <div class="exercise-page">
+    <div class="exercise-box">
+      <div class="ex-head"><h1> Yêu cầu bài tập</h1><p>Tạo trang dài với mục lục điều hướng bằng anchor.</p></div>
+      <div class="ex-desc">
+        <h3>Yêu cầu</h3><ul><li>Tạo trang bài viết dài về 'Lịch sử Internet' với 5+ mục</li><li>Tạo mục lục ở đầu trang với liên kết anchor <code>href='#id'</code></li><li>Mỗi mục đặt <code>id</code> tương ứng</li><li>Thêm nút 'Về đầu trang' cuối mỗi mục</li></ul>
+        <h3>Kiến thức cần nhớ</h3><ul><li><code>href='#section1'</code>  liên kết đến phần tử có id='section1'</li><li><code>id='section1'</code>  đánh dấu điểm neo</li><li>Kết hợp với CSS <code>scroll-behavior: smooth</code> để cuộn mượt</li></ul>
+      </div>
+      <div class="ex-work">
+        <h3> Code mẫu:</h3>
+        <pre style="background:#1a202c;color:#e2e8f0;padding:20px;border-radius:8px;font-size:0.88rem;line-height:1.7;overflow-x:auto;">&lt;!-- Mục lục --&gt;
+&lt;nav&gt;
+  &lt;h2&gt;Mục Lục&lt;/h2&gt;
+  &lt;a href="#phan1"&gt;1. Nguồn gốc Internet&lt;/a&gt;&lt;br /&gt;
+  &lt;a href="#phan2"&gt;2. World Wide Web&lt;/a&gt;&lt;br /&gt;
+  &lt;a href="#phan3"&gt;3. Thời đại Mobile&lt;/a&gt;
+&lt;/nav&gt;
+
+&lt;!-- Nội dung --&gt;
+&lt;h2 id="phan1"&gt;1. Nguồn gốc Internet&lt;/h2&gt;
+&lt;p&gt;Nội dung phần 1...&lt;/p&gt;
+&lt;a href="#top"&gt; Về đầu trang&lt;/a&gt;
+
+&lt;h2 id="phan2"&gt;2. World Wide Web&lt;/h2&gt;
+&lt;p&gt;Nội dung phần 2...&lt;/p&gt;
+&lt;a href="#top"&gt; Về đầu trang&lt;/a&gt;</pre>
+      </div>
+    </div>
+    <a href="../index.html" class="btn-back" style="margin-top:20px;"> Quay lại danh sách</a>
+  </div>
+</body>
+</html>
