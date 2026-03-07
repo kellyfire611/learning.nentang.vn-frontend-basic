@@ -44,6 +44,20 @@
           transform: translateX(-100%);
         }
       }
+
+      .marquee {
+        position: relative;
+        overflow: hidden;
+        text-align: center;
+        margin: 0 auto;
+        width: 100%;
+        height: 30px;
+        /* This is required, adjust as needed */
+        display: flex;
+        align-items: center;
+        white-space: nowrap;
+        font-size: 24px;
+      }
     </style>
   </head>
 
@@ -51,6 +65,90 @@
     <div class="marquee-container">
       <div class="marquee-content">Đây là nội dung của marquee.</div>
     </div>
+
+    <h1>Marquee using JS</h1>
+    <div id="latest-news" class="marquee">
+      <span style="white-space:nowrap;">
+        <span>&nbsp;&bull;&nbsp;</span>
+        <a href="#">Explore the hidden wonders of nature</a>
+        <span>&nbsp;&bull;&nbsp;</span>
+        <a href="#">Ignite your passion for creativity</a>
+        <span>&nbsp;&bull;&nbsp;</span>
+        <a href="#">Embrace the journey, not just the destination</a>
+        <span>&nbsp;&bull;&nbsp;</span>
+        <a href="#">Discover the magic in everyday moments</a>
+        <span>&nbsp;&bull;&nbsp;</span>
+        <a href="#">Chase your dreams with fearless enthusiasm</a>
+      </span>
+    </div>
+
+    <script>
+      function initializeMarquee() {
+        createMarqueeContainer('latest-news');
+        rotateMarquee(marqueeContainers);
+      }
+
+      window.onload = initializeMarquee;
+
+      function getObjectWidth(obj) {
+        if (obj.offsetWidth) return obj.offsetWidth;
+        if (obj.clip) return obj.clip.width;
+        return 0;
+      }
+
+      const marqueeContainers = [];
+
+      function createMarqueeContainer(id) {
+        const container = document.getElementById(id);
+        const itemWidth = getObjectWidth(container.getElementsByTagName("span")[0]) + 5;
+        const fullWidth = getObjectWidth(container);
+        const textContent = container.getElementsByTagName("span")[0].innerHTML;
+        container.innerHTML = "";
+        const height = container.style.height;
+
+        container.onmouseout = () => rotateMarquee(marqueeContainers);
+
+        container.onmouseover = () => cancelAnimationFrame(marqueeContainers[0].animationID);
+
+        container.items = [];
+        const maxItems = Math.ceil(fullWidth / itemWidth) + 1;
+
+        for (let i = 0; i < maxItems; i++) {
+          container.items[i] = document.createElement("div");
+          container.items[i].innerHTML = textContent;
+          container.items[i].style.position = "absolute";
+          container.items[i].style.left = itemWidth * i + "px";
+          container.items[i].style.width = itemWidth + "px";
+          container.items[i].style.height = height;
+          container.appendChild(container.items[i]);
+        }
+
+        marqueeContainers.push(container);
+      }
+
+      function rotateMarquee(containers) {
+        if (!containers) return;
+
+        for (let j = containers.length - 1; j > -1; j--) {
+          const maxItems = containers[j].items.length;
+
+          for (let i = 0; i < maxItems; i++) {
+            const itemStyle = containers[j].items[i].style;
+            itemStyle.left = parseInt(itemStyle.left, 10) - 1 + "px";
+          }
+
+          const firstItemStyle = containers[j].items[0].style;
+
+          if (parseInt(firstItemStyle.left, 10) + parseInt(firstItemStyle.width, 10) < 0) {
+            const shiftedItem = containers[j].items.shift();
+            shiftedItem.style.left = parseInt(shiftedItem.style.left) + parseInt(shiftedItem.style.width) * maxItems + "px";
+            containers[j].items.push(shiftedItem);
+          }
+        }
+
+        containers[0].animationID = requestAnimationFrame(() => rotateMarquee(containers));
+      }
+    </script>
   </body>
 
 </html>
