@@ -1,18 +1,90 @@
-﻿<!DOCTYPE html><html lang='vi'><head><meta charset='UTF-8'/><title>Bai 21 - Layout Grid Trang bao</title><link rel='stylesheet' href='../../shared.css'/></head><body><div class='page-header module-3'><div class='breadcrumb'><a href='../../index.html'>Trang Chu</a>  <a href='../index.html'>Module 3</a>  Bai 21</div><h1>Bai 21: Layout Grid Trang bao</h1></div><div class='exercise-page'><div class='exercise-box'><div class='ex-work'><pre style='background:#1a202c;color:#e2e8f0;padding:20px;border-radius:8px;font-size:.88rem;line-height:1.7;overflow-x:auto;white-space:pre-wrap'>.bao {
-  display: grid;
-  grid-template-columns: 1fr 680px 300px 1fr;
-  grid-template-areas: '. content sidebar .';
-  gap: 32px;
-  max-width: 1400px; margin: auto;
-}
-.content { grid-area: content; }
-.sidebar { grid-area: sidebar; }
-/* Bai viet: keo dai het */
-.full-width { grid-column: 1 / -1; }
+<!DOCTYPE html>
+<html lang="vi">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <meta name="keywords" content="Nền tảng,HTML,CSS,JavaScript,Lập trình,Web,Kiến thức,Đồ án">
+  <meta name="author" content="Dương Nguyễn Phú Cường">
+  <meta name="description" content="Tạo navbar responsive: menu ngang trên desktop, hamburger menu trên mobile.">
+  <meta property="og:locale" content="vi_VN">
+  <meta property="og:type" content="website">
+  <meta property="og:title" content="Bài 21 – Responsive Navigation | NenTang.vn">
+  <meta property="og:description" content="Tạo navbar responsive: menu ngang trên desktop, hamburger menu trên mobile.">
+  <meta property="og:url" content="https://nentang.vn/">
+  <meta property="og:site_name" content="Nền tảng Kiến thức">
+  <title>Bài 21 – Responsive Navigation | NenTang.vn</title>
+  <link rel="stylesheet" href="../../shared.css" />
+</head>
+<body>
+  <div class="page-header module-3">
+    <div class="breadcrumb">
+      <a href="../../index.html">Trang Chủ</a> &rsaquo;
+      <a href="../index.html">Module 3</a> &rsaquo; Bài 21
+    </div>
+    <h1>Bài 21: Responsive Navigation</h1>
+    <p>Module 3 – CSS Layout &amp; Responsive</p>
+  </div>
 
-/* YEU CAU: Tao trang tin tuc kieu bao co
-   - Header full width
-   - Content 2/3 + sidebar 1/3
-   - Footer full width
-   - Bai viet featured full width
-*/</pre></div></div><a href='../index.html' class='btn-back' style='margin-top:20px;'> Quay lai</a></div></body></html>
+  <div class="exercise-page">
+    <div class="exercise-box">
+      <div class="ex-head">
+        <h1>📝 Yêu cầu bài tập</h1>
+        <p>Tạo navbar responsive: menu ngang trên desktop, hamburger menu trên mobile.</p>
+      </div>
+      <div class="ex-desc">
+        <h3>Mô tả</h3>
+        <p>Navbar responsive là thử thách phổ biến: trên desktop hiện menu ngang, trên mobile menu ẩn và có nút hamburger để toggle.</p>
+        <h3>Yêu cầu</h3>
+        <ul>
+          <li>Desktop: navbar ngang với links</li>
+          <li>Mobile: links ẩn, hiện nút hamburger ☰</li>
+          <li>Click hamburger: menu slide down dùng max-height transition</li>
+          <li>Đóng menu khi click ngoài (dùng JavaScript)</li>
+        </ul>
+        <h3>🧠 Kiến thức cần nhớ</h3>
+        <ul>
+          <li>Mobile menu: <code>display:none</code> → khi toggle thêm class 'open' → <code>display:block</code></li>
+          <li>Transition height: dùng max-height thay vì height vì height:auto không transition được</li>
+          <li>Hamburger: 3 div ngang, transform thành X khi mở</li>
+          <li>Nên dùng aria-expanded và aria-label cho accessibility</li>
+          <li>JavaScript: toggle class 'open' khi click hamburger</li>
+        </ul>
+      </div>
+      <div class="ex-work">
+        <h3>💻 Code mẫu</h3>
+        <div id="code-highlight">
+          <pre id="code-raw" style="display:none">/* Navbar base */
+.navbar { display: flex; justify-content: space-between; align-items: center; padding: 0 24px; height: 56px; background:#1a202c; }
+.nav-logo { color:white; font-weight:bold; text-decoration:none; font-size:1.2rem; }
+.nav-links { display:flex; list-style:none; gap:4px; margin:0; padding:0; }
+.nav-links a { color:#a0aec0; text-decoration:none; padding:8px 12px; border-radius:6px; }
+.nav-links a:hover { color:white; background:rgba(255,255,255,0.1); }
+.hamburger { display:none; flex-direction:column; gap:5px; cursor:pointer; background:none; border:none; padding:8px; }
+.hamburger span { display:block; width:22px; height:2px; background:white; transition:all 0.3s; }
+
+/* Mobile */
+@media (max-width:768px) {
+  .hamburger { display:flex; }
+  .nav-links { display:none; position:absolute; top:56px; left:0; right:0; flex-direction:column; background:#1a202c; padding:8px; }
+  .nav-links.open { display:flex; }
+}
+
+/* Hamburger → X khi mở */
+.hamburger.open span:nth-child(1) { transform: rotate(45deg) translate(5px, 5px); }
+.hamburger.open span:nth-child(2) { opacity: 0; }
+.hamburger.open span:nth-child(3) { transform: rotate(-45deg) translate(5px,-5px); }</pre>
+        </div>
+      </div>
+    </div>
+  </div>
+  <a href="../index.html" class="btn-back" style="margin-top:20px;">&#8592; Quay lại</a>
+  <script type="module">
+    import { codeToHtml } from 'https://esm.sh/shiki@1';
+    const raw = document.getElementById('code-raw').textContent;
+    const highlighted = await codeToHtml(raw, { lang: 'css', theme: 'github-dark' });
+    document.getElementById('code-highlight').innerHTML = highlighted;
+    const pre = document.getElementById('code-highlight').querySelector('pre');
+    if (pre) pre.style.cssText = 'border-radius:10px;padding:20px;font-size:0.87rem;overflow-x:auto;margin:0;line-height:1.7';
+  </script>
+</body>
+</html>

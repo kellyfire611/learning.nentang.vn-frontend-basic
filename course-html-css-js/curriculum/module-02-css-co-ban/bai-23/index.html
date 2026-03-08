@@ -1,10 +1,99 @@
-﻿<!DOCTYPE html><html lang='vi'><head><meta charset='UTF-8'/><title>Bai 23 - Tao Card san pham</title><link rel='stylesheet' href='../../shared.css'/></head><body><div class='page-header module-2'><div class='breadcrumb'><a href='../../index.html'>Trang Chu</a>  <a href='../index.html'>Module 2</a>  Bai 23</div><h1>Bai 23: Tao Card san pham</h1></div><div class='exercise-page'><div class='exercise-box'><div class='ex-work'><pre style='background:#1a202c;color:#e2e8f0;padding:20px;border-radius:8px;font-size:.88rem;line-height:1.7;overflow-x:auto;white-space:pre-wrap'>.card { background:white; border-radius:16px; overflow:hidden; box-shadow:0 4px 20px rgba(0,0,0,.08); max-width:300px; transition:transform .2s; }
-.card:hover { transform:translateY(-4px); box-shadow:0 8px 30px rgba(0,0,0,.15); }
-.card img { width:100%; height:200px; object-fit:cover; }
-.card-body { padding:20px; }
-.card-title { font-size:1.1rem; font-weight:700; margin-bottom:8px; }
-.card-desc { color:#718096; font-size:.9rem; margin-bottom:16px; }
-.card-footer { display:flex; justify-content:space-between; align-items:center; }
-.gia { font-size:1.3rem; font-weight:700; color:#e53e3e; }
-.gia-cu { font-size:.9rem; color:#a0aec0; text-decoration:line-through; }
-.btn-them { background:#5a67d8; color:white; border:none; padding:8px 16px; border-radius:8px; cursor:pointer; }</pre></div></div><a href='../index.html' class='btn-back' style='margin-top:20px;'> Quay lai</a></div></body></html>
+<!DOCTYPE html>
+<html lang="vi">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <meta name="keywords" content="Nền tảng,HTML,CSS,JavaScript,Lập trình,Web,Kiến thức,Đồ án">
+  <meta name="author" content="Dương Nguyễn Phú Cường">
+  <meta name="description" content="Tạo hiệu ứng chuyển tiếp mượt mà khi thuộc tính CSS thay đổi.">
+  <meta property="og:locale" content="vi_VN">
+  <meta property="og:type" content="website">
+  <meta property="og:title" content="Bài 23 – CSS Transition – Hiệu ứng chuyển tiếp | NenTang.vn">
+  <meta property="og:description" content="Tạo hiệu ứng chuyển tiếp mượt mà khi thuộc tính CSS thay đổi.">
+  <meta property="og:url" content="https://nentang.vn/">
+  <meta property="og:site_name" content="Nền tảng Kiến thức">
+  <title>Bài 23 – CSS Transition – Hiệu ứng chuyển tiếp | NenTang.vn</title>
+  <link rel="stylesheet" href="../../shared.css" />
+</head>
+<body>
+  <div class="page-header module-2">
+    <div class="breadcrumb">
+      <a href="../../index.html">Trang Chủ</a> &rsaquo;
+      <a href="../index.html">Module 2</a> &rsaquo; Bài 23
+    </div>
+    <h1>Bài 23: CSS Transition – Hiệu ứng chuyển tiếp</h1>
+    <p>Module 2 – CSS Cơ Bản</p>
+  </div>
+
+  <div class="exercise-page">
+    <div class="exercise-box">
+      <div class="ex-head">
+        <h1>📝 Yêu cầu bài tập</h1>
+        <p>Tạo hiệu ứng chuyển tiếp mượt mà khi thuộc tính CSS thay đổi.</p>
+      </div>
+      <div class="ex-desc">
+        <h3>Mô tả</h3>
+        <p>Transition cho phép CSS thay đổi giá trị từ từ trong khoảng thời gian xác định thay vì thay đổi đột ngột. Dùng rất phổ biến với hover, focus, active.</p>
+        <h3>Yêu cầu</h3>
+        <ul>
+          <li>Tạo button với transition màu nền khi hover (0.3s ease)</li>
+          <li>Tạo menu link với transition transform (slide in từ trái)</li>
+          <li>Tạo image gallery với transition opacity (fade in/out)</li>
+          <li>Tạo accordion với transition height (mở rộng/thu nhỏ)</li>
+        </ul>
+        <h3>🧠 Kiến thức cần nhớ</h3>
+        <ul>
+          <li><code>transition: property duration timing-function delay</code></li>
+          <li>Properties phổ biến: color, background, opacity, transform, box-shadow</li>
+          <li><code>transition: all 0.3s</code>: tất cả properties (hơi chậm, cẩn thận)</li>
+          <li>Timing functions: ease (mặc định), linear, ease-in, ease-out, ease-in-out, cubic-bezier()</li>
+          <li>Chỉ dùng transition cho các properties có thể 'tween' được (không dùng với display)</li>
+        </ul>
+      </div>
+      <div class="ex-work">
+        <h3>💻 Code mẫu</h3>
+        <div id="code-highlight">
+          <pre id="code-raw" style="display:none">/* Transition cơ bản */
+.btn {
+  background: #3182ce;
+  transition: background-color 0.3s ease,
+              transform 0.2s ease,
+              box-shadow 0.3s ease;
+}
+.btn:hover {
+  background: #2c5282;
+  transform: translateY(-3px);
+  box-shadow: 0 8px 20px rgba(0,0,0,0.2);
+}
+
+/* Fade in/out ảnh */
+.img-wrap img { opacity: 1; transition: opacity 0.4s; }
+.img-wrap:hover img { opacity: 0.7; }
+
+/* Slide menu item */
+.menu-item {
+  transform: translateX(0);
+  transition: transform 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+}
+.menu-item:hover { transform: translateX(8px); }
+
+/* Transition với cubic-bezier tùy chỉnh */
+.elastic {
+  transition: transform 0.5s cubic-bezier(0.34, 1.56, 0.64, 1);
+}
+.elastic:hover { transform: scale(1.1); } /* Nảy nhẹ */</pre>
+        </div>
+      </div>
+    </div>
+  </div>
+  <a href="../index.html" class="btn-back" style="margin-top:20px;">&#8592; Quay lại</a>
+  <script type="module">
+    import { codeToHtml } from 'https://esm.sh/shiki@1';
+    const raw = document.getElementById('code-raw').textContent;
+    const highlighted = await codeToHtml(raw, { lang: 'html', theme: 'github-dark' });
+    document.getElementById('code-highlight').innerHTML = highlighted;
+    const pre = document.getElementById('code-highlight').querySelector('pre');
+    if (pre) pre.style.cssText = 'border-radius:10px;padding:20px;font-size:0.87rem;overflow-x:auto;margin:0;line-height:1.7';
+  </script>
+</body>
+</html>

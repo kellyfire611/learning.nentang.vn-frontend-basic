@@ -1,9 +1,102 @@
-﻿<!DOCTYPE html>
-<html lang="vi"><head><meta charset="UTF-8"/><title>Arrow Function</title><link rel="stylesheet" href="../../shared.css"/></head>
+<!DOCTYPE html>
+<html lang="vi">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <meta name="keywords" content="Nền tảng,HTML,CSS,JavaScript,Lập trình,Web,Kiến thức,Đồ án">
+  <meta name="author" content="Dương Nguyễn Phú Cường">
+  <meta name="description" content="Tạo và thao tác với mảng: thêm, xóa, truy cập và duyệt phần tử.">
+  <meta property="og:locale" content="vi_VN">
+  <meta property="og:type" content="website">
+  <meta property="og:title" content="Bài 12 – Mảng (Array) cơ bản | NenTang.vn">
+  <meta property="og:description" content="Tạo và thao tác với mảng: thêm, xóa, truy cập và duyệt phần tử.">
+  <meta property="og:url" content="https://nentang.vn/">
+  <meta property="og:site_name" content="Nền tảng Kiến thức">
+  <title>Bài 12 – Mảng (Array) cơ bản | NenTang.vn</title>
+  <link rel="stylesheet" href="../../shared.css" />
+</head>
 <body>
-<div class="page-header module-4"><div class="breadcrumb"><a href="../../index.html">Trang Chu</a> &rsaquo; <a href="../index.html">Module 4</a> &rsaquo; bai-12</div><h1>Arrow Function</h1></div>
-<div class="container"><div class="exercise-content"><h2>Yeu cau</h2><p>Viet lai cac ham o bai 10-11 bang cu phap arrow =>. Thu cu phap ngan gon 1 dong. So sanh arrow function va function thuong (this binding).</p>
-<h2>Code mau</h2><pre><code>/* Viet code tai day */</code></pre>
-<h2>Ket qua</h2><div id="result" style="padding:16px;background:#f8f9fa;border-radius:8px;margin-top:8px;">Ket qua se hien thi o day...</div>
-<h2>Bai lam</h2><textarea id="code" style="width:100%;height:180px;font-family:monospace;font-size:14px;padding:12px;border:2px solid #dee2e6;border-radius:8px;"></textarea><br/><button onclick="try{eval(document.getElementById('code').value)}catch(e){document.getElementById('result').textContent=e.message}" style="margin-top:8px;padding:10px 24px;background:#fa709a;color:#fff;border:none;border-radius:8px;cursor:pointer;font-size:15px;">Chay Code</button>
-</div><a href="../index.html" class="btn-back"> Quay lai Module 4</a></div></body></html>
+  <div class="page-header module-4">
+    <div class="breadcrumb">
+      <a href="../../index.html">Trang Chủ</a> &rsaquo;
+      <a href="../index.html">Module 4</a> &rsaquo; Bài 12
+    </div>
+    <h1>Bài 12: Mảng (Array) cơ bản</h1>
+    <p>Module 4 – JavaScript Cơ Bản</p>
+  </div>
+
+  <div class="exercise-page">
+    <div class="exercise-box">
+      <div class="ex-head">
+        <h1>📝 Yêu cầu bài tập</h1>
+        <p>Tạo và thao tác với mảng: thêm, xóa, truy cập và duyệt phần tử.</p>
+      </div>
+      <div class="ex-desc">
+        <h3>Mô tả</h3>
+        <p>Mảng là cấu trúc dữ liệu quan trọng nhất trong JS. Lưu trữ danh sách có thứ tự, có thể chứa bất kỳ kiểu dữ liệu nào.</p>
+        <h3>Yêu cầu</h3>
+        <ul>
+          <li>Tạo mảng tên học sinh, in ra từng tên</li>
+          <li>Thêm phần tử cuối (push), đầu (unshift)</li>
+          <li>Xóa phần tử cuối (pop), đầu (shift)</li>
+          <li>Truy cập phần tử: index, at(-1) cho phần tử cuối</li>
+        </ul>
+        <h3>🧠 Kiến thức cần nhớ</h3>
+        <ul>
+          <li><code>const arr = [1, 2, 3];</code>: mảng literal</li>
+          <li>Index bắt đầu từ 0, phần tử cuối: <code>arr[arr.length - 1]</code></li>
+          <li><code>arr.push(x)</code>: thêm cuối, <code>arr.pop()</code>: xóa cuối</li>
+          <li><code>arr.unshift(x)</code>: thêm đầu, <code>arr.shift()</code>: xóa đầu</li>
+          <li><code>arr.at(-1)</code>: phần tử cuối (ES2022)</li>
+          <li><code>arr.includes(x)</code>: kiểm tra có phần tử x không</li>
+          <li><code>arr.indexOf(x)</code>: vị trí của x (-1 nếu không có)</li>
+        </ul>
+      </div>
+      <div class="ex-work">
+        <h3>💻 Code mẫu</h3>
+        <div id="code-highlight">
+          <pre id="code-raw" style="display:none">// Tạo mảng
+const hocSinh = ['An', 'Bình', 'Chi', 'Dũng'];
+console.log(hocSinh.length); // 4
+console.log(hocSinh[0]);     // 'An'
+console.log(hocSinh.at(-1)); // 'Dũng' (phần tử cuối)
+
+// Thêm/xóa
+hocSinh.push('Em');      // ['An', ...,'Em']
+hocSinh.unshift('Anh');  // ['Anh', 'An', ...]
+const cuoi = hocSinh.pop();    // xóa 'Em', trả về 'Em'
+const dau = hocSinh.shift();   // xóa 'Anh', trả về 'Anh'
+
+// Duyệt mảng
+for (const ten of hocSinh) {
+  console.log(ten);
+}
+
+// Kiểm tra
+console.log(hocSinh.includes('An'));    // true
+console.log(hocSinh.indexOf('Chi'));    // 2 (index)
+console.log(hocSinh.indexOf('Xyz'));    // -1 (không có)
+
+// Trải mảng (spread)
+const arr1 = [1, 2, 3];
+const arr2 = [4, 5, 6];
+const ketHop = [...arr1, ...arr2]; // [1,2,3,4,5,6]
+
+// Destructuring
+const [dau2, thu2, ...phanCon] = hocSinh;
+console.log(dau2, thu2, phanCon);</pre>
+        </div>
+      </div>
+    </div>
+  </div>
+  <a href="../index.html" class="btn-back" style="margin-top:20px;">&#8592; Quay lại</a>
+  <script type="module">
+    import { codeToHtml } from 'https://esm.sh/shiki@1';
+    const raw = document.getElementById('code-raw').textContent;
+    const highlighted = await codeToHtml(raw, { lang: 'javascript', theme: 'github-dark' });
+    document.getElementById('code-highlight').innerHTML = highlighted;
+    const pre = document.getElementById('code-highlight').querySelector('pre');
+    if (pre) pre.style.cssText = 'border-radius:10px;padding:20px;font-size:0.87rem;overflow-x:auto;margin:0;line-height:1.7';
+  </script>
+</body>
+</html>

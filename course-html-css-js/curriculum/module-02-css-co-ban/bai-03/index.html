@@ -1,1 +1,88 @@
-﻿<!DOCTYPE html><html lang='vi'><head><meta charset='UTF-8'/><title>Bai 03 - Mau sac trong CSS - HEX RGB HSL</title><link rel='stylesheet' href='../../shared.css'/></head><body><div class='page-header module-2'><div class='breadcrumb'><a href='../../index.html'>Trang Chu</a>  <a href='../index.html'>Module 2</a>  Bai 03</div><h1>Bai 03: Mau sac trong CSS - HEX RGB HSL</h1><p>Module 2  CSS Co Ban</p></div><div class='exercise-page'><div class='exercise-box'><div class='ex-work'><h3>Noi dung bai tap CSS - Mau sac trong CSS - HEX RGB HSL</h3><p style='padding:20px;color:#718096'>Mo file CSS cua ban va thuc hanh ap dung cac khai niem: <strong>Mau sac trong CSS - HEX RGB HSL</strong></p></div></div><a href='../index.html' class='btn-back' style='margin-top:20px;'> Quay lai</a></div></body></html>
+<!DOCTYPE html>
+<html lang="vi">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <meta name="keywords" content="Nền tảng,HTML,CSS,JavaScript,Lập trình,Web,Kiến thức,Đồ án">
+  <meta name="author" content="Dương Nguyễn Phú Cường">
+  <meta name="description" content="Dùng CSS selectors kết hợp để chọn phần tử theo quan hệ trong DOM.">
+  <meta property="og:locale" content="vi_VN">
+  <meta property="og:type" content="website">
+  <meta property="og:title" content="Bài 03 – Advanced Selectors: con cháu, anh em | NenTang.vn">
+  <meta property="og:description" content="Dùng CSS selectors kết hợp để chọn phần tử theo quan hệ trong DOM.">
+  <meta property="og:url" content="https://nentang.vn/">
+  <meta property="og:site_name" content="Nền tảng Kiến thức">
+  <title>Bài 03 – Advanced Selectors: con cháu, anh em | NenTang.vn</title>
+  <link rel="stylesheet" href="../../shared.css" />
+</head>
+<body>
+  <div class="page-header module-2">
+    <div class="breadcrumb">
+      <a href="../../index.html">Trang Chủ</a> &rsaquo;
+      <a href="../index.html">Module 2</a> &rsaquo; Bài 03
+    </div>
+    <h1>Bài 03: Advanced Selectors: con cháu, anh em</h1>
+    <p>Module 2 – CSS Cơ Bản</p>
+  </div>
+
+  <div class="exercise-page">
+    <div class="exercise-box">
+      <div class="ex-head">
+        <h1>📝 Yêu cầu bài tập</h1>
+        <p>Dùng CSS selectors kết hợp để chọn phần tử theo quan hệ trong DOM.</p>
+      </div>
+      <div class="ex-desc">
+        <h3>Mô tả</h3>
+        <p>Ngoài 3 selector cơ bản, CSS có nhiều selector kết hợp để chọn phần tử dựa trên vị trí và quan hệ với nhau trong cây DOM.</p>
+        <h3>Yêu cầu</h3>
+        <ul>
+          <li>Dùng <code>div p</code> chọn p là con cháu của div</li>
+          <li>Dùng <code>div &gt; p</code> chọn p là con TRỰC TIẾP của div</li>
+          <li>Dùng <code>h2 + p</code> chọn p ngay sau h2 (adjacent sibling)</li>
+          <li>Dùng <code>h2 ~ p</code> chọn tất cả p sau h2 (general sibling)</li>
+          <li>Dùng attribute selector <code>a[href^='https']</code></li>
+        </ul>
+        <h3>🧠 Kiến thức cần nhớ</h3>
+        <ul>
+          <li><code>A B</code>: B là con cháu của A (bất kỳ cấp nào)</li>
+          <li><code>A &gt; B</code>: B là con TRỰC TIẾP của A</li>
+          <li><code>A + B</code>: B ngay kề sau A (cùng cấp)</li>
+          <li><code>A ~ B</code>: B ở sau A (cùng cấp, không nhất thiết liền kề)</li>
+          <li><code>[attr='value']</code>: chọn phần tử có thuộc tính xác định</li>
+        </ul>
+      </div>
+      <div class="ex-work">
+        <h3>💻 Code mẫu</h3>
+        <div id="code-highlight">
+          <pre id="code-raw" style="display:none">/* Con cháu (descendant) */
+.menu a { color: white; text-decoration: none; }
+
+/* Con trực tiếp (child) */
+.menu &gt; li { display: inline-block; padding: 10px; }
+
+/* Adjacent sibling */
+h2 + p { font-size: 1.1rem; color: #4a5568; }
+
+/* General sibling */
+h2 ~ p { margin-left: 20px; }
+
+/* Attribute selectors */
+a[href^="https"] { color: green; } /* bắt đầu bằng https */
+a[href$=".pdf"] { color: red; }    /* kết thúc bằng .pdf */
+input[type="email"] { border: 2px solid blue; }
+input[type="password"] { border: 2px solid orange; }</pre>
+        </div>
+      </div>
+    </div>
+  </div>
+  <a href="../index.html" class="btn-back" style="margin-top:20px;">&#8592; Quay lại</a>
+  <script type="module">
+    import { codeToHtml } from 'https://esm.sh/shiki@1';
+    const raw = document.getElementById('code-raw').textContent;
+    const highlighted = await codeToHtml(raw, { lang: 'html', theme: 'github-dark' });
+    document.getElementById('code-highlight').innerHTML = highlighted;
+    const pre = document.getElementById('code-highlight').querySelector('pre');
+    if (pre) pre.style.cssText = 'border-radius:10px;padding:20px;font-size:0.87rem;overflow-x:auto;margin:0;line-height:1.7';
+  </script>
+</body>
+</html>

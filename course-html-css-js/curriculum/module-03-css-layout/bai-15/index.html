@@ -1,20 +1,99 @@
-﻿<!DOCTYPE html><html lang='vi'><head><meta charset='UTF-8'/><title>Bai 15 - Layout Flexbox Card Grid</title><link rel='stylesheet' href='../../shared.css'/></head><body><div class='page-header module-3'><div class='breadcrumb'><a href='../../index.html'>Trang Chu</a>  <a href='../index.html'>Module 3</a>  Bai 15</div><h1>Bai 15: Layout Flexbox Card Grid</h1></div><div class='exercise-page'><div class='exercise-box'><div class='ex-work'><pre style='background:#1a202c;color:#e2e8f0;padding:20px;border-radius:8px;font-size:.88rem;line-height:1.7;overflow-x:auto;white-space:pre-wrap'>.card-grid {
-  display: flex;
-  flex-wrap: wrap;
-  gap: 20px;
+<!DOCTYPE html>
+<html lang="vi">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <meta name="keywords" content="Nền tảng,HTML,CSS,JavaScript,Lập trình,Web,Kiến thức,Đồ án">
+  <meta name="author" content="Dương Nguyễn Phú Cường">
+  <meta name="description" content="Cho grid item chiếm nhiều cột/hàng bằng grid-column và grid-row span.">
+  <meta property="og:locale" content="vi_VN">
+  <meta property="og:type" content="website">
+  <meta property="og:title" content="Bài 15 – CSS Grid: row-gap, column-span | NenTang.vn">
+  <meta property="og:description" content="Cho grid item chiếm nhiều cột/hàng bằng grid-column và grid-row span.">
+  <meta property="og:url" content="https://nentang.vn/">
+  <meta property="og:site_name" content="Nền tảng Kiến thức">
+  <title>Bài 15 – CSS Grid: row-gap, column-span | NenTang.vn</title>
+  <link rel="stylesheet" href="../../shared.css" />
+</head>
+<body>
+  <div class="page-header module-3">
+    <div class="breadcrumb">
+      <a href="../../index.html">Trang Chủ</a> &rsaquo;
+      <a href="../index.html">Module 3</a> &rsaquo; Bài 15
+    </div>
+    <h1>Bài 15: CSS Grid: row-gap, column-span</h1>
+    <p>Module 3 – CSS Layout &amp; Responsive</p>
+  </div>
+
+  <div class="exercise-page">
+    <div class="exercise-box">
+      <div class="ex-head">
+        <h1>📝 Yêu cầu bài tập</h1>
+        <p>Cho grid item chiếm nhiều cột/hàng bằng grid-column và grid-row span.</p>
+      </div>
+      <div class="ex-desc">
+        <h3>Mô tả</h3>
+        <p>grid-column và grid-row cho phép một item chiếm nhiều ô trong grid, tạo layout phức tạp như magazine, dashboard.</p>
+        <h3>Yêu cầu</h3>
+        <ul>
+          <li>Tạo grid 3 cột, item đầu tiên chiếm hết hàng (span 3)</li>
+          <li>Tạo item chiếm 2 cột và 2 hàng đồng thời</li>
+          <li>Tạo grid 4 cột: item hero chiếm 3 cột đầu, sidebar 1 cột (span đến cuối)</li>
+        </ul>
+        <h3>🧠 Kiến thức cần nhớ</h3>
+        <ul>
+          <li><code>grid-column: 1 / 3</code>: từ line 1 đến line 3 (chiếm 2 cột)</li>
+          <li><code>grid-column: span 2</code>: chiếm 2 cột tính từ vị trí hiện tại</li>
+          <li><code>grid-column: 1 / -1</code>: từ đầu đến cuối (chiếm toàn hàng)</li>
+          <li><code>grid-row: span 2</code>: chiếm 2 hàng</li>
+          <li>Grid lines: bắt đầu từ 1, dùng -1 cho dòng cuối cùng</li>
+        </ul>
+      </div>
+      <div class="ex-work">
+        <h3>💻 Code mẫu</h3>
+        <div id="code-highlight">
+          <pre id="code-raw" style="display:none">/* Grid với span */
+.photo-grid {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  grid-auto-rows: 200px;
+  gap: 12px;
 }
 
-/* Moi card chiem 1/3 (tru gap) - tinh toan */
-.card {
-  flex: 0 0 calc(33.333% - 14px); /* (20 * 2) / 3 ~ 14 */
-  background: white;
-  border-radius: 12px;
-  overflow: hidden;
-  box-shadow: 0 2px 8px rgba(0,0,0,.07);
+/* Item chiếm toàn hàng */
+.hero-item {
+  grid-column: 1 / -1; /* từ đầu đến cuối */
 }
 
-/* Responsive */
-@media (max-width: 900px) { .card { flex: 0 0 calc(50% - 10px); } }
-@media (max-width: 600px) { .card { flex: 0 0 100%; } }
+/* Item chiếm 2 cột */
+.wide-item { grid-column: span 2; }
 
-/* YEU CAU: Tao luoi 9 card san pham 3x3, responsive xuong 1 cot tren mobile */</pre></div></div><a href='../index.html' class='btn-back' style='margin-top:20px;'> Quay lai</a></div></body></html>
+/* Item chiếm 2 hàng */
+.tall-item { grid-row: span 2; }
+
+/* Item chiếm 2x2 */
+.featured {
+  grid-column: span 2;
+  grid-row: span 2;
+}
+
+/* Đặt vị trí cụ thể */
+.sidebar {
+  grid-column: 3 / 4;  /* cột 3 */
+  grid-row: 1 / 4;     /* hàng 1 đến 3 */
+}</pre>
+        </div>
+      </div>
+    </div>
+  </div>
+  <a href="../index.html" class="btn-back" style="margin-top:20px;">&#8592; Quay lại</a>
+  <script type="module">
+    import { codeToHtml } from 'https://esm.sh/shiki@1';
+    const raw = document.getElementById('code-raw').textContent;
+    const highlighted = await codeToHtml(raw, { lang: 'css', theme: 'github-dark' });
+    document.getElementById('code-highlight').innerHTML = highlighted;
+    const pre = document.getElementById('code-highlight').querySelector('pre');
+    if (pre) pre.style.cssText = 'border-radius:10px;padding:20px;font-size:0.87rem;overflow-x:auto;margin:0;line-height:1.7';
+  </script>
+</body>
+</html>

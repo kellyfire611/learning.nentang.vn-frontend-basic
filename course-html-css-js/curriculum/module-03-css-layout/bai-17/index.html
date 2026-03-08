@@ -1,21 +1,92 @@
-﻿<!DOCTYPE html><html lang='vi'><head><meta charset='UTF-8'/><title>Bai 17 - CSS Grid rows va gap</title><link rel='stylesheet' href='../../shared.css'/></head><body><div class='page-header module-3'><div class='breadcrumb'><a href='../../index.html'>Trang Chu</a>  <a href='../index.html'>Module 3</a>  Bai 17</div><h1>Bai 17: CSS Grid rows va gap</h1></div><div class='exercise-page'><div class='exercise-box'><div class='ex-work'><pre style='background:#1a202c;color:#e2e8f0;padding:20px;border-radius:8px;font-size:.88rem;line-height:1.7;overflow-x:auto;white-space:pre-wrap'>.grid {
+<!DOCTYPE html>
+<html lang="vi">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <meta name="keywords" content="Nền tảng,HTML,CSS,JavaScript,Lập trình,Web,Kiến thức,Đồ án">
+  <meta name="author" content="Dương Nguyễn Phú Cường">
+  <meta name="description" content="Tạo grid tự động điều chỉnh số cột theo kích thước màn hình.">
+  <meta property="og:locale" content="vi_VN">
+  <meta property="og:type" content="website">
+  <meta property="og:title" content="Bài 17 – CSS Grid: auto-fill và auto-fit | NenTang.vn">
+  <meta property="og:description" content="Tạo grid tự động điều chỉnh số cột theo kích thước màn hình.">
+  <meta property="og:url" content="https://nentang.vn/">
+  <meta property="og:site_name" content="Nền tảng Kiến thức">
+  <title>Bài 17 – CSS Grid: auto-fill và auto-fit | NenTang.vn</title>
+  <link rel="stylesheet" href="../../shared.css" />
+</head>
+<body>
+  <div class="page-header module-3">
+    <div class="breadcrumb">
+      <a href="../../index.html">Trang Chủ</a> &rsaquo;
+      <a href="../index.html">Module 3</a> &rsaquo; Bài 17
+    </div>
+    <h1>Bài 17: CSS Grid: auto-fill và auto-fit</h1>
+    <p>Module 3 – CSS Layout &amp; Responsive</p>
+  </div>
+
+  <div class="exercise-page">
+    <div class="exercise-box">
+      <div class="ex-head">
+        <h1>📝 Yêu cầu bài tập</h1>
+        <p>Tạo grid tự động điều chỉnh số cột theo kích thước màn hình.</p>
+      </div>
+      <div class="ex-desc">
+        <h3>Mô tả</h3>
+        <p>Kết hợp repeat(auto-fill/auto-fit), minmax() tạo grid responsive mà không cần media query – grid tự tính số cột phù hợp.</p>
+        <h3>Yêu cầu</h3>
+        <ul>
+          <li>Tạo photo gallery tự động điều chỉnh 1-4 cột theo màn hình</li>
+          <li>So sánh auto-fill và auto-fit với số lượng ít item</li>
+          <li>Tạo product grid min-width 200px, tự wrap xuống dòng</li>
+        </ul>
+        <h3>🧠 Kiến thức cần nhớ</h3>
+        <ul>
+          <li><code>repeat(auto-fill, minmax(200px, 1fr))</code>: tự điền cột, tối thiểu 200px</li>
+          <li><code>auto-fill</code>: giữ ô trống khi ít item hơn cột</li>
+          <li><code>auto-fit</code>: kéo giãn items để điền đầy hàng</li>
+          <li><code>minmax(min, max)</code>: kích thước item trong khoảng min-max</li>
+          <li>Responsive grid không cần media query với kỹ thuật này</li>
+        </ul>
+      </div>
+      <div class="ex-work">
+        <h3>💻 Code mẫu</h3>
+        <div id="code-highlight">
+          <pre id="code-raw" style="display:none">/* Gallery tự responsive */
+.gallery {
   display: grid;
-  grid-template-columns: 1fr 1fr 1fr;
-  grid-template-rows: 100px auto 60px;
-  gap: 20px; /* tat ca huong */
-  /* hoac: row-gap: 16px; column-gap: 24px; */
+  grid-template-columns: repeat(auto-fill, minmax(200px, 1fr));
+  gap: 16px;
 }
 
-/* Chieu cao hang tu dong */
-.tu-dong { grid-auto-rows: minmax(100px, auto); }
-
-/* Dat hang cu the */
-.banner { grid-row: 1; grid-column: 1 / -1; } /* toan bo hang dau */
-
-/* Implicit grid - hang tu dong tao them */
-.grid {
-  grid-auto-rows: 150px; /* hang tu dong cao 150px */
-  grid-auto-flow: row;   /* mac dinh, them hang theo hang */
+/* Product grid: min 180px, max 1fr */
+.products {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(180px, 1fr));
+  gap: 20px;
 }
 
-/* YEU CAU: Tao layout trang chu: banner day -> 3 cot -> footer */</pre></div></div><a href='../index.html' class='btn-back' style='margin-top:20px;'> Quay lai</a></div></body></html>
+/* Masonry-like layout */
+.masonry {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(250px, 1fr));
+  grid-auto-rows: 200px;
+  gap: 12px;
+}
+.masonry .tall { grid-row: span 2; }
+.masonry .wide { grid-column: span 2; }</pre>
+        </div>
+      </div>
+    </div>
+  </div>
+  <a href="../index.html" class="btn-back" style="margin-top:20px;">&#8592; Quay lại</a>
+  <script type="module">
+    import { codeToHtml } from 'https://esm.sh/shiki@1';
+    const raw = document.getElementById('code-raw').textContent;
+    const highlighted = await codeToHtml(raw, { lang: 'css', theme: 'github-dark' });
+    document.getElementById('code-highlight').innerHTML = highlighted;
+    const pre = document.getElementById('code-highlight').querySelector('pre');
+    if (pre) pre.style.cssText = 'border-radius:10px;padding:20px;font-size:0.87rem;overflow-x:auto;margin:0;line-height:1.7';
+  </script>
+</body>
+</html>

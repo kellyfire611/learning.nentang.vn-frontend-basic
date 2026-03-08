@@ -1,14 +1,92 @@
-﻿<!DOCTYPE html><html lang='vi'><head><meta charset='UTF-8'/><title>Bai 01 - Display block inline inline-block</title><link rel='stylesheet' href='../../shared.css'/></head><body><div class='page-header module-3'><div class='breadcrumb'><a href='../../index.html'>Trang Chu</a>  <a href='../index.html'>Module 3</a>  Bai 01</div><h1>Bai 01: Display block inline inline-block</h1><p>Module 3  CSS Layout & Responsive</p></div><div class='exercise-page'><div class='exercise-box'><div class='ex-work'><pre style='background:#1a202c;color:#e2e8f0;padding:20px;border-radius:8px;font-size:.88rem;line-height:1.7;overflow-x:auto;white-space:pre-wrap'>/* Block: chiem het chieu rong, xuong dong */
+<!DOCTYPE html>
+<html lang="vi">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <meta name="keywords" content="Nền tảng,HTML,CSS,JavaScript,Lập trình,Web,Kiến thức,Đồ án">
+  <meta name="author" content="Dương Nguyễn Phú Cường">
+  <meta name="description" content="Thực hành các giá trị của thuộc tính display – nền tảng của CSS layout.">
+  <meta property="og:locale" content="vi_VN">
+  <meta property="og:type" content="website">
+  <meta property="og:title" content="Bài 01 – Display: block inline inline-block none | NenTang.vn">
+  <meta property="og:description" content="Thực hành các giá trị của thuộc tính display – nền tảng của CSS layout.">
+  <meta property="og:url" content="https://nentang.vn/">
+  <meta property="og:site_name" content="Nền tảng Kiến thức">
+  <title>Bài 01 – Display: block inline inline-block none | NenTang.vn</title>
+  <link rel="stylesheet" href="../../shared.css" />
+</head>
+<body>
+  <div class="page-header module-3">
+    <div class="breadcrumb">
+      <a href="../../index.html">Trang Chủ</a> &rsaquo;
+      <a href="../index.html">Module 3</a> &rsaquo; Bài 01
+    </div>
+    <h1>Bài 01: Display: block inline inline-block none</h1>
+    <p>Module 3 – CSS Layout &amp; Responsive</p>
+  </div>
+
+  <div class="exercise-page">
+    <div class="exercise-box">
+      <div class="ex-head">
+        <h1>📝 Yêu cầu bài tập</h1>
+        <p>Thực hành các giá trị của thuộc tính display – nền tảng của CSS layout.</p>
+      </div>
+      <div class="ex-desc">
+        <h3>Mô tả</h3>
+        <p>display là thuộc tính CSS quan trọng nhất cho layout. Hiểu sự khác biệt giữa block, inline, inline-block, none là bước đầu tiên của layout.</p>
+        <h3>Yêu cầu</h3>
+        <ul>
+          <li>Tạo menu ngang bằng cách đặt li thành inline-block</li>
+          <li>So sánh p (block) với span (inline) bằng cách đặt width và height</li>
+          <li>Dùng display:none để ẩn phần tử (không chiếm không gian)</li>
+          <li>Dùng visibility:hidden (vẫn chiếm không gian, chỉ ẩn nhìn thôi)</li>
+        </ul>
+        <h3>🧠 Kiến thức cần nhớ</h3>
+        <ul>
+          <li><code>block</code>: chiếm hết chiều rộng, xuống dòng sau</li>
+          <li><code>inline</code>: chỉ rộng bằng nội dung, không xuống dòng, KHÔNG set được width/height</li>
+          <li><code>inline-block</code>: như inline (không xuống dòng) nhưng CÓ set được width/height</li>
+          <li><code>display:none</code>: ẩn hoàn toàn – không chiếm không gian</li>
+          <li><code>visibility:hidden</code>: ẩn nhìn thấy – VẪN chiếm không gian</li>
+        </ul>
+      </div>
+      <div class="ex-work">
+        <h3>💻 Code mẫu</h3>
+        <div id="code-highlight">
+          <pre id="code-raw" style="display:none">/* Block */
 div, p, h1, section { display: block; }
+/* Chiếm 100% width của parent, xuống dòng */
 
-/* Inline: chi rong bang noi dung, khong xuong dong */
-span, a, strong { display: inline; }
-/* Khong set width/height cho inline */
+/* Inline */
+span, a, strong, em { display: inline; }
+/* width/height không có tác dụng với inline */
 
-/* Inline-block: nhu inline nhung co the set width height */
-.icon-btn { display: inline-block; width: 40px; height: 40px; }
+/* Inline-block: ĐỈNH của sư tử! */
+.nav-item {
+  display: inline-block;
+  width: 120px;
+  height: 44px;
+  line-height: 44px;
+  text-align: center;
+  background: #3182ce;
+  color: white;
+}
 
-/* None: an phan tu (khong chiem chu vi khong gian) */
-.hidden { display: none; }
-
-/* YEU CAU: Tao menu ngang (dung inline-block), tao grid 3 cot (block) */</pre></div></div><a href='../index.html' class='btn-back' style='margin-top:20px;'> Quay lai</a></div></body></html>
+/* Ẩn phần tử */
+.hidden { display: none; }    /* không chiếm chỗ */
+.invisible { visibility: hidden; } /* chiếm chỗ, chỉ ẩn */</pre>
+        </div>
+      </div>
+    </div>
+  </div>
+  <a href="../index.html" class="btn-back" style="margin-top:20px;">&#8592; Quay lại</a>
+  <script type="module">
+    import { codeToHtml } from 'https://esm.sh/shiki@1';
+    const raw = document.getElementById('code-raw').textContent;
+    const highlighted = await codeToHtml(raw, { lang: 'css', theme: 'github-dark' });
+    document.getElementById('code-highlight').innerHTML = highlighted;
+    const pre = document.getElementById('code-highlight').querySelector('pre');
+    if (pre) pre.style.cssText = 'border-radius:10px;padding:20px;font-size:0.87rem;overflow-x:auto;margin:0;line-height:1.7';
+  </script>
+</body>
+</html>

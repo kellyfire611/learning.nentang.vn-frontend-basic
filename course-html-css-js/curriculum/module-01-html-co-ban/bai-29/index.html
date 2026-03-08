@@ -1,42 +1,105 @@
-﻿<!DOCTYPE html><html lang='vi'><head><meta charset='UTF-8'/><meta name='viewport' content='width=device-width,initial-scale=1'/><title>Bai 29 - Trang gio hang don gian bang Table</title><link rel='stylesheet' href='../../shared.css'/></head><body><div class='page-header module-1'><div class='breadcrumb'><a href='../../index.html'>Trang Chu</a>  <a href='../index.html'>Module 1</a>  Bai 29</div><h1>Bai 29: Trang gio hang don gian bang Table</h1><p>Module 1  HTML Co Ban</p></div><div class='exercise-page'><div class='exercise-box'><div class='ex-work'><h3>Noi dung / Code mau:</h3><pre style='background:#1a202c;color:#e2e8f0;padding:20px;border-radius:8px;font-size:.88rem;line-height:1.7;overflow-x:auto;white-space:pre-wrap'>&lt;h1&gt; Gio Hang Cua Toi&lt;/h1&gt;
+<!DOCTYPE html>
+<html lang="vi">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <meta name="keywords" content="Nền tảng,HTML,CSS,JavaScript,Lập trình,Web,Kiến thức,Đồ án">
+  <meta name="author" content="Dương Nguyễn Phú Cường">
+  <meta name="description" content="Xây dựng trang giỏ hàng hoàn chỉnh bằng table HTML với tổng tiền.">
+  <meta property="og:locale" content="vi_VN">
+  <meta property="og:type" content="website">
+  <meta property="og:title" content="Bài 29 – Dự án: Trang giỏ hàng bằng Table | NenTang.vn">
+  <meta property="og:description" content="Xây dựng trang giỏ hàng hoàn chỉnh bằng table HTML với tổng tiền.">
+  <meta property="og:url" content="https://nentang.vn/">
+  <meta property="og:site_name" content="Nền tảng Kiến thức">
+  <title>Bài 29 – Dự án: Trang giỏ hàng bằng Table | NenTang.vn</title>
+  <link rel="stylesheet" href="../../shared.css" />
+</head>
+<body>
+  <div class="page-header module-1">
+    <div class="breadcrumb">
+      <a href="../../index.html">Trang Chủ</a> &rsaquo;
+      <a href="../index.html">Module 1</a> &rsaquo; Bài 29
+    </div>
+    <h1>Bài 29: Dự án: Trang giỏ hàng bằng Table</h1>
+    <p>Module 1 – HTML Cơ Bản</p>
+  </div>
 
-&lt;table border="1" style="border-collapse:collapse;width:100%;text-align:center"&gt;
-  &lt;thead style="background:#5a67d8;color:white"&gt;
-    &lt;tr&gt;
-      &lt;th&gt;STT&lt;/th&gt;
-      &lt;th&gt;San Pham&lt;/th&gt;
-      &lt;th&gt;Hinh Anh&lt;/th&gt;
-      &lt;th&gt;So Luong&lt;/th&gt;
-      &lt;th&gt;Don Gia&lt;/th&gt;
-      &lt;th&gt;Thanh Tien&lt;/th&gt;
-    &lt;/tr&gt;
+  <div class="exercise-page">
+    <div class="exercise-box">
+      <div class="ex-head">
+        <h1>📝 Yêu cầu bài tập</h1>
+        <p>Xây dựng trang giỏ hàng hoàn chỉnh bằng table HTML với tổng tiền.</p>
+      </div>
+      <div class="ex-desc">
+        <h3>Mô tả</h3>
+        <p>Dự án thực tế kết hợp kiến thức bảng HTML, form, entities và style cơ bản. Trang giỏ hàng thường gặp trong các trang thương mại điện tử.</p>
+        <h3>Yêu cầu</h3>
+        <ul>
+          <li>Tạo bảng giỏ hàng với cột: STT, Sản phẩm, Đơn giá, Số lượng (input), Thành tiền, Xóa</li>
+          <li>Hàng cuối hiển thị Tổng cộng dùng colspan</li>
+          <li>Nút 'Đặt hàng' bên dưới bảng</li>
+          <li>Dùng CSS tô màu xen kẽ các hàng (zebra striping)</li>
+        </ul>
+        <h3>🧠 Kiến thức cần nhớ</h3>
+        <ul>
+          <li>Kết hợp table + form (input number trong td)</li>
+          <li>Dùng colspan để gộp ô tổng cộng cuối bảng</li>
+          <li>CSS <code>tr:nth-child(even)</code> tô hàng chẵn</li>
+          <li>Dùng ký tự ✕ hoặc entity &amp;times; cho nút xóa</li>
+          <li>Dùng <code>text-align:right</code> cho cột số tiền</li>
+        </ul>
+      </div>
+      <div class="ex-work">
+        <h3>💻 Code mẫu</h3>
+        <div id="code-highlight">
+          <pre id="code-raw" style="display:none">&lt;style&gt;
+  table { border-collapse:collapse; width:100% }
+  th,td { border:1px solid #e2e8f0; padding:12px; text-align:left }
+  th { background:#2d3748; color:white }
+  tr:nth-child(even) { background:#f7fafc }
+  .price { text-align:right; font-weight:bold; color:#2f855a }
+  input[type=number] { width:60px; padding:4px; border:1px solid #cbd5e0; border-radius:4px }
+  .btn-order { margin-top:16px; padding:12px 30px; background:#e53e3e; color:white; border:none; border-radius:8px; font-size:16px; cursor:pointer }
+&lt;/style&gt;
+&lt;h2&gt;🛒 Giỏ hàng của bạn&lt;/h2&gt;
+&lt;table&gt;
+  &lt;thead&gt;
+    &lt;tr&gt;&lt;th&gt;STT&lt;/th&gt;&lt;th&gt;Sản phẩm&lt;/th&gt;&lt;th&gt;Đơn giá&lt;/th&gt;&lt;th&gt;Số lượng&lt;/th&gt;&lt;th&gt;Thành tiền&lt;/th&gt;&lt;th&gt;Xóa&lt;/th&gt;&lt;/tr&gt;
   &lt;/thead&gt;
   &lt;tbody&gt;
     &lt;tr&gt;
-      &lt;td&gt;1&lt;/td&gt;
-      &lt;td&gt;Ao thun nam tay ngan&lt;/td&gt;
-      &lt;td&gt;&lt;img src="https://via.placeholder.com/60x60" alt="Ao thun" /&gt;&lt;/td&gt;
-      &lt;td&gt;2&lt;/td&gt;
-      &lt;td&gt;150,000đ&lt;/td&gt;
-      &lt;td&gt;300,000đ&lt;/td&gt;
+      &lt;td&gt;1&lt;/td&gt;&lt;td&gt;Áo thun trắng&lt;/td&gt;&lt;td class="price"&gt;150.000đ&lt;/td&gt;
+      &lt;td&gt;&lt;input type="number" value="2" min="1"&gt;&lt;/td&gt;
+      &lt;td class="price"&gt;300.000đ&lt;/td&gt;&lt;td&gt;&lt;button&gt;&amp;times;&lt;/button&gt;&lt;/td&gt;
     &lt;/tr&gt;
     &lt;tr&gt;
-      &lt;td&gt;2&lt;/td&gt;
-      &lt;td&gt;Quan jean nam&lt;/td&gt;
-      &lt;td&gt;&lt;img src="https://via.placeholder.com/60x60" alt="Quan jean" /&gt;&lt;/td&gt;
-      &lt;td&gt;1&lt;/td&gt;
-      &lt;td&gt;450,000đ&lt;/td&gt;
-      &lt;td&gt;450,000đ&lt;/td&gt;
+      &lt;td&gt;2&lt;/td&gt;&lt;td&gt;Quần jean xanh&lt;/td&gt;&lt;td class="price"&gt;350.000đ&lt;/td&gt;
+      &lt;td&gt;&lt;input type="number" value="1" min="1"&gt;&lt;/td&gt;
+      &lt;td class="price"&gt;350.000đ&lt;/td&gt;&lt;td&gt;&lt;button&gt;&amp;times;&lt;/button&gt;&lt;/td&gt;
     &lt;/tr&gt;
   &lt;/tbody&gt;
-  &lt;tfoot style="background:#ebf8ff"&gt;
+  &lt;tfoot&gt;
     &lt;tr&gt;
-      &lt;td colspan="5"&gt;&lt;strong&gt;Tong Cong&lt;/strong&gt;&lt;/td&gt;
-      &lt;td&gt;&lt;strong&gt;750,000đ&lt;/strong&gt;&lt;/td&gt;
+      &lt;td colspan="4" style="text-align:right; font-weight:bold"&gt;Tổng cộng:&lt;/td&gt;
+      &lt;td class="price" style="font-size:1.2em"&gt;650.000đ&lt;/td&gt;
+      &lt;td&gt;&lt;/td&gt;
     &lt;/tr&gt;
   &lt;/tfoot&gt;
 &lt;/table&gt;
-
-&lt;br /&gt;
-&lt;button&gt;Thanh Toan Ngay&lt;/button&gt;
-&lt;a href="#"&gt;Tiep Tuc Mua Sam&lt;/a&gt;</pre></div></div><a href='../index.html' class='btn-back' style='margin-top:20px;'> Quay lai</a></div></body></html>
+&lt;button class="btn-order"&gt;Đặt hàng ngay &amp;rarr;&lt;/button&gt;</pre>
+        </div>
+      </div>
+    </div>
+  </div>
+  <a href="../index.html" class="btn-back" style="margin-top:20px;">&#8592; Quay lại</a>
+  <script type="module">
+    import { codeToHtml } from 'https://esm.sh/shiki@1';
+    const raw = document.getElementById('code-raw').textContent;
+    const highlighted = await codeToHtml(raw, { lang: 'html', theme: 'github-dark' });
+    document.getElementById('code-highlight').innerHTML = highlighted;
+    const pre = document.getElementById('code-highlight').querySelector('pre');
+    if (pre) pre.style.cssText = 'border-radius:10px;padding:20px;font-size:0.87rem;overflow-x:auto;margin:0;line-height:1.7';
+  </script>
+</body>
+</html>

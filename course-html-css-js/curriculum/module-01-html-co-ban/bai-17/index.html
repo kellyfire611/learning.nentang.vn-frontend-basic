@@ -1,19 +1,86 @@
-﻿<!DOCTYPE html><html lang='vi'><head><meta charset='UTF-8'/><meta name='viewport' content='width=device-width,initial-scale=1'/><title>Bai 17 - The pre va code</title><link rel='stylesheet' href='../../shared.css'/></head><body><div class='page-header module-1'><div class='breadcrumb'><a href='../../index.html'>Trang Chu</a>  <a href='../index.html'>Module 1</a>  Bai 17</div><h1>Bai 17: The pre va code</h1><p>Module 1  HTML Co Ban</p></div><div class='exercise-page'><div class='exercise-box'><div class='ex-work'><h3>Noi dung bai tap:</h3><pre style='background:#1a202c;color:#e2e8f0;padding:20px;border-radius:8px;font-size:.88rem;line-height:1.7;overflow-x:auto;white-space:pre-wrap'><!-- Hien thi code giu nguyen dinh dang -->
-&lt;h2&gt;Vi du JavaScript:&lt;/h2&gt;
-&lt;pre&gt;&lt;code&gt;function chaoHoi(ten) {
-  console.log("Xin chao, " + ten + "!");
-  return "Chao " + ten;
-}
+<!DOCTYPE html>
+<html lang="vi">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <meta name="keywords" content="Nền tảng,HTML,CSS,JavaScript,Lập trình,Web,Kiến thức,Đồ án">
+  <meta name="author" content="Dương Nguyễn Phú Cường">
+  <meta name="description" content="Hiển thị đoạn code máy tính đúng định dạng bằng thẻ pre và code.">
+  <meta property="og:locale" content="vi_VN">
+  <meta property="og:type" content="website">
+  <meta property="og:title" content="Bài 17 – Thẻ pre và code | NenTang.vn">
+  <meta property="og:description" content="Hiển thị đoạn code máy tính đúng định dạng bằng thẻ pre và code.">
+  <meta property="og:url" content="https://nentang.vn/">
+  <meta property="og:site_name" content="Nền tảng Kiến thức">
+  <title>Bài 17 – Thẻ pre và code | NenTang.vn</title>
+  <link rel="stylesheet" href="../../shared.css" />
+</head>
+<body>
+  <div class="page-header module-1">
+    <div class="breadcrumb">
+      <a href="../../index.html">Trang Chủ</a> &rsaquo;
+      <a href="../index.html">Module 1</a> &rsaquo; Bài 17
+    </div>
+    <h1>Bài 17: Thẻ pre và code</h1>
+    <p>Module 1 – HTML Cơ Bản</p>
+  </div>
 
-chaoHoi("Viet Nam");
+  <div class="exercise-page">
+    <div class="exercise-box">
+      <div class="ex-head">
+        <h1>📝 Yêu cầu bài tập</h1>
+        <p>Hiển thị đoạn code máy tính đúng định dạng bằng thẻ pre và code.</p>
+      </div>
+      <div class="ex-desc">
+        <h3>Mô tả</h3>
+        <p>Thẻ <pre> giữ nguyên khoảng trắng và xuống dòng. Thẻ <code> dùng font monospace để hiển thị code inline. Kết hợp cả hai để tạo block code có định dạng đẹp.</p>
+        <h3>Yêu cầu</h3>
+        <ul>
+          <li>Dùng <code>&lt;pre&gt;&lt;code&gt;</code> để hiển thị đoạn HTML code</li>
+          <li>Dùng <code>&lt;code&gt;</code> inline trong đoạn văn</li>
+          <li>Dùng <code>&lt;kbd&gt;</code> cho tổ hợp phím như Ctrl+C</li>
+          <li>Dùng <code>&lt;samp&gt;</code> cho output máy tính</li>
+        </ul>
+        <h3>🧠 Kiến thức cần nhớ</h3>
+        <ul>
+          <li><code>&lt;pre&gt;</code>: preformatted – giữ nguyên space và newline</li>
+          <li><code>&lt;code&gt;</code>: inline code – font monospace</li>
+          <li><code>&lt;kbd&gt;</code>: keyboard input (tổ hợp phím)</li>
+          <li><code>&lt;samp&gt;</code>: sample output (kết quả chương trình)</li>
+          <li>Kết hợp pre + code cho code block nhiều dòng</li>
+        </ul>
+      </div>
+      <div class="ex-work">
+        <h3>💻 Code mẫu</h3>
+        <div id="code-highlight">
+          <pre id="code-raw" style="display:none">&lt;p&gt;Dùng thẻ &lt;code&gt;&amp;lt;p&amp;gt;&lt;/code&gt; để tạo đoạn văn.&lt;/p&gt;
+
+&lt;p&gt;Nhấn &lt;kbd&gt;Ctrl&lt;/kbd&gt; + &lt;kbd&gt;C&lt;/kbd&gt; để sao chép.&lt;/p&gt;
+
+&lt;pre&gt;&lt;code&gt;&amp;lt;!DOCTYPE html&amp;gt;
+&amp;lt;html lang="vi"&amp;gt;
+&amp;lt;head&amp;gt;
+  &amp;lt;title&amp;gt;Trang đầu tiên&amp;lt;/title&amp;gt;
+&amp;lt;/head&amp;gt;
+&amp;lt;body&amp;gt;
+  &amp;lt;h1&amp;gt;Xin chào!&amp;lt;/h1&amp;gt;
+&amp;lt;/body&amp;gt;
+&amp;lt;/html&amp;gt;
 &lt;/code&gt;&lt;/pre&gt;
 
-&lt;h2&gt;Vi du CSS:&lt;/h2&gt;
-&lt;pre&gt;&lt;code&gt;body {
-  font-family: Arial, sans-serif;
-  background-color: #f0f4f8;
-  margin: 0;
-  padding: 20px;
-}
-&lt;/code&gt;&lt;/pre&gt;
-&lt;!-- Yeu cau: Tao trang hien thi 3 doan code (HTML/CSS/JS) voi the pre va code --&gt;</pre></div></div><a href='../index.html' class='btn-back' style='margin-top:20px;'> Quay lai</a></div></body></html>
+&lt;p&gt;Kết quả: &lt;samp&gt;Hello, World!&lt;/samp&gt;&lt;/p&gt;</pre>
+        </div>
+      </div>
+    </div>
+  </div>
+  <a href="../index.html" class="btn-back" style="margin-top:20px;">&#8592; Quay lại</a>
+  <script type="module">
+    import { codeToHtml } from 'https://esm.sh/shiki@1';
+    const raw = document.getElementById('code-raw').textContent;
+    const highlighted = await codeToHtml(raw, { lang: 'html', theme: 'github-dark' });
+    document.getElementById('code-highlight').innerHTML = highlighted;
+    const pre = document.getElementById('code-highlight').querySelector('pre');
+    if (pre) pre.style.cssText = 'border-radius:10px;padding:20px;font-size:0.87rem;overflow-x:auto;margin:0;line-height:1.7';
+  </script>
+</body>
+</html>

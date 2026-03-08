@@ -1,9 +1,111 @@
-﻿<!DOCTYPE html>
-<html lang="vi"><head><meta charset="UTF-8"/><title>Async Await voi xu ly loi</title><link rel="stylesheet" href="../../shared.css"/></head>
+<!DOCTYPE html>
+<html lang="vi">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <meta name="keywords" content="Nền tảng,HTML,CSS,JavaScript,Lập trình,Web,Kiến thức,Đồ án">
+  <meta name="author" content="Dương Nguyễn Phú Cường">
+  <meta name="description" content="Chuyển đổi giữa JavaScript object và chuỗi JSON.">
+  <meta property="og:locale" content="vi_VN">
+  <meta property="og:type" content="website">
+  <meta property="og:title" content="Bài 08 – JSON parse và stringify | NenTang.vn">
+  <meta property="og:description" content="Chuyển đổi giữa JavaScript object và chuỗi JSON.">
+  <meta property="og:url" content="https://nentang.vn/">
+  <meta property="og:site_name" content="Nền tảng Kiến thức">
+  <title>Bài 08 – JSON parse và stringify | NenTang.vn</title>
+  <link rel="stylesheet" href="../../shared.css" />
+</head>
 <body>
-<div class="page-header module-5"><div class="breadcrumb"><a href="../../index.html">Trang Chu</a> &rsaquo; <a href="../index.html">Module 5</a> &rsaquo; bai-08</div><h1>Async Await voi xu ly loi</h1></div>
-<div class="container"><div class="exercise-content"><h2>Yeu cau</h2><p>Viet lai bai Promise bang async/await. Boc trong try/catch/finally. Tao ham asyncForEach xu ly tuan tu. Gia lap toa do bat dong bo: lay user -> lay bai viet cua user.</p>
-<h2>Code mau</h2><pre><code>/* Viet code tai day */</code></pre>
-<h2>Ket qua</h2><div id="result" style="padding:16px;background:#f8f9fa;border-radius:8px;margin-top:8px;">Ket qua se hien thi o day...</div>
-<h2>Bai lam</h2><textarea id="code" style="width:100%;height:200px;font-family:monospace;font-size:14px;padding:12px;border:2px solid #dee2e6;border-radius:8px;"></textarea><br/><button onclick="try{eval(document.getElementById('code').value)}catch(e){document.getElementById('result').textContent=e.message}" style="margin-top:8px;padding:10px 24px;background:#a18cd1;color:#fff;border:none;border-radius:8px;cursor:pointer;font-size:15px;">Chay Code</button>
-</div><a href="../index.html" class="btn-back"> Quay lai Module 5</a></div></body></html>
+  <div class="page-header module-5">
+    <div class="breadcrumb">
+      <a href="../../index.html">Trang Chủ</a> &rsaquo;
+      <a href="../index.html">Module 5</a> &rsaquo; Bài 08
+    </div>
+    <h1>Bài 08: JSON parse và stringify</h1>
+    <p>Module 5 – JavaScript Nâng Cao</p>
+  </div>
+
+  <div class="exercise-page">
+    <div class="exercise-box">
+      <div class="ex-head">
+        <h1>📝 Yêu cầu bài tập</h1>
+        <p>Chuyển đổi giữa JavaScript object và chuỗi JSON.</p>
+      </div>
+      <div class="ex-desc">
+        <h3>Mô tả</h3>
+        <p>JSON (JavaScript Object Notation) là định dạng trao đổi dữ liệu phổ biến nhất. JSON.parse() và JSON.stringify() là 2 hàm quan trọng khi làm việc với API.</p>
+        <h3>Yêu cầu</h3>
+        <ul>
+          <li>Chuyển object thành JSON string</li>
+          <li>Parse JSON string thành object</li>
+          <li>JSON.stringify với tham số replacer và spaces</li>
+          <li>Xử lý lỗi khi parse JSON không hợp lệ</li>
+        </ul>
+        <h3>🧠 Kiến thức cần nhớ</h3>
+        <ul>
+          <li><code>JSON.stringify(obj)</code>: object → string</li>
+          <li><code>JSON.parse(str)</code>: string → object</li>
+          <li><code>JSON.stringify(obj, null, 2)</code>: format đẹp, indent 2 spaces</li>
+          <li>JSON không hỗ trợ: undefined, function, Date (thành string), Symbol</li>
+          <li>Deep clone: <code>JSON.parse(JSON.stringify(obj))</code> (không dùng cho hàm/Date phức tạp)</li>
+          <li>structuredClone() (ES2022): deep clone tốt hơn</li>
+        </ul>
+      </div>
+      <div class="ex-work">
+        <h3>💻 Code mẫu</h3>
+        <div id="code-highlight">
+          <pre id="code-raw" style="display:none">// stringify – object sang JSON
+const user = {
+  ten: 'Nguyễn An',
+  tuoi: 25,
+  hobbies: ['code', 'gym'],
+  address: { thanh_pho: 'HCM' },
+};
+
+const jsonStr = JSON.stringify(user);
+// '{"ten":"Nguyễn An","tuoi":25,...}'
+
+const jsonDep = JSON.stringify(user, null, 2);
+// Có indent dễ đọc – dùng để debug
+
+// parse – JSON sang object
+const obj = JSON.parse(jsonStr);
+console.log(obj.ten); // 'Nguyễn An'
+
+// Lỗi JSON
+try {
+  JSON.parse('{ sai cú pháp }');
+} catch (e) {
+  console.error('JSON lỗi!', e.message);
+}
+
+// Replacer: chọn fields cần serialize
+const partial = JSON.stringify(user, ['ten', 'tuoi']);
+// Chỉ có ten và tuoi
+
+// Reviver: transform khi parse
+const json2 = '{"ngaySinh":"2000-01-15"}';
+const parsed = JSON.parse(json2, (key, value) =&gt; {
+  if (key === 'ngaySinh') return new Date(value);
+  return value;
+});
+console.log(parsed.ngaySinh instanceof Date); // true
+
+// Deep clone (an toàn cho các object cơ bản)
+const clone = JSON.parse(JSON.stringify(user));
+clone.ten = 'Khác'; // Không ảnh hưởng user gốc</pre>
+        </div>
+      </div>
+    </div>
+  </div>
+  <a href="../index.html" class="btn-back" style="margin-top:20px;">&#8592; Quay lại</a>
+  <script type="module">
+    import { codeToHtml } from 'https://esm.sh/shiki@1';
+    const raw = document.getElementById('code-raw').textContent;
+    const highlighted = await codeToHtml(raw, { lang: 'javascript', theme: 'github-dark' });
+    document.getElementById('code-highlight').innerHTML = highlighted;
+    const pre = document.getElementById('code-highlight').querySelector('pre');
+    if (pre) pre.style.cssText = 'border-radius:10px;padding:20px;font-size:0.87rem;overflow-x:auto;margin:0;line-height:1.7';
+  </script>
+</body>
+</html>

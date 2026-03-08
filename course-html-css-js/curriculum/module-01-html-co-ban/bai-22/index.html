@@ -1,23 +1,97 @@
-﻿<!DOCTYPE html><html lang='vi'><head><meta charset='UTF-8'/><meta name='viewport' content='width=device-width,initial-scale=1'/><title>Bai 22 - Form validation attributes</title><link rel='stylesheet' href='../../shared.css'/></head><body><div class='page-header module-1'><div class='breadcrumb'><a href='../../index.html'>Trang Chu</a>  <a href='../index.html'>Module 1</a>  Bai 22</div><h1>Bai 22: Form validation attributes</h1><p>Module 1  HTML Co Ban</p></div><div class='exercise-page'><div class='exercise-box'><div class='ex-work'><h3>Noi dung / Code mau:</h3><pre style='background:#1a202c;color:#e2e8f0;padding:20px;border-radius:8px;font-size:.88rem;line-height:1.7;overflow-x:auto;white-space:pre-wrap'>&lt;h1&gt;Form Dang Ky Tai Khoan&lt;/h1&gt;
-&lt;form&gt;
-  &lt;label for="uname"&gt;Ten dang nhap (3-20 ky tu):&lt;/label&gt;&lt;br /&gt;
-  &lt;input type="text" id="uname" name="uname"
-         minlength="3" maxlength="20"
-         pattern="[a-zA-Z0-9_]+"
-         title="Chi dung chu, so va gach duoi"
-         required /&gt;&lt;br /&gt;
+<!DOCTYPE html>
+<html lang="vi">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <meta name="keywords" content="Nền tảng,HTML,CSS,JavaScript,Lập trình,Web,Kiến thức,Đồ án">
+  <meta name="author" content="Dương Nguyễn Phú Cường">
+  <meta name="description" content="Dùng thuộc tính HTML5 để validate form tự động mà không cần JavaScript.">
+  <meta property="og:locale" content="vi_VN">
+  <meta property="og:type" content="website">
+  <meta property="og:title" content="Bài 22 – Validate form HTML5 | NenTang.vn">
+  <meta property="og:description" content="Dùng thuộc tính HTML5 để validate form tự động mà không cần JavaScript.">
+  <meta property="og:url" content="https://nentang.vn/">
+  <meta property="og:site_name" content="Nền tảng Kiến thức">
+  <title>Bài 22 – Validate form HTML5 | NenTang.vn</title>
+  <link rel="stylesheet" href="../../shared.css" />
+</head>
+<body>
+  <div class="page-header module-1">
+    <div class="breadcrumb">
+      <a href="../../index.html">Trang Chủ</a> &rsaquo;
+      <a href="../index.html">Module 1</a> &rsaquo; Bài 22
+    </div>
+    <h1>Bài 22: Validate form HTML5</h1>
+    <p>Module 1 – HTML Cơ Bản</p>
+  </div>
 
-  &lt;label for="email"&gt;Email:&lt;/label&gt;&lt;br /&gt;
-  &lt;input type="email" id="email" name="email" required /&gt;&lt;br /&gt;
-
-  &lt;label for="pw"&gt;Mat khau (it nhat 8 ky tu):&lt;/label&gt;&lt;br /&gt;
-  &lt;input type="password" id="pw" name="pw" minlength="8" required /&gt;&lt;br /&gt;
-
-  &lt;label for="age"&gt;Tuoi (18-100):&lt;/label&gt;&lt;br /&gt;
-  &lt;input type="number" id="age" name="age" min="18" max="100" required /&gt;&lt;br /&gt;
-
-  &lt;input type="checkbox" id="agree" name="agree" required /&gt;
-  &lt;label for="agree"&gt;Toi dong y voi dieu khoan su dung&lt;/label&gt;&lt;br /&gt;
-
-  &lt;button type="submit"&gt;Dang Ky&lt;/button&gt;
-&lt;/form&gt;</pre></div></div><a href='../index.html' class='btn-back' style='margin-top:20px;'> Quay lai</a></div></body></html>
+  <div class="exercise-page">
+    <div class="exercise-box">
+      <div class="ex-head">
+        <h1>📝 Yêu cầu bài tập</h1>
+        <p>Dùng thuộc tính HTML5 để validate form tự động mà không cần JavaScript.</p>
+      </div>
+      <div class="ex-desc">
+        <h3>Mô tả</h3>
+        <p>HTML5 cung cấp các thuộc tính validate mạnh mẽ: required, pattern, min, max, minlength, maxlength. Trình duyệt sẽ hiển thị thông báo lỗi tự động.</p>
+        <h3>Yêu cầu</h3>
+        <ul>
+          <li>Tạo form đăng ký với các trường: tên (minlength=2), email (required), SĐT (pattern), tuổi (min=18 max=100), mật khẩu (minlength=8)</li>
+          <li>Thêm thuộc tính <code>novalidate</code> để tắt validate thử nghiệm</li>
+          <li>Dùng CSS <code>:valid</code> và <code>:invalid</code> để tô màu trường</li>
+        </ul>
+        <h3>🧠 Kiến thức cần nhớ</h3>
+        <ul>
+          <li><code>required</code>: bắt buộc nhập</li>
+          <li><code>minlength='n'</code> / <code>maxlength='n'</code>: giới hạn độ dài</li>
+          <li><code>pattern='regex'</code>: kiểm tra định dạng bằng regex</li>
+          <li><code>min</code> / <code>max</code>: giới hạn giá trị số/ngày</li>
+          <li>CSS <code>input:valid { border-color: green }</code></li>
+        </ul>
+      </div>
+      <div class="ex-work">
+        <h3>💻 Code mẫu</h3>
+        <div id="code-highlight">
+          <pre id="code-raw" style="display:none">&lt;style&gt;
+  input:valid { border: 2px solid #48bb78; }
+  input:invalid { border: 2px solid #fc8181; }
+  input:placeholder-shown { border: 2px solid #cbd5e0; }
+&lt;/style&gt;
+&lt;form style="max-width:400px"&gt;
+  &lt;p&gt;
+    &lt;label&gt;Họ tên (ít nhất 2 ký tự):
+      &lt;input type="text" minlength="2" required placeholder="Nguyễn Văn A"&gt;
+    &lt;/label&gt;
+  &lt;/p&gt;
+  &lt;p&gt;
+    &lt;label&gt;Email:
+      &lt;input type="email" required placeholder="ten@email.com"&gt;
+    &lt;/label&gt;
+  &lt;/p&gt;
+  &lt;p&gt;
+    &lt;label&gt;Số điện thoại (10 số):
+      &lt;input type="tel" pattern="[0-9]{10}" placeholder="0987654321"&gt;
+    &lt;/label&gt;
+  &lt;/p&gt;
+  &lt;p&gt;
+    &lt;label&gt;Tuổi (18-100):
+      &lt;input type="number" min="18" max="100"&gt;
+    &lt;/label&gt;
+  &lt;/p&gt;
+  &lt;button type="submit"&gt;Đăng ký&lt;/button&gt;
+&lt;/form&gt;</pre>
+        </div>
+      </div>
+    </div>
+  </div>
+  <a href="../index.html" class="btn-back" style="margin-top:20px;">&#8592; Quay lại</a>
+  <script type="module">
+    import { codeToHtml } from 'https://esm.sh/shiki@1';
+    const raw = document.getElementById('code-raw').textContent;
+    const highlighted = await codeToHtml(raw, { lang: 'html', theme: 'github-dark' });
+    document.getElementById('code-highlight').innerHTML = highlighted;
+    const pre = document.getElementById('code-highlight').querySelector('pre');
+    if (pre) pre.style.cssText = 'border-radius:10px;padding:20px;font-size:0.87rem;overflow-x:auto;margin:0;line-height:1.7';
+  </script>
+</body>
+</html>

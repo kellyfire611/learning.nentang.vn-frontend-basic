@@ -1,13 +1,93 @@
-﻿<!DOCTYPE html><html lang='vi'><head><meta charset='UTF-8'/><meta name='viewport' content='width=device-width,initial-scale=1'/><title>Bai 21 - Input types moi trong HTML5</title><link rel='stylesheet' href='../../shared.css'/></head><body><div class='page-header module-1'><div class='breadcrumb'><a href='../../index.html'>Trang Chu</a>  <a href='../index.html'>Module 1</a>  Bai 21</div><h1>Bai 21: Input types moi trong HTML5</h1><p>Module 1  HTML Co Ban</p></div><div class='exercise-page'><div class='exercise-box'><div class='ex-work'><h3>Noi dung / Code mau:</h3><pre style='background:#1a202c;color:#e2e8f0;padding:20px;border-radius:8px;font-size:.88rem;line-height:1.7;overflow-x:auto;white-space:pre-wrap'>&lt;h1&gt;Cac kieu Input moi trong HTML5&lt;/h1&gt;
-&lt;form&gt;
-  &lt;label&gt;Email: &lt;input type="email" placeholder="vidu@email.com" /&gt;&lt;/label&gt;&lt;br /&gt;
-  &lt;label&gt;So dien thoai: &lt;input type="tel" placeholder="0912345678" /&gt;&lt;/label&gt;&lt;br /&gt;
-  &lt;label&gt;URL trang web: &lt;input type="url" placeholder="https://example.com" /&gt;&lt;/label&gt;&lt;br /&gt;
-  &lt;label&gt;So luong: &lt;input type="number" min="1" max="100" value="1" /&gt;&lt;/label&gt;&lt;br /&gt;
-  &lt;label&gt;Ngay sinh: &lt;input type="date" /&gt;&lt;/label&gt;&lt;br /&gt;
-  &lt;label&gt;Gio: &lt;input type="time" /&gt;&lt;/label&gt;&lt;br /&gt;
-  &lt;label&gt;Mau sac: &lt;input type="color" value="#5a67d8" /&gt;&lt;/label&gt;&lt;br /&gt;
-  &lt;label&gt;Am luong (0-100): &lt;input type="range" min="0" max="100" value="50" /&gt;&lt;/label&gt;&lt;br /&gt;
-  &lt;label&gt;Tim kiem: &lt;input type="search" placeholder="Tim kiem..." /&gt;&lt;/label&gt;&lt;br /&gt;
-  &lt;button type="submit"&gt;Gui&lt;/button&gt;
-&lt;/form&gt;</pre></div></div><a href='../index.html' class='btn-back' style='margin-top:20px;'> Quay lai</a></div></body></html>
+<!DOCTYPE html>
+<html lang="vi">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <meta name="keywords" content="Nền tảng,HTML,CSS,JavaScript,Lập trình,Web,Kiến thức,Đồ án">
+  <meta name="author" content="Dương Nguyễn Phú Cường">
+  <meta name="description" content="Khám phá các kiểu input mới trong HTML5 như number, range, color, date.">
+  <meta property="og:locale" content="vi_VN">
+  <meta property="og:type" content="website">
+  <meta property="og:title" content="Bài 21 – HTML5 Input Types mới | NenTang.vn">
+  <meta property="og:description" content="Khám phá các kiểu input mới trong HTML5 như number, range, color, date.">
+  <meta property="og:url" content="https://nentang.vn/">
+  <meta property="og:site_name" content="Nền tảng Kiến thức">
+  <title>Bài 21 – HTML5 Input Types mới | NenTang.vn</title>
+  <link rel="stylesheet" href="../../shared.css" />
+</head>
+<body>
+  <div class="page-header module-1">
+    <div class="breadcrumb">
+      <a href="../../index.html">Trang Chủ</a> &rsaquo;
+      <a href="../index.html">Module 1</a> &rsaquo; Bài 21
+    </div>
+    <h1>Bài 21: HTML5 Input Types mới</h1>
+    <p>Module 1 – HTML Cơ Bản</p>
+  </div>
+
+  <div class="exercise-page">
+    <div class="exercise-box">
+      <div class="ex-head">
+        <h1>📝 Yêu cầu bài tập</h1>
+        <p>Khám phá các kiểu input mới trong HTML5 như number, range, color, date.</p>
+      </div>
+      <div class="ex-desc">
+        <h3>Mô tả</h3>
+        <p>HTML5 bổ sung nhiều kiểu input hữu ích giúp trải nghiệm người dùng tốt hơn và giảm bớt nhu cầu dùng JavaScript cho validate cơ bản.</p>
+        <h3>Yêu cầu</h3>
+        <ul>
+          <li>Tạo input type='date' chọn ngày sinh</li>
+          <li>Tạo input type='time' chọn giờ hẹn</li>
+          <li>Tạo type='range' (thanh kéo) điều chỉnh âm lượng 0-100</li>
+          <li>Tạo type='color' chọn màu yêu thích</li>
+          <li>Tạo type='number' nhập tuổi min=1 max=120</li>
+        </ul>
+        <h3>🧠 Kiến thức cần nhớ</h3>
+        <ul>
+          <li><code>type='date'</code>: hiện date picker</li>
+          <li><code>type='time'</code>: hiện time picker</li>
+          <li><code>type='range' min max step</code>: thanh trượt</li>
+          <li><code>type='color'</code>: bảng chọn màu</li>
+          <li><code>type='number' min max step</code>: nhập số có nút +/-</li>
+          <li><code>type='search'</code>: ô tìm kiếm có nút X</li>
+        </ul>
+      </div>
+      <div class="ex-work">
+        <h3>💻 Code mẫu</h3>
+        <div id="code-highlight">
+          <pre id="code-raw" style="display:none">&lt;form style="max-width:400px"&gt;
+  &lt;p&gt;
+    &lt;label&gt;Ngày sinh: &lt;input type="date" name="ngaysinh"&gt;&lt;/label&gt;
+  &lt;/p&gt;
+  &lt;p&gt;
+    &lt;label&gt;Giờ hẹn: &lt;input type="time" name="giohim" min="08:00" max="18:00"&gt;&lt;/label&gt;
+  &lt;/p&gt;
+  &lt;p&gt;
+    &lt;label&gt;Âm lượng: &lt;input type="range" min="0" max="100" value="50" oninput="this.nextElementSibling.value=this.value"&gt;
+    &lt;output&gt;50&lt;/output&gt;&lt;/label&gt;
+  &lt;/p&gt;
+  &lt;p&gt;
+    &lt;label&gt;Màu yêu thích: &lt;input type="color" value="#3182ce"&gt;&lt;/label&gt;
+  &lt;/p&gt;
+  &lt;p&gt;
+    &lt;label&gt;Tuổi: &lt;input type="number" min="1" max="120" placeholder="Nhập tuổi"&gt;&lt;/label&gt;
+  &lt;/p&gt;
+  &lt;p&gt;
+    &lt;label&gt;Tìm kiếm: &lt;input type="search" placeholder="Tìm..."&gt;&lt;/label&gt;
+  &lt;/p&gt;
+&lt;/form&gt;</pre>
+        </div>
+      </div>
+    </div>
+  </div>
+  <a href="../index.html" class="btn-back" style="margin-top:20px;">&#8592; Quay lại</a>
+  <script type="module">
+    import { codeToHtml } from 'https://esm.sh/shiki@1';
+    const raw = document.getElementById('code-raw').textContent;
+    const highlighted = await codeToHtml(raw, { lang: 'html', theme: 'github-dark' });
+    document.getElementById('code-highlight').innerHTML = highlighted;
+    const pre = document.getElementById('code-highlight').querySelector('pre');
+    if (pre) pre.style.cssText = 'border-radius:10px;padding:20px;font-size:0.87rem;overflow-x:auto;margin:0;line-height:1.7';
+  </script>
+</body>
+</html>

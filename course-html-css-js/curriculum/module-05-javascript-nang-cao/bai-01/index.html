@@ -1,9 +1,108 @@
-﻿<!DOCTYPE html>
-<html lang="vi"><head><meta charset="UTF-8"/><title>Object: Tao va truy cap</title><link rel="stylesheet" href="../../shared.css"/></head>
+<!DOCTYPE html>
+<html lang="vi">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <meta name="keywords" content="Nền tảng,HTML,CSS,JavaScript,Lập trình,Web,Kiến thức,Đồ án">
+  <meta name="author" content="Dương Nguyễn Phú Cường">
+  <meta name="description" content="Tạo và làm việc với Object – kiểu dữ liệu nền tảng của JavaScript.">
+  <meta property="og:locale" content="vi_VN">
+  <meta property="og:type" content="website">
+  <meta property="og:title" content="Bài 01 – Object và Object Methods | NenTang.vn">
+  <meta property="og:description" content="Tạo và làm việc với Object – kiểu dữ liệu nền tảng của JavaScript.">
+  <meta property="og:url" content="https://nentang.vn/">
+  <meta property="og:site_name" content="Nền tảng Kiến thức">
+  <title>Bài 01 – Object và Object Methods | NenTang.vn</title>
+  <link rel="stylesheet" href="../../shared.css" />
+</head>
 <body>
-<div class="page-header module-5"><div class="breadcrumb"><a href="../../index.html">Trang Chu</a> &rsaquo; <a href="../index.html">Module 5</a> &rsaquo; bai-01</div><h1>Object: Tao va truy cap</h1></div>
-<div class="container"><div class="exercise-content"><h2>Yeu cau</h2><p>Tao object 'hocSinh' co: ten, tuoi, lop, diemTrungBinh. Truy cap bang dot notation va bracket notation. Them thuoc tinh moi, xoa thuoc tinh. Duyet object bang for...in.</p>
-<h2>Code mau</h2><pre><code>/* Viet code tai day */</code></pre>
-<h2>Ket qua</h2><div id="result" style="padding:16px;background:#f8f9fa;border-radius:8px;margin-top:8px;">Ket qua se hien thi o day...</div>
-<h2>Bai lam</h2><textarea id="code" style="width:100%;height:200px;font-family:monospace;font-size:14px;padding:12px;border:2px solid #dee2e6;border-radius:8px;"></textarea><br/><button onclick="try{eval(document.getElementById('code').value)}catch(e){document.getElementById('result').textContent=e.message}" style="margin-top:8px;padding:10px 24px;background:#a18cd1;color:#fff;border:none;border-radius:8px;cursor:pointer;font-size:15px;">Chay Code</button>
-</div><a href="../index.html" class="btn-back"> Quay lai Module 5</a></div></body></html>
+  <div class="page-header module-5">
+    <div class="breadcrumb">
+      <a href="../../index.html">Trang Chủ</a> &rsaquo;
+      <a href="../index.html">Module 5</a> &rsaquo; Bài 01
+    </div>
+    <h1>Bài 01: Object và Object Methods</h1>
+    <p>Module 5 – JavaScript Nâng Cao</p>
+  </div>
+
+  <div class="exercise-page">
+    <div class="exercise-box">
+      <div class="ex-head">
+        <h1>📝 Yêu cầu bài tập</h1>
+        <p>Tạo và làm việc với Object – kiểu dữ liệu nền tảng của JavaScript.</p>
+      </div>
+      <div class="ex-desc">
+        <h3>Mô tả</h3>
+        <p>Object lưu trữ dữ liệu dạng key-value. Gần như mọi thứ trong JS đều là object. Hiểu rõ Object là nền tảng để học OOP và JSON.</p>
+        <h3>Yêu cầu</h3>
+        <ul>
+          <li>Tạo object sản phẩm với nhiều thuộc tính</li>
+          <li>Thêm, sửa, xóa thuộc tính object</li>
+          <li>Duyệt object bằng for...in và Object.entries()</li>
+          <li>Computed property names: tên thuộc tính động</li>
+        </ul>
+        <h3>🧠 Kiến thức cần nhớ</h3>
+        <ul>
+          <li><code>const obj = { key: value }</code>: object literal</li>
+          <li>Truy cập: <code>obj.key</code> hoặc <code>obj['key']</code></li>
+          <li><code>delete obj.key</code>: xóa thuộc tính</li>
+          <li><code>for (const key in obj) { }</code>: duyệt keys</li>
+          <li><code>Object.keys/values/entries(obj)</code>: mảng key/value/pair</li>
+          <li>Computed property: <code>{ [tenBien]: value }</code></li>
+          <li>Shorthand: <code>{ ten, tuoi }</code> thay <code>{ ten: ten, tuoi: tuoi }</code></li>
+        </ul>
+      </div>
+      <div class="ex-work">
+        <h3>💻 Code mẫu</h3>
+        <div id="code-highlight">
+          <pre id="code-raw" style="display:none">// Object literal
+const sanPham = {
+  id: 1,
+  ten: 'Áo Polo',
+  gia: 250000,
+  sizes: ['S','M','L','XL'],
+  conHang: true,
+};
+
+// Shorthand property (ES6)
+const ten = 'Nguyễn An'; const tuoi = 25;
+const user = { ten, tuoi }; // { ten: 'Nguyễn An', tuoi: 25 }
+
+// Thêm/sửa/xóa
+sanPham.mau = 'Trắng';          // thêm
+sanPham.gia = 300000;           // sửa
+delete sanPham.conHang;         // xóa
+
+// Computed property names
+const field = 'mau';
+const obj = { [field]: 'Đen' }; // { mau: 'Đen' }
+
+// Duyệt object
+Object.entries(sanPham).forEach(([key, val]) =&gt; {
+  console.log(`${key}: ${val}`);
+});
+
+// Object methods
+const keys   = Object.keys(sanPham);   // ['id','ten','gia',...]
+const values = Object.values(sanPham); // [1,'Áo Polo',250000,...]
+
+// Spread: copy + override
+const spMoi = { ...sanPham, gia: 350000, id: 2 };
+
+// Object.assign
+const merged = Object.assign({}, sanPham, { id: 3 });</pre>
+        </div>
+      </div>
+    </div>
+  </div>
+  <a href="../index.html" class="btn-back" style="margin-top:20px;">&#8592; Quay lại</a>
+  <script type="module">
+    import { codeToHtml } from 'https://esm.sh/shiki@1';
+    const raw = document.getElementById('code-raw').textContent;
+    const highlighted = await codeToHtml(raw, { lang: 'javascript', theme: 'github-dark' });
+    document.getElementById('code-highlight').innerHTML = highlighted;
+    const pre = document.getElementById('code-highlight').querySelector('pre');
+    if (pre) pre.style.cssText = 'border-radius:10px;padding:20px;font-size:0.87rem;overflow-x:auto;margin:0;line-height:1.7';
+  </script>
+</body>
+</html>

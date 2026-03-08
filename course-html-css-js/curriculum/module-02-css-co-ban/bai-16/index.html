@@ -1,21 +1,106 @@
-﻿<!DOCTYPE html><html lang='vi'><head><meta charset='UTF-8'/><meta name='viewport' content='width=device-width,initial-scale=1'/><title>Bai 16 - Pseudo-class nth-child first last</title><link rel='stylesheet' href='../../shared.css'/></head><body><div class='page-header module-2'><div class='breadcrumb'><a href='../../index.html'>Trang Chu</a>  <a href='../index.html'>Module 2</a>  Bai 16</div><h1>Bai 16: Pseudo-class nth-child first last</h1><p>Module 2  CSS Co Ban</p></div><div class='exercise-page'><div class='exercise-box'><div class='ex-work'><h3>Yeu cau va Code mau:</h3><pre style='background:#1a202c;color:#e2e8f0;padding:20px;border-radius:8px;font-size:.88rem;line-height:1.7;overflow-x:auto;white-space:pre-wrap'>/* :first-child va :last-child */
-li:first-child { font-weight: bold; color: #5a67d8; }
-li:last-child  { border-bottom: none; }
+<!DOCTYPE html>
+<html lang="vi">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <meta name="keywords" content="Nền tảng,HTML,CSS,JavaScript,Lập trình,Web,Kiến thức,Đồ án">
+  <meta name="author" content="Dương Nguyễn Phú Cường">
+  <meta name="description" content="Dùng ::before và ::after để thêm nội dung trang trí vào phần tử.">
+  <meta property="og:locale" content="vi_VN">
+  <meta property="og:type" content="website">
+  <meta property="og:title" content="Bài 16 – Pseudo-element: before after | NenTang.vn">
+  <meta property="og:description" content="Dùng ::before và ::after để thêm nội dung trang trí vào phần tử.">
+  <meta property="og:url" content="https://nentang.vn/">
+  <meta property="og:site_name" content="Nền tảng Kiến thức">
+  <title>Bài 16 – Pseudo-element: before after | NenTang.vn</title>
+  <link rel="stylesheet" href="../../shared.css" />
+</head>
+<body>
+  <div class="page-header module-2">
+    <div class="breadcrumb">
+      <a href="../../index.html">Trang Chủ</a> &rsaquo;
+      <a href="../index.html">Module 2</a> &rsaquo; Bài 16
+    </div>
+    <h1>Bài 16: Pseudo-element: before after</h1>
+    <p>Module 2 – CSS Cơ Bản</p>
+  </div>
 
-/* :nth-child(n) - chon theo vi tri */
-li:nth-child(2)    { color: red; }     /* chi phan tu thu 2 */
-li:nth-child(odd)  { background: #f7fafc; } /* hang le */
-li:nth-child(even) { background: #edf2f7; } /* hang chan (bang xe soc) */
-li:nth-child(3n)   { color: green; }   /* moi 3 phan tu */
+  <div class="exercise-page">
+    <div class="exercise-box">
+      <div class="ex-head">
+        <h1>📝 Yêu cầu bài tập</h1>
+        <p>Dùng ::before và ::after để thêm nội dung trang trí vào phần tử.</p>
+      </div>
+      <div class="ex-desc">
+        <h3>Mô tả</h3>
+        <p>Pseudo-element tạo ra phần tử 'ảo' trước hoặc sau nội dung phần tử. Rất hữu ích để thêm icon, trang trí, hoặc hiệu ứng mà không cần HTML thêm.</p>
+        <h3>Yêu cầu</h3>
+        <ul>
+          <li>Dùng ::before thêm icon 📍 trước mỗi item list</li>
+          <li>Dùng ::after tạo dấu gạch chân animate cho link</li>
+          <li>Tạo badge 'Mới' góc trên phải của card dùng ::before</li>
+          <li>Dùng ::before tạo dấu ngoặc kép trích dẫn đẹp</li>
+        </ul>
+        <h3>🧠 Kiến thức cần nhớ</h3>
+        <ul>
+          <li><code>::before</code> và <code>::after</code> tạo nội dung ảo</li>
+          <li>PHẢI CÓ thuộc tính <code>content: ''</code> (có thể rỗng)</li>
+          <li>Mặc định là inline, thường đặt thành <code>display:block</code> hoặc absolute</li>
+          <li>Không xuất hiện trong DOM, không select được bằng JavaScript</li>
+          <li>Rất hay dùng để trang trí icon, badge, underline effect, dấu chấm, dấu phẩy</li>
+        </ul>
+      </div>
+      <div class="ex-work">
+        <h3>💻 Code mẫu</h3>
+        <div id="code-highlight">
+          <pre id="code-raw" style="display:none">/* List icon với ::before */
+ul.custom li::before {
+  content: "✅ ";
+}
 
-/* :nth-last-child - dem tu cuoi */
-li:nth-last-child(1) { /* phan tu cuoi cung */ }
+/* Gạch chân animate cho link */
+.fancy-link {
+  position: relative;
+  text-decoration: none;
+}
+.fancy-link::after {
+  content: '';
+  position: absolute;
+  bottom: -2px; left: 0;
+  width: 0; height: 2px;
+  background: currentColor;
+  transition: width 0.3s;
+}
+.fancy-link:hover::after { width: 100%; }
 
-/* :only-child - phan tu duy nhat */
-p:only-child { font-size: 1.2em; }
+/* Badge 'Mới' */
+.card-new { position: relative; }
+.card-new::before {
+  content: 'Mới';
+  position: absolute;
+  top: -8px; right: -8px;
+  background: #e53e3e;
+  color: white;
+  font-size: 12px;
+  padding: 2px 8px;
+  border-radius: 99px;
+}
 
-/* Un dung: bang soc mau xen ke */
-tr:nth-child(even) { background-color: #f8f9fa; }
-tr:hover           { background-color: #e8f4fd; }
-
-/* YEU CAU: Tao bang 10 hang voi mau soc, dong hover doi mau */</pre></div></div><a href='../index.html' class='btn-back' style='margin-top:20px;'> Quay lai</a></div></body></html>
+/* Dấu ngoặc kép trích dẫn */
+blockquote::before { content: open-quote; font-size: 3em; color: #cbd5e0; }
+blockquote::after { content: close-quote; }</pre>
+        </div>
+      </div>
+    </div>
+  </div>
+  <a href="../index.html" class="btn-back" style="margin-top:20px;">&#8592; Quay lại</a>
+  <script type="module">
+    import { codeToHtml } from 'https://esm.sh/shiki@1';
+    const raw = document.getElementById('code-raw').textContent;
+    const highlighted = await codeToHtml(raw, { lang: 'html', theme: 'github-dark' });
+    document.getElementById('code-highlight').innerHTML = highlighted;
+    const pre = document.getElementById('code-highlight').querySelector('pre');
+    if (pre) pre.style.cssText = 'border-radius:10px;padding:20px;font-size:0.87rem;overflow-x:auto;margin:0;line-height:1.7';
+  </script>
+</body>
+</html>

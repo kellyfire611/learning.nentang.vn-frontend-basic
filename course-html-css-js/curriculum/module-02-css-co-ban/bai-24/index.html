@@ -1,8 +1,108 @@
-﻿<!DOCTYPE html><html lang='vi'><head><meta charset='UTF-8'/><title>Bai 24 - Trang tri Form voi CSS</title><link rel='stylesheet' href='../../shared.css'/></head><body><div class='page-header module-2'><div class='breadcrumb'><a href='../../index.html'>Trang Chu</a>  <a href='../index.html'>Module 2</a>  Bai 24</div><h1>Bai 24: Trang tri Form voi CSS</h1></div><div class='exercise-page'><div class='exercise-box'><div class='ex-work'><pre style='background:#1a202c;color:#e2e8f0;padding:20px;border-radius:8px;font-size:.88rem;line-height:1.7;overflow-x:auto;white-space:pre-wrap'>input, textarea, select { width:100%; padding:12px 16px; border:2px solid #e2e8f0; border-radius:8px; font-size:1rem; transition:border-color .2s, box-shadow .2s; outline:none; }
-input:focus, textarea:focus, select:focus { border-color:#5a67d8; box-shadow:0 0 0 3px rgba(90,103,216,.2); }
-input.error { border-color:#e53e3e; }
-input.success { border-color:#38a169; }
-label { display:block; font-weight:600; margin-bottom:6px; color:#4a5568; }
-.form-group { margin-bottom:20px; }
-.btn-submit { width:100%; padding:14px; background:#5a67d8; color:white; border:none; border-radius:8px; font-size:1rem; font-weight:700; cursor:pointer; transition:background .2s; }
-.btn-submit:hover { background:#4c51bf; }</pre></div></div><a href='../index.html' class='btn-back' style='margin-top:20px;'> Quay lai</a></div></body></html>
+<!DOCTYPE html>
+<html lang="vi">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <meta name="keywords" content="Nền tảng,HTML,CSS,JavaScript,Lập trình,Web,Kiến thức,Đồ án">
+  <meta name="author" content="Dương Nguyễn Phú Cường">
+  <meta name="description" content="Tạo animation CSS phức tạp bằng @keyframes và animation property.">
+  <meta property="og:locale" content="vi_VN">
+  <meta property="og:type" content="website">
+  <meta property="og:title" content="Bài 24 – CSS Animation với @keyframes | NenTang.vn">
+  <meta property="og:description" content="Tạo animation CSS phức tạp bằng @keyframes và animation property.">
+  <meta property="og:url" content="https://nentang.vn/">
+  <meta property="og:site_name" content="Nền tảng Kiến thức">
+  <title>Bài 24 – CSS Animation với @keyframes | NenTang.vn</title>
+  <link rel="stylesheet" href="../../shared.css" />
+</head>
+<body>
+  <div class="page-header module-2">
+    <div class="breadcrumb">
+      <a href="../../index.html">Trang Chủ</a> &rsaquo;
+      <a href="../index.html">Module 2</a> &rsaquo; Bài 24
+    </div>
+    <h1>Bài 24: CSS Animation với @keyframes</h1>
+    <p>Module 2 – CSS Cơ Bản</p>
+  </div>
+
+  <div class="exercise-page">
+    <div class="exercise-box">
+      <div class="ex-head">
+        <h1>📝 Yêu cầu bài tập</h1>
+        <p>Tạo animation CSS phức tạp bằng @keyframes và animation property.</p>
+      </div>
+      <div class="ex-desc">
+        <h3>Mô tả</h3>
+        <p>Trong khi transition chỉ đi từ A sang B khi có sự kiện, animation (@keyframes) có thể tự chạy nhiều bước, lặp lại, đảo chiều mà không cần JavaScript.</p>
+        <h3>Yêu cầu</h3>
+        <ul>
+          <li>Tạo animation spinning circle (loading spinner)</li>
+          <li>Tạo animation pulse (nhịp tim) cho thông báo</li>
+          <li>Tạo animation floating (lơ lửng lên xuống)</li>
+          <li>Tạo animation typing (gõ chữ dần dần)</li>
+          <li>Tạo animation slide-in từ dưới lên khi vào trang</li>
+        </ul>
+        <h3>🧠 Kiến thức cần nhớ</h3>
+        <ul>
+          <li><code>@keyframes ten { from { } to { } }</code>: 2 bước</li>
+          <li><code>@keyframes ten { 0% {} 50% {} 100% {} }</code>: nhiều bước</li>
+          <li><code>animation: ten duration timing iteration direction fill-mode</code></li>
+          <li><code>animation-iteration-count: infinite</code>: lặp mãi</li>
+          <li><code>animation-direction: alternate</code>: đi rồi về</li>
+          <li><code>animation-fill-mode: forwards</code>: giữ trạng thái cuối cùng</li>
+        </ul>
+      </div>
+      <div class="ex-work">
+        <h3>💻 Code mẫu</h3>
+        <div id="code-highlight">
+          <pre id="code-raw" style="display:none">/* Spinner */
+@keyframes spin {
+  from { transform: rotate(0deg); }
+  to   { transform: rotate(360deg); }
+}
+.spinner {
+  width: 40px; height: 40px;
+  border: 4px solid #e2e8f0;
+  border-top-color: #3182ce;
+  border-radius: 50%;
+  animation: spin 1s linear infinite;
+}
+
+/* Pulse */
+@keyframes pulse {
+  0%, 100% { transform: scale(1); opacity: 1; }
+  50% { transform: scale(1.1); opacity: 0.7; }
+}
+.badge-live {
+  background: #e53e3e;
+  animation: pulse 1.5s ease-in-out infinite;
+}
+
+/* Float */
+@keyframes float {
+  0%, 100% { transform: translateY(0); }
+  50% { transform: translateY(-12px); }
+}
+.floating { animation: float 3s ease-in-out infinite; }
+
+/* Slide in */
+@keyframes slideInUp {
+  from { opacity: 0; transform: translateY(30px); }
+  to   { opacity: 1; transform: translateY(0); }
+}
+.animate-in { animation: slideInUp 0.6s ease forwards; }</pre>
+        </div>
+      </div>
+    </div>
+  </div>
+  <a href="../index.html" class="btn-back" style="margin-top:20px;">&#8592; Quay lại</a>
+  <script type="module">
+    import { codeToHtml } from 'https://esm.sh/shiki@1';
+    const raw = document.getElementById('code-raw').textContent;
+    const highlighted = await codeToHtml(raw, { lang: 'html', theme: 'github-dark' });
+    document.getElementById('code-highlight').innerHTML = highlighted;
+    const pre = document.getElementById('code-highlight').querySelector('pre');
+    if (pre) pre.style.cssText = 'border-radius:10px;padding:20px;font-size:0.87rem;overflow-x:auto;margin:0;line-height:1.7';
+  </script>
+</body>
+</html>

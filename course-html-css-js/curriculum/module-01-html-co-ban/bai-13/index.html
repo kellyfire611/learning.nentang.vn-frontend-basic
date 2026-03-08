@@ -1,29 +1,85 @@
-﻿<!DOCTYPE html>
+<!DOCTYPE html>
 <html lang="vi">
 <head>
-  <meta charset="UTF-8" /><meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>Bai 13 - Bang HTML co ban table</title>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <meta name="keywords" content="Nền tảng,HTML,CSS,JavaScript,Lập trình,Web,Kiến thức,Đồ án">
+  <meta name="author" content="Dương Nguyễn Phú Cường">
+  <meta name="description" content="Tạo bảng thời khóa biểu bằng thẻ table, tr, th, td.">
+  <meta property="og:locale" content="vi_VN">
+  <meta property="og:type" content="website">
+  <meta property="og:title" content="Bài 13 – Bảng HTML cơ bản (table) | NenTang.vn">
+  <meta property="og:description" content="Tạo bảng thời khóa biểu bằng thẻ table, tr, th, td.">
+  <meta property="og:url" content="https://nentang.vn/">
+  <meta property="og:site_name" content="Nền tảng Kiến thức">
+  <title>Bài 13 – Bảng HTML cơ bản (table) | NenTang.vn</title>
   <link rel="stylesheet" href="../../shared.css" />
 </head>
 <body>
   <div class="page-header module-1">
-    <div class="breadcrumb"><a href="../../index.html">Trang Chu</a> &rsaquo; <a href="../index.html">Module 1</a> &rsaquo; Bai 13</div>
-    <h1>Bai 13: Bang HTML co ban table</h1><p>Module 1 - HTML Co Ban</p>
+    <div class="breadcrumb">
+      <a href="../../index.html">Trang Chủ</a> &rsaquo;
+      <a href="../index.html">Module 1</a> &rsaquo; Bài 13
+    </div>
+    <h1>Bài 13: Bảng HTML cơ bản (table)</h1>
+    <p>Module 1 – HTML Cơ Bản</p>
   </div>
-  <div class="exercise-page"><div class="exercise-box">
-    <div class="ex-head"><h1>Yeu cau bai tap</h1><p>Tao bang thoi khoa bieu hoc sinh voi table, tr, th, td.</p></div>
-    <div class="ex-desc"><h3>Yeu cau</h3><ul><li>Tao bang TKB lop hoc (7 cot thu 2-CN, 10 hang)</li><li>Dong dau dung th co styled khac</li><li>Them border cho bang</li></ul><h3>Kien thuc can nho</h3><ul><li>table - bang; tr - hang; th - o tieu de; td - o du lieu</li><li>border='1' de xem cau truc nhanh</li></ul></div>
-    <div class="ex-work"><h3>Code mau:</h3><pre style="background:#1a202c;color:#e2e8f0;padding:20px;border-radius:8px;font-size:0.88rem;line-height:1.7;overflow-x:auto;white-space:pre-wrap">&lt;table border='1'&gt;
-  &lt;tr&gt;
-    &lt;th&gt;Tiet&lt;/th&gt;&lt;th&gt;Thu 2&lt;/th&gt;&lt;th&gt;Thu 3&lt;/th&gt;&lt;th&gt;Thu 4&lt;/th&gt;&lt;th&gt;Thu 5&lt;/th&gt;&lt;th&gt;Thu 6&lt;/th&gt;
+
+  <div class="exercise-page">
+    <div class="exercise-box">
+      <div class="ex-head">
+        <h1>📝 Yêu cầu bài tập</h1>
+        <p>Tạo bảng thời khóa biểu bằng thẻ table, tr, th, td.</p>
+      </div>
+      <div class="ex-desc">
+        <h3>Mô tả</h3>
+        <p>Bảng HTML là cách hiển thị dữ liệu dạng hàng và cột. Bảng rất hữu ích để trình bày thời khóa biểu, bảng điểm, danh sách sản phẩm.</p>
+        <h3>Yêu cầu</h3>
+        <ul>
+          <li>Tạo bảng thời khóa biểu 1 tuần (6 cột: Tiết 1-5, 5 hàng Thứ 2-6)</li>
+          <li>Hàng đầu dùng thẻ <code>&lt;th&gt;</code> làm tiêu đề</li>
+          <li>Thêm thuộc tính <code>border='1'</code> để nhìn rõ ô</li>
+          <li>Dùng CSS đơn giản tô màu hàng tiêu đề</li>
+        </ul>
+        <h3>🧠 Kiến thức cần nhớ</h3>
+        <ul>
+          <li><code>&lt;table&gt;</code>: tạo bảng; <code>&lt;tr&gt;</code>: tạo hàng (table row)</li>
+          <li><code>&lt;th&gt;</code>: ô tiêu đề (in đậm, canh giữa mặc định)</li>
+          <li><code>&lt;td&gt;</code>: ô dữ liệu thông thường</li>
+          <li><code>border-collapse: collapse</code> trong CSS để gộp viền ô</li>
+        </ul>
+      </div>
+      <div class="ex-work">
+        <h3>💻 Code mẫu</h3>
+        <div id="code-highlight">
+          <pre id="code-raw" style="display:none">&lt;table border="1" style="border-collapse:collapse; width:100%"&gt;
+  &lt;tr style="background:#3182ce; color:white"&gt;
+    &lt;th&gt;Tiết&lt;/th&gt;
+    &lt;th&gt;Thứ Hai&lt;/th&gt;
+    &lt;th&gt;Thứ Ba&lt;/th&gt;
+    &lt;th&gt;Thứ Tư&lt;/th&gt;
+    &lt;th&gt;Thứ Năm&lt;/th&gt;
+    &lt;th&gt;Thứ Sáu&lt;/th&gt;
   &lt;/tr&gt;
   &lt;tr&gt;
-    &lt;td&gt;1&lt;/td&gt;&lt;td&gt;Toan&lt;/td&gt;&lt;td&gt;Van&lt;/td&gt;&lt;td&gt;Ly&lt;/td&gt;&lt;td&gt;Hoa&lt;/td&gt;&lt;td&gt;Sinh&lt;/td&gt;
+    &lt;td&gt;1&lt;/td&gt;&lt;td&gt;Toán&lt;/td&gt;&lt;td&gt;Văn&lt;/td&gt;&lt;td&gt;Lý&lt;/td&gt;&lt;td&gt;Hóa&lt;/td&gt;&lt;td&gt;Sinh&lt;/td&gt;
   &lt;/tr&gt;
   &lt;tr&gt;
-    &lt;td&gt;2&lt;/td&gt;&lt;td&gt;Anh&lt;/td&gt;&lt;td&gt;Su&lt;/td&gt;&lt;td&gt;Dia&lt;/td&gt;&lt;td&gt;Toan&lt;/td&gt;&lt;td&gt;Van&lt;/td&gt;
+    &lt;td&gt;2&lt;/td&gt;&lt;td&gt;Anh&lt;/td&gt;&lt;td&gt;Sử&lt;/td&gt;&lt;td&gt;Địa&lt;/td&gt;&lt;td&gt;Toán&lt;/td&gt;&lt;td&gt;Văn&lt;/td&gt;
   &lt;/tr&gt;
-&lt;/table&gt;</pre></div>
-  </div></div>
-  <a href="../index.html" class="btn-back" style="margin-top:20px;">&#8592; Quay lai</a>
-</body></html>
+&lt;/table&gt;</pre>
+        </div>
+      </div>
+    </div>
+  </div>
+  <a href="../index.html" class="btn-back" style="margin-top:20px;">&#8592; Quay lại</a>
+  <script type="module">
+    import { codeToHtml } from 'https://esm.sh/shiki@1';
+    const raw = document.getElementById('code-raw').textContent;
+    const highlighted = await codeToHtml(raw, { lang: 'html', theme: 'github-dark' });
+    document.getElementById('code-highlight').innerHTML = highlighted;
+    const pre = document.getElementById('code-highlight').querySelector('pre');
+    if (pre) pre.style.cssText = 'border-radius:10px;padding:20px;font-size:0.87rem;overflow-x:auto;margin:0;line-height:1.7';
+  </script>
+</body>
+</html>

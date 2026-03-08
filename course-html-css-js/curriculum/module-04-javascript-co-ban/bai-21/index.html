@@ -1,9 +1,106 @@
-﻿<!DOCTYPE html>
-<html lang="vi"><head><meta charset="UTF-8"/><title>DOM innerHTML textContent style</title><link rel="stylesheet" href="../../shared.css"/></head>
+<!DOCTYPE html>
+<html lang="vi">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <meta name="keywords" content="Nền tảng,HTML,CSS,JavaScript,Lập trình,Web,Kiến thức,Đồ án">
+  <meta name="author" content="Dương Nguyễn Phú Cường">
+  <meta name="description" content="Tạo phần tử HTML mới và thêm vào DOM bằng JavaScript.">
+  <meta property="og:locale" content="vi_VN">
+  <meta property="og:type" content="website">
+  <meta property="og:title" content="Bài 21 – DOM – createElement và appendChild | NenTang.vn">
+  <meta property="og:description" content="Tạo phần tử HTML mới và thêm vào DOM bằng JavaScript.">
+  <meta property="og:url" content="https://nentang.vn/">
+  <meta property="og:site_name" content="Nền tảng Kiến thức">
+  <title>Bài 21 – DOM – createElement và appendChild | NenTang.vn</title>
+  <link rel="stylesheet" href="../../shared.css" />
+</head>
 <body>
-<div class="page-header module-4"><div class="breadcrumb"><a href="../../index.html">Trang Chu</a> &rsaquo; <a href="../index.html">Module 4</a> &rsaquo; bai-21</div><h1>DOM innerHTML textContent style</h1></div>
-<div class="container"><div class="exercise-content"><h2>Yeu cau</h2><p>Tao cac nut bam: (1) Doi mau nen trang, (2) Doi co chu, (3) Them noi dung HTML, (4) Xoa noi dung. Moi nut thay doi phan tu dich co truoc.</p>
-<h2>Code mau</h2><pre><code>/* Viet code tai day */</code></pre>
-<h2>Ket qua</h2><div id="result" style="padding:16px;background:#f8f9fa;border-radius:8px;margin-top:8px;">Ket qua se hien thi o day...</div>
-<h2>Bai lam</h2><textarea id="code" style="width:100%;height:180px;font-family:monospace;font-size:14px;padding:12px;border:2px solid #dee2e6;border-radius:8px;"></textarea><br/><button onclick="try{eval(document.getElementById('code').value)}catch(e){document.getElementById('result').textContent=e.message}" style="margin-top:8px;padding:10px 24px;background:#fa709a;color:#fff;border:none;border-radius:8px;cursor:pointer;font-size:15px;">Chay Code</button>
-</div><a href="../index.html" class="btn-back"> Quay lai Module 4</a></div></body></html>
+  <div class="page-header module-4">
+    <div class="breadcrumb">
+      <a href="../../index.html">Trang Chủ</a> &rsaquo;
+      <a href="../index.html">Module 4</a> &rsaquo; Bài 21
+    </div>
+    <h1>Bài 21: DOM – createElement và appendChild</h1>
+    <p>Module 4 – JavaScript Cơ Bản</p>
+  </div>
+
+  <div class="exercise-page">
+    <div class="exercise-box">
+      <div class="ex-head">
+        <h1>📝 Yêu cầu bài tập</h1>
+        <p>Tạo phần tử HTML mới và thêm vào DOM bằng JavaScript.</p>
+      </div>
+      <div class="ex-desc">
+        <h3>Mô tả</h3>
+        <p>createElement cho phép tạo phần tử HTML động. Kết hợp với appendChild để render danh sách, thẻ, comment từ dữ liệu.</p>
+        <h3>Yêu cầu</h3>
+        <ul>
+          <li>Render danh sách sản phẩm từ mảng ra DOM</li>
+          <li>Tạo nút 'Thêm vào giỏ' cho mỗi sản phẩm</li>
+          <li>Thêm/xóa item todo trong danh sách</li>
+        </ul>
+        <h3>🧠 Kiến thức cần nhớ</h3>
+        <ul>
+          <li><code>document.createElement('div')</code>: tạo phần tử mới (chưa vào DOM)</li>
+          <li><code>parent.appendChild(el)</code>: thêm vào cuối parent</li>
+          <li><code>parent.prepend(el)</code>: thêm vào đầu parent</li>
+          <li><code>el.remove()</code>: xóa phần tử khỏi DOM</li>
+          <li><code>parent.insertBefore(new, ref)</code>: chèn trước phần tử ref</li>
+          <li>innerHTML = template string: nhanh hơn nhưng XSS risk</li>
+          <li>insertAdjacentHTML: thêm HTML mà không replace nội dung</li>
+        </ul>
+      </div>
+      <div class="ex-work">
+        <h3>💻 Code mẫu</h3>
+        <div id="code-highlight">
+          <pre id="code-raw" style="display:none">// Render danh sách từ data
+const sanPhams = [
+  { id:1, ten:'Áo Polo', gia:250, img:'ao.jpg' },
+  { id:2, ten:'Quần Kaki', gia:320, img:'quan.jpg' },
+];
+
+const container = document.getElementById('product-list');
+
+function renderSanPham(sp) {
+  const card = document.createElement('div');
+  card.className = 'product-card';
+  card.innerHTML = `
+    &lt;img src="${sp.img}" alt="${sp.ten}" /&gt;
+    &lt;div class="card-body"&gt;
+      &lt;h3&gt;${sp.ten}&lt;/h3&gt;
+      &lt;p&gt;${sp.gia.toLocaleString()}đ&lt;/p&gt;
+      &lt;button data-id="${sp.id}" class="btn-add"&gt;Thêm giỏ&lt;/button&gt;
+    &lt;/div&gt;
+  `;
+  // Sự kiện nút thêm giỏ
+  card.querySelector('.btn-add').addEventListener('click', (e) =&gt; {
+    themGio(sp.id);
+  });
+  return card;
+}
+
+sanPhams.forEach(sp =&gt; container.appendChild(renderSanPham(sp)));
+
+// Todo list
+function themTodo(text) {
+  const li = document.createElement('li');
+  li.innerHTML = `&lt;span&gt;${text}&lt;/span&gt;&lt;button class="xoa"&gt;✕&lt;/button&gt;`;
+  li.querySelector('.xoa').addEventListener('click', () =&gt; li.remove());
+  document.getElementById('todo-list').appendChild(li);
+}</pre>
+        </div>
+      </div>
+    </div>
+  </div>
+  <a href="../index.html" class="btn-back" style="margin-top:20px;">&#8592; Quay lại</a>
+  <script type="module">
+    import { codeToHtml } from 'https://esm.sh/shiki@1';
+    const raw = document.getElementById('code-raw').textContent;
+    const highlighted = await codeToHtml(raw, { lang: 'javascript', theme: 'github-dark' });
+    document.getElementById('code-highlight').innerHTML = highlighted;
+    const pre = document.getElementById('code-highlight').querySelector('pre');
+    if (pre) pre.style.cssText = 'border-radius:10px;padding:20px;font-size:0.87rem;overflow-x:auto;margin:0;line-height:1.7';
+  </script>
+</body>
+</html>

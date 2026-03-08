@@ -1,17 +1,103 @@
-﻿<!DOCTYPE html><html lang='vi'><head><meta charset='UTF-8'/><title>Bai 13 - Layout Flexbox Header-Nav-Main-Footer</title><link rel='stylesheet' href='../../shared.css'/></head><body><div class='page-header module-3'><div class='breadcrumb'><a href='../../index.html'>Trang Chu</a>  <a href='../index.html'>Module 3</a>  Bai 13</div><h1>Bai 13: Layout Flexbox Header-Nav-Main-Footer</h1></div><div class='exercise-page'><div class='exercise-box'><div class='ex-work'><pre style='background:#1a202c;color:#e2e8f0;padding:20px;border-radius:8px;font-size:.88rem;line-height:1.7;overflow-x:auto;white-space:pre-wrap'>.page-wrap {
-  display: flex;
-  flex-direction: column;
-  min-height: 100vh;
-}
-.header { background: #2d3748; color: white; padding: 16px 24px;
-  display: flex; justify-content: space-between; align-items: center; }
-.nav ul { display: flex; gap: 20px; list-style: none; }
-.nav a { color: white; text-decoration: none; }
-.main-area {
-  display: flex; flex: 1;
-}
-.sidebar { width: 260px; background: #f7fafc; padding: 24px; }
-.content { flex: 1; padding: 32px; }
-.footer { background: #2d3748; color: white; text-align: center; padding: 20px; }
+<!DOCTYPE html>
+<html lang="vi">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <meta name="keywords" content="Nền tảng,HTML,CSS,JavaScript,Lập trình,Web,Kiến thức,Đồ án">
+  <meta name="author" content="Dương Nguyễn Phú Cường">
+  <meta name="description" content="Tạo dashboard với grid card responsive bằng Flexbox.">
+  <meta property="og:locale" content="vi_VN">
+  <meta property="og:type" content="website">
+  <meta property="og:title" content="Bài 13 – Flexbox: Dashboard Card Grid | NenTang.vn">
+  <meta property="og:description" content="Tạo dashboard với grid card responsive bằng Flexbox.">
+  <meta property="og:url" content="https://nentang.vn/">
+  <meta property="og:site_name" content="Nền tảng Kiến thức">
+  <title>Bài 13 – Flexbox: Dashboard Card Grid | NenTang.vn</title>
+  <link rel="stylesheet" href="../../shared.css" />
+</head>
+<body>
+  <div class="page-header module-3">
+    <div class="breadcrumb">
+      <a href="../../index.html">Trang Chủ</a> &rsaquo;
+      <a href="../index.html">Module 3</a> &rsaquo; Bài 13
+    </div>
+    <h1>Bài 13: Flexbox: Dashboard Card Grid</h1>
+    <p>Module 3 – CSS Layout &amp; Responsive</p>
+  </div>
 
-/* YEU CAU: Hoan chinh layout tren voi HTML day du, sidebar co menu */</pre></div></div><a href='../index.html' class='btn-back' style='margin-top:20px;'> Quay lai</a></div></body></html>
+  <div class="exercise-page">
+    <div class="exercise-box">
+      <div class="ex-head">
+        <h1>📝 Yêu cầu bài tập</h1>
+        <p>Tạo dashboard với grid card responsive bằng Flexbox.</p>
+      </div>
+      <div class="ex-desc">
+        <h3>Mô tả</h3>
+        <p>Dashboard thường có nhiều card thống kê dạng grid. Dùng flex-wrap + flex-basis để tạo grid tự động xuống dòng.</p>
+        <h3>Yêu cầu</h3>
+        <ul>
+          <li>Tạo 4 stat card hàng đầu (icon, số lớn, label)</li>
+          <li>Tạo grid card sản phẩm tự xuống dòng</li>
+          <li>Card cuối cùng trong hàng dùng flex-grow để điền đầy</li>
+        </ul>
+        <h3>🧠 Kiến thức cần nhớ</h3>
+        <ul>
+          <li><code>flex: 1 1 200px</code>: grow được, shrink được, min-width 200px</li>
+          <li>Kết hợp với <code>max-width</code> để card không quá rộng</li>
+          <li><code>flex-wrap: wrap</code> bắt buộc để xuống dòng</li>
+          <li>gap thay thế margin hack (margin: -8px / padding: 8px)</li>
+          <li>CSS Grid thường tốt hơn cho 2D grid, Flexbox tốt cho 1D</li>
+        </ul>
+      </div>
+      <div class="ex-work">
+        <h3>💻 Code mẫu</h3>
+        <div id="code-highlight">
+          <pre id="code-raw" style="display:none">.stats-row {
+  display: flex;
+  gap: 20px;
+  margin-bottom: 24px;
+}
+.stat-card {
+  flex: 1;
+  padding: 20px;
+  background: white;
+  border-radius: 12px;
+  box-shadow: 0 2px 8px rgba(0,0,0,0.08);
+  display: flex;
+  align-items: center;
+  gap: 16px;
+}
+.stat-icon { font-size: 2rem; }
+.stat-value { font-size: 2rem; font-weight: bold; }
+.stat-label { color: #718096; font-size: 0.9rem; }
+
+/* Product grid */
+.product-grid {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 20px;
+}
+.product-card {
+  flex: 1 1 200px;
+  max-width: 280px;
+  background: white;
+  border-radius: 12px;
+  overflow: hidden;
+  box-shadow: 0 2px 8px rgba(0,0,0,0.08);
+}
+.product-card img { width: 100%; height: 160px; object-fit: cover; }</pre>
+        </div>
+      </div>
+    </div>
+  </div>
+  <a href="../index.html" class="btn-back" style="margin-top:20px;">&#8592; Quay lại</a>
+  <script type="module">
+    import { codeToHtml } from 'https://esm.sh/shiki@1';
+    const raw = document.getElementById('code-raw').textContent;
+    const highlighted = await codeToHtml(raw, { lang: 'css', theme: 'github-dark' });
+    document.getElementById('code-highlight').innerHTML = highlighted;
+    const pre = document.getElementById('code-highlight').querySelector('pre');
+    if (pre) pre.style.cssText = 'border-radius:10px;padding:20px;font-size:0.87rem;overflow-x:auto;margin:0;line-height:1.7';
+  </script>
+</body>
+</html>

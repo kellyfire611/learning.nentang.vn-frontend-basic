@@ -1,25 +1,101 @@
-﻿<!DOCTYPE html><html lang='vi'><head><meta charset='UTF-8'/><meta name='viewport' content='width=device-width,initial-scale=1'/><title>Bai 13 - Box Shadow va Text Shadow</title><link rel='stylesheet' href='../../shared.css'/></head><body><div class='page-header module-2'><div class='breadcrumb'><a href='../../index.html'>Trang Chu</a>  <a href='../index.html'>Module 2</a>  Bai 13</div><h1>Bai 13: Box Shadow va Text Shadow</h1><p>Module 2  CSS Co Ban</p></div><div class='exercise-page'><div class='exercise-box'><div class='ex-work'><h3>Yeu cau va Code mau:</h3><pre style='background:#1a202c;color:#e2e8f0;padding:20px;border-radius:8px;font-size:.88rem;line-height:1.7;overflow-x:auto;white-space:pre-wrap'>/* Box Shadow */
-/* offset-x | offset-y | blur | spread | color */
-.bong-nhe { box-shadow: 0 2px 8px rgba(0,0,0,0.1); }
-.bong-vua { box-shadow: 0 4px 16px rgba(0,0,0,0.2); }
-.bong-manh { box-shadow: 0 8px 32px rgba(0,0,0,0.3); }
+<!DOCTYPE html>
+<html lang="vi">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <meta name="keywords" content="Nền tảng,HTML,CSS,JavaScript,Lập trình,Web,Kiến thức,Đồ án">
+  <meta name="author" content="Dương Nguyễn Phú Cường">
+  <meta name="description" content="Tạo bóng đổ cho box và văn bản bằng CSS shadow.">
+  <meta property="og:locale" content="vi_VN">
+  <meta property="og:type" content="website">
+  <meta property="og:title" content="Bài 13 – box-shadow và text-shadow | NenTang.vn">
+  <meta property="og:description" content="Tạo bóng đổ cho box và văn bản bằng CSS shadow.">
+  <meta property="og:url" content="https://nentang.vn/">
+  <meta property="og:site_name" content="Nền tảng Kiến thức">
+  <title>Bài 13 – box-shadow và text-shadow | NenTang.vn</title>
+  <link rel="stylesheet" href="../../shared.css" />
+</head>
+<body>
+  <div class="page-header module-2">
+    <div class="breadcrumb">
+      <a href="../../index.html">Trang Chủ</a> &rsaquo;
+      <a href="../index.html">Module 2</a> &rsaquo; Bài 13
+    </div>
+    <h1>Bài 13: box-shadow và text-shadow</h1>
+    <p>Module 2 – CSS Cơ Bản</p>
+  </div>
 
-/* Bong vo - khong mo */
-.bong-sharp { box-shadow: 4px 4px 0 #000; }
-
-/* Nhieu bong */
-.nhieu-bong {
-  box-shadow:
-    0 2px 4px rgba(0,0,0,0.1),
-    0 8px 16px rgba(0,0,0,0.1),
-    0 16px 32px rgba(0,0,0,0.05);
+  <div class="exercise-page">
+    <div class="exercise-box">
+      <div class="ex-head">
+        <h1>📝 Yêu cầu bài tập</h1>
+        <p>Tạo bóng đổ cho box và văn bản bằng CSS shadow.</p>
+      </div>
+      <div class="ex-desc">
+        <h3>Mô tả</h3>
+        <p>Shadow (bóng đổ) tạo chiều sâu và nổi bật cho các phần tử, giúp UI trông chuyên nghiệp hơn. Có thể tạo nhiều lớp bóng.</p>
+        <h3>Yêu cầu</h3>
+        <ul>
+          <li>Tạo card với box-shadow nhẹ nhàng</li>
+          <li>Tạo button với bóng đổ thay đổi khi hover (hiệu ứng nổi)</li>
+          <li>Tạo text-shadow cho tiêu đề hero</li>
+          <li>Tạo inner shadow (inset) cho input filed</li>
+        </ul>
+        <h3>🧠 Kiến thức cần nhớ</h3>
+        <ul>
+          <li><code>box-shadow: x y blur spread color</code></li>
+          <li>x: dịch ngang (dương: phải, âm: trái)</li>
+          <li>y: dịch dọc (dương: xuống, âm: lên)</li>
+          <li>blur: độ nhòe (0 = sắc nét)</li>
+          <li>spread: độ lan rộng (âm: thu nhỏ)</li>
+          <li><code>inset</code>: bóng phía trong</li>
+          <li><code>text-shadow: x y blur color</code>: không có spread</li>
+        </ul>
+      </div>
+      <div class="ex-work">
+        <h3>💻 Code mẫu</h3>
+        <div id="code-highlight">
+          <pre id="code-raw" style="display:none">/* Card shadow cơ bản */
+.card {
+  box-shadow: 0 2px 8px rgba(0,0,0,0.12);
 }
 
-/* Bong trong (inset) */
-.bong-trong { box-shadow: inset 0 2px 8px rgba(0,0,0,0.2); }
+/* Hover nổi lên */
+.button {
+  box-shadow: 0 4px 6px rgba(0,0,0,0.1);
+  transition: box-shadow 0.3s, transform 0.3s;
+}
+.button:hover {
+  box-shadow: 0 10px 20px rgba(0,0,0,0.2);
+  transform: translateY(-2px);
+}
 
-/* Text Shadow */
-h1 { text-shadow: 2px 2px 4px rgba(0,0,0,0.3); }
-.text-glow { text-shadow: 0 0 10px #5a67d8, 0 0 20px #5a67d8; }
+/* Nhiều lớp shadow */
+.multi-shadow {
+  box-shadow:
+    0 1px 2px rgba(0,0,0,0.1),
+    0 4px 8px rgba(0,0,0,0.1),
+    0 16px 32px rgba(0,0,0,0.08);
+}
 
-/* YEU CAU: Tao 6 card voi 6 kieu shadow khac nhau, hover thay doi shadow */</pre></div></div><a href='../index.html' class='btn-back' style='margin-top:20px;'> Quay lai</a></div></body></html>
+/* Inset shadow (như input đang focus) */
+.input-inset { box-shadow: inset 0 2px 4px rgba(0,0,0,0.15); }
+
+/* Text shadow */
+.hero-title { text-shadow: 2px 2px 4px rgba(0,0,0,0.5); }
+.neon { text-shadow: 0 0 10px #0ff, 0 0 20px #0ff, 0 0 40px #0ff; color: white; background: #000; }</pre>
+        </div>
+      </div>
+    </div>
+  </div>
+  <a href="../index.html" class="btn-back" style="margin-top:20px;">&#8592; Quay lại</a>
+  <script type="module">
+    import { codeToHtml } from 'https://esm.sh/shiki@1';
+    const raw = document.getElementById('code-raw').textContent;
+    const highlighted = await codeToHtml(raw, { lang: 'html', theme: 'github-dark' });
+    document.getElementById('code-highlight').innerHTML = highlighted;
+    const pre = document.getElementById('code-highlight').querySelector('pre');
+    if (pre) pre.style.cssText = 'border-radius:10px;padding:20px;font-size:0.87rem;overflow-x:auto;margin:0;line-height:1.7';
+  </script>
+</body>
+</html>

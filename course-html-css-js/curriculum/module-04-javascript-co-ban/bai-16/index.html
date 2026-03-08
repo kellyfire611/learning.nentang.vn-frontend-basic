@@ -1,9 +1,102 @@
-﻿<!DOCTYPE html>
-<html lang="vi"><head><meta charset="UTF-8"/><title>Mang: map filter reduce</title><link rel="stylesheet" href="../../shared.css"/></head>
+<!DOCTYPE html>
+<html lang="vi">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <meta name="keywords" content="Nền tảng,HTML,CSS,JavaScript,Lập trình,Web,Kiến thức,Đồ án">
+  <meta name="author" content="Dương Nguyễn Phú Cường">
+  <meta name="description" content="Dùng Math object cho các tính toán toán học: làm tròn, random, lũy thừa.">
+  <meta property="og:locale" content="vi_VN">
+  <meta property="og:type" content="website">
+  <meta property="og:title" content="Bài 16 – Math Object | NenTang.vn">
+  <meta property="og:description" content="Dùng Math object cho các tính toán toán học: làm tròn, random, lũy thừa.">
+  <meta property="og:url" content="https://nentang.vn/">
+  <meta property="og:site_name" content="Nền tảng Kiến thức">
+  <title>Bài 16 – Math Object | NenTang.vn</title>
+  <link rel="stylesheet" href="../../shared.css" />
+</head>
 <body>
-<div class="page-header module-4"><div class="breadcrumb"><a href="../../index.html">Trang Chu</a> &rsaquo; <a href="../index.html">Module 4</a> &rsaquo; bai-16</div><h1>Mang: map filter reduce</h1></div>
-<div class="container"><div class="exercise-content"><h2>Yeu cau</h2><p>Voi mang so bat ky: dung map nhan doi gia tri, dung filter lay so chan, dung reduce tinh tong. Chuoi 3 phep: lay so duong -> nhan 3 -> tinh tong.</p>
-<h2>Code mau</h2><pre><code>/* Viet code tai day */</code></pre>
-<h2>Ket qua</h2><div id="result" style="padding:16px;background:#f8f9fa;border-radius:8px;margin-top:8px;">Ket qua se hien thi o day...</div>
-<h2>Bai lam</h2><textarea id="code" style="width:100%;height:180px;font-family:monospace;font-size:14px;padding:12px;border:2px solid #dee2e6;border-radius:8px;"></textarea><br/><button onclick="try{eval(document.getElementById('code').value)}catch(e){document.getElementById('result').textContent=e.message}" style="margin-top:8px;padding:10px 24px;background:#fa709a;color:#fff;border:none;border-radius:8px;cursor:pointer;font-size:15px;">Chay Code</button>
-</div><a href="../index.html" class="btn-back"> Quay lai Module 4</a></div></body></html>
+  <div class="page-header module-4">
+    <div class="breadcrumb">
+      <a href="../../index.html">Trang Chủ</a> &rsaquo;
+      <a href="../index.html">Module 4</a> &rsaquo; Bài 16
+    </div>
+    <h1>Bài 16: Math Object</h1>
+    <p>Module 4 – JavaScript Cơ Bản</p>
+  </div>
+
+  <div class="exercise-page">
+    <div class="exercise-box">
+      <div class="ex-head">
+        <h1>📝 Yêu cầu bài tập</h1>
+        <p>Dùng Math object cho các tính toán toán học: làm tròn, random, lũy thừa.</p>
+      </div>
+      <div class="ex-desc">
+        <h3>Mô tả</h3>
+        <p>Math là object tích hợp của JavaScript với các phương thức và hằng số toán học. Math.random() đặc biệt hữu dụng để tạo dữ liệu ngẫu nhiên.</p>
+        <h3>Yêu cầu</h3>
+        <ul>
+          <li>Tạo hàm lấy số ngẫu nhiên trong khoảng [min, max]</li>
+          <li>Tạo màu hex ngẫu nhiên</li>
+          <li>Làm tròn giá tiền đến hàng nghìn</li>
+        </ul>
+        <h3>🧠 Kiến thức cần nhớ</h3>
+        <ul>
+          <li><code>Math.round(x)</code>: làm tròn thông thường</li>
+          <li><code>Math.floor(x)</code>: làm tròn xuống</li>
+          <li><code>Math.ceil(x)</code>: làm tròn lên</li>
+          <li><code>Math.random()</code>: số thực ngẫu nhiên [0, 1)</li>
+          <li><code>Math.floor(Math.random() * N)</code>: số nguyên [0, N-1]</li>
+          <li><code>Math.max(...arr)</code> / <code>Math.min(...arr)</code>: max/min mảng</li>
+          <li><code>Math.abs(x)</code>: giá trị tuyệt đối</li>
+          <li><code>Math.sqrt(x)</code>: căn bậc hai</li>
+        </ul>
+      </div>
+      <div class="ex-work">
+        <h3>💻 Code mẫu</h3>
+        <div id="code-highlight">
+          <pre id="code-raw" style="display:none">// Random trong khoảng
+function random(min, max) {
+  return Math.floor(Math.random() * (max - min + 1)) + min;
+}
+console.log(random(1, 6)); // đổ xúc xắc 1-6
+
+// Sinh màu hex ngẫu nhiên
+function mauHexNgauNhien() {
+  const hex = Math.floor(Math.random() * 0xFFFFFF).toString(16);
+  return '#' + hex.padStart(6, '0');
+}
+console.log(mauHexNgauNhien()); // e.g. '#3a7f2c'
+
+// Làm tròn giá
+const gia = 45678.9;
+console.log(Math.round(gia));   // 45679
+console.log(Math.floor(gia));   // 45678
+console.log(Math.ceil(gia));    // 45679
+
+// Làm tròn đến hàng nghìn
+const lam_tron_nghin = x =&gt; Math.round(x / 1000) * 1000;
+console.log(lam_tron_nghin(45678)); // 46000
+
+// Các hằng số và hàm khác
+console.log(Math.PI);          // 3.14159...
+console.log(Math.sqrt(144));   // 12
+console.log(Math.abs(-42));    // 42
+console.log(Math.pow(2, 10));  // 1024
+console.log(Math.max(3,1,4,1,5,9,2,6)); // 9
+console.log(Math.min(3,1,4,1,5,9,2,6)); // 1</pre>
+        </div>
+      </div>
+    </div>
+  </div>
+  <a href="../index.html" class="btn-back" style="margin-top:20px;">&#8592; Quay lại</a>
+  <script type="module">
+    import { codeToHtml } from 'https://esm.sh/shiki@1';
+    const raw = document.getElementById('code-raw').textContent;
+    const highlighted = await codeToHtml(raw, { lang: 'javascript', theme: 'github-dark' });
+    document.getElementById('code-highlight').innerHTML = highlighted;
+    const pre = document.getElementById('code-highlight').querySelector('pre');
+    if (pre) pre.style.cssText = 'border-radius:10px;padding:20px;font-size:0.87rem;overflow-x:auto;margin:0;line-height:1.7';
+  </script>
+</body>
+</html>

@@ -1,34 +1,97 @@
-﻿<!DOCTYPE html><html lang='vi'><head><meta charset='UTF-8'/><title>Bai 29 - Khung hinh anh Image Frame</title><link rel='stylesheet' href='../../shared.css'/></head><body><div class='page-header module-2'><div class='breadcrumb'><a href='../../index.html'>Trang Chu</a>  <a href='../index.html'>Module 2</a>  Bai 29</div><h1>Bai 29: Khung hinh anh Image Frame</h1></div><div class='exercise-page'><div class='exercise-box'><div class='ex-work'><pre style='background:#1a202c;color:#e2e8f0;padding:20px;border-radius:8px;font-size:.88rem;line-height:1.7;overflow-x:auto;white-space:pre-wrap'>/* Khung anh don gian */
-.hinh-co-vien { border: 5px solid white; box-shadow: 0 4px 12px rgba(0,0,0,.2); }
+<!DOCTYPE html>
+<html lang="vi">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <meta name="keywords" content="Nền tảng,HTML,CSS,JavaScript,Lập trình,Web,Kiến thức,Đồ án">
+  <meta name="author" content="Dương Nguyễn Phú Cường">
+  <meta name="description" content="Tạo hiệu ứng 3D bằng perspective và transform 3D.">
+  <meta property="og:locale" content="vi_VN">
+  <meta property="og:type" content="website">
+  <meta property="og:title" content="Bài 29 – CSS Nâng cao: Biến đổi 3D | NenTang.vn">
+  <meta property="og:description" content="Tạo hiệu ứng 3D bằng perspective và transform 3D.">
+  <meta property="og:url" content="https://nentang.vn/">
+  <meta property="og:site_name" content="Nền tảng Kiến thức">
+  <title>Bài 29 – CSS Nâng cao: Biến đổi 3D | NenTang.vn</title>
+  <link rel="stylesheet" href="../../shared.css" />
+</head>
+<body>
+  <div class="page-header module-2">
+    <div class="breadcrumb">
+      <a href="../../index.html">Trang Chủ</a> &rsaquo;
+      <a href="../index.html">Module 2</a> &rsaquo; Bài 29
+    </div>
+    <h1>Bài 29: CSS Nâng cao: Biến đổi 3D</h1>
+    <p>Module 2 – CSS Cơ Bản</p>
+  </div>
 
-/* Khung co canh */
-.polaroid {
-  background: white;
-  padding: 12px 12px 32px;
-  box-shadow: 0 4px 12px rgba(0,0,0,.2);
-  transform: rotate(-3deg);
-  transition: transform .2s;
+  <div class="exercise-page">
+    <div class="exercise-box">
+      <div class="ex-head">
+        <h1>📝 Yêu cầu bài tập</h1>
+        <p>Tạo hiệu ứng 3D bằng perspective và transform 3D.</p>
+      </div>
+      <div class="ex-desc">
+        <h3>Mô tả</h3>
+        <p>CSS 3D transform cho phép tạo hiệu ứng không gian ba chiều ngay trong trình duyệt. Cần khai báo perspective trên parent để 3D có tác dụng.</p>
+        <h3>Yêu cầu</h3>
+        <ul>
+          <li>Tạo card lật (flip card) khi hover – mặt trước/mặt sau</li>
+          <li>Tạo cube 3D xoay bằng animation</li>
+          <li>Tạo nút 3D với hiệu ứng nhấn xuống</li>
+          <li>Tạo gallery dạng xoay vòng (carousel 3D đơn giản)</li>
+        </ul>
+        <h3>🧠 Kiến thức cần nhớ</h3>
+        <ul>
+          <li><code>perspective: 1000px</code>: đặt trên PARENT, tạo không gian 3D</li>
+          <li><code>transform-style: preserve-3d</code>: giữ child 3D trong không gian 3D</li>
+          <li><code>rotateX(deg)</code>: xoay theo trục X (lật lên xuống)</li>
+          <li><code>rotateY(deg)</code>: xoay theo trục Y (lật trái phải)</li>
+          <li><code>backface-visibility: hidden</code>: ẩn mặt sau khi bị lật</li>
+          <li><code>translate3d(x,y,z)</code>: dịch chuyển theo 3 trục</li>
+        </ul>
+      </div>
+      <div class="ex-work">
+        <h3>💻 Code mẫu</h3>
+        <div id="code-highlight">
+          <pre id="code-raw" style="display:none">/* Flip Card */
+.flip-wrapper {
+  perspective: 1000px;
+  width: 300px;
+  height: 200px;
 }
-.polaroid:hover { transform: rotate(0deg) scale(1.05); }
-
-/* Hinh tron */
-.avatar {
-  width: 100px; height: 100px;
-  border-radius: 50%;
-  border: 4px solid #5a67d8;
-  object-fit: cover;
+.flip-card {
+  width: 100%; height: 100%;
+  position: relative;
+  transform-style: preserve-3d;
+  transition: transform 0.6s;
 }
-
-/* Hieu ung Zoom khi hover */
-.zoom-wrap { overflow: hidden; border-radius: 12px; }
-.zoom-wrap img { transition: transform .4s; }
-.zoom-wrap:hover img { transform: scale(1.1); }
-
-/* Caption overlay */
-.hinh-caption { position: relative; display: inline-block; }
-.hinh-caption .caption {
-  position: absolute; bottom: 0; left: 0; right: 0;
-  background: rgba(0,0,0,.6); color: white;
-  padding: 10px; transform: translateY(100%); transition: transform .3s;
+.flip-wrapper:hover .flip-card {
+  transform: rotateY(180deg);
 }
-.hinh-caption:hover .caption { transform: translateY(0); }</pre></div></div><a href='../index.html' class='btn-back' style='margin-top:20px;'> Quay lai</a></div></body></html>
+.flip-front, .flip-back {
+  position: absolute;
+  inset: 0;
+  backface-visibility: hidden;
+  border-radius: 12px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+.flip-front { background: linear-gradient(135deg, #667eea, #764ba2); color: white; }
+.flip-back  { background: linear-gradient(135deg, #f093fb, #f5576c); color: white; transform: rotateY(180deg); }</pre>
+        </div>
+      </div>
+    </div>
+  </div>
+  <a href="../index.html" class="btn-back" style="margin-top:20px;">&#8592; Quay lại</a>
+  <script type="module">
+    import { codeToHtml } from 'https://esm.sh/shiki@1';
+    const raw = document.getElementById('code-raw').textContent;
+    const highlighted = await codeToHtml(raw, { lang: 'html', theme: 'github-dark' });
+    document.getElementById('code-highlight').innerHTML = highlighted;
+    const pre = document.getElementById('code-highlight').querySelector('pre');
+    if (pre) pre.style.cssText = 'border-radius:10px;padding:20px;font-size:0.87rem;overflow-x:auto;margin:0;line-height:1.7';
+  </script>
+</body>
+</html>

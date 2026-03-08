@@ -1,9 +1,106 @@
-﻿<!DOCTYPE html>
-<html lang="vi"><head><meta charset="UTF-8"/><title>DOM classList</title><link rel="stylesheet" href="../../shared.css"/></head>
+<!DOCTYPE html>
+<html lang="vi">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <meta name="keywords" content="Nền tảng,HTML,CSS,JavaScript,Lập trình,Web,Kiến thức,Đồ án">
+  <meta name="author" content="Dương Nguyễn Phú Cường">
+  <meta name="description" content="Xử lý sự kiện chuột và bàn phím để tạo tương tác phong phú.">
+  <meta property="og:locale" content="vi_VN">
+  <meta property="og:type" content="website">
+  <meta property="og:title" content="Bài 23 – Sự kiện Mouse và Keyboard | NenTang.vn">
+  <meta property="og:description" content="Xử lý sự kiện chuột và bàn phím để tạo tương tác phong phú.">
+  <meta property="og:url" content="https://nentang.vn/">
+  <meta property="og:site_name" content="Nền tảng Kiến thức">
+  <title>Bài 23 – Sự kiện Mouse và Keyboard | NenTang.vn</title>
+  <link rel="stylesheet" href="../../shared.css" />
+</head>
 <body>
-<div class="page-header module-4"><div class="breadcrumb"><a href="../../index.html">Trang Chu</a> &rsaquo; <a href="../index.html">Module 4</a> &rsaquo; bai-23</div><h1>DOM classList</h1></div>
-<div class="container"><div class="exercise-content"><h2>Yeu cau</h2><p>Tao hop van ban co the: (1) Them class 'highlight', (2) Xoa class, (3) Toggle class, (4) Kiem tra co class khong. Ung dung: nut bam on/off style.</p>
-<h2>Code mau</h2><pre><code>/* Viet code tai day */</code></pre>
-<h2>Ket qua</h2><div id="result" style="padding:16px;background:#f8f9fa;border-radius:8px;margin-top:8px;">Ket qua se hien thi o day...</div>
-<h2>Bai lam</h2><textarea id="code" style="width:100%;height:180px;font-family:monospace;font-size:14px;padding:12px;border:2px solid #dee2e6;border-radius:8px;"></textarea><br/><button onclick="try{eval(document.getElementById('code').value)}catch(e){document.getElementById('result').textContent=e.message}" style="margin-top:8px;padding:10px 24px;background:#fa709a;color:#fff;border:none;border-radius:8px;cursor:pointer;font-size:15px;">Chay Code</button>
-</div><a href="../index.html" class="btn-back"> Quay lai Module 4</a></div></body></html>
+  <div class="page-header module-4">
+    <div class="breadcrumb">
+      <a href="../../index.html">Trang Chủ</a> &rsaquo;
+      <a href="../index.html">Module 4</a> &rsaquo; Bài 23
+    </div>
+    <h1>Bài 23: Sự kiện Mouse và Keyboard</h1>
+    <p>Module 4 – JavaScript Cơ Bản</p>
+  </div>
+
+  <div class="exercise-page">
+    <div class="exercise-box">
+      <div class="ex-head">
+        <h1>📝 Yêu cầu bài tập</h1>
+        <p>Xử lý sự kiện chuột và bàn phím để tạo tương tác phong phú.</p>
+      </div>
+      <div class="ex-desc">
+        <h3>Mô tả</h3>
+        <p>JavaScript cung cấp nhiều sự kiện cho chuột (click, hover, drag) và bàn phím (keydown, keyup, keypress). Kết hợp để tạo UX tốt.</p>
+        <h3>Yêu cầu</h3>
+        <ul>
+          <li>Vẽ theo chuột trên canvas (mousedown + mousemove)</li>
+          <li>Phím tắt: nhấn Enter để submit, Escape để đóng modal</li>
+          <li>Kéo thả đơn giản với mousedown/mousemove/mouseup</li>
+        </ul>
+        <h3>🧠 Kiến thức cần nhớ</h3>
+        <ul>
+          <li>Mouse events: click, dblclick, mousedown, mouseup, mousemove, mouseenter, mouseleave</li>
+          <li>Keyboard events: keydown, keyup, keypress (deprecated)</li>
+          <li><code>event.key</code>: 'Enter', 'Escape', 'a', 'A', 'ArrowUp'...</li>
+          <li><code>event.code</code>: 'KeyA', 'ArrowUp' – không phụ thuộc ngôn ngữ</li>
+          <li><code>event.ctrlKey, shiftKey, altKey</code>: phím modifier</li>
+          <li><code>e.clientX, e.clientY</code>: tọa độ chuột trong viewport</li>
+        </ul>
+      </div>
+      <div class="ex-work">
+        <h3>💻 Code mẫu</h3>
+        <div id="code-highlight">
+          <pre id="code-raw" style="display:none">// Keyboard shortcuts
+document.addEventListener('keydown', (e) =&gt; {
+  if (e.key === 'Escape') closeModal();
+  if (e.key === 's' &amp;&amp; e.ctrlKey) {
+    e.preventDefault();
+    saveData();
+  }
+  if (e.key === 'ArrowUp')   moveUp();
+  if (e.key === 'ArrowDown') moveDown();
+});
+
+// Vẽ bằng chuột
+const canvas = document.getElementById('canvas');
+const ctx = canvas.getContext('2d');
+let isDrawing = false;
+
+canvas.addEventListener('mousedown', () =&gt; { isDrawing = true; });
+canvas.addEventListener('mouseup', () =&gt; { isDrawing = false; ctx.beginPath(); });
+canvas.addEventListener('mousemove', (e) =&gt; {
+  if (!isDrawing) return;
+  const rect = canvas.getBoundingClientRect();
+  ctx.lineTo(e.clientX - rect.left, e.clientY - rect.top);
+  ctx.stroke();
+});
+
+// Mouse enter/leave
+const tooltip = document.getElementById('tooltip');
+document.querySelectorAll('[data-tip]').forEach(el =&gt; {
+  el.addEventListener('mouseenter', (e) =&gt; {
+    tooltip.textContent = e.target.dataset.tip;
+    tooltip.style.display = 'block';
+  });
+  el.addEventListener('mouseleave', () =&gt; {
+    tooltip.style.display = 'none';
+  });
+});</pre>
+        </div>
+      </div>
+    </div>
+  </div>
+  <a href="../index.html" class="btn-back" style="margin-top:20px;">&#8592; Quay lại</a>
+  <script type="module">
+    import { codeToHtml } from 'https://esm.sh/shiki@1';
+    const raw = document.getElementById('code-raw').textContent;
+    const highlighted = await codeToHtml(raw, { lang: 'javascript', theme: 'github-dark' });
+    document.getElementById('code-highlight').innerHTML = highlighted;
+    const pre = document.getElementById('code-highlight').querySelector('pre');
+    if (pre) pre.style.cssText = 'border-radius:10px;padding:20px;font-size:0.87rem;overflow-x:auto;margin:0;line-height:1.7';
+  </script>
+</body>
+</html>

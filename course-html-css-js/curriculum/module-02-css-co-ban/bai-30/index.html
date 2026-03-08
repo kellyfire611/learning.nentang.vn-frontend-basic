@@ -1,31 +1,107 @@
-﻿<!DOCTYPE html><html lang='vi'><head><meta charset='UTF-8'/><title>Bai 30 - DU AN: Trang Landing Page</title><link rel='stylesheet' href='../../shared.css'/></head><body><div class='page-header module-2'><div class='breadcrumb'><a href='../../index.html'>Trang Chu</a>  <a href='../index.html'>Module 2</a>  Bai 30</div><h1>Bai 30: DU AN: Trang Landing Page</h1></div><div class='exercise-page'><div class='exercise-box'><div class='ex-work'><pre style='background:#1a202c;color:#e2e8f0;padding:20px;border-radius:8px;font-size:.88rem;line-height:1.7;overflow-x:auto;white-space:pre-wrap'>/* === LANDING PAGE HON CHINH ===
-   Yeu cau:
-   1. Header: logo + nav + CTA button
-   2. Hero section: anh nen full, tieu de lon + button
-   3. Features: 3 cot voi icon + mu ta
-   4. Testimonials: trich dan khach hang
-   5. CTA section: mau nen, text + button
-   6. Footer: 3 cot + copyright
+<!DOCTYPE html>
+<html lang="vi">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <meta name="keywords" content="Nền tảng,HTML,CSS,JavaScript,Lập trình,Web,Kiến thức,Đồ án">
+  <meta name="author" content="Dương Nguyễn Phú Cường">
+  <meta name="description" content="Xây dựng trang giới thiệu sản phẩm đẹp, chuyên nghiệp bằng HTML + CSS thuần.">
+  <meta property="og:locale" content="vi_VN">
+  <meta property="og:type" content="website">
+  <meta property="og:title" content="Bài 30 – 🏆 Dự án: Trang sản phẩm hoàn chỉnh | NenTang.vn">
+  <meta property="og:description" content="Xây dựng trang giới thiệu sản phẩm đẹp, chuyên nghiệp bằng HTML + CSS thuần.">
+  <meta property="og:url" content="https://nentang.vn/">
+  <meta property="og:site_name" content="Nền tảng Kiến thức">
+  <title>Bài 30 – 🏆 Dự án: Trang sản phẩm hoàn chỉnh | NenTang.vn</title>
+  <link rel="stylesheet" href="../../shared.css" />
+</head>
+<body>
+  <div class="page-header module-2">
+    <div class="breadcrumb">
+      <a href="../../index.html">Trang Chủ</a> &rsaquo;
+      <a href="../index.html">Module 2</a> &rsaquo; Bài 30
+    </div>
+    <h1>Bài 30: 🏆 Dự án: Trang sản phẩm hoàn chỉnh</h1>
+    <p>Module 2 – CSS Cơ Bản</p>
+  </div>
 
-   CSS can su dung:
-   - CSS Variables cho color system
-   - Flexbox (hoc sau Module 3)
-   - Transition va Hover effects
-   - Box shadow va Border radius
-   - Background gradient
-   - Typography system (font-size, line-height)
-*/
-
+  <div class="exercise-page">
+    <div class="exercise-box">
+      <div class="ex-head">
+        <h1>📝 Yêu cầu bài tập</h1>
+        <p>Xây dựng trang giới thiệu sản phẩm đẹp, chuyên nghiệp bằng HTML + CSS thuần.</p>
+      </div>
+      <div class="ex-desc">
+        <h3>Mô tả</h3>
+        <p>Dự án cuối module tổng hợp TOÀN BỘ kiến thức CSS đã học. Tạo trang chi tiết sản phẩm (Product Detail) như trang thương mại điện tử thực tế.</p>
+        <h3>Yêu cầu</h3>
+        <ul>
+          <li>Header: navbar với logo và giỏ hàng icon</li>
+          <li>Product section: ảnh bên trái, thông tin bên phải (dùng inline-block hoặc float)</li>
+          <li>Thông tin: tên, giá (gạch ngang giá gốc), rating sao, mô tả, nút thêm giỏ</li>
+          <li>Tab section: Mô tả / Thông số / Đánh giá</li>
+          <li>Sản phẩm liên quan: 4 card ngang</li>
+          <li>Footer: 4 cột thông tin</li>
+        </ul>
+        <h3>🧠 Kiến thức cần nhớ</h3>
+        <ul>
+          <li>Phân chia layout bằng inline-block hoặc float (chuẩn bị cho flex ở module 3)</li>
+          <li>Hình ảnh bên trái: width 45%, float left hoặc inline-block</li>
+          <li>Tab UI: radio input hack hoặc JavaScript đơn giản</li>
+          <li>Responsive tối thiểu: ảnh 100% khi màn hình nhỏ</li>
+          <li>Sử dụng CSS variables cho consistent colors</li>
+        </ul>
+      </div>
+      <div class="ex-work">
+        <h3>💻 Code mẫu</h3>
+        <div id="code-highlight">
+          <pre id="code-raw" style="display:none">/* Product page layout */
 :root {
-  --primary: #5a67d8;
-  --primary-dark: #4c51bf;
-  --text: #2d3748;
-  --text-light: #718096;
-  --bg: #f7fafc;
-  --white: #ffffff;
+  --primary: #3182ce;
+  --danger: #e53e3e;
 }
 
-* { box-sizing: border-box; margin: 0; padding: 0; }
-body { font-family: "Segoe UI", sans-serif; color: var(--text); }
-
-/* Tao landing page hoan chinh theo yeu cau tren */</pre></div></div><a href='../index.html' class='btn-back' style='margin-top:20px;'> Quay lai</a></div></body></html>
+.product-wrapper { display: flex; gap: 48px; padding: 48px; max-width: 1100px; margin: auto; }
+.product-images { flex: 1; }
+.product-images img { width: 100%; border-radius: 12px; }
+.product-info { flex: 1; }
+.product-name { font-size: 1.8rem; font-weight: bold; }
+.price-old { text-decoration: line-through; color: #a0aec0; }
+.price-new { font-size: 2rem; color: var(--danger); font-weight: bold; }
+.discount-badge {
+  background: var(--danger);
+  color: white;
+  padding: 2px 10px;
+  border-radius: 4px;
+  font-size: 0.85rem;
+}
+.stars { color: #f6ad55; font-size: 1.2rem; }
+.btn-add-cart {
+  background: var(--primary);
+  color: white;
+  width: 100%;
+  padding: 16px;
+  border: none;
+  border-radius: 8px;
+  font-size: 1.1rem;
+  font-weight: bold;
+  cursor: pointer;
+  transition: background 0.2s, transform 0.1s;
+}
+.btn-add-cart:hover { background: #2c5282; }
+.btn-add-cart:active { transform: scale(0.98); }</pre>
+        </div>
+      </div>
+    </div>
+  </div>
+  <a href="../index.html" class="btn-back" style="margin-top:20px;">&#8592; Quay lại</a>
+  <script type="module">
+    import { codeToHtml } from 'https://esm.sh/shiki@1';
+    const raw = document.getElementById('code-raw').textContent;
+    const highlighted = await codeToHtml(raw, { lang: 'html', theme: 'github-dark' });
+    document.getElementById('code-highlight').innerHTML = highlighted;
+    const pre = document.getElementById('code-highlight').querySelector('pre');
+    if (pre) pre.style.cssText = 'border-radius:10px;padding:20px;font-size:0.87rem;overflow-x:auto;margin:0;line-height:1.7';
+  </script>
+</body>
+</html>

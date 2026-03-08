@@ -1,9 +1,109 @@
-﻿<!DOCTYPE html>
-<html lang="vi"><head><meta charset="UTF-8"/><title>Debounce va Throttle</title><link rel="stylesheet" href="../../shared.css"/></head>
+<!DOCTYPE html>
+<html lang="vi">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <meta name="keywords" content="Nền tảng,HTML,CSS,JavaScript,Lập trình,Web,Kiến thức,Đồ án">
+  <meta name="author" content="Dương Nguyễn Phú Cường">
+  <meta name="description" content="Cài đặt dark mode với CSS variables và localStorage.">
+  <meta property="og:locale" content="vi_VN">
+  <meta property="og:type" content="website">
+  <meta property="og:title" content="Bài 20 – Dark Mode Toggle | NenTang.vn">
+  <meta property="og:description" content="Cài đặt dark mode với CSS variables và localStorage.">
+  <meta property="og:url" content="https://nentang.vn/">
+  <meta property="og:site_name" content="Nền tảng Kiến thức">
+  <title>Bài 20 – Dark Mode Toggle | NenTang.vn</title>
+  <link rel="stylesheet" href="../../shared.css" />
+</head>
 <body>
-<div class="page-header module-5"><div class="breadcrumb"><a href="../../index.html">Trang Chu</a> &rsaquo; <a href="../index.html">Module 5</a> &rsaquo; bai-20</div><h1>Debounce va Throttle</h1></div>
-<div class="container"><div class="exercise-content"><h2>Yeu cau</h2><p>Cai dat ham debounce(fn, delay) tu tay. Cai dat ham throttle(fn, limit) tu tay. Ap dung debounce cho o tim kiem (chi goi API sau khi nguoi dung ngung go). Throttle cho scroll handler.</p>
-<h2>Code mau</h2><pre><code>/* Viet code tai day */</code></pre>
-<h2>Ket qua</h2><div id="result" style="padding:16px;background:#f8f9fa;border-radius:8px;margin-top:8px;">Ket qua se hien thi o day...</div>
-<h2>Bai lam</h2><textarea id="code" style="width:100%;height:200px;font-family:monospace;font-size:14px;padding:12px;border:2px solid #dee2e6;border-radius:8px;"></textarea><br/><button onclick="try{eval(document.getElementById('code').value)}catch(e){document.getElementById('result').textContent=e.message}" style="margin-top:8px;padding:10px 24px;background:#a18cd1;color:#fff;border:none;border-radius:8px;cursor:pointer;font-size:15px;">Chay Code</button>
-</div><a href="../index.html" class="btn-back"> Quay lai Module 5</a></div></body></html>
+  <div class="page-header module-5">
+    <div class="breadcrumb">
+      <a href="../../index.html">Trang Chủ</a> &rsaquo;
+      <a href="../index.html">Module 5</a> &rsaquo; Bài 20
+    </div>
+    <h1>Bài 20: Dark Mode Toggle</h1>
+    <p>Module 5 – JavaScript Nâng Cao</p>
+  </div>
+
+  <div class="exercise-page">
+    <div class="exercise-box">
+      <div class="ex-head">
+        <h1>📝 Yêu cầu bài tập</h1>
+        <p>Cài đặt dark mode với CSS variables và localStorage.</p>
+      </div>
+      <div class="ex-desc">
+        <h3>Mô tả</h3>
+        <p>Dark mode là tính năng UX ngày càng quan trọng. Dùng CSS variables để đổi theme và localStorage để nhớ lựa chọn.</p>
+        <h3>Yêu cầu</h3>
+        <ul>
+          <li>Toggle dark/light mode bằng nút</li>
+          <li>CSS variables cho màu sắc theme</li>
+          <li>Nhớ lựa chọn qua localStorage</li>
+          <li>Tôn trọng system preference: prefers-color-scheme</li>
+          <li>Transition mượt khi đổi theme</li>
+        </ul>
+        <h3>🧠 Kiến thức cần nhớ</h3>
+        <ul>
+          <li>CSS variables: <code>--bg-color: #fff</code>, ghi đè trong [data-theme='dark']</li>
+          <li>JavaScript: thêm/xóa attribute <code>data-theme='dark'</code> trên html hoặc body</li>
+          <li>System preference: <code>window.matchMedia('(prefers-color-scheme: dark)')</code></li>
+          <li>Lưu localStorage: nhớ khi load lại trang</li>
+          <li>Transition: <code>transition: background 0.3s, color 0.3s</code></li>
+        </ul>
+      </div>
+      <div class="ex-work">
+        <h3>💻 Code mẫu</h3>
+        <div id="code-highlight">
+          <pre id="code-raw" style="display:none">:root {
+  --bg: #ffffff; --text: #1a202c; --card: #f7fafc;
+  --primary: #3182ce; --border: #e2e8f0;
+}
+[data-theme='dark'] {
+  --bg: #1a202c; --text: #f7fafc; --card: #2d3748;
+  --primary: #63b3ed; --border: #4a5568;
+}
+body { background: var(--bg); color: var(--text); transition: background 0.3s, color 0.3s; }
+
+/* JavaScript */
+const html = document.documentElement;
+const btn  = document.getElementById('theme-toggle');
+
+// Ưu tiên: 1. localStorage, 2. system preference, 3. light
+function getInitialTheme() {
+  const saved = localStorage.getItem('theme');
+  if (saved) return saved;
+  const sys = window.matchMedia('(prefers-color-scheme: dark)');
+  return sys.matches ? 'dark' : 'light';
+}
+
+function applyTheme(theme) {
+  html.dataset.theme = theme;
+  btn.textContent = theme === 'dark' ? '☀️ Sáng' : '🌙 Tối';
+  localStorage.setItem('theme', theme);
+}
+
+btn.addEventListener('click', () =&gt; {
+  applyTheme(html.dataset.theme === 'dark' ? 'light' : 'dark');
+});
+
+// Lắng nghe system preference thay đổi
+window.matchMedia('(prefers-color-scheme: dark)').addEventListener('change', e =&gt; {
+  if (!localStorage.getItem('theme')) applyTheme(e.matches ? 'dark' : 'light');
+});
+
+applyTheme(getInitialTheme());</pre>
+        </div>
+      </div>
+    </div>
+  </div>
+  <a href="../index.html" class="btn-back" style="margin-top:20px;">&#8592; Quay lại</a>
+  <script type="module">
+    import { codeToHtml } from 'https://esm.sh/shiki@1';
+    const raw = document.getElementById('code-raw').textContent;
+    const highlighted = await codeToHtml(raw, { lang: 'javascript', theme: 'github-dark' });
+    document.getElementById('code-highlight').innerHTML = highlighted;
+    const pre = document.getElementById('code-highlight').querySelector('pre');
+    if (pre) pre.style.cssText = 'border-radius:10px;padding:20px;font-size:0.87rem;overflow-x:auto;margin:0;line-height:1.7';
+  </script>
+</body>
+</html>

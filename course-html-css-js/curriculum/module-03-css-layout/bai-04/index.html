@@ -1,23 +1,101 @@
-﻿<!DOCTYPE html><html lang='vi'><head><meta charset='UTF-8'/><title>Bai 04 - Position relative va absolute</title><link rel='stylesheet' href='../../shared.css'/></head><body><div class='page-header module-3'><div class='breadcrumb'><a href='../../index.html'>Trang Chu</a>  <a href='../index.html'>Module 3</a>  Bai 04</div><h1>Bai 04: Position relative va absolute</h1><p>Module 3  CSS Layout & Responsive</p></div><div class='exercise-page'><div class='exercise-box'><div class='ex-work'><pre style='background:#1a202c;color:#e2e8f0;padding:20px;border-radius:8px;font-size:.88rem;line-height:1.7;overflow-x:auto;white-space:pre-wrap'>/* relative - di chuyen tuong doi vi tri ban dau */
-.hop { position: relative; top: 20px; left: 30px; }
-/* Nhung van chiem khong gian cu */
+<!DOCTYPE html>
+<html lang="vi">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <meta name="keywords" content="Nền tảng,HTML,CSS,JavaScript,Lập trình,Web,Kiến thức,Đồ án">
+  <meta name="author" content="Dương Nguyễn Phú Cường">
+  <meta name="description" content="Hiểu 3 giá trị position cơ bản và cách chúng ảnh hưởng layout.">
+  <meta property="og:locale" content="vi_VN">
+  <meta property="og:type" content="website">
+  <meta property="og:title" content="Bài 04 – Position: static relative absolute | NenTang.vn">
+  <meta property="og:description" content="Hiểu 3 giá trị position cơ bản và cách chúng ảnh hưởng layout.">
+  <meta property="og:url" content="https://nentang.vn/">
+  <meta property="og:site_name" content="Nền tảng Kiến thức">
+  <title>Bài 04 – Position: static relative absolute | NenTang.vn</title>
+  <link rel="stylesheet" href="../../shared.css" />
+</head>
+<body>
+  <div class="page-header module-3">
+    <div class="breadcrumb">
+      <a href="../../index.html">Trang Chủ</a> &rsaquo;
+      <a href="../index.html">Module 3</a> &rsaquo; Bài 04
+    </div>
+    <h1>Bài 04: Position: static relative absolute</h1>
+    <p>Module 3 – CSS Layout &amp; Responsive</p>
+  </div>
 
-/* absolute - dinh vi theo cha gan nhat co position */
-.cha { position: relative; } /* lam moc cho con */
-.con { position: absolute; top: 10px; right: 10px; }
-
-/* Ung dung thuc te: Badge tren anh */
-.san-pham { position: relative; }
-.badge {
-  position: absolute;
-  top: 8px; right: 8px;
-  background: red; color: white;
-  padding: 4px 8px; border-radius: 10px;
+  <div class="exercise-page">
+    <div class="exercise-box">
+      <div class="ex-head">
+        <h1>📝 Yêu cầu bài tập</h1>
+        <p>Hiểu 3 giá trị position cơ bản và cách chúng ảnh hưởng layout.</p>
+      </div>
+      <div class="ex-desc">
+        <h3>Mô tả</h3>
+        <p>Thuộc tính position điều khiển cách phần tử được định vị. Hiểu rõ relative và absolute là chìa khóa để đặt phần tử đúng vị trí mong muốn.</p>
+        <h3>Yêu cầu</h3>
+        <ul>
+          <li>Tạo badge 'Mới' đặt tuyệt đối góc trên phải của card</li>
+          <li>Thực hành relative: dịch phần tử 10px mà không ảnh hưởng flow</li>
+          <li>Overlay text trên ảnh dùng absolute positioning</li>
+          <li>Tạo tooltip xuất hiện bên cạnh khi hover</li>
+        </ul>
+        <h3>🧠 Kiến thức cần nhớ</h3>
+        <ul>
+          <li><code>static</code>: mặc định – theo luồng thông thường</li>
+          <li><code>relative</code>: dịch chuyển tương đối điểm ban đầu, VẪN giữ không gian</li>
+          <li><code>absolute</code>: đặt tuyệt đối theo ancestor có position!=static</li>
+          <li>Ancestor của absolute: parent gần nhất có position: relative/absolute/fixed/sticky</li>
+          <li><code>top, right, bottom, left</code>: khoảng cách từ cạnh tương ứng của parent</li>
+        </ul>
+      </div>
+      <div class="ex-work">
+        <h3>💻 Code mẫu</h3>
+        <div id="code-highlight">
+          <pre id="code-raw" style="display:none">/* Relative – dịch không ảnh hưởng flow */
+.shifted {
+  position: relative;
+  top: 10px;    /* xuống 10px */
+  left: 20px;   /* phải 20px */
 }
 
-/* Ung dung: Can giua tuyet doi */
-.trung-tam {
+/* Parent là context cho absolute */
+.card { position: relative; }
+
+/* Absolute – đặt tuyệt đối trong parent .card */
+.badge {
   position: absolute;
-  top: 50%; left: 50%;
-  transform: translate(-50%, -50%);
-}</pre></div></div><a href='../index.html' class='btn-back' style='margin-top:20px;'> Quay lai</a></div></body></html>
+  top: 12px;
+  right: 12px;
+  background: #e53e3e;
+  color: white;
+  padding: 4px 10px;
+  border-radius: 999px;
+  font-size: 12px;
+}
+
+/* Overlay text lên ảnh */
+.img-container { position: relative; }
+.img-overlay {
+  position: absolute;
+  bottom: 0; left: 0; right: 0;
+  background: rgba(0,0,0,0.6);
+  color: white;
+  padding: 12px;
+}</pre>
+        </div>
+      </div>
+    </div>
+  </div>
+  <a href="../index.html" class="btn-back" style="margin-top:20px;">&#8592; Quay lại</a>
+  <script type="module">
+    import { codeToHtml } from 'https://esm.sh/shiki@1';
+    const raw = document.getElementById('code-raw').textContent;
+    const highlighted = await codeToHtml(raw, { lang: 'css', theme: 'github-dark' });
+    document.getElementById('code-highlight').innerHTML = highlighted;
+    const pre = document.getElementById('code-highlight').querySelector('pre');
+    if (pre) pre.style.cssText = 'border-radius:10px;padding:20px;font-size:0.87rem;overflow-x:auto;margin:0;line-height:1.7';
+  </script>
+</body>
+</html>

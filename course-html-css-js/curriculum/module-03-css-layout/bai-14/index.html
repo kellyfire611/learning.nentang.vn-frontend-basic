@@ -1,19 +1,100 @@
-﻿<!DOCTYPE html><html lang='vi'><head><meta charset='UTF-8'/><title>Bai 14 - Layout Flexbox Dashboard</title><link rel='stylesheet' href='../../shared.css'/></head><body><div class='page-header module-3'><div class='breadcrumb'><a href='../../index.html'>Trang Chu</a>  <a href='../index.html'>Module 3</a>  Bai 14</div><h1>Bai 14: Layout Flexbox Dashboard</h1></div><div class='exercise-page'><div class='exercise-box'><div class='ex-work'><pre style='background:#1a202c;color:#e2e8f0;padding:20px;border-radius:8px;font-size:.88rem;line-height:1.7;overflow-x:auto;white-space:pre-wrap'>.wrapper {
-  display: flex; min-height: 100vh;
+<!DOCTYPE html>
+<html lang="vi">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <meta name="keywords" content="Nền tảng,HTML,CSS,JavaScript,Lập trình,Web,Kiến thức,Đồ án">
+  <meta name="author" content="Dương Nguyễn Phú Cường">
+  <meta name="description" content="Học cú pháp cơ bản của CSS Grid để tạo layout 2 chiều.">
+  <meta property="og:locale" content="vi_VN">
+  <meta property="og:type" content="website">
+  <meta property="og:title" content="Bài 14 – CSS Grid: Cột và hàng cơ bản | NenTang.vn">
+  <meta property="og:description" content="Học cú pháp cơ bản của CSS Grid để tạo layout 2 chiều.">
+  <meta property="og:url" content="https://nentang.vn/">
+  <meta property="og:site_name" content="Nền tảng Kiến thức">
+  <title>Bài 14 – CSS Grid: Cột và hàng cơ bản | NenTang.vn</title>
+  <link rel="stylesheet" href="../../shared.css" />
+</head>
+<body>
+  <div class="page-header module-3">
+    <div class="breadcrumb">
+      <a href="../../index.html">Trang Chủ</a> &rsaquo;
+      <a href="../index.html">Module 3</a> &rsaquo; Bài 14
+    </div>
+    <h1>Bài 14: CSS Grid: Cột và hàng cơ bản</h1>
+    <p>Module 3 – CSS Layout &amp; Responsive</p>
+  </div>
+
+  <div class="exercise-page">
+    <div class="exercise-box">
+      <div class="ex-head">
+        <h1>📝 Yêu cầu bài tập</h1>
+        <p>Học cú pháp cơ bản của CSS Grid để tạo layout 2 chiều.</p>
+      </div>
+      <div class="ex-desc">
+        <h3>Mô tả</h3>
+        <p>CSS Grid là hệ thống layout 2 chiều (rows + columns) mạnh nhất trong CSS hiện đại. Dùng Grid cho layout tổng thể, Flexbox cho căn chỉnh bên trong component.</p>
+        <h3>Yêu cầu</h3>
+        <ul>
+          <li>Tạo grid 3 cột đều nhau dùng repeat(3, 1fr)</li>
+          <li>Tạo grid 2x3 (2 cột, 3 hàng) với kích thước cố định</li>
+          <li>Dùng grid-template-areas để xem preview layout</li>
+          <li>Thực hành fr unit (fractional unit)</li>
+        </ul>
+        <h3>🧠 Kiến thức cần nhớ</h3>
+        <ul>
+          <li><code>display: grid</code>: bật CSS Grid</li>
+          <li><code>grid-template-columns: 1fr 2fr 1fr</code>: 3 cột tỷ lệ 1:2:1</li>
+          <li><code>repeat(3, 1fr)</code> = <code>1fr 1fr 1fr</code></li>
+          <li><code>fr</code>: fractional unit – phần còn lại sau khi trừ fixed/auto</li>
+          <li><code>gap: row-gap col-gap</code>: khoảng cách</li>
+          <li><code>grid-template-rows</code>: định nghĩa chiều cao hàng</li>
+        </ul>
+      </div>
+      <div class="ex-work">
+        <h3>💻 Code mẫu</h3>
+        <div id="code-highlight">
+          <pre id="code-raw" style="display:none">/* Grid cơ bản */
+.grid-3col {
+  display: grid;
+  grid-template-columns: 1fr 1fr 1fr;
+  /* hoặc: repeat(3, 1fr) */
+  gap: 20px;
 }
-.sidebar {
-  width: 240px; background: #1a202c; color: white; padding: 20px;
-  position: sticky; top: 0; height: 100vh;
+
+/* Grid hỗn hợp */
+.grid-mixed {
+  display: grid;
+  grid-template-columns: 250px 1fr 200px; /* sidebar, main, aside */
+  grid-template-rows: 60px 1fr 60px;      /* header, body, footer */
+  gap: 16px;
+  min-height: 100vh;
 }
-.sidebar nav a { display: block; color: #a0aec0; padding: 10px 16px;
-  border-radius: 6px; text-decoration: none; margin-bottom: 4px; }
-.sidebar nav a:hover, .sidebar nav a.active { background: #5a67d8; color: white; }
-.main {
-  flex: 1; display: flex; flex-direction: column;
+
+/* auto-fill vs auto-fit */
+.auto-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(200px, 1fr));
+  gap: 16px;
 }
-.topbar { background: white; padding: 16px 24px;
-  display: flex; justify-content: space-between; align-items: center;
-  box-shadow: 0 1px 4px rgba(0,0,0,.1); }
-.content { flex: 1; padding: 32px; background: #f7fafc; }
-.stats-grid { display: flex; gap: 20px; margin-bottom: 24px; }
-.stat-card { flex: 1; background: white; padding: 20px; border-radius: 12px; box-shadow: 0 2px 8px rgba(0,0,0,.07); }</pre></div></div><a href='../index.html' class='btn-back' style='margin-top:20px;'> Quay lai</a></div></body></html>
+
+/* fr unit */
+.three-col {
+  display: grid;
+  grid-template-columns: 1fr 2fr 1fr; /* tỷ lệ 1:2:1 */
+}</pre>
+        </div>
+      </div>
+    </div>
+  </div>
+  <a href="../index.html" class="btn-back" style="margin-top:20px;">&#8592; Quay lại</a>
+  <script type="module">
+    import { codeToHtml } from 'https://esm.sh/shiki@1';
+    const raw = document.getElementById('code-raw').textContent;
+    const highlighted = await codeToHtml(raw, { lang: 'css', theme: 'github-dark' });
+    document.getElementById('code-highlight').innerHTML = highlighted;
+    const pre = document.getElementById('code-highlight').querySelector('pre');
+    if (pre) pre.style.cssText = 'border-radius:10px;padding:20px;font-size:0.87rem;overflow-x:auto;margin:0;line-height:1.7';
+  </script>
+</body>
+</html>

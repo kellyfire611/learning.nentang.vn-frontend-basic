@@ -1,9 +1,110 @@
-﻿<!DOCTYPE html>
-<html lang="vi"><head><meta charset="UTF-8"/><title>Event Bubbling Capturing va Delegation</title><link rel="stylesheet" href="../../shared.css"/></head>
+<!DOCTYPE html>
+<html lang="vi">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <meta name="keywords" content="Nền tảng,HTML,CSS,JavaScript,Lập trình,Web,Kiến thức,Đồ án">
+  <meta name="author" content="Dương Nguyễn Phú Cường">
+  <meta name="description" content="Tạo tính năng tìm kiếm/lọc danh sách theo thời gian thực khi gõ.">
+  <meta property="og:locale" content="vi_VN">
+  <meta property="og:type" content="website">
+  <meta property="og:title" content="Bài 19 – Real-time Search Filter | NenTang.vn">
+  <meta property="og:description" content="Tạo tính năng tìm kiếm/lọc danh sách theo thời gian thực khi gõ.">
+  <meta property="og:url" content="https://nentang.vn/">
+  <meta property="og:site_name" content="Nền tảng Kiến thức">
+  <title>Bài 19 – Real-time Search Filter | NenTang.vn</title>
+  <link rel="stylesheet" href="../../shared.css" />
+</head>
 <body>
-<div class="page-header module-5"><div class="breadcrumb"><a href="../../index.html">Trang Chu</a> &rsaquo; <a href="../index.html">Module 5</a> &rsaquo; bai-19</div><h1>Event Bubbling Capturing va Delegation</h1></div>
-<div class="container"><div class="exercise-content"><h2>Yeu cau</h2><p>Demo bubbling: click div con -> lan len div cha. Dung stopPropagation(). Demo capturing voi {capture: true}. Event delegation: ganh dom 1 listener cho nhieu item dong.</p>
-<h2>Code mau</h2><pre><code>/* Viet code tai day */</code></pre>
-<h2>Ket qua</h2><div id="result" style="padding:16px;background:#f8f9fa;border-radius:8px;margin-top:8px;">Ket qua se hien thi o day...</div>
-<h2>Bai lam</h2><textarea id="code" style="width:100%;height:200px;font-family:monospace;font-size:14px;padding:12px;border:2px solid #dee2e6;border-radius:8px;"></textarea><br/><button onclick="try{eval(document.getElementById('code').value)}catch(e){document.getElementById('result').textContent=e.message}" style="margin-top:8px;padding:10px 24px;background:#a18cd1;color:#fff;border:none;border-radius:8px;cursor:pointer;font-size:15px;">Chay Code</button>
-</div><a href="../index.html" class="btn-back"> Quay lai Module 5</a></div></body></html>
+  <div class="page-header module-5">
+    <div class="breadcrumb">
+      <a href="../../index.html">Trang Chủ</a> &rsaquo;
+      <a href="../index.html">Module 5</a> &rsaquo; Bài 19
+    </div>
+    <h1>Bài 19: Real-time Search Filter</h1>
+    <p>Module 5 – JavaScript Nâng Cao</p>
+  </div>
+
+  <div class="exercise-page">
+    <div class="exercise-box">
+      <div class="ex-head">
+        <h1>📝 Yêu cầu bài tập</h1>
+        <p>Tạo tính năng tìm kiếm/lọc danh sách theo thời gian thực khi gõ.</p>
+      </div>
+      <div class="ex-desc">
+        <h3>Mô tả</h3>
+        <p>Real-time search là tính năng UX quan trọng: lọc ngay khi người dùng gõ, highlight từ khóa, không cần nút tìm kiếm.</p>
+        <h3>Yêu cầu</h3>
+        <ul>
+          <li>Lọc danh sách sinh viên theo tên khi gõ</li>
+          <li>Highlight từ khóa trong kết quả (đánh dấu vàng)</li>
+          <li>Thông báo 'Không tìm thấy' khi không có kết quả</li>
+          <li>Debounce 200ms để không chạy quá nhiều lần</li>
+        </ul>
+        <h3>🧠 Kiến thức cần nhớ</h3>
+        <ul>
+          <li>Lọc dữ liệu: <code>arr.filter(item => item.ten.toLowerCase().includes(query))</code></li>
+          <li>Highlight: thay thế từ khóa bằng <code>&lt;mark&gt;từ&lt;/mark&gt;</code></li>
+          <li>Cẩn thận XSS khi dùng innerHTML với input người dùng</li>
+          <li>Escape HTML trước khi dùng innerHTML</li>
+          <li>Regex cho highlight chính xác và case-insensitive</li>
+        </ul>
+      </div>
+      <div class="ex-work">
+        <h3>💻 Code mẫu</h3>
+        <div id="code-highlight">
+          <pre id="code-raw" style="display:none">const danhSach = [
+  { id:1, ten:'Nguyễn Văn An', lop:'12A1', email:'an@school.vn' },
+  { id:2, ten:'Trần Thị Bình', lop:'12B2', email:'binh@school.vn' },
+  // ...
+];
+
+function escapeHtml(str) {
+  return str.replace(/[&amp;&lt;&gt;"']/g, c =&gt; ({'&amp;':'&amp;amp;','&lt;':'&amp;lt;','&gt;':'&amp;gt;','"':'&amp;quot;',"'":'&amp;#039;'}[c]));
+}
+
+function highlight(text, query) {
+  if (!query) return escapeHtml(text);
+  const escaped = escapeHtml(text);
+  const re = new RegExp(`(${escapeHtml(query)})`, 'gi');
+  return escaped.replace(re, '&lt;mark&gt;$1&lt;/mark&gt;');
+}
+
+const timKiem = debounce((query) =&gt; {
+  const q = query.trim().toLowerCase();
+  const filtered = q
+    ? danhSach.filter(hs =&gt;
+        hs.ten.toLowerCase().includes(q) ||
+        hs.lop.toLowerCase().includes(q) ||
+        hs.email.toLowerCase().includes(q)
+      )
+    : danhSach;
+  const tbody = document.querySelector('#table tbody');
+  if (!filtered.length) {
+    tbody.innerHTML = '&lt;tr&gt;&lt;td colspan="4"&gt;Không tìm thấy kết quả&lt;/td&gt;&lt;/tr&gt;';
+    return;
+  }
+  tbody.innerHTML = filtered.map(hs =&gt; `&lt;tr&gt;
+    &lt;td&gt;${highlight(hs.ten, query)}&lt;/td&gt;
+    &lt;td&gt;${highlight(hs.lop, query)}&lt;/td&gt;
+    &lt;td&gt;${highlight(hs.email, query)}&lt;/td&gt;
+  &lt;/tr&gt;`).join('');
+  document.getElementById('count').textContent = `${filtered.length}/${danhSach.length}`;
+}, 200);
+
+document.getElementById('search').addEventListener('input', e =&gt; timKiem(e.target.value));</pre>
+        </div>
+      </div>
+    </div>
+  </div>
+  <a href="../index.html" class="btn-back" style="margin-top:20px;">&#8592; Quay lại</a>
+  <script type="module">
+    import { codeToHtml } from 'https://esm.sh/shiki@1';
+    const raw = document.getElementById('code-raw').textContent;
+    const highlighted = await codeToHtml(raw, { lang: 'javascript', theme: 'github-dark' });
+    document.getElementById('code-highlight').innerHTML = highlighted;
+    const pre = document.getElementById('code-highlight').querySelector('pre');
+    if (pre) pre.style.cssText = 'border-radius:10px;padding:20px;font-size:0.87rem;overflow-x:auto;margin:0;line-height:1.7';
+  </script>
+</body>
+</html>

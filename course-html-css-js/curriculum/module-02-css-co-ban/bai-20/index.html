@@ -1,33 +1,107 @@
-﻿<!DOCTYPE html><html lang='vi'><head><meta charset='UTF-8'/><meta name='viewport' content='width=device-width,initial-scale=1'/><title>Bai 20 - CSS Variables Custom Properties</title><link rel='stylesheet' href='../../shared.css'/></head><body><div class='page-header module-2'><div class='breadcrumb'><a href='../../index.html'>Trang Chu</a>  <a href='../index.html'>Module 2</a>  Bai 20</div><h1>Bai 20: CSS Variables Custom Properties</h1><p>Module 2  CSS Co Ban</p></div><div class='exercise-page'><div class='exercise-box'><div class='ex-work'><h3>Yeu cau va Code mau:</h3><pre style='background:#1a202c;color:#e2e8f0;padding:20px;border-radius:8px;font-size:.88rem;line-height:1.7;overflow-x:auto;white-space:pre-wrap'>:root {
-  /* Khai bao bien CSS o level cao nhat */
-  --mau-chinh: #5a67d8;
-  --mau-phu: #764ba2;
-  --mau-nen: #f7fafc;
-  --mau-van-ban: #2d3748;
+<!DOCTYPE html>
+<html lang="vi">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <meta name="keywords" content="Nền tảng,HTML,CSS,JavaScript,Lập trình,Web,Kiến thức,Đồ án">
+  <meta name="author" content="Dương Nguyễn Phú Cường">
+  <meta name="description" content="Xây dựng thanh điều hướng ngang (navbar) cơ bản bằng HTML và CSS.">
+  <meta property="og:locale" content="vi_VN">
+  <meta property="og:type" content="website">
+  <meta property="og:title" content="Bài 20 – Tạo Navbar điều hướng | NenTang.vn">
+  <meta property="og:description" content="Xây dựng thanh điều hướng ngang (navbar) cơ bản bằng HTML và CSS.">
+  <meta property="og:url" content="https://nentang.vn/">
+  <meta property="og:site_name" content="Nền tảng Kiến thức">
+  <title>Bài 20 – Tạo Navbar điều hướng | NenTang.vn</title>
+  <link rel="stylesheet" href="../../shared.css" />
+</head>
+<body>
+  <div class="page-header module-2">
+    <div class="breadcrumb">
+      <a href="../../index.html">Trang Chủ</a> &rsaquo;
+      <a href="../index.html">Module 2</a> &rsaquo; Bài 20
+    </div>
+    <h1>Bài 20: Tạo Navbar điều hướng</h1>
+    <p>Module 2 – CSS Cơ Bản</p>
+  </div>
 
-  --font-co-ban: 16px;
-  --font-lon: 1.5rem;
-
-  --khoang-cach-s: 8px;
-  --khoang-cach-m: 16px;
-  --khoang-cach-l: 32px;
-
-  --radius: 8px;
-  --bong: 0 4px 16px rgba(0,0,0,0.1);
+  <div class="exercise-page">
+    <div class="exercise-box">
+      <div class="ex-head">
+        <h1>📝 Yêu cầu bài tập</h1>
+        <p>Xây dựng thanh điều hướng ngang (navbar) cơ bản bằng HTML và CSS.</p>
+      </div>
+      <div class="ex-desc">
+        <h3>Mô tả</h3>
+        <p>Navbar là thành phần xuất hiện trên hầu hết trang web. Navbar cơ bản cần: logo bên trái, menu link bên phải, đổi màu khi hover.</p>
+        <h3>Yêu cầu</h3>
+        <ul>
+          <li>Tạo navbar cố định trên đầu trang (fixed top)</li>
+          <li>Logo bên trái, menu link bên phải</li>
+          <li>Active class cho trang hiện tại</li>
+          <li>Hover effect cho menu item</li>
+          <li>Navbar đổi nền khi cuộn trang (dùng JavaScript đơn giản)</li>
+        </ul>
+        <h3>🧠 Kiến thức cần nhớ</h3>
+        <ul>
+          <li>Dùng <code>display: flex</code> để sắp xếp logo và menu</li>
+          <li><code>position: fixed; top: 0; width: 100%</code>: cố định trên đầu</li>
+          <li><code>z-index: 100</code>: đảm bảo navbar luôn trên các phần tử khác</li>
+          <li>Thêm padding-top cho body bằng chiều cao navbar</li>
+          <li>Class 'active' làm nổi bật menu item hiện tại</li>
+        </ul>
+      </div>
+      <div class="ex-work">
+        <h3>💻 Code mẫu</h3>
+        <div id="code-highlight">
+          <pre id="code-raw" style="display:none">&lt;style&gt;
+.navbar {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 0 32px;
+  height: 64px;
+  background: #1a202c;
+  position: fixed;
+  top: 0; left: 0; right: 0;
+  z-index: 100;
 }
-
-/* Su dung bien */
-.btn {
-  background-color: var(--mau-chinh);
-  padding: var(--khoang-cach-s) var(--khoang-cach-m);
-  border-radius: var(--radius);
-  font-size: var(--font-co-ban);
+.navbar-logo { color: white; font-size: 1.4rem; font-weight: bold; text-decoration: none; }
+.navbar-links { display: flex; gap: 0; list-style: none; margin: 0; padding: 0; }
+.navbar-links a {
+  color: #a0aec0;
+  text-decoration: none;
+  padding: 0 16px;
+  height: 64px;
+  display: flex;
+  align-items: center;
+  transition: color 0.2s, background 0.2s;
 }
+.navbar-links a:hover { color: white; background: rgba(255,255,255,0.1); }
+.navbar-links a.active { color: white; border-bottom: 3px solid #63b3ed; }
+&lt;/style&gt;
 
-/* Ghi de bien trong scope con */
-.dark-mode {
-  --mau-nen: #1a202c;
-  --mau-van-ban: #f7fafc;
-}
-
-/* YEU CAU: Tao he thong mau (color system) voi bien CSS, tao ca dark/light theme */</pre></div></div><a href='../index.html' class='btn-back' style='margin-top:20px;'> Quay lai</a></div></body></html>
+&lt;nav class="navbar"&gt;
+  &lt;a href="#" class="navbar-logo"&gt;🌐 NềnTảng&lt;/a&gt;
+  &lt;ul class="navbar-links"&gt;
+    &lt;li&gt;&lt;a href="#" class="active"&gt;Trang chủ&lt;/a&gt;&lt;/li&gt;
+    &lt;li&gt;&lt;a href="#"&gt;Khóa học&lt;/a&gt;&lt;/li&gt;
+    &lt;li&gt;&lt;a href="#"&gt;Bài tập&lt;/a&gt;&lt;/li&gt;
+    &lt;li&gt;&lt;a href="#"&gt;Liên hệ&lt;/a&gt;&lt;/li&gt;
+  &lt;/ul&gt;
+&lt;/nav&gt;</pre>
+        </div>
+      </div>
+    </div>
+  </div>
+  <a href="../index.html" class="btn-back" style="margin-top:20px;">&#8592; Quay lại</a>
+  <script type="module">
+    import { codeToHtml } from 'https://esm.sh/shiki@1';
+    const raw = document.getElementById('code-raw').textContent;
+    const highlighted = await codeToHtml(raw, { lang: 'html', theme: 'github-dark' });
+    document.getElementById('code-highlight').innerHTML = highlighted;
+    const pre = document.getElementById('code-highlight').querySelector('pre');
+    if (pre) pre.style.cssText = 'border-radius:10px;padding:20px;font-size:0.87rem;overflow-x:auto;margin:0;line-height:1.7';
+  </script>
+</body>
+</html>

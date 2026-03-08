@@ -1,9 +1,99 @@
-﻿<!DOCTYPE html>
-<html lang="vi"><head><meta charset="UTF-8"/><title>Mang Array co ban</title><link rel="stylesheet" href="../../shared.css"/></head>
+<!DOCTYPE html>
+<html lang="vi">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <meta name="keywords" content="Nền tảng,HTML,CSS,JavaScript,Lập trình,Web,Kiến thức,Đồ án">
+  <meta name="author" content="Dương Nguyễn Phú Cường">
+  <meta name="description" content="Thao tác nâng cao với mảng: cắt, chèn/xóa, tìm kiếm phần tử.">
+  <meta property="og:locale" content="vi_VN">
+  <meta property="og:type" content="website">
+  <meta property="og:title" content="Bài 13 – Array Methods: slice, splice, find | NenTang.vn">
+  <meta property="og:description" content="Thao tác nâng cao với mảng: cắt, chèn/xóa, tìm kiếm phần tử.">
+  <meta property="og:url" content="https://nentang.vn/">
+  <meta property="og:site_name" content="Nền tảng Kiến thức">
+  <title>Bài 13 – Array Methods: slice, splice, find | NenTang.vn</title>
+  <link rel="stylesheet" href="../../shared.css" />
+</head>
 <body>
-<div class="page-header module-4"><div class="breadcrumb"><a href="../../index.html">Trang Chu</a> &rsaquo; <a href="../index.html">Module 4</a> &rsaquo; bai-13</div><h1>Mang Array co ban</h1></div>
-<div class="container"><div class="exercise-content"><h2>Yeu cau</h2><p>Tao mang hoa qua 5 phan tu. Truy cap phan tu theo chi so. Hien thi length. Duyet mang bang for va forEach. Kiem tra phan tu co ton tai (includes).</p>
-<h2>Code mau</h2><pre><code>/* Viet code tai day */</code></pre>
-<h2>Ket qua</h2><div id="result" style="padding:16px;background:#f8f9fa;border-radius:8px;margin-top:8px;">Ket qua se hien thi o day...</div>
-<h2>Bai lam</h2><textarea id="code" style="width:100%;height:180px;font-family:monospace;font-size:14px;padding:12px;border:2px solid #dee2e6;border-radius:8px;"></textarea><br/><button onclick="try{eval(document.getElementById('code').value)}catch(e){document.getElementById('result').textContent=e.message}" style="margin-top:8px;padding:10px 24px;background:#fa709a;color:#fff;border:none;border-radius:8px;cursor:pointer;font-size:15px;">Chay Code</button>
-</div><a href="../index.html" class="btn-back"> Quay lai Module 4</a></div></body></html>
+  <div class="page-header module-4">
+    <div class="breadcrumb">
+      <a href="../../index.html">Trang Chủ</a> &rsaquo;
+      <a href="../index.html">Module 4</a> &rsaquo; Bài 13
+    </div>
+    <h1>Bài 13: Array Methods: slice, splice, find</h1>
+    <p>Module 4 – JavaScript Cơ Bản</p>
+  </div>
+
+  <div class="exercise-page">
+    <div class="exercise-box">
+      <div class="ex-head">
+        <h1>📝 Yêu cầu bài tập</h1>
+        <p>Thao tác nâng cao với mảng: cắt, chèn/xóa, tìm kiếm phần tử.</p>
+      </div>
+      <div class="ex-desc">
+        <h3>Mô tả</h3>
+        <p>slice và splice giúp thao tác với phần của mảng. find và findIndex tìm phần tử theo điều kiện.</p>
+        <h3>Yêu cầu</h3>
+        <ul>
+          <li>Cắt mảng sản phẩm lấy trang 2 (phần tử 3-6) bằng slice</li>
+          <li>Xóa phần tử ở vị trí bất kỳ bằng splice</li>
+          <li>Tìm sản phẩm có giá dưới 100 bằng find</li>
+          <li>Tìm index của sản phẩm theo tên bằng findIndex</li>
+        </ul>
+        <h3>🧠 Kiến thức cần nhớ</h3>
+        <ul>
+          <li><code>slice(start, end)</code>: cắt KHÔNG thay đổi mảng gốc, end không tính</li>
+          <li><code>splice(start, deleteCount, ...items)</code>: sửa mảng gốc, thêm/xóa</li>
+          <li><code>find(fn)</code>: trả về phần tử đầu tiên thỏa điều kiện (undefined nếu không)</li>
+          <li><code>findIndex(fn)</code>: trả về index (-1 nếu không tìm thấy)</li>
+          <li><code>some(fn)</code>: true nếu ít nhất 1 phần tử thỏa</li>
+          <li><code>every(fn)</code>: true nếu TẤT CẢ phần tử thỏa</li>
+        </ul>
+      </div>
+      <div class="ex-work">
+        <h3>💻 Code mẫu</h3>
+        <div id="code-highlight">
+          <pre id="code-raw" style="display:none">const sanPham = [
+  { id:1, ten:'Áo', gia:150 },
+  { id:2, ten:'Quần', gia:80 },
+  { id:3, ten:'Giày', gia:200 },
+  { id:4, ten:'Mũ', gia:50 },
+  { id:5, ten:'Túi', gia:120 },
+];
+
+// slice – cắt ra mảng mới (không đổi gốc)
+const trang2 = sanPham.slice(2, 4); // index 2,3
+
+// splice – sửa mảng gốc
+const copy = [...sanPham];
+copy.splice(1, 1); // xóa 1 phần tử tại index 1
+copy.splice(1, 0, { id:6, ten:'Belt', gia:60 }); // chèn
+
+// find – tìm phần tử đầu tiên
+const reHon100 = sanPham.find(sp =&gt; sp.gia &lt; 100);
+console.log(reHon100); // { id:2, ten:'Quần', gia:80 }
+
+// findIndex – tìm vị trí
+const idxGiay = sanPham.findIndex(sp =&gt; sp.ten === 'Giày');
+console.log(idxGiay); // 2
+
+// some / every
+const coSanPhamDat = sanPham.some(sp =&gt; sp.gia &gt; 100);  // true
+const tatCaDat    = sanPham.every(sp =&gt; sp.gia &gt; 100); // false
+console.log(coSanPhamDat, tatCaDat);</pre>
+        </div>
+      </div>
+    </div>
+  </div>
+  <a href="../index.html" class="btn-back" style="margin-top:20px;">&#8592; Quay lại</a>
+  <script type="module">
+    import { codeToHtml } from 'https://esm.sh/shiki@1';
+    const raw = document.getElementById('code-raw').textContent;
+    const highlighted = await codeToHtml(raw, { lang: 'javascript', theme: 'github-dark' });
+    document.getElementById('code-highlight').innerHTML = highlighted;
+    const pre = document.getElementById('code-highlight').querySelector('pre');
+    if (pre) pre.style.cssText = 'border-radius:10px;padding:20px;font-size:0.87rem;overflow-x:auto;margin:0;line-height:1.7';
+  </script>
+</body>
+</html>

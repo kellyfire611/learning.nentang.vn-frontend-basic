@@ -1,23 +1,101 @@
-﻿<!DOCTYPE html><html lang='vi'><head><meta charset='UTF-8'/><title>Bai 25 - CSS Transition</title><link rel='stylesheet' href='../../shared.css'/></head><body><div class='page-header module-2'><div class='breadcrumb'><a href='../../index.html'>Trang Chu</a>  <a href='../index.html'>Module 2</a>  Bai 25</div><h1>Bai 25: CSS Transition</h1></div><div class='exercise-page'><div class='exercise-box'><div class='ex-work'><pre style='background:#1a202c;color:#e2e8f0;padding:20px;border-radius:8px;font-size:.88rem;line-height:1.7;overflow-x:auto;white-space:pre-wrap'>.hop { width:100px; height:100px; background:#5a67d8; border-radius:8px; }
+<!DOCTYPE html>
+<html lang="vi">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <meta name="keywords" content="Nền tảng,HTML,CSS,JavaScript,Lập trình,Web,Kiến thức,Đồ án">
+  <meta name="author" content="Dương Nguyễn Phú Cường">
+  <meta name="description" content="Biến đổi phần tử bằng translate, rotate, scale, skew.">
+  <meta property="og:locale" content="vi_VN">
+  <meta property="og:type" content="website">
+  <meta property="og:title" content="Bài 25 – CSS Transform 2D | NenTang.vn">
+  <meta property="og:description" content="Biến đổi phần tử bằng translate, rotate, scale, skew.">
+  <meta property="og:url" content="https://nentang.vn/">
+  <meta property="og:site_name" content="Nền tảng Kiến thức">
+  <title>Bài 25 – CSS Transform 2D | NenTang.vn</title>
+  <link rel="stylesheet" href="../../shared.css" />
+</head>
+<body>
+  <div class="page-header module-2">
+    <div class="breadcrumb">
+      <a href="../../index.html">Trang Chủ</a> &rsaquo;
+      <a href="../index.html">Module 2</a> &rsaquo; Bài 25
+    </div>
+    <h1>Bài 25: CSS Transform 2D</h1>
+    <p>Module 2 – CSS Cơ Bản</p>
+  </div>
 
-/* Transition co ban */
-.hop { transition: all 0.3s ease; }
-.hop:hover { width:150px; background:#e53e3e; border-radius:50%; }
-
-/* Transition tung thuoc tinh */
-.btn {
-  transition:
-    background-color 0.2s ease,
-    transform 0.15s ease,
-    box-shadow 0.2s ease;
+  <div class="exercise-page">
+    <div class="exercise-box">
+      <div class="ex-head">
+        <h1>📝 Yêu cầu bài tập</h1>
+        <p>Biến đổi phần tử bằng translate, rotate, scale, skew.</p>
+      </div>
+      <div class="ex-desc">
+        <h3>Mô tả</h3>
+        <p>CSS transform cho phép dịch chuyển, xoay, phóng to/thu nhỏ và nghiêng phần tử mà không ảnh hưởng layout các phần tử khác. Cao hiệu năng vì dùng GPU.</p>
+        <h3>Yêu cầu</h3>
+        <ul>
+          <li>Dùng translate() dịch chuyển div mà không ảnh hưởng layout</li>
+          <li>Dùng rotate() tạo thẻ bài nghiêng</li>
+          <li>Dùng scale() tạo effect zoom khi hover</li>
+          <li>Dùng skewX() tạo banner nghiêng</li>
+          <li>Kết hợp nhiều transform trong 1 rule</li>
+        </ul>
+        <h3>🧠 Kiến thức cần nhớ</h3>
+        <ul>
+          <li><code>translate(x, y)</code>: dịch chuyển – không ảnh hưởng flow</li>
+          <li><code>rotate(45deg)</code>: xoay theo chiều kim đồng hồ</li>
+          <li><code>scale(1.2)</code>: phóng to 120% từ tâm</li>
+          <li><code>scale(1, -1)</code>: lật ngược chiều dọc</li>
+          <li><code>skewX(15deg)</code>: nghiêng theo trục X</li>
+          <li><code>transform-origin</code>: điểm gốc biến đổi (mặc định: center)</li>
+        </ul>
+      </div>
+      <div class="ex-work">
+        <h3>💻 Code mẫu</h3>
+        <div id="code-highlight">
+          <pre id="code-raw" style="display:none">/* Translate – dịch chuyển */
+.moved { transform: translate(50px, 20px); }
+.center-trick {
+  position: absolute;
+  top: 50%; left: 50%;
+  transform: translate(-50%, -50%); /* Căn giữa tuyệt đối */
 }
 
-/* Cac ham timing */
-.ease      { transition-timing-function: ease; }       /* mac dinh */
-.linear    { transition-timing-function: linear; }     /* deu deu */
-.ease-in   { transition-timing-function: ease-in; }    /* bat dau cham */
-.ease-out  { transition-timing-function: ease-out; }   /* ket thuc cham */
-.bounce    { transition-timing-function: cubic-bezier(0.68,-0.55,0.265,1.55); }
+/* Rotate */
+.rotated { transform: rotate(45deg); }
+.card-tilt:hover { transform: rotate(-3deg) scale(1.02); }
 
-/* Delay */
-.tre { transition: all 0.3s ease 0.5s; } /* tre 0.5 giay */</pre></div></div><a href='../index.html' class='btn-back' style='margin-top:20px;'> Quay lai</a></div></body></html>
+/* Scale */
+.zoom:hover { transform: scale(1.1); transition: transform 0.3s; }
+
+/* Skew – banner nghiêng */
+.skewed {
+  transform: skewX(-15deg);
+  background: #3182ce;
+  padding: 8px 24px;
+  color: white;
+}
+.skewed span { display: inline-block; transform: skewX(15deg); } /* chỉnh lại text */
+
+/* Kết hợp transform */
+.combo:hover {
+  transform: translateY(-5px) rotate(3deg) scale(1.05);
+  transition: transform 0.3s;
+}</pre>
+        </div>
+      </div>
+    </div>
+  </div>
+  <a href="../index.html" class="btn-back" style="margin-top:20px;">&#8592; Quay lại</a>
+  <script type="module">
+    import { codeToHtml } from 'https://esm.sh/shiki@1';
+    const raw = document.getElementById('code-raw').textContent;
+    const highlighted = await codeToHtml(raw, { lang: 'html', theme: 'github-dark' });
+    document.getElementById('code-highlight').innerHTML = highlighted;
+    const pre = document.getElementById('code-highlight').querySelector('pre');
+    if (pre) pre.style.cssText = 'border-radius:10px;padding:20px;font-size:0.87rem;overflow-x:auto;margin:0;line-height:1.7';
+  </script>
+</body>
+</html>

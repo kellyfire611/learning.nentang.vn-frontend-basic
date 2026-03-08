@@ -1,12 +1,87 @@
-﻿<!DOCTYPE html><html lang='vi'><head><meta charset='UTF-8'/><title>Bai 02 - Float co ban</title><link rel='stylesheet' href='../../shared.css'/></head><body><div class='page-header module-3'><div class='breadcrumb'><a href='../../index.html'>Trang Chu</a>  <a href='../index.html'>Module 3</a>  Bai 02</div><h1>Bai 02: Float co ban</h1><p>Module 3  CSS Layout & Responsive</p></div><div class='exercise-page'><div class='exercise-box'><div class='ex-work'><pre style='background:#1a202c;color:#e2e8f0;padding:20px;border-radius:8px;font-size:.88rem;line-height:1.7;overflow-x:auto;white-space:pre-wrap'>img { float: left; margin: 0 20px 20px 0; }
+<!DOCTYPE html>
+<html lang="vi">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <meta name="keywords" content="Nền tảng,HTML,CSS,JavaScript,Lập trình,Web,Kiến thức,Đồ án">
+  <meta name="author" content="Dương Nguyễn Phú Cường">
+  <meta name="description" content="Dùng float để sắp xếp phần tử nổi sang trái hoặc phải.">
+  <meta property="og:locale" content="vi_VN">
+  <meta property="og:type" content="website">
+  <meta property="og:title" content="Bài 02 – Float: căn trái phải | NenTang.vn">
+  <meta property="og:description" content="Dùng float để sắp xếp phần tử nổi sang trái hoặc phải.">
+  <meta property="og:url" content="https://nentang.vn/">
+  <meta property="og:site_name" content="Nền tảng Kiến thức">
+  <title>Bài 02 – Float: căn trái phải | NenTang.vn</title>
+  <link rel="stylesheet" href="../../shared.css" />
+</head>
+<body>
+  <div class="page-header module-3">
+    <div class="breadcrumb">
+      <a href="../../index.html">Trang Chủ</a> &rsaquo;
+      <a href="../index.html">Module 3</a> &rsaquo; Bài 02
+    </div>
+    <h1>Bài 02: Float: căn trái phải</h1>
+    <p>Module 3 – CSS Layout &amp; Responsive</p>
+  </div>
 
-.box-phai { float: right; width: 200px; }
+  <div class="exercise-page">
+    <div class="exercise-box">
+      <div class="ex-head">
+        <h1>📝 Yêu cầu bài tập</h1>
+        <p>Dùng float để sắp xếp phần tử nổi sang trái hoặc phải.</p>
+      </div>
+      <div class="ex-desc">
+        <h3>Mô tả</h3>
+        <p>Float ra đời để làm cho text chảy quanh ảnh (như báo in). Sau đó được dùng để tạo layout cột. Ngày nay Flexbox/Grid đã thay thế float cho layout.</p>
+        <h3>Yêu cầu</h3>
+        <ul>
+          <li>Tạo bài viết có ảnh float: left với text chảy bên phải</li>
+          <li>Tạo ảnh float: right với caption bên dưới</li>
+          <li>Dùng float để tạo 2 cột đơn giản</li>
+        </ul>
+        <h3>🧠 Kiến thức cần nhớ</h3>
+        <ul>
+          <li><code>float: left</code>: phần tử nổi sang trái, nội dung khác chảy bên phải</li>
+          <li><code>float: right</code>: phần tử nổi sang phải</li>
+          <li>Phần tử float bị 'thoát khỏi' luồng thông thường</li>
+          <li>Parent không tính chiều cao float children – cần clearfix</li>
+          <li>Width phần tử float nên tính bằng phần trăm để linh hoạt</li>
+        </ul>
+      </div>
+      <div class="ex-work">
+        <h3>💻 Code mẫu</h3>
+        <div id="code-highlight">
+          <pre id="code-raw" style="display:none">/* Ảnh float trái, text chảy bên */
+.article img {
+  float: left;
+  width: 200px;
+  margin: 0 16px 8px 0;
+  border-radius: 8px;
+}
 
-/* Van ban tu dong bao quanh float element */
-Van ban o day se chay vong quanh hinh anh...
+/* 2 cột đơn giản */
+.col-left  { float: left;  width: 60%; padding-right: 20px; }
+.col-right { float: right; width: 40%; }
 
-/* Float layout co ban 2 cot */
-.col-trai { float: left; width: 60%; }
-.col-phai { float: right; width: 38%; }
-
-/* YEU CAU: Tao bai viet co anh trai, van ban bao quanh ben phai */</pre></div></div><a href='../index.html' class='btn-back' style='margin-top:20px;'> Quay lai</a></div></body></html>
+/* Ảnh float phải */
+.pull-right {
+  float: right;
+  max-width: 300px;
+  margin: 0 0 16px 20px;
+}</pre>
+        </div>
+      </div>
+    </div>
+  </div>
+  <a href="../index.html" class="btn-back" style="margin-top:20px;">&#8592; Quay lại</a>
+  <script type="module">
+    import { codeToHtml } from 'https://esm.sh/shiki@1';
+    const raw = document.getElementById('code-raw').textContent;
+    const highlighted = await codeToHtml(raw, { lang: 'css', theme: 'github-dark' });
+    document.getElementById('code-highlight').innerHTML = highlighted;
+    const pre = document.getElementById('code-highlight').querySelector('pre');
+    if (pre) pre.style.cssText = 'border-radius:10px;padding:20px;font-size:0.87rem;overflow-x:auto;margin:0;line-height:1.7';
+  </script>
+</body>
+</html>

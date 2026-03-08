@@ -1,26 +1,104 @@
-﻿<!DOCTYPE html><html lang='vi'><head><meta charset='UTF-8'/><title>Bai 29 - Responsive Image Gallery</title><link rel='stylesheet' href='../../shared.css'/></head><body><div class='page-header module-3'><div class='breadcrumb'><a href='../../index.html'>Trang Chu</a>  <a href='../index.html'>Module 3</a>  Bai 29</div><h1>Bai 29: Responsive Image Gallery</h1></div><div class='exercise-page'><div class='exercise-box'><div class='ex-work'><pre style='background:#1a202c;color:#e2e8f0;padding:20px;border-radius:8px;font-size:.88rem;line-height:1.7;overflow-x:auto;white-space:pre-wrap'>.gallery {
-  display: grid;
-  grid-template-columns: repeat(auto-fill, minmax(250px, 1fr));
-  gap: 12px;
-  padding: 20px;
+<!DOCTYPE html>
+<html lang="vi">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <meta name="keywords" content="Nền tảng,HTML,CSS,JavaScript,Lập trình,Web,Kiến thức,Đồ án">
+  <meta name="author" content="Dương Nguyễn Phú Cường">
+  <meta name="description" content="Tạo scroll snap để trang 'khóa' vào các phần khi cuộn.">
+  <meta property="og:locale" content="vi_VN">
+  <meta property="og:type" content="website">
+  <meta property="og:title" content="Bài 29 – CSS Scroll Snap | NenTang.vn">
+  <meta property="og:description" content="Tạo scroll snap để trang 'khóa' vào các phần khi cuộn.">
+  <meta property="og:url" content="https://nentang.vn/">
+  <meta property="og:site_name" content="Nền tảng Kiến thức">
+  <title>Bài 29 – CSS Scroll Snap | NenTang.vn</title>
+  <link rel="stylesheet" href="../../shared.css" />
+</head>
+<body>
+  <div class="page-header module-3">
+    <div class="breadcrumb">
+      <a href="../../index.html">Trang Chủ</a> &rsaquo;
+      <a href="../index.html">Module 3</a> &rsaquo; Bài 29
+    </div>
+    <h1>Bài 29: CSS Scroll Snap</h1>
+    <p>Module 3 – CSS Layout &amp; Responsive</p>
+  </div>
+
+  <div class="exercise-page">
+    <div class="exercise-box">
+      <div class="ex-head">
+        <h1>📝 Yêu cầu bài tập</h1>
+        <p>Tạo scroll snap để trang 'khóa' vào các phần khi cuộn.</p>
+      </div>
+      <div class="ex-desc">
+        <h3>Mô tả</h3>
+        <p>Scroll Snap tạo trải nghiệm cuộn mượt mà: khi cuộn, trang tự động 'nhảy' vào section tiếp theo. Rất hay dùng cho landing page, slide, gallery.</p>
+        <h3>Yêu cầu</h3>
+        <ul>
+          <li>Tạo landing page full-screen sections cuộn xuống theo snap</li>
+          <li>Tạo horizontal scroll gallery với snap</li>
+          <li>Scroll snap menu thumbnail video</li>
+        </ul>
+        <h3>🧠 Kiến thức cần nhớ</h3>
+        <ul>
+          <li><code>scroll-snap-type: y mandatory</code>: snap theo chiều dọc, bắt buộc khóa</li>
+          <li><code>scroll-snap-align: start|center|end</code>: đặt trên scroll children</li>
+          <li><code>scroll-behavior: smooth</code>: cuộn mượt khi click anchor link</li>
+          <li>mandatory: luôn khóa vào snap point (dùng cho full-page)</li>
+          <li>proximity: chỉ khóa khi gần snap point (ít cưỡng bức hơn)</li>
+        </ul>
+      </div>
+      <div class="ex-work">
+        <h3>💻 Code mẫu</h3>
+        <div id="code-highlight">
+          <pre id="code-raw" style="display:none">/* Full-page scroll snap */
+html { scroll-behavior: smooth; }
+
+.pages-container {
+  height: 100vh;
+  overflow-y: scroll;
+  scroll-snap-type: y mandatory;
 }
-.gallery-item {
-  overflow: hidden; border-radius: 8px;
-  aspect-ratio: 4/3; /* ty le khung anh co dinh */
+
+.page-section {
+  height: 100vh;
+  scroll-snap-align: start;
+  display: flex;
+  align-items: center;
+  justify-content: center;
 }
-.gallery-item img {
-  width: 100%; height: 100%;
+.page-section:nth-child(1) { background: linear-gradient(135deg,#667eea,#764ba2); }
+.page-section:nth-child(2) { background: linear-gradient(135deg,#f093fb,#f5576c); }
+.page-section:nth-child(3) { background: linear-gradient(135deg,#4facfe,#00f2fe); }
+
+/* Horizontal scroll gallery */
+.h-gallery {
+  display: flex;
+  overflow-x: scroll;
+  scroll-snap-type: x mandatory;
+  gap: 16px;
+  padding: 16px;
+}
+.h-gallery img {
+  flex-shrink: 0;
+  width: 80vw;
+  scroll-snap-align: center;
+  border-radius: 12px;
   object-fit: cover;
-  transition: transform .3s;
-}
-.gallery-item:hover img { transform: scale(1.05); }
-
-/* Masonry-like effect voi CSS Grid */
-.masonry {
-  display: grid;
-  grid-template-columns: repeat(auto-fill, minmax(200px, 1fr));
-  grid-auto-rows: 10px;
-}
-.masonry-item { grid-row-end: span var(--span); /* set qua JS */ }
-
-/* YEU CAU: Tao thu vien anh responsive voi lightbox popup */</pre></div></div><a href='../index.html' class='btn-back' style='margin-top:20px;'> Quay lai</a></div></body></html>
+}</pre>
+        </div>
+      </div>
+    </div>
+  </div>
+  <a href="../index.html" class="btn-back" style="margin-top:20px;">&#8592; Quay lại</a>
+  <script type="module">
+    import { codeToHtml } from 'https://esm.sh/shiki@1';
+    const raw = document.getElementById('code-raw').textContent;
+    const highlighted = await codeToHtml(raw, { lang: 'css', theme: 'github-dark' });
+    document.getElementById('code-highlight').innerHTML = highlighted;
+    const pre = document.getElementById('code-highlight').querySelector('pre');
+    if (pre) pre.style.cssText = 'border-radius:10px;padding:20px;font-size:0.87rem;overflow-x:auto;margin:0;line-height:1.7';
+  </script>
+</body>
+</html>

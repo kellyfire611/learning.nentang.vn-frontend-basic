@@ -1,9 +1,108 @@
-﻿<!DOCTYPE html>
-<html lang="vi"><head><meta charset="UTF-8"/><title>DOM removeChild va remove</title><link rel="stylesheet" href="../../shared.css"/></head>
+<!DOCTYPE html>
+<html lang="vi">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <meta name="keywords" content="Nền tảng,HTML,CSS,JavaScript,Lập trình,Web,Kiến thức,Đồ án">
+  <meta name="author" content="Dương Nguyễn Phú Cường">
+  <meta name="description" content="Thực thi code theo thời gian với setTimeout và setInterval.">
+  <meta property="og:locale" content="vi_VN">
+  <meta property="og:type" content="website">
+  <meta property="og:title" content="Bài 25 – setTimeout và setInterval | NenTang.vn">
+  <meta property="og:description" content="Thực thi code theo thời gian với setTimeout và setInterval.">
+  <meta property="og:url" content="https://nentang.vn/">
+  <meta property="og:site_name" content="Nền tảng Kiến thức">
+  <title>Bài 25 – setTimeout và setInterval | NenTang.vn</title>
+  <link rel="stylesheet" href="../../shared.css" />
+</head>
 <body>
-<div class="page-header module-4"><div class="breadcrumb"><a href="../../index.html">Trang Chu</a> &rsaquo; <a href="../index.html">Module 4</a> &rsaquo; bai-25</div><h1>DOM removeChild va remove</h1></div>
-<div class="container"><div class="exercise-content"><h2>Yeu cau</h2><p>Mo rong bai 24: bam nut Xoa tat ca de xoa toan bo list. Xoa item khi click vao chinh no. Hoi xac nhan truoc khi xoa bang confirm().</p>
-<h2>Code mau</h2><pre><code>/* Viet code tai day */</code></pre>
-<h2>Ket qua</h2><div id="result" style="padding:16px;background:#f8f9fa;border-radius:8px;margin-top:8px;">Ket qua se hien thi o day...</div>
-<h2>Bai lam</h2><textarea id="code" style="width:100%;height:180px;font-family:monospace;font-size:14px;padding:12px;border:2px solid #dee2e6;border-radius:8px;"></textarea><br/><button onclick="try{eval(document.getElementById('code').value)}catch(e){document.getElementById('result').textContent=e.message}" style="margin-top:8px;padding:10px 24px;background:#fa709a;color:#fff;border:none;border-radius:8px;cursor:pointer;font-size:15px;">Chay Code</button>
-</div><a href="../index.html" class="btn-back"> Quay lai Module 4</a></div></body></html>
+  <div class="page-header module-4">
+    <div class="breadcrumb">
+      <a href="../../index.html">Trang Chủ</a> &rsaquo;
+      <a href="../index.html">Module 4</a> &rsaquo; Bài 25
+    </div>
+    <h1>Bài 25: setTimeout và setInterval</h1>
+    <p>Module 4 – JavaScript Cơ Bản</p>
+  </div>
+
+  <div class="exercise-page">
+    <div class="exercise-box">
+      <div class="ex-head">
+        <h1>📝 Yêu cầu bài tập</h1>
+        <p>Thực thi code theo thời gian với setTimeout và setInterval.</p>
+      </div>
+      <div class="ex-desc">
+        <h3>Mô tả</h3>
+        <p>setTimeout chạy code sau một khoảng thời gian. setInterval chạy code lặp lại sau mỗi khoảng thời gian. Cả hai đều bất đồng bộ.</p>
+        <h3>Yêu cầu</h3>
+        <ul>
+          <li>Tạo đồng hồ đếm giờ thực (HH:MM:SS) dùng setInterval</li>
+          <li>Tạo countdown timer: 60 giây đếm ngược</li>
+          <li>Toast notification tự ẩn sau 3 giây</li>
+        </ul>
+        <h3>🧠 Kiến thức cần nhớ</h3>
+        <ul>
+          <li><code>setTimeout(fn, ms)</code>: chạy fn SAU ms mili giây (1 lần)</li>
+          <li><code>setInterval(fn, ms)</code>: chạy fn mỗi ms mili giây (lặp lại)</li>
+          <li><code>clearTimeout(id)</code> / <code>clearInterval(id)</code>: hủy timer</li>
+          <li>Lưu return value của setTimeout/setInterval để có thể hủy</li>
+          <li>setInterval không chính xác 100% – mỗi lần chạy có thể trễ chút</li>
+          <li>Dùng Date.now() thay setInterval cho timer chính xác hơn</li>
+        </ul>
+      </div>
+      <div class="ex-work">
+        <h3>💻 Code mẫu</h3>
+        <div id="code-highlight">
+          <pre id="code-raw" style="display:none">// Đồng hồ thực
+function capNhatGio() {
+  const now = new Date();
+  const h = String(now.getHours()).padStart(2,'0');
+  const m = String(now.getMinutes()).padStart(2,'0');
+  const s = String(now.getSeconds()).padStart(2,'0');
+  document.getElementById('clock').textContent = `${h}:${m}:${s}`;
+}
+capNhatGio(); // Chạy ngay lần đầu
+const clockInterval = setInterval(capNhatGio, 1000);
+
+// Countdown Timer
+let con_lai = 60;
+const hien = document.getElementById('countdown');
+const timer = setInterval(() =&gt; {
+  hien.textContent = con_lai;
+  if (con_lai &lt;= 0) {
+    clearInterval(timer);
+    hien.textContent = 'Hết giờ!';
+    return;
+  }
+  con_lai--;
+}, 1000);
+
+// Toast notification
+function hienToast(msg, type = 'success') {
+  const toast = document.createElement('div');
+  toast.className = `toast toast-${type}`;
+  toast.textContent = msg;
+  document.body.appendChild(toast);
+  // Thêm class show sau 10ms để trigger transition
+  setTimeout(() =&gt; toast.classList.add('show'), 10);
+  // Ẩn sau 3s
+  setTimeout(() =&gt; {
+    toast.classList.remove('show');
+    setTimeout(() =&gt; toast.remove(), 300);
+  }, 3000);
+}</pre>
+        </div>
+      </div>
+    </div>
+  </div>
+  <a href="../index.html" class="btn-back" style="margin-top:20px;">&#8592; Quay lại</a>
+  <script type="module">
+    import { codeToHtml } from 'https://esm.sh/shiki@1';
+    const raw = document.getElementById('code-raw').textContent;
+    const highlighted = await codeToHtml(raw, { lang: 'javascript', theme: 'github-dark' });
+    document.getElementById('code-highlight').innerHTML = highlighted;
+    const pre = document.getElementById('code-highlight').querySelector('pre');
+    if (pre) pre.style.cssText = 'border-radius:10px;padding:20px;font-size:0.87rem;overflow-x:auto;margin:0;line-height:1.7';
+  </script>
+</body>
+</html>

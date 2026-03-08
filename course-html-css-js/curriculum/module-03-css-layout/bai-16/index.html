@@ -1,24 +1,99 @@
-﻿<!DOCTYPE html><html lang='vi'><head><meta charset='UTF-8'/><title>Bai 16 - CSS Grid grid-template-columns</title><link rel='stylesheet' href='../../shared.css'/></head><body><div class='page-header module-3'><div class='breadcrumb'><a href='../../index.html'>Trang Chu</a>  <a href='../index.html'>Module 3</a>  Bai 16</div><h1>Bai 16: CSS Grid grid-template-columns</h1></div><div class='exercise-page'><div class='exercise-box'><div class='ex-work'><pre style='background:#1a202c;color:#e2e8f0;padding:20px;border-radius:8px;font-size:.88rem;line-height:1.7;overflow-x:auto;white-space:pre-wrap'>.grid {
+<!DOCTYPE html>
+<html lang="vi">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <meta name="keywords" content="Nền tảng,HTML,CSS,JavaScript,Lập trình,Web,Kiến thức,Đồ án">
+  <meta name="author" content="Dương Nguyễn Phú Cường">
+  <meta name="description" content="Định nghĩa vùng tên (named areas) trong CSS Grid để layout trực quan.">
+  <meta property="og:locale" content="vi_VN">
+  <meta property="og:type" content="website">
+  <meta property="og:title" content="Bài 16 – CSS Grid: Named Areas | NenTang.vn">
+  <meta property="og:description" content="Định nghĩa vùng tên (named areas) trong CSS Grid để layout trực quan.">
+  <meta property="og:url" content="https://nentang.vn/">
+  <meta property="og:site_name" content="Nền tảng Kiến thức">
+  <title>Bài 16 – CSS Grid: Named Areas | NenTang.vn</title>
+  <link rel="stylesheet" href="../../shared.css" />
+</head>
+<body>
+  <div class="page-header module-3">
+    <div class="breadcrumb">
+      <a href="../../index.html">Trang Chủ</a> &rsaquo;
+      <a href="../index.html">Module 3</a> &rsaquo; Bài 16
+    </div>
+    <h1>Bài 16: CSS Grid: Named Areas</h1>
+    <p>Module 3 – CSS Layout &amp; Responsive</p>
+  </div>
+
+  <div class="exercise-page">
+    <div class="exercise-box">
+      <div class="ex-head">
+        <h1>📝 Yêu cầu bài tập</h1>
+        <p>Định nghĩa vùng tên (named areas) trong CSS Grid để layout trực quan.</p>
+      </div>
+      <div class="ex-desc">
+        <h3>Mô tả</h3>
+        <p>grid-template-areas cho phép bạn 'vẽ' layout bằng tên vùng trong CSS, giúp code đọc rất dễ và dễ điều chỉnh layout.</p>
+        <h3>Yêu cầu</h3>
+        <ul>
+          <li>Tạo layout cổ điển: header, sidebar, main, footer bằng named areas</li>
+          <li>Chuyển layout sang mobile bằng media query (sidebar xuống dưới main)</li>
+          <li>Tạo layout tạp chí 2 cột dùng named areas</li>
+        </ul>
+        <h3>🧠 Kiến thức cần nhớ</h3>
+        <ul>
+          <li><code>grid-template-areas: 'header header' 'sidebar main' 'footer footer'</code></li>
+          <li>Tên vùng phải liên tục, hình chữ nhật</li>
+          <li>Dùng <code>.</code> cho ô không có tên</li>
+          <li>Đặt vào item: <code>grid-area: header</code></li>
+          <li>Thay đổi layout responsive chỉ bằng thay đổi grid-template-areas</li>
+        </ul>
+      </div>
+      <div class="ex-work">
+        <h3>💻 Code mẫu</h3>
+        <div id="code-highlight">
+          <pre id="code-raw" style="display:none">/* Layout với named areas */
+.page {
   display: grid;
+  grid-template-columns: 260px 1fr;
+  grid-template-rows: 64px 1fr 60px;
+  grid-template-areas:
+    "header  header"
+    "sidebar main"
+    "footer  footer";
+  min-height: 100vh;
+  gap: 0;
 }
 
-/* 3 cot bang nhau */
-.three-col { grid-template-columns: 1fr 1fr 1fr; }
-.three-col-2 { grid-template-columns: repeat(3, 1fr); } /* ngan hon */
+.page-header  { grid-area: header;  background: #1a202c; }
+.page-sidebar { grid-area: sidebar; background: #f7fafc; }
+.page-main    { grid-area: main;    padding: 24px; }
+.page-footer  { grid-area: footer;  background: #2d3748; }
 
-/* Cot co dinh + tu do */
-.sidebar-layout { grid-template-columns: 250px 1fr; }
-.sidebar-2 { grid-template-columns: 250px 1fr 280px; }
-
-/* Ket hop don vi */
-.mix { grid-template-columns: 200px 1fr 2fr auto; }
-
-/* minmax() - co dinh min va max */
-.responsive-grid {
-  grid-template-columns: repeat(auto-fill, minmax(250px, 1fr));
-}
-
-/* fit-content */
-.fit { grid-template-columns: fit-content(300px) 1fr; }
-
-/* YEU CAU: Tao layout 12 cot kieu Bootstrap bang CSS Grid */</pre></div></div><a href='../index.html' class='btn-back' style='margin-top:20px;'> Quay lai</a></div></body></html>
+/* Responsive: mobile */
+@media (max-width: 768px) {
+  .page {
+    grid-template-columns: 1fr;
+    grid-template-rows: 56px auto 1fr 60px;
+    grid-template-areas:
+      "header"
+      "sidebar"
+      "main"
+      "footer";
+  }
+}</pre>
+        </div>
+      </div>
+    </div>
+  </div>
+  <a href="../index.html" class="btn-back" style="margin-top:20px;">&#8592; Quay lại</a>
+  <script type="module">
+    import { codeToHtml } from 'https://esm.sh/shiki@1';
+    const raw = document.getElementById('code-raw').textContent;
+    const highlighted = await codeToHtml(raw, { lang: 'css', theme: 'github-dark' });
+    document.getElementById('code-highlight').innerHTML = highlighted;
+    const pre = document.getElementById('code-highlight').querySelector('pre');
+    if (pre) pre.style.cssText = 'border-radius:10px;padding:20px;font-size:0.87rem;overflow-x:auto;margin:0;line-height:1.7';
+  </script>
+</body>
+</html>

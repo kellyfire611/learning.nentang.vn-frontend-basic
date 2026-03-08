@@ -1,29 +1,103 @@
-﻿<!DOCTYPE html><html lang='vi'><head><meta charset='UTF-8'/><title>Bai 27 - CSS Transform</title><link rel='stylesheet' href='../../shared.css'/></head><body><div class='page-header module-2'><div class='breadcrumb'><a href='../../index.html'>Trang Chu</a>  <a href='../index.html'>Module 2</a>  Bai 27</div><h1>Bai 27: CSS Transform</h1></div><div class='exercise-page'><div class='exercise-box'><div class='ex-work'><pre style='background:#1a202c;color:#e2e8f0;padding:20px;border-radius:8px;font-size:.88rem;line-height:1.7;overflow-x:auto;white-space:pre-wrap'>.hop { width:100px; height:100px; background:#5a67d8; }
+<!DOCTYPE html>
+<html lang="vi">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <meta name="keywords" content="Nền tảng,HTML,CSS,JavaScript,Lập trình,Web,Kiến thức,Đồ án">
+  <meta name="author" content="Dương Nguyễn Phú Cường">
+  <meta name="description" content="Tạo các kiểu khung ảnh sáng tạo bằng CSS thuần.
+">
+  <meta property="og:locale" content="vi_VN">
+  <meta property="og:type" content="website">
+  <meta property="og:title" content="Bài 27 – Tạo khung frame cho hình ảnh | NenTang.vn">
+  <meta property="og:description" content="Tạo các kiểu khung ảnh sáng tạo bằng CSS thuần.
+">
+  <meta property="og:url" content="https://nentang.vn/">
+  <meta property="og:site_name" content="Nền tảng Kiến thức">
+  <title>Bài 27 – Tạo khung frame cho hình ảnh | NenTang.vn</title>
+  <link rel="stylesheet" href="../../shared.css" />
+</head>
+<body>
+  <div class="page-header module-2">
+    <div class="breadcrumb">
+      <a href="../../index.html">Trang Chủ</a> &rsaquo;
+      <a href="../index.html">Module 2</a> &rsaquo; Bài 27
+    </div>
+    <h1>Bài 27: Tạo khung frame cho hình ảnh</h1>
+    <p>Module 2 – CSS Cơ Bản</p>
+  </div>
 
-/* Xoay - rotate */
-.xoay-45   { transform: rotate(45deg); }
-.xoay-180  { transform: rotate(180deg); }
+  <div class="exercise-page">
+    <div class="exercise-box">
+      <div class="ex-head">
+        <h1>📝 Yêu cầu bài tập</h1>
+        <p>Tạo các kiểu khung ảnh sáng tạo bằng CSS thuần.
+</p>
+      </div>
+      <div class="ex-desc">
+        <h3>Mô tả</h3>
+        <p>CSS có thể tạo khung ảnh đẹp mà không cần ảnh nền hay thư viện. Kết hợp border, outline, box-shadow và ::before/::after để sáng tạo.</p>
+        <h3>Yêu cầu</h3>
+        <ul>
+          <li>Tạo khung ảnh polaroid (viền trắng dày dưới)</li>
+          <li>Tạo khung đa lớp dùng outline</li>
+          <li>Tạo khung góc (corner brackets) dùng ::before::after</li>
+          <li>Tạo khung ảnh với bóng đổ đẹp</li>
+          <li>Tạo khung ảnh 3D dùng perspective</li>
+        </ul>
+        <h3>🧠 Kiến thức cần nhớ</h3>
+        <ul>
+          <li><code>outline: 4px solid white</code> + <code>outline-offset: -12px</code>: khung trong</li>
+          <li><code>box-shadow</code> nhiều lớp tạo hiệu ứng khung đa lớp</li>
+          <li>Polaroid: padding dày phía dưới, box-shadow nhẹ</li>
+          <li><code>::before</code> và <code>::after</code> tạo góc trang trí</li>
+          <li>Perspective 3D: <code>transform: rotate3d()</code> cho hiệu ứng nghiêng</li>
+        </ul>
+      </div>
+      <div class="ex-work">
+        <h3>💻 Code mẫu</h3>
+        <div id="code-highlight">
+          <pre id="code-raw" style="display:none">/* Polaroid frame */
+.polaroid {
+  display: inline-block;
+  padding: 12px 12px 40px;
+  background: white;
+  box-shadow: 0 4px 16px rgba(0,0,0,0.2);
+  transform: rotate(-3deg);
+  transition: transform 0.3s;
+}
+.polaroid:hover { transform: rotate(0deg) scale(1.02); }
 
-/* Phong to/Thu nho - scale */
-.phong-to  { transform: scale(1.5); }
-.thu-nho   { transform: scale(0.5); }
-.xy-khac   { transform: scaleX(2); }
-
-/* Di chuyen - translate */
-.sang-phai { transform: translateX(50px); }
-.xuong-duoi { transform: translateY(50px); }
-.cheo       { transform: translate(20px, -20px); }
-
-/* Nghieng - skew */
-.nghieng-x { transform: skewX(30deg); }
-.nghieng-y { transform: skewY(10deg); }
-
-/* Ket hop nhieu transform */
-.tong-hop {
-  transform: rotate(45deg) scale(1.2) translateX(20px);
+/* Khung vàng đa lớp */
+.gold-frame {
+  border: 4px solid #b7791f;
+  outline: 2px solid #f6e05e;
+  outline-offset: -8px;
+  box-shadow: 0 0 0 8px #b7791f, 0 8px 24px rgba(0,0,0,0.4);
 }
 
-/* Transform origin - diem goc */
-.tu-goc-tren { transform-origin: top left; transform: rotate(30deg); }
-
-/* YEU CAU: Tao card 3D flip voi rotateY */</pre></div></div><a href='../index.html' class='btn-back' style='margin-top:20px;'> Quay lai</a></div></body></html>
+/* Corner brackets */
+.corner-frame { position: relative; }
+.corner-frame::before, .corner-frame::after {
+  content: '';
+  position: absolute;
+  width: 24px; height: 24px;
+  border: 3px solid #3182ce;
+}
+.corner-frame::before { top: -3px; left: -3px; border-right:none; border-bottom:none; }
+.corner-frame::after  { bottom:-3px; right:-3px; border-left:none; border-top:none; }</pre>
+        </div>
+      </div>
+    </div>
+  </div>
+  <a href="../index.html" class="btn-back" style="margin-top:20px;">&#8592; Quay lại</a>
+  <script type="module">
+    import { codeToHtml } from 'https://esm.sh/shiki@1';
+    const raw = document.getElementById('code-raw').textContent;
+    const highlighted = await codeToHtml(raw, { lang: 'html', theme: 'github-dark' });
+    document.getElementById('code-highlight').innerHTML = highlighted;
+    const pre = document.getElementById('code-highlight').querySelector('pre');
+    if (pre) pre.style.cssText = 'border-radius:10px;padding:20px;font-size:0.87rem;overflow-x:auto;margin:0;line-height:1.7';
+  </script>
+</body>
+</html>

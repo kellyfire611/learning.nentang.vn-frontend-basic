@@ -1,21 +1,106 @@
-﻿<!DOCTYPE html><html lang='vi'><head><meta charset='UTF-8'/><title>Bai 09 - Flexbox justify-content</title><link rel='stylesheet' href='../../shared.css'/></head><body><div class='page-header module-3'><div class='breadcrumb'><a href='../../index.html'>Trang Chu</a>  <a href='../index.html'>Module 3</a>  Bai 09</div><h1>Bai 09: Flexbox justify-content</h1><p>Module 3  CSS Layout & Responsive</p></div><div class='exercise-page'><div class='exercise-box'><div class='ex-work'><pre style='background:#1a202c;color:#e2e8f0;padding:20px;border-radius:8px;font-size:.88rem;line-height:1.7;overflow-x:auto;white-space:pre-wrap'>/* Can chinh tren MAIN AXIS (ngang cho row, doc cho column) */
+<!DOCTYPE html>
+<html lang="vi">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <meta name="keywords" content="Nền tảng,HTML,CSS,JavaScript,Lập trình,Web,Kiến thức,Đồ án">
+  <meta name="author" content="Dương Nguyễn Phú Cường">
+  <meta name="description" content="Thực hành căn chỉnh flex items theo cả hai trục bằng justify-content và align-items.">
+  <meta property="og:locale" content="vi_VN">
+  <meta property="og:type" content="website">
+  <meta property="og:title" content="Bài 09 – Flexbox: justify-content và align-items | NenTang.vn">
+  <meta property="og:description" content="Thực hành căn chỉnh flex items theo cả hai trục bằng justify-content và align-items.">
+  <meta property="og:url" content="https://nentang.vn/">
+  <meta property="og:site_name" content="Nền tảng Kiến thức">
+  <title>Bài 09 – Flexbox: justify-content và align-items | NenTang.vn</title>
+  <link rel="stylesheet" href="../../shared.css" />
+</head>
+<body>
+  <div class="page-header module-3">
+    <div class="breadcrumb">
+      <a href="../../index.html">Trang Chủ</a> &rsaquo;
+      <a href="../index.html">Module 3</a> &rsaquo; Bài 09
+    </div>
+    <h1>Bài 09: Flexbox: justify-content và align-items</h1>
+    <p>Module 3 – CSS Layout &amp; Responsive</p>
+  </div>
 
-.flex-start   { justify-content: flex-start; }   /* san sang trai (mac dinh) */
-.flex-end     { justify-content: flex-end; }     /* sat phai */
-.center       { justify-content: center; }       /* giua */
-.space-between { justify-content: space-between; } /* dau - cuoi - khong gian giua */
-.space-around  { justify-content: space-around; }  /* khoang cach deu quanh */
-.space-evenly  { justify-content: space-evenly; }  /* khoang cach hoan toan deu */
-
-/* Vi du thuc te */
+  <div class="exercise-page">
+    <div class="exercise-box">
+      <div class="ex-head">
+        <h1>📝 Yêu cầu bài tập</h1>
+        <p>Thực hành căn chỉnh flex items theo cả hai trục bằng justify-content và align-items.</p>
+      </div>
+      <div class="ex-desc">
+        <h3>Mô tả</h3>
+        <p>Đây là 2 thuộc tính quan trọng nhất của Flexbox. Hiểu rõ trục chính (main axis) và trục phụ (cross axis) theo flex-direction là chìa khóa.</p>
+        <h3>Yêu cầu</h3>
+        <ul>
+          <li>Tạo navbar: logo trái, links phải bằng justify-content: space-between</li>
+          <li>Căn giữa nội dung hero section theo cả 2 chiều</li>
+          <li>Tạo grid icon 3x3 dùng flex-wrap + justify-content</li>
+          <li>Tạo footer 3 cột đều nhau</li>
+        </ul>
+        <h3>🧠 Kiến thức cần nhớ</h3>
+        <ul>
+          <li>Trục chính (main axis): theo chiều flex-direction</li>
+          <li>Trục phụ (cross axis): vuông góc với main axis</li>
+          <li><code>justify-content</code>: căn trên main axis</li>
+          <li><code>align-items</code>: căn trên cross axis (tất cả items)</li>
+          <li><code>align-content</code>: căn nhiều dòng trên cross axis (khi wrap)</li>
+          <li>flex-direction:row → main=ngang, cross=dọc; column → ngược lại</li>
+        </ul>
+      </div>
+      <div class="ex-work">
+        <h3>💻 Code mẫu</h3>
+        <div id="code-highlight">
+          <pre id="code-raw" style="display:none">/* Navbar: logo trái, menu phải */
 .navbar {
   display: flex;
-  justify-content: space-between; /* logo - | - menu */
+  justify-content: space-between;
   align-items: center;
+  padding: 0 32px;
+  height: 64px;
 }
 
-.nut-nhom {
+/* Hero căn giữa tuyệt đối */
+.hero {
   display: flex;
+  flex-direction: column;
   justify-content: center;
-  gap: 12px;
-}</pre></div></div><a href='../index.html' class='btn-back' style='margin-top:20px;'> Quay lai</a></div></body></html>
+  align-items: center;
+  min-height: 80vh;
+  text-align: center;
+}
+
+/* Grid icon 3x3 */
+.icon-grid {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: center;
+  gap: 20px;
+}
+.icon-item { width: calc(33.333% - 20px); }
+
+/* Footer 3 cột */
+.footer {
+  display: flex;
+  justify-content: space-between;
+  gap: 32px;
+}
+.footer-col { flex: 1; }</pre>
+        </div>
+      </div>
+    </div>
+  </div>
+  <a href="../index.html" class="btn-back" style="margin-top:20px;">&#8592; Quay lại</a>
+  <script type="module">
+    import { codeToHtml } from 'https://esm.sh/shiki@1';
+    const raw = document.getElementById('code-raw').textContent;
+    const highlighted = await codeToHtml(raw, { lang: 'css', theme: 'github-dark' });
+    document.getElementById('code-highlight').innerHTML = highlighted;
+    const pre = document.getElementById('code-highlight').querySelector('pre');
+    if (pre) pre.style.cssText = 'border-radius:10px;padding:20px;font-size:0.87rem;overflow-x:auto;margin:0;line-height:1.7';
+  </script>
+</body>
+</html>

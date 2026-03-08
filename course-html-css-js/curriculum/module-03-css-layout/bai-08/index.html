@@ -1,19 +1,96 @@
-﻿<!DOCTYPE html><html lang='vi'><head><meta charset='UTF-8'/><title>Bai 08 - Flexbox Container co ban</title><link rel='stylesheet' href='../../shared.css'/></head><body><div class='page-header module-3'><div class='breadcrumb'><a href='../../index.html'>Trang Chu</a>  <a href='../index.html'>Module 3</a>  Bai 08</div><h1>Bai 08: Flexbox Container co ban</h1><p>Module 3  CSS Layout & Responsive</p></div><div class='exercise-page'><div class='exercise-box'><div class='ex-work'><pre style='background:#1a202c;color:#e2e8f0;padding:20px;border-radius:8px;font-size:.88rem;line-height:1.7;overflow-x:auto;white-space:pre-wrap'>/* Kich hoat Flexbox */
-.container { display: flex; }
+<!DOCTYPE html>
+<html lang="vi">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <meta name="keywords" content="Nền tảng,HTML,CSS,JavaScript,Lập trình,Web,Kiến thức,Đồ án">
+  <meta name="author" content="Dương Nguyễn Phú Cường">
+  <meta name="description" content="Học các thuộc tính cơ bản của Flex Container để sắp xếp layout.">
+  <meta property="og:locale" content="vi_VN">
+  <meta property="og:type" content="website">
+  <meta property="og:title" content="Bài 08 – Flexbox: Container properties | NenTang.vn">
+  <meta property="og:description" content="Học các thuộc tính cơ bản của Flex Container để sắp xếp layout.">
+  <meta property="og:url" content="https://nentang.vn/">
+  <meta property="og:site_name" content="Nền tảng Kiến thức">
+  <title>Bài 08 – Flexbox: Container properties | NenTang.vn</title>
+  <link rel="stylesheet" href="../../shared.css" />
+</head>
+<body>
+  <div class="page-header module-3">
+    <div class="breadcrumb">
+      <a href="../../index.html">Trang Chủ</a> &rsaquo;
+      <a href="../index.html">Module 3</a> &rsaquo; Bài 08
+    </div>
+    <h1>Bài 08: Flexbox: Container properties</h1>
+    <p>Module 3 – CSS Layout &amp; Responsive</p>
+  </div>
 
-/* Huong sap xep (Main Axis) */
-.hang   { flex-direction: row; }    /* mac dinh, trai -> phai */
-.cot    { flex-direction: column; } /* tren -> duoi */
-.hang-ngược { flex-direction: row-reverse; }
-.cot-nguoc  { flex-direction: column-reverse; }
+  <div class="exercise-page">
+    <div class="exercise-box">
+      <div class="ex-head">
+        <h1>📝 Yêu cầu bài tập</h1>
+        <p>Học các thuộc tính cơ bản của Flex Container để sắp xếp layout.</p>
+      </div>
+      <div class="ex-desc">
+        <h3>Mô tả</h3>
+        <p>Flexbox (Flexible Box) là hệ thống layout 1 chiều rất mạnh. Đặt display:flex trên container để các children trở thành flex items.</p>
+        <h3>Yêu cầu</h3>
+        <ul>
+          <li>Tạo container flex, thêm 5 box con, quan sát flex-direction</li>
+          <li>Thực hành justify-content: flex-start, center, flex-end, space-between, space-around, space-evenly</li>
+          <li>Thực hành align-items: flex-start, center, flex-end, stretch, baseline</li>
+          <li>Thực hành flex-wrap: nowrap, wrap, wrap-reverse</li>
+        </ul>
+        <h3>🧠 Kiến thức cần nhớ</h3>
+        <ul>
+          <li><code>display: flex</code>: bật flexbox cho container</li>
+          <li><code>flex-direction: row|column|row-reverse|column-reverse</code></li>
+          <li><code>justify-content</code>: căn trên TRỤC CHÍNH (main axis)</li>
+          <li><code>align-items</code>: căn trên TRỤC PHỤ (cross axis) – 1 dòng</li>
+          <li><code>flex-wrap: wrap</code>: cho phép xuống dòng khi hết chỗ</li>
+          <li><code>gap: 16px</code>: khoảng cách giữa các items (thay margin)</li>
+        </ul>
+      </div>
+      <div class="ex-work">
+        <h3>💻 Code mẫu</h3>
+        <div id="code-highlight">
+          <pre id="code-raw" style="display:none">/* Flex container cơ bản */
+.flex-container {
+  display: flex;
+  flex-direction: row;       /* row (default) | column */
+  justify-content: center;   /* căn trục chính */
+  align-items: center;       /* căn trục phụ */
+  flex-wrap: wrap;           /* xuống dòng khi hết chỗ */
+  gap: 16px;                 /* khoảng cách đều */
+}
 
-/* Xuong dong khi het cho */
-.tu-dong { flex-wrap: wrap; }    /* tu dong xuong dong */
-.mot-dong { flex-wrap: nowrap; }  /* mac dinh, khong xuong dong */
+/* justify-content các giá trị */
+.jc-start   { justify-content: flex-start; }
+.jc-center  { justify-content: center; }
+.jc-end     { justify-content: flex-end; }
+.jc-between { justify-content: space-between; } /* phổ biến nhất */
+.jc-around  { justify-content: space-around; }
+.jc-evenly  { justify-content: space-evenly; }
 
-/* Shorthand */
-.flex { flex-flow: row wrap; } /* direction + wrap */
-
-/* Khoang cach giua items */
-.gap { gap: 16px; }          /* tat ca huong */
-.gap-xy { row-gap: 16px; column-gap: 24px; }</pre></div></div><a href='../index.html' class='btn-back' style='margin-top:20px;'> Quay lai</a></div></body></html>
+/* Căn giữa hoàn hảo: flex + justify+align center */
+.perfect-center {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  min-height: 100vh;
+}</pre>
+        </div>
+      </div>
+    </div>
+  </div>
+  <a href="../index.html" class="btn-back" style="margin-top:20px;">&#8592; Quay lại</a>
+  <script type="module">
+    import { codeToHtml } from 'https://esm.sh/shiki@1';
+    const raw = document.getElementById('code-raw').textContent;
+    const highlighted = await codeToHtml(raw, { lang: 'css', theme: 'github-dark' });
+    document.getElementById('code-highlight').innerHTML = highlighted;
+    const pre = document.getElementById('code-highlight').querySelector('pre');
+    if (pre) pre.style.cssText = 'border-radius:10px;padding:20px;font-size:0.87rem;overflow-x:auto;margin:0;line-height:1.7';
+  </script>
+</body>
+</html>

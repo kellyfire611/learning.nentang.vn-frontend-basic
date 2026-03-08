@@ -1,9 +1,111 @@
-﻿<!DOCTYPE html>
-<html lang="vi"><head><meta charset="UTF-8"/><title>Spread va Rest Operator</title><link rel="stylesheet" href="../../shared.css"/></head>
+<!DOCTYPE html>
+<html lang="vi">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <meta name="keywords" content="Nền tảng,HTML,CSS,JavaScript,Lập trình,Web,Kiến thức,Đồ án">
+  <meta name="author" content="Dương Nguyễn Phú Cường">
+  <meta name="description" content="Dùng Promise để xử lý bất đồng bộ một cách rõ ràng hơn callback.">
+  <meta property="og:locale" content="vi_VN">
+  <meta property="og:type" content="website">
+  <meta property="og:title" content="Bài 04 – Promise | NenTang.vn">
+  <meta property="og:description" content="Dùng Promise để xử lý bất đồng bộ một cách rõ ràng hơn callback.">
+  <meta property="og:url" content="https://nentang.vn/">
+  <meta property="og:site_name" content="Nền tảng Kiến thức">
+  <title>Bài 04 – Promise | NenTang.vn</title>
+  <link rel="stylesheet" href="../../shared.css" />
+</head>
 <body>
-<div class="page-header module-5"><div class="breadcrumb"><a href="../../index.html">Trang Chu</a> &rsaquo; <a href="../index.html">Module 5</a> &rsaquo; bai-04</div><h1>Spread va Rest Operator</h1></div>
-<div class="container"><div class="exercise-content"><h2>Yeu cau</h2><p>Dung spread (...) de: copy mang, gop 2 mang, copy object, gop 2 object. Dung rest (...args) trong ham nhan so luong tham so khong xac dinh. Tinh tong tat ca tham so.</p>
-<h2>Code mau</h2><pre><code>/* Viet code tai day */</code></pre>
-<h2>Ket qua</h2><div id="result" style="padding:16px;background:#f8f9fa;border-radius:8px;margin-top:8px;">Ket qua se hien thi o day...</div>
-<h2>Bai lam</h2><textarea id="code" style="width:100%;height:200px;font-family:monospace;font-size:14px;padding:12px;border:2px solid #dee2e6;border-radius:8px;"></textarea><br/><button onclick="try{eval(document.getElementById('code').value)}catch(e){document.getElementById('result').textContent=e.message}" style="margin-top:8px;padding:10px 24px;background:#a18cd1;color:#fff;border:none;border-radius:8px;cursor:pointer;font-size:15px;">Chay Code</button>
-</div><a href="../index.html" class="btn-back"> Quay lai Module 5</a></div></body></html>
+  <div class="page-header module-5">
+    <div class="breadcrumb">
+      <a href="../../index.html">Trang Chủ</a> &rsaquo;
+      <a href="../index.html">Module 5</a> &rsaquo; Bài 04
+    </div>
+    <h1>Bài 04: Promise</h1>
+    <p>Module 5 – JavaScript Nâng Cao</p>
+  </div>
+
+  <div class="exercise-page">
+    <div class="exercise-box">
+      <div class="ex-head">
+        <h1>📝 Yêu cầu bài tập</h1>
+        <p>Dùng Promise để xử lý bất đồng bộ một cách rõ ràng hơn callback.</p>
+      </div>
+      <div class="ex-desc">
+        <h3>Mô tả</h3>
+        <p>Promise đại diện cho một giá trị sẽ có trong tương lai (hoặc lỗi). Giải quyết vấn đề callback hell bằng chuỗi .then().</p>
+        <h3>Yêu cầu</h3>
+        <ul>
+          <li>Tạo Promise mô phỏng gọi API (setTimeout)</li>
+          <li>Xử lý nhiều Promise song song với Promise.all()</li>
+          <li>Chuỗi Promise: .then().then().catch()</li>
+        </ul>
+        <h3>🧠 Kiến thức cần nhớ</h3>
+        <ul>
+          <li>Promise có 3 trạng thái: pending, fulfilled, rejected</li>
+          <li><code>new Promise((resolve, reject) => { })</code></li>
+          <li><code>resolve(data)</code>: thành công, <code>reject(err)</code>: thất bại</li>
+          <li><code>.then(data => { })</code>: xử lý thành công</li>
+          <li><code>.catch(err => { })</code>: xử lý lỗi</li>
+          <li><code>.finally(() => { })</code>: luôn chạy</li>
+          <li><code>Promise.all([p1,p2,p3])</code>: chờ TẤT CẢ thành công</li>
+          <li><code>Promise.race([p1,p2])</code>: lấy kết quả nào về trước</li>
+        </ul>
+      </div>
+      <div class="ex-work">
+        <h3>💻 Code mẫu</h3>
+        <div id="code-highlight">
+          <pre id="code-raw" style="display:none">// Tạo Promise
+function layUser(id) {
+  return new Promise((resolve, reject) =&gt; {
+    setTimeout(() =&gt; {
+      if (id &lt;= 0) reject(new Error('ID không hợp lệ'));
+      else resolve({ id, ten: 'Nguyễn An', email: 'an@example.com' });
+    }, 800);
+  });
+}
+
+// Dùng Promise
+layUser(1)
+  .then(user =&gt; {
+    console.log('User:', user.ten);
+    return layBaiViet(user.id); // trả về Promise tiếp theo
+  })
+  .then(posts =&gt; console.log('Posts:', posts))
+  .catch(err =&gt; console.error('Lỗi:', err.message))
+  .finally(() =&gt; console.log('Hoàn tất'));
+
+// Promise.all – chạy song song, chờ tất cả
+Promise.all([layUser(1), layUser(2), layUser(3)])
+  .then(([u1, u2, u3]) =&gt; {
+    console.log(u1, u2, u3);
+  })
+  .catch(err =&gt; console.error('Một trong số bị lỗi:', err));
+
+// Promise.allSettled – chờ tất cả, kể cả lỗi
+Promise.allSettled([layUser(1), layUser(-1)])
+  .then(results =&gt; {
+    results.forEach(r =&gt; {
+      if (r.status === 'fulfilled') console.log('OK:', r.value);
+      else console.log('Lỗi:', r.reason.message);
+    });
+  });
+
+// Promise.race – lấy kết quả đầu tiên
+const timeout = new Promise((_, reject) =&gt; setTimeout(() =&gt; reject(new Error('Timeout')), 3000));
+Promise.race([layUser(1), timeout]).then(console.log).catch(console.error);</pre>
+        </div>
+      </div>
+    </div>
+  </div>
+  <a href="../index.html" class="btn-back" style="margin-top:20px;">&#8592; Quay lại</a>
+  <script type="module">
+    import { codeToHtml } from 'https://esm.sh/shiki@1';
+    const raw = document.getElementById('code-raw').textContent;
+    const highlighted = await codeToHtml(raw, { lang: 'javascript', theme: 'github-dark' });
+    document.getElementById('code-highlight').innerHTML = highlighted;
+    const pre = document.getElementById('code-highlight').querySelector('pre');
+    if (pre) pre.style.cssText = 'border-radius:10px;padding:20px;font-size:0.87rem;overflow-x:auto;margin:0;line-height:1.7';
+  </script>
+</body>
+</html>

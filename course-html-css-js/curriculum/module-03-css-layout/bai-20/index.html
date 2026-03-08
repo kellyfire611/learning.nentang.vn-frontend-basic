@@ -1,23 +1,106 @@
-﻿<!DOCTYPE html><html lang='vi'><head><meta charset='UTF-8'/><title>Bai 20 - CSS Grid auto-fill va auto-fit</title><link rel='stylesheet' href='../../shared.css'/></head><body><div class='page-header module-3'><div class='breadcrumb'><a href='../../index.html'>Trang Chu</a>  <a href='../index.html'>Module 3</a>  Bai 20</div><h1>Bai 20: CSS Grid auto-fill va auto-fit</h1></div><div class='exercise-page'><div class='exercise-box'><div class='ex-work'><pre style='background:#1a202c;color:#e2e8f0;padding:20px;border-radius:8px;font-size:.88rem;line-height:1.7;overflow-x:auto;white-space:pre-wrap'>/* auto-fill: tao cot rong ngay ca khi khong co item */
-.auto-fill {
+<!DOCTYPE html>
+<html lang="vi">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <meta name="keywords" content="Nền tảng,HTML,CSS,JavaScript,Lập trình,Web,Kiến thức,Đồ án">
+  <meta name="author" content="Dương Nguyễn Phú Cường">
+  <meta name="description" content="Thực hành phương pháp mobile-first: thiết kế từ mobile rồi nâng cấp lên desktop.">
+  <meta property="og:locale" content="vi_VN">
+  <meta property="og:type" content="website">
+  <meta property="og:title" content="Bài 20 – Mobile-First Design | NenTang.vn">
+  <meta property="og:description" content="Thực hành phương pháp mobile-first: thiết kế từ mobile rồi nâng cấp lên desktop.">
+  <meta property="og:url" content="https://nentang.vn/">
+  <meta property="og:site_name" content="Nền tảng Kiến thức">
+  <title>Bài 20 – Mobile-First Design | NenTang.vn</title>
+  <link rel="stylesheet" href="../../shared.css" />
+</head>
+<body>
+  <div class="page-header module-3">
+    <div class="breadcrumb">
+      <a href="../../index.html">Trang Chủ</a> &rsaquo;
+      <a href="../index.html">Module 3</a> &rsaquo; Bài 20
+    </div>
+    <h1>Bài 20: Mobile-First Design</h1>
+    <p>Module 3 – CSS Layout &amp; Responsive</p>
+  </div>
+
+  <div class="exercise-page">
+    <div class="exercise-box">
+      <div class="ex-head">
+        <h1>📝 Yêu cầu bài tập</h1>
+        <p>Thực hành phương pháp mobile-first: thiết kế từ mobile rồi nâng cấp lên desktop.</p>
+      </div>
+      <div class="ex-desc">
+        <h3>Mô tả</h3>
+        <p>Mobile-first là phương pháp viết CSS cho mobile trước, sau đó dùng min-width media query để thêm style cho màn hình lớn hơn. Hiệu quả và tốt hơn desktop-first.</p>
+        <h3>Yêu cầu</h3>
+        <ul>
+          <li>Viết CSS cho mobile (1 cột) làm mặc định</li>
+          <li>Thêm @media (min-width: 768px) cho tablet (2 cột)</li>
+          <li>Thêm @media (min-width: 1024px) cho desktop (3 cột)</li>
+          <li>Compare: CSS mobile-first vs desktop-first cho cùng kết quả</li>
+        </ul>
+        <h3>🧠 Kiến thức cần nhớ</h3>
+        <ul>
+          <li>Mobile-first tiết kiệm dữ liệu: CSS nhỏ tải trước cho mobile</li>
+          <li>Buộc designer suy nghĩ về nội dung quan trọng nhất</li>
+          <li>Google ưu tiên mobile-friendly trong SEO</li>
+          <li>min-width query: 'từ kích thước này TRỞ LÊN'</li>
+          <li>Không cần override CSS mobile trong query – chỉ thêm mới</li>
+        </ul>
+      </div>
+      <div class="ex-work">
+        <h3>💻 Code mẫu</h3>
+        <div id="code-highlight">
+          <pre id="code-raw" style="display:none">/* === MOBILE FIRST === */
+
+/* Mặc định: mobile (&lt; 768px) */
+.container {
+  width: 100%;
+  padding: 0 16px;
+}
+.grid {
   display: grid;
-  grid-template-columns: repeat(auto-fill, minmax(200px, 1fr));
+  grid-template-columns: 1fr; /* 1 cột */
+  gap: 16px;
+}
+.sidebar { display: none; } /* Ẩn sidebar trên mobile */
+h1 { font-size: 1.5rem; }
+
+/* Tablet (&gt;= 768px) */
+@media (min-width: 768px) {
+  .container { max-width: 720px; margin: 0 auto; }
+  .grid { grid-template-columns: repeat(2, 1fr); }
+  h1 { font-size: 2rem; }
 }
 
-/* auto-fit: keo gian cot con lai khi it item */
-.auto-fit {
-  display: grid;
-  grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+/* Desktop (&gt;= 1024px) */
+@media (min-width: 1024px) {
+  .container { max-width: 1100px; }
+  .layout { display: grid; grid-template-columns: 260px 1fr; }
+  .sidebar { display: block; } /* Hiện sidebar */
+  .grid { grid-template-columns: repeat(3, 1fr); }
+  h1 { font-size: 2.5rem; }
 }
 
-/* Khac biet: auto-fill giu cot trong, auto-fit bo cot trong */
-
-/* Pattern hay dung nhat cho responsive card */
-.card-grid {
-  display: grid;
-  grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
-  gap: 24px;
-}
-/* Hoan toan responsive KHONG can media queries! */
-
-/* YEU CAU: Tao thu vien anh, so sanh auto-fill va auto-fit */</pre></div></div><a href='../index.html' class='btn-back' style='margin-top:20px;'> Quay lai</a></div></body></html>
+/* Large Desktop (&gt;= 1280px) */
+@media (min-width: 1280px) {
+  .container { max-width: 1200px; }
+  .grid { grid-template-columns: repeat(4, 1fr); }
+}</pre>
+        </div>
+      </div>
+    </div>
+  </div>
+  <a href="../index.html" class="btn-back" style="margin-top:20px;">&#8592; Quay lại</a>
+  <script type="module">
+    import { codeToHtml } from 'https://esm.sh/shiki@1';
+    const raw = document.getElementById('code-raw').textContent;
+    const highlighted = await codeToHtml(raw, { lang: 'css', theme: 'github-dark' });
+    document.getElementById('code-highlight').innerHTML = highlighted;
+    const pre = document.getElementById('code-highlight').querySelector('pre');
+    if (pre) pre.style.cssText = 'border-radius:10px;padding:20px;font-size:0.87rem;overflow-x:auto;margin:0;line-height:1.7';
+  </script>
+</body>
+</html>

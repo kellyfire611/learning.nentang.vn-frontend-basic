@@ -1,9 +1,98 @@
-﻿<!DOCTYPE html>
-<html lang="vi"><head><meta charset="UTF-8"/><title>Fetch API - GET Request</title><link rel="stylesheet" href="../../shared.css"/></head>
+<!DOCTYPE html>
+<html lang="vi">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <meta name="keywords" content="Nền tảng,HTML,CSS,JavaScript,Lập trình,Web,Kiến thức,Đồ án">
+  <meta name="author" content="Dương Nguyễn Phú Cường">
+  <meta name="description" content="Dùng Regular Expression để tìm kiếm và validate chuỗi nâng cao.">
+  <meta property="og:locale" content="vi_VN">
+  <meta property="og:type" content="website">
+  <meta property="og:title" content="Bài 09 – Regular Expressions (Regex) | NenTang.vn">
+  <meta property="og:description" content="Dùng Regular Expression để tìm kiếm và validate chuỗi nâng cao.">
+  <meta property="og:url" content="https://nentang.vn/">
+  <meta property="og:site_name" content="Nền tảng Kiến thức">
+  <title>Bài 09 – Regular Expressions (Regex) | NenTang.vn</title>
+  <link rel="stylesheet" href="../../shared.css" />
+</head>
 <body>
-<div class="page-header module-5"><div class="breadcrumb"><a href="../../index.html">Trang Chu</a> &rsaquo; <a href="../index.html">Module 5</a> &rsaquo; bai-09</div><h1>Fetch API - GET Request</h1></div>
-<div class="container"><div class="exercise-content"><h2>Yeu cau</h2><p>Fetch du lieu tu https://jsonplaceholder.typicode.com/users. Hien thi danh sach user dang card dep. Them tinh nang: bam vao card xem chi tiet. Loading spinner trong khi cho.</p>
-<h2>Code mau</h2><pre><code>/* Viet code tai day */</code></pre>
-<h2>Ket qua</h2><div id="result" style="padding:16px;background:#f8f9fa;border-radius:8px;margin-top:8px;">Ket qua se hien thi o day...</div>
-<h2>Bai lam</h2><textarea id="code" style="width:100%;height:200px;font-family:monospace;font-size:14px;padding:12px;border:2px solid #dee2e6;border-radius:8px;"></textarea><br/><button onclick="try{eval(document.getElementById('code').value)}catch(e){document.getElementById('result').textContent=e.message}" style="margin-top:8px;padding:10px 24px;background:#a18cd1;color:#fff;border:none;border-radius:8px;cursor:pointer;font-size:15px;">Chay Code</button>
-</div><a href="../index.html" class="btn-back"> Quay lai Module 5</a></div></body></html>
+  <div class="page-header module-5">
+    <div class="breadcrumb">
+      <a href="../../index.html">Trang Chủ</a> &rsaquo;
+      <a href="../index.html">Module 5</a> &rsaquo; Bài 09
+    </div>
+    <h1>Bài 09: Regular Expressions (Regex)</h1>
+    <p>Module 5 – JavaScript Nâng Cao</p>
+  </div>
+
+  <div class="exercise-page">
+    <div class="exercise-box">
+      <div class="ex-head">
+        <h1>📝 Yêu cầu bài tập</h1>
+        <p>Dùng Regular Expression để tìm kiếm và validate chuỗi nâng cao.</p>
+      </div>
+      <div class="ex-desc">
+        <h3>Mô tả</h3>
+        <p>Regex là ngôn ngữ con để xử lý chuỗi theo pattern. Cực kỳ mạnh cho validation, search-replace, extract data.</p>
+        <h3>Yêu cầu</h3>
+        <ul>
+          <li>Validate email, số điện thoại VN, ngày sinh</li>
+          <li>Tìm và thay thế tất cả từ bằng regex</li>
+          <li>Extract số từ chuỗi hỗn hợp</li>
+        </ul>
+        <h3>🧠 Kiến thức cần nhớ</h3>
+        <ul>
+          <li>Tạo regex: <code>/pattern/flags</code> hoặc <code>new RegExp('pattern', 'flags')</code></li>
+          <li>Flags: g (global-tìm tất cả), i (case-insensitive), m (multiline)</li>
+          <li><code>regex.test(str)</code>: true/false</li>
+          <li><code>str.match(regex)</code>: mảng kết quả</li>
+          <li><code>str.replace(regex, rep)</code>: thay thế</li>
+          <li>Các metachar: . * + ? ^ $ [] {} () | \</li>
+        </ul>
+      </div>
+      <div class="ex-work">
+        <h3>💻 Code mẫu</h3>
+        <div id="code-highlight">
+          <pre id="code-raw" style="display:none">// Validate email
+const emailReg = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+console.log(emailReg.test('user@example.com'));  // true
+console.log(emailReg.test('khong-hop-le'));      // false
+
+// Số điện thoại Việt Nam: 0[35789]xxxxxxxx
+const sdtReg = /^(0|\+84)[35789]\d{8}$/;
+console.log(sdtReg.test('0901234567'));  // true
+console.log(sdtReg.test('01209999999')); // false
+
+// Extract tất cả số trong chuỗi
+const text = 'Mua 3 áo giá 150k và 2 quần giá 200k';
+const so_match = text.match(/\d+/g);
+console.log(so_match); // ['3', '150', '2', '200']
+
+// Replace với regex global
+const dirty = 'Hello   World   JavaScript';
+const clean = dirty.replace(/\s+/g, ' ').trim();
+console.log(clean); // 'Hello World JavaScript'
+
+// Capture groups
+const dateStr = '2024-12-31';
+const [, nam, thang, ngay] = dateStr.match(/(\d{4})-(\d{2})-(\d{2})/);
+console.log(nam, thang, ngay); // '2024' '12' '31'
+
+// Named groups (ES2018)
+const { groups: { year, month } } = '2024-12'.match(/(?&lt;year&gt;\d{4})-(?&lt;month&gt;\d{2})/);
+console.log(year, month); // '2024' '12'</pre>
+        </div>
+      </div>
+    </div>
+  </div>
+  <a href="../index.html" class="btn-back" style="margin-top:20px;">&#8592; Quay lại</a>
+  <script type="module">
+    import { codeToHtml } from 'https://esm.sh/shiki@1';
+    const raw = document.getElementById('code-raw').textContent;
+    const highlighted = await codeToHtml(raw, { lang: 'javascript', theme: 'github-dark' });
+    document.getElementById('code-highlight').innerHTML = highlighted;
+    const pre = document.getElementById('code-highlight').querySelector('pre');
+    if (pre) pre.style.cssText = 'border-radius:10px;padding:20px;font-size:0.87rem;overflow-x:auto;margin:0;line-height:1.7';
+  </script>
+</body>
+</html>

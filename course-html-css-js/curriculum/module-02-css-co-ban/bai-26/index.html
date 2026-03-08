@@ -1,29 +1,106 @@
-﻿<!DOCTYPE html><html lang='vi'><head><meta charset='UTF-8'/><title>Bai 26 - CSS Animation keyframes</title><link rel='stylesheet' href='../../shared.css'/></head><body><div class='page-header module-2'><div class='breadcrumb'><a href='../../index.html'>Trang Chu</a>  <a href='../index.html'>Module 2</a>  Bai 26</div><h1>Bai 26: CSS Animation keyframes</h1></div><div class='exercise-page'><div class='exercise-box'><div class='ex-work'><pre style='background:#1a202c;color:#e2e8f0;padding:20px;border-radius:8px;font-size:.88rem;line-height:1.7;overflow-x:auto;white-space:pre-wrap'>/* Khai bao animation */
-@keyframes nhay-len {
-  0%   { transform: translateY(0); }
-  50%  { transform: translateY(-20px); }
-  100% { transform: translateY(0); }
+<!DOCTYPE html>
+<html lang="vi">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <meta name="keywords" content="Nền tảng,HTML,CSS,JavaScript,Lập trình,Web,Kiến thức,Đồ án">
+  <meta name="author" content="Dương Nguyễn Phú Cường">
+  <meta name="description" content="Áp dụng hiệu ứng bộ lọc CSS lên ảnh và phần tử: blur, grayscale, brightness...">
+  <meta property="og:locale" content="vi_VN">
+  <meta property="og:type" content="website">
+  <meta property="og:title" content="Bài 26 – CSS Filter – Bộ lọc hình ảnh | NenTang.vn">
+  <meta property="og:description" content="Áp dụng hiệu ứng bộ lọc CSS lên ảnh và phần tử: blur, grayscale, brightness...">
+  <meta property="og:url" content="https://nentang.vn/">
+  <meta property="og:site_name" content="Nền tảng Kiến thức">
+  <title>Bài 26 – CSS Filter – Bộ lọc hình ảnh | NenTang.vn</title>
+  <link rel="stylesheet" href="../../shared.css" />
+</head>
+<body>
+  <div class="page-header module-2">
+    <div class="breadcrumb">
+      <a href="../../index.html">Trang Chủ</a> &rsaquo;
+      <a href="../index.html">Module 2</a> &rsaquo; Bài 26
+    </div>
+    <h1>Bài 26: CSS Filter – Bộ lọc hình ảnh</h1>
+    <p>Module 2 – CSS Cơ Bản</p>
+  </div>
+
+  <div class="exercise-page">
+    <div class="exercise-box">
+      <div class="ex-head">
+        <h1>📝 Yêu cầu bài tập</h1>
+        <p>Áp dụng hiệu ứng bộ lọc CSS lên ảnh và phần tử: blur, grayscale, brightness...</p>
+      </div>
+      <div class="ex-desc">
+        <h3>Mô tả</h3>
+        <p>CSS filter cho phép áp dụng hiệu ứng đồ họa mà không cần Photoshop. Rất hữu ích để làm ảnh đen trắng khi hover, tạo overlay effect.</p>
+        <h3>Yêu cầu</h3>
+        <ul>
+          <li>Áp dụng grayscale(100%) rồi hover về màu gốc</li>
+          <li>Dùng blur() làm mờ ảnh nền không mờ nội dung</li>
+          <li>Dùng brightness() tối ảnh để text đọc được</li>
+          <li>Dùng hue-rotate() tạo hiệu ứng đổi màu liên tục</li>
+          <li>Kết hợp nhiều filter trong 1 rule</li>
+        </ul>
+        <h3>🧠 Kiến thức cần nhớ</h3>
+        <ul>
+          <li><code>filter: grayscale(100%)</code>: đen trắng</li>
+          <li><code>filter: blur(4px)</code>: làm mờ</li>
+          <li><code>filter: brightness(0.5)</code>: tối đi (0=đen, 1=bình thường, 2=sáng)</li>
+          <li><code>filter: contrast(150%)</code>: tăng tương phản</li>
+          <li><code>filter: sepia(80%)</code>: tông nâu cổ điển</li>
+          <li><code>filter: hue-rotate(180deg)</code>: xoay màu sắc</li>
+          <li><code>backdrop-filter</code>: áp dụng cho phía sau phần tử</li>
+        </ul>
+      </div>
+      <div class="ex-work">
+        <h3>💻 Code mẫu</h3>
+        <div id="code-highlight">
+          <pre id="code-raw" style="display:none">/* Grayscale hover effect */
+.photo {
+  filter: grayscale(100%);
+  transition: filter 0.4s;
+}
+.photo:hover { filter: grayscale(0%); }
+
+/* Làm tối ảnh để đọc text */
+.hero-img {
+  filter: brightness(0.6);
 }
 
-@keyframes xoay {
-  from { transform: rotate(0deg); }
-  to   { transform: rotate(360deg); }
+/* Kết hợp nhiều filter */
+.vintage {
+  filter: sepia(60%) contrast(110%) brightness(90%);
 }
 
-@keyframes mo-dan {
-  from { opacity: 0; transform: translateY(20px); }
-  to   { opacity: 1; transform: translateY(0); }
+/* Blur background không blur content */
+.blurred-bg::before {
+  content: '';
+  position: absolute;
+  inset: 0;
+  background: inherit;
+  filter: blur(20px);
+  z-index: -1;
 }
 
-@keyframes nhip-tim {
-  0%, 100% { transform: scale(1); }
-  50%       { transform: scale(1.2); }
+/* Hue rotate animation */
+@keyframes hue-anim {
+  0% { filter: hue-rotate(0deg); }
+  100% { filter: hue-rotate(360deg); }
 }
-
-/* Ap dung animation */
-.hieu-ung-nhay  { animation: nhay-len 0.6s ease infinite; }
-.hieu-ung-xoay  { animation: xoay 2s linear infinite; }
-.hieu-ung-mo    { animation: mo-dan 0.5s ease forwards; }
-.hieu-ung-tim   { animation: nhip-tim 1s ease infinite; }
-
-/* YEU CAU: Tao loading spinner, animated card, fade-in content */</pre></div></div><a href='../index.html' class='btn-back' style='margin-top:20px;'> Quay lai</a></div></body></html>
+.rainbow-img { animation: hue-anim 3s linear infinite; }</pre>
+        </div>
+      </div>
+    </div>
+  </div>
+  <a href="../index.html" class="btn-back" style="margin-top:20px;">&#8592; Quay lại</a>
+  <script type="module">
+    import { codeToHtml } from 'https://esm.sh/shiki@1';
+    const raw = document.getElementById('code-raw').textContent;
+    const highlighted = await codeToHtml(raw, { lang: 'html', theme: 'github-dark' });
+    document.getElementById('code-highlight').innerHTML = highlighted;
+    const pre = document.getElementById('code-highlight').querySelector('pre');
+    if (pre) pre.style.cssText = 'border-radius:10px;padding:20px;font-size:0.87rem;overflow-x:auto;margin:0;line-height:1.7';
+  </script>
+</body>
+</html>

@@ -1,26 +1,102 @@
-﻿<!DOCTYPE html><html lang='vi'><head><meta charset='UTF-8'/><title>Bai 07 - Overflow hidden scroll auto</title><link rel='stylesheet' href='../../shared.css'/></head><body><div class='page-header module-3'><div class='breadcrumb'><a href='../../index.html'>Trang Chu</a>  <a href='../index.html'>Module 3</a>  Bai 07</div><h1>Bai 07: Overflow hidden scroll auto</h1><p>Module 3  CSS Layout & Responsive</p></div><div class='exercise-page'><div class='exercise-box'><div class='ex-work'><pre style='background:#1a202c;color:#e2e8f0;padding:20px;border-radius:8px;font-size:.88rem;line-height:1.7;overflow-x:auto;white-space:pre-wrap'>/* Clip noi dung tran */
-.clip { overflow: hidden; }
+<!DOCTYPE html>
+<html lang="vi">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <meta name="keywords" content="Nền tảng,HTML,CSS,JavaScript,Lập trình,Web,Kiến thức,Đồ án">
+  <meta name="author" content="Dương Nguyễn Phú Cường">
+  <meta name="description" content="Kiểm soát nội dung tràn ra ngoài container bằng overflow.">
+  <meta property="og:locale" content="vi_VN">
+  <meta property="og:type" content="website">
+  <meta property="og:title" content="Bài 07 – Overflow: hidden scroll auto | NenTang.vn">
+  <meta property="og:description" content="Kiểm soát nội dung tràn ra ngoài container bằng overflow.">
+  <meta property="og:url" content="https://nentang.vn/">
+  <meta property="og:site_name" content="Nền tảng Kiến thức">
+  <title>Bài 07 – Overflow: hidden scroll auto | NenTang.vn</title>
+  <link rel="stylesheet" href="../../shared.css" />
+</head>
+<body>
+  <div class="page-header module-3">
+    <div class="breadcrumb">
+      <a href="../../index.html">Trang Chủ</a> &rsaquo;
+      <a href="../index.html">Module 3</a> &rsaquo; Bài 07
+    </div>
+    <h1>Bài 07: Overflow: hidden scroll auto</h1>
+    <p>Module 3 – CSS Layout &amp; Responsive</p>
+  </div>
 
-/* Thanh cuon (luon hien) */
-.scroll { overflow: scroll; }
-
-/* Thanh cuon (chi hien khi can) */
-.hop-long {
-  height: 200px;
-  overflow: auto;  /* khuyen dung */
-}
-
-/* Chi cuon theo 1 huong */
-.ngang { overflow-x: auto; overflow-y: hidden; }
-.doc   { overflow-y: auto; overflow-x: hidden; }
-
-/* Ung dung: table responsive */
-.table-wrap { overflow-x: auto; }  /* table cuon ngang */
-.table-wrap table { min-width: 600px; }
-
-/* Clip text tran */
-.ellipsis {
+  <div class="exercise-page">
+    <div class="exercise-box">
+      <div class="ex-head">
+        <h1>📝 Yêu cầu bài tập</h1>
+        <p>Kiểm soát nội dung tràn ra ngoài container bằng overflow.</p>
+      </div>
+      <div class="ex-desc">
+        <h3>Mô tả</h3>
+        <p>Khi nội dung vượt quá kích thước container, overflow quyết định hiển thị hay ẩn phần bị tràn, hoặc thêm thanh cuộn.</p>
+        <h3>Yêu cầu</h3>
+        <ul>
+          <li>Tạo div cố định height, nội dung nhiều – so sánh overflow: visible/hidden/scroll/auto</li>
+          <li>Tạo custom scrollbar CSS cho overflow:scroll</li>
+          <li>Dùng overflow:hidden + border-radius để ảnh không vượt khỏi góc bo tròn</li>
+          <li>Tạo text truncate (cắt bớt bằng dấu ...) với overflow và text-overflow</li>
+        </ul>
+        <h3>🧠 Kiến thức cần nhớ</h3>
+        <ul>
+          <li><code>overflow: visible</code>: mặc định – nội dung tràn ra ngoài</li>
+          <li><code>overflow: hidden</code>: cắt bỏ phần tràn</li>
+          <li><code>overflow: scroll</code>: luôn hiện thanh cuộn</li>
+          <li><code>overflow: auto</code>: chỉ hiện thanh cuộn khi cần (thường dùng nhất)</li>
+          <li><code>text-overflow: ellipsis</code>: hiện dấu ... khi cắt text (cần overflow:hidden + white-space:nowrap)</li>
+        </ul>
+      </div>
+      <div class="ex-work">
+        <h3>💻 Code mẫu</h3>
+        <div id="code-highlight">
+          <pre id="code-raw" style="display:none">/* Text truncate 1 dòng */
+.truncate {
   white-space: nowrap;
   overflow: hidden;
-  text-overflow: ellipsis;  /* hien ... */
-}</pre></div></div><a href='../index.html' class='btn-back' style='margin-top:20px;'> Quay lai</a></div></body></html>
+  text-overflow: ellipsis;
+  max-width: 200px;
+}
+
+/* Text truncate nhiều dòng (2 dòng) */
+.clamp-2 {
+  display: -webkit-box;
+  -webkit-line-clamp: 2;
+  -webkit-box-orient: vertical;
+  overflow: hidden;
+}
+
+/* Scrollable box */
+.scroll-box {
+  height: 200px;
+  overflow-y: auto;
+  padding: 16px;
+  border: 1px solid #e2e8f0;
+  border-radius: 8px;
+}
+
+/* Custom scrollbar */
+.scroll-box::-webkit-scrollbar { width: 6px; }
+.scroll-box::-webkit-scrollbar-track { background: #f1f1f1; border-radius: 3px; }
+.scroll-box::-webkit-scrollbar-thumb { background: #3182ce; border-radius: 3px; }
+
+/* Overflow hidden giúp ảnh tôn trọng border-radius */
+.card { border-radius: 12px; overflow: hidden; }</pre>
+        </div>
+      </div>
+    </div>
+  </div>
+  <a href="../index.html" class="btn-back" style="margin-top:20px;">&#8592; Quay lại</a>
+  <script type="module">
+    import { codeToHtml } from 'https://esm.sh/shiki@1';
+    const raw = document.getElementById('code-raw').textContent;
+    const highlighted = await codeToHtml(raw, { lang: 'css', theme: 'github-dark' });
+    document.getElementById('code-highlight').innerHTML = highlighted;
+    const pre = document.getElementById('code-highlight').querySelector('pre');
+    if (pre) pre.style.cssText = 'border-radius:10px;padding:20px;font-size:0.87rem;overflow-x:auto;margin:0;line-height:1.7';
+  </script>
+</body>
+</html>

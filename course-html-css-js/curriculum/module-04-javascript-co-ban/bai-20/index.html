@@ -1,9 +1,99 @@
-﻿<!DOCTYPE html>
-<html lang="vi"><head><meta charset="UTF-8"/><title>DOM querySelector va getElementById</title><link rel="stylesheet" href="../../shared.css"/></head>
+<!DOCTYPE html>
+<html lang="vi">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <meta name="keywords" content="Nền tảng,HTML,CSS,JavaScript,Lập trình,Web,Kiến thức,Đồ án">
+  <meta name="author" content="Dương Nguyễn Phú Cường">
+  <meta name="description" content="Quản lý class CSS của phần tử bằng classList API.">
+  <meta property="og:locale" content="vi_VN">
+  <meta property="og:type" content="website">
+  <meta property="og:title" content="Bài 20 – DOM – classList | NenTang.vn">
+  <meta property="og:description" content="Quản lý class CSS của phần tử bằng classList API.">
+  <meta property="og:url" content="https://nentang.vn/">
+  <meta property="og:site_name" content="Nền tảng Kiến thức">
+  <title>Bài 20 – DOM – classList | NenTang.vn</title>
+  <link rel="stylesheet" href="../../shared.css" />
+</head>
 <body>
-<div class="page-header module-4"><div class="breadcrumb"><a href="../../index.html">Trang Chu</a> &rsaquo; <a href="../index.html">Module 4</a> &rsaquo; bai-20</div><h1>DOM querySelector va getElementById</h1></div>
-<div class="container"><div class="exercise-content"><h2>Yeu cau</h2><p>Tao trang co nhieu phan tu: chon bang id, class, tag, :first-child, :nth-child, attribute. Hien thi thong tin phan tu da chon vao console va tren trang.</p>
-<h2>Code mau</h2><pre><code>/* Viet code tai day */</code></pre>
-<h2>Ket qua</h2><div id="result" style="padding:16px;background:#f8f9fa;border-radius:8px;margin-top:8px;">Ket qua se hien thi o day...</div>
-<h2>Bai lam</h2><textarea id="code" style="width:100%;height:180px;font-family:monospace;font-size:14px;padding:12px;border:2px solid #dee2e6;border-radius:8px;"></textarea><br/><button onclick="try{eval(document.getElementById('code').value)}catch(e){document.getElementById('result').textContent=e.message}" style="margin-top:8px;padding:10px 24px;background:#fa709a;color:#fff;border:none;border-radius:8px;cursor:pointer;font-size:15px;">Chay Code</button>
-</div><a href="../index.html" class="btn-back"> Quay lai Module 4</a></div></body></html>
+  <div class="page-header module-4">
+    <div class="breadcrumb">
+      <a href="../../index.html">Trang Chủ</a> &rsaquo;
+      <a href="../index.html">Module 4</a> &rsaquo; Bài 20
+    </div>
+    <h1>Bài 20: DOM – classList</h1>
+    <p>Module 4 – JavaScript Cơ Bản</p>
+  </div>
+
+  <div class="exercise-page">
+    <div class="exercise-box">
+      <div class="ex-head">
+        <h1>📝 Yêu cầu bài tập</h1>
+        <p>Quản lý class CSS của phần tử bằng classList API.</p>
+      </div>
+      <div class="ex-desc">
+        <h3>Mô tả</h3>
+        <p>classList là cách tốt nhất để thay đổi style phần tử: thêm/xóa/toggle class thay vì sửa style inline trực tiếp. Tách biệt logic và presentation.</p>
+        <h3>Yêu cầu</h3>
+        <ul>
+          <li>Toggle dark mode: thêm/xóa class 'dark' cho body</li>
+          <li>Highlight tab active: xóa class active tất cả tab, thêm cho tab được click</li>
+          <li>Validation: thêm class 'error' / 'success' cho input</li>
+        </ul>
+        <h3>🧠 Kiến thức cần nhớ</h3>
+        <ul>
+          <li><code>el.classList.add('class')</code>: thêm class</li>
+          <li><code>el.classList.remove('class')</code>: xóa class</li>
+          <li><code>el.classList.toggle('class')</code>: thêm nếu chưa có, xóa nếu đã có</li>
+          <li><code>el.classList.contains('class')</code>: kiểm tra có class không</li>
+          <li><code>el.classList.replace('old','new')</code>: thay đổi class</li>
+          <li>Nên dùng classList thay vì sửa el.className hay el.style trực tiếp</li>
+        </ul>
+      </div>
+      <div class="ex-work">
+        <h3>💻 Code mẫu</h3>
+        <div id="code-highlight">
+          <pre id="code-raw" style="display:none">// Dark mode toggle
+const btn = document.getElementById('btnDarkMode');
+btn.addEventListener('click', () =&gt; {
+  document.body.classList.toggle('dark');
+  btn.textContent = document.body.classList.contains('dark') ? '☀️ Light' : '🌙 Dark';
+});
+
+// Tab active
+const tabs = document.querySelectorAll('.tab-btn');
+const contents = document.querySelectorAll('.tab-content');
+
+tabs.forEach((tab, i) =&gt; {
+  tab.addEventListener('click', () =&gt; {
+    // Xóa active khỏi tất cả
+    tabs.forEach(t =&gt; t.classList.remove('active'));
+    contents.forEach(c =&gt; c.classList.remove('active'));
+    // Thêm active cho tab được click
+    tab.classList.add('active');
+    contents[i].classList.add('active');
+  });
+});
+
+// Input validation
+const input = document.querySelector('#email');
+input.addEventListener('input', () =&gt; {
+  const valid = input.value.includes('@');
+  input.classList.toggle('error',  !valid);
+  input.classList.toggle('success', valid);
+});</pre>
+        </div>
+      </div>
+    </div>
+  </div>
+  <a href="../index.html" class="btn-back" style="margin-top:20px;">&#8592; Quay lại</a>
+  <script type="module">
+    import { codeToHtml } from 'https://esm.sh/shiki@1';
+    const raw = document.getElementById('code-raw').textContent;
+    const highlighted = await codeToHtml(raw, { lang: 'javascript', theme: 'github-dark' });
+    document.getElementById('code-highlight').innerHTML = highlighted;
+    const pre = document.getElementById('code-highlight').querySelector('pre');
+    if (pre) pre.style.cssText = 'border-radius:10px;padding:20px;font-size:0.87rem;overflow-x:auto;margin:0;line-height:1.7';
+  </script>
+</body>
+</html>

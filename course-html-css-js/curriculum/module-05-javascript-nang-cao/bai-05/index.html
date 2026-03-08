@@ -1,9 +1,114 @@
-﻿<!DOCTYPE html>
-<html lang="vi"><head><meta charset="UTF-8"/><title>Template Literals va Tagged Templates</title><link rel="stylesheet" href="../../shared.css"/></head>
+<!DOCTYPE html>
+<html lang="vi">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <meta name="keywords" content="Nền tảng,HTML,CSS,JavaScript,Lập trình,Web,Kiến thức,Đồ án">
+  <meta name="author" content="Dương Nguyễn Phú Cường">
+  <meta name="description" content="Viết code bất đồng bộ đọc như đồng bộ với async/await.">
+  <meta property="og:locale" content="vi_VN">
+  <meta property="og:type" content="website">
+  <meta property="og:title" content="Bài 05 – Async/Await | NenTang.vn">
+  <meta property="og:description" content="Viết code bất đồng bộ đọc như đồng bộ với async/await.">
+  <meta property="og:url" content="https://nentang.vn/">
+  <meta property="og:site_name" content="Nền tảng Kiến thức">
+  <title>Bài 05 – Async/Await | NenTang.vn</title>
+  <link rel="stylesheet" href="../../shared.css" />
+</head>
 <body>
-<div class="page-header module-5"><div class="breadcrumb"><a href="../../index.html">Trang Chu</a> &rsaquo; <a href="../index.html">Module 5</a> &rsaquo; bai-05</div><h1>Template Literals va Tagged Templates</h1></div>
-<div class="container"><div class="exercise-content"><h2>Yeu cau</h2><p>Dung backtick viet chuoi nhieu dong. Nhung bien vao chuoi voi \. Tao ham html() de tao nhanh card HTML. Tao ham hightlight() lam noi bat tu khoa trong chuoi.</p>
-<h2>Code mau</h2><pre><code>/* Viet code tai day */</code></pre>
-<h2>Ket qua</h2><div id="result" style="padding:16px;background:#f8f9fa;border-radius:8px;margin-top:8px;">Ket qua se hien thi o day...</div>
-<h2>Bai lam</h2><textarea id="code" style="width:100%;height:200px;font-family:monospace;font-size:14px;padding:12px;border:2px solid #dee2e6;border-radius:8px;"></textarea><br/><button onclick="try{eval(document.getElementById('code').value)}catch(e){document.getElementById('result').textContent=e.message}" style="margin-top:8px;padding:10px 24px;background:#a18cd1;color:#fff;border:none;border-radius:8px;cursor:pointer;font-size:15px;">Chay Code</button>
-</div><a href="../index.html" class="btn-back"> Quay lai Module 5</a></div></body></html>
+  <div class="page-header module-5">
+    <div class="breadcrumb">
+      <a href="../../index.html">Trang Chủ</a> &rsaquo;
+      <a href="../index.html">Module 5</a> &rsaquo; Bài 05
+    </div>
+    <h1>Bài 05: Async/Await</h1>
+    <p>Module 5 – JavaScript Nâng Cao</p>
+  </div>
+
+  <div class="exercise-page">
+    <div class="exercise-box">
+      <div class="ex-head">
+        <h1>📝 Yêu cầu bài tập</h1>
+        <p>Viết code bất đồng bộ đọc như đồng bộ với async/await.</p>
+      </div>
+      <div class="ex-desc">
+        <h3>Mô tả</h3>
+        <p>async/await là cú pháp ES2017 xây dựng trên Promise. Giúp code bất đồng bộ dễ đọc như code tuần tự thông thường.</p>
+        <h3>Yêu cầu</h3>
+        <ul>
+          <li>Viết lại đoạn Promise .then() thành async/await</li>
+          <li>Dùng try-catch với async/await để xử lý lỗi</li>
+          <li>Chạy song song với Promise.all trong async function</li>
+        </ul>
+        <h3>🧠 Kiến thức cần nhớ</h3>
+        <ul>
+          <li><code>async function f() { }</code>: hàm trả về Promise</li>
+          <li><code>await promise</code>: chờ Promise resolve, chỉ dùng trong async function</li>
+          <li>Lỗi: dùng try-catch (thay vì .catch())</li>
+          <li>Chạy song song: <code>const [a,b] = await Promise.all([p1,p2])</code></li>
+          <li>KHÔNG dùng await trong vòng lặp forEach – dùng for-of hoặc Promise.all</li>
+          <li>Top-level await (ES2022): dùng await ngoài function trong ES Module</li>
+        </ul>
+      </div>
+      <div class="ex-work">
+        <h3>💻 Code mẫu</h3>
+        <div id="code-highlight">
+          <pre id="code-raw" style="display:none">// async/await cơ bản
+async function layThongTinUser(id) {
+  try {
+    const user  = await layUser(id);      // chờ Promise
+    const posts = await layBaiViet(user.id);
+    return { user, posts };
+  } catch (err) {
+    console.error('Lỗi:', err.message);
+    throw err; // re-throw để caller biết
+  }
+}
+
+// Gọi async function
+layThongTinUser(1).then(({ user, posts }) =&gt; {
+  console.log(user.ten, posts.length);
+});
+
+// Hoặc dùng IIFE async
+(async () =&gt; {
+  const data = await layThongTinUser(1);
+  console.log(data);
+})();
+
+// Song song đúng cách
+async function layNhieuUser() {
+  // SAI: chạy tuần tự – chậm
+  // const u1 = await layUser(1);
+  // const u2 = await layUser(2);
+
+  // ĐÚNG: chạy song song – nhanh
+  const [u1, u2] = await Promise.all([layUser(1), layUser(2)]);
+  return [u1, u2];
+}
+
+// Async trong vòng lặp
+async function xuLyNhieu(ids) {
+  // ĐÚNG – for-of với await
+  for (const id of ids) {
+    const user = await layUser(id);
+    console.log(user.ten);
+  }
+  // Hoặc song song:
+  const users = await Promise.all(ids.map(id =&gt; layUser(id)));
+}</pre>
+        </div>
+      </div>
+    </div>
+  </div>
+  <a href="../index.html" class="btn-back" style="margin-top:20px;">&#8592; Quay lại</a>
+  <script type="module">
+    import { codeToHtml } from 'https://esm.sh/shiki@1';
+    const raw = document.getElementById('code-raw').textContent;
+    const highlighted = await codeToHtml(raw, { lang: 'javascript', theme: 'github-dark' });
+    document.getElementById('code-highlight').innerHTML = highlighted;
+    const pre = document.getElementById('code-highlight').querySelector('pre');
+    if (pre) pre.style.cssText = 'border-radius:10px;padding:20px;font-size:0.87rem;overflow-x:auto;margin:0;line-height:1.7';
+  </script>
+</body>
+</html>

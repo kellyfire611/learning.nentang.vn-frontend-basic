@@ -1,9 +1,101 @@
-﻿<!DOCTYPE html>
-<html lang="vi"><head><meta charset="UTF-8"/><title>String Methods</title><link rel="stylesheet" href="../../shared.css"/></head>
+<!DOCTYPE html>
+<html lang="vi">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <meta name="keywords" content="Nền tảng,HTML,CSS,JavaScript,Lập trình,Web,Kiến thức,Đồ án">
+  <meta name="author" content="Dương Nguyễn Phú Cường">
+  <meta name="description" content="Làm việc với ngày và giờ trong JavaScript bằng Date object.">
+  <meta property="og:locale" content="vi_VN">
+  <meta property="og:type" content="website">
+  <meta property="og:title" content="Bài 17 – Date Object | NenTang.vn">
+  <meta property="og:description" content="Làm việc với ngày và giờ trong JavaScript bằng Date object.">
+  <meta property="og:url" content="https://nentang.vn/">
+  <meta property="og:site_name" content="Nền tảng Kiến thức">
+  <title>Bài 17 – Date Object | NenTang.vn</title>
+  <link rel="stylesheet" href="../../shared.css" />
+</head>
 <body>
-<div class="page-header module-4"><div class="breadcrumb"><a href="../../index.html">Trang Chu</a> &rsaquo; <a href="../index.html">Module 4</a> &rsaquo; bai-17</div><h1>String Methods</h1></div>
-<div class="container"><div class="exercise-content"><h2>Yeu cau</h2><p>Viet ham xu ly ten: toUpperCase, toLowerCase, trim, includes, indexOf, slice, split. Dem tu trong cau. Dao nguoc chuoi bang split-reverse-join.</p>
-<h2>Code mau</h2><pre><code>/* Viet code tai day */</code></pre>
-<h2>Ket qua</h2><div id="result" style="padding:16px;background:#f8f9fa;border-radius:8px;margin-top:8px;">Ket qua se hien thi o day...</div>
-<h2>Bai lam</h2><textarea id="code" style="width:100%;height:180px;font-family:monospace;font-size:14px;padding:12px;border:2px solid #dee2e6;border-radius:8px;"></textarea><br/><button onclick="try{eval(document.getElementById('code').value)}catch(e){document.getElementById('result').textContent=e.message}" style="margin-top:8px;padding:10px 24px;background:#fa709a;color:#fff;border:none;border-radius:8px;cursor:pointer;font-size:15px;">Chay Code</button>
-</div><a href="../index.html" class="btn-back"> Quay lai Module 4</a></div></body></html>
+  <div class="page-header module-4">
+    <div class="breadcrumb">
+      <a href="../../index.html">Trang Chủ</a> &rsaquo;
+      <a href="../index.html">Module 4</a> &rsaquo; Bài 17
+    </div>
+    <h1>Bài 17: Date Object</h1>
+    <p>Module 4 – JavaScript Cơ Bản</p>
+  </div>
+
+  <div class="exercise-page">
+    <div class="exercise-box">
+      <div class="ex-head">
+        <h1>📝 Yêu cầu bài tập</h1>
+        <p>Làm việc với ngày và giờ trong JavaScript bằng Date object.</p>
+      </div>
+      <div class="ex-desc">
+        <h3>Mô tả</h3>
+        <p>Date object cho phép lấy thời gian hiện tại, tính toán khoảng cách ngày, định dạng và hiển thị ngày tháng.</p>
+        <h3>Yêu cầu</h3>
+        <ul>
+          <li>In ngày giờ hiện tại theo định dạng Việt Nam</li>
+          <li>Tính số ngày còn lại đến Tết Dương Lịch</li>
+          <li>Tính tuổi từ ngày sinh</li>
+        </ul>
+        <h3>🧠 Kiến thức cần nhớ</h3>
+        <ul>
+          <li><code>new Date()</code>: thời gian hiện tại</li>
+          <li><code>new Date('2024-12-31')</code>: ngày cụ thể</li>
+          <li><code>date.getFullYear()</code>, <code>getMonth()</code> (0-11!), <code>getDate()</code></li>
+          <li>getMonth() bắt đầu từ 0 – cộng 1 để lấy tháng thực</li>
+          <li><code>Date.now()</code>: timestamp hiện tại (ms từ 1/1/1970)</li>
+          <li>Tính khoảng thời gian: trừ hai Date, chia cho ms/ngày</li>
+          <li><code>toLocaleDateString('vi-VN')</code>: định dạng Việt Nam</li>
+        </ul>
+      </div>
+      <div class="ex-work">
+        <h3>💻 Code mẫu</h3>
+        <div id="code-highlight">
+          <pre id="code-raw" style="display:none">// Ngày giờ hiện tại
+const now = new Date();
+console.log(now.getFullYear());  // 2024
+console.log(now.getMonth() + 1); // tháng thực (cộng 1!)
+console.log(now.getDate());      // ngày trong tháng
+console.log(now.getHours(), now.getMinutes());
+
+// Định dạng Việt Nam
+const vn = now.toLocaleDateString('vi-VN', {
+  weekday: 'long',
+  day: '2-digit', month: '2-digit', year: 'numeric'
+});
+console.log(vn); // Thứ Hai, 15/01/2024
+
+// Tính số ngày còn lại đến Tết
+const tet = new Date(now.getFullYear() + 1, 0, 1); // 1/1 năm sau
+const khoangCach = tet - now; // ms
+const conLai = Math.ceil(khoangCach / (1000 * 60 * 60 * 24));
+console.log(`Còn ${conLai} ngày đến năm mới`);
+
+// Tính tuổi
+function tinhTuoi(ngaySinh) {
+  const sinh = new Date(ngaySinh);
+  const hom_nay = new Date();
+  let tuoi = hom_nay.getFullYear() - sinh.getFullYear();
+  const chuaSinh = hom_nay &lt; new Date(hom_nay.getFullYear(), sinh.getMonth(), sinh.getDate());
+  if (chuaSinh) tuoi--;
+  return tuoi;
+}
+console.log(tinhTuoi('2000-03-15')); // tuổi hiện tại</pre>
+        </div>
+      </div>
+    </div>
+  </div>
+  <a href="../index.html" class="btn-back" style="margin-top:20px;">&#8592; Quay lại</a>
+  <script type="module">
+    import { codeToHtml } from 'https://esm.sh/shiki@1';
+    const raw = document.getElementById('code-raw').textContent;
+    const highlighted = await codeToHtml(raw, { lang: 'javascript', theme: 'github-dark' });
+    document.getElementById('code-highlight').innerHTML = highlighted;
+    const pre = document.getElementById('code-highlight').querySelector('pre');
+    if (pre) pre.style.cssText = 'border-radius:10px;padding:20px;font-size:0.87rem;overflow-x:auto;margin:0;line-height:1.7';
+  </script>
+</body>
+</html>

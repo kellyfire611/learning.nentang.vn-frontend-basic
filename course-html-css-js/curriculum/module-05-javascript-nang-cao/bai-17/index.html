@@ -1,9 +1,104 @@
-﻿<!DOCTYPE html>
-<html lang="vi"><head><meta charset="UTF-8"/><title>Prototype va Prototype Chain</title><link rel="stylesheet" href="../../shared.css"/></head>
+<!DOCTYPE html>
+<html lang="vi">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <meta name="keywords" content="Nền tảng,HTML,CSS,JavaScript,Lập trình,Web,Kiến thức,Đồ án">
+  <meta name="author" content="Dương Nguyễn Phú Cường">
+  <meta name="description" content="Tạo image slider tự động và có điều khiển bằng JavaScript.">
+  <meta property="og:locale" content="vi_VN">
+  <meta property="og:type" content="website">
+  <meta property="og:title" content="Bài 17 – Image Slider / Carousel | NenTang.vn">
+  <meta property="og:description" content="Tạo image slider tự động và có điều khiển bằng JavaScript.">
+  <meta property="og:url" content="https://nentang.vn/">
+  <meta property="og:site_name" content="Nền tảng Kiến thức">
+  <title>Bài 17 – Image Slider / Carousel | NenTang.vn</title>
+  <link rel="stylesheet" href="../../shared.css" />
+</head>
 <body>
-<div class="page-header module-5"><div class="breadcrumb"><a href="../../index.html">Trang Chu</a> &rsaquo; <a href="../index.html">Module 5</a> &rsaquo; bai-17</div><h1>Prototype va Prototype Chain</h1></div>
-<div class="container"><div class="exercise-content"><h2>Yeu cau</h2><p>Them phuong thuc vao String.prototype (vi du: .capitalize()). Them vao Array.prototype (.sum()). Kiem tra chuoi ke thua bang instanceof va Object.getPrototypeOf. Object.create().</p>
-<h2>Code mau</h2><pre><code>/* Viet code tai day */</code></pre>
-<h2>Ket qua</h2><div id="result" style="padding:16px;background:#f8f9fa;border-radius:8px;margin-top:8px;">Ket qua se hien thi o day...</div>
-<h2>Bai lam</h2><textarea id="code" style="width:100%;height:200px;font-family:monospace;font-size:14px;padding:12px;border:2px solid #dee2e6;border-radius:8px;"></textarea><br/><button onclick="try{eval(document.getElementById('code').value)}catch(e){document.getElementById('result').textContent=e.message}" style="margin-top:8px;padding:10px 24px;background:#a18cd1;color:#fff;border:none;border-radius:8px;cursor:pointer;font-size:15px;">Chay Code</button>
-</div><a href="../index.html" class="btn-back"> Quay lai Module 5</a></div></body></html>
+  <div class="page-header module-5">
+    <div class="breadcrumb">
+      <a href="../../index.html">Trang Chủ</a> &rsaquo;
+      <a href="../index.html">Module 5</a> &rsaquo; Bài 17
+    </div>
+    <h1>Bài 17: Image Slider / Carousel</h1>
+    <p>Module 5 – JavaScript Nâng Cao</p>
+  </div>
+
+  <div class="exercise-page">
+    <div class="exercise-box">
+      <div class="ex-head">
+        <h1>📝 Yêu cầu bài tập</h1>
+        <p>Tạo image slider tự động và có điều khiển bằng JavaScript.</p>
+      </div>
+      <div class="ex-desc">
+        <h3>Mô tả</h3>
+        <p>Slider là component phổ biến trong web. Bài này thực hành: DOM, setInterval, event listener, CSS transition.</p>
+        <h3>Yêu cầu</h3>
+        <ul>
+          <li>Tạo slider với 5 ảnh</li>
+          <li>Nút prev/next để chuyển ảnh</li>
+          <li>Dot indicators ở dưới</li>
+          <li>Tự động chuyển mỗi 4 giây, dừng khi hover</li>
+          <li>Transition mượt mà</li>
+        </ul>
+        <h3>🧠 Kiến thức cần nhớ</h3>
+        <ul>
+          <li>Slider state: currentIndex, total slides, isPlaying</li>
+          <li>CSS transform: translateX() để dịch chuyển slides</li>
+          <li>Modulo (%) để vòng lại index: <code>(n + total) % total</code></li>
+          <li>mouseenter/mouseleave để pause/resume auto-play</li>
+          <li>Touch events: touchstart/touchend để swipe trên mobile</li>
+        </ul>
+      </div>
+      <div class="ex-work">
+        <h3>💻 Code mẫu</h3>
+        <div id="code-highlight">
+          <pre id="code-raw" style="display:none">class Slider {
+  constructor(container) {
+    this.container  = container;
+    this.slides     = container.querySelectorAll('.slide');
+    this.dots       = container.querySelectorAll('.dot');
+    this.total      = this.slides.length;
+    this.current    = 0;
+    this.autoTimer  = null;
+    this.init();
+  }
+  init() {
+    container.querySelector('.prev').addEventListener('click', () =&gt; this.prev());
+    container.querySelector('.next').addEventListener('click', () =&gt; this.next());
+    this.dots.forEach((dot, i) =&gt; dot.addEventListener('click', () =&gt; this.goTo(i)));
+    container.addEventListener('mouseenter', () =&gt; this.pause());
+    container.addEventListener('mouseleave', () =&gt; this.play());
+    this.goTo(0);
+    this.play();
+  }
+  goTo(n) {
+    this.slides[this.current].classList.remove('active');
+    this.dots[this.current]?.classList.remove('active');
+    this.current = ((n % this.total) + this.total) % this.total;
+    this.slides[this.current].classList.add('active');
+    this.dots[this.current]?.classList.add('active');
+  }
+  next() { this.goTo(this.current + 1); }
+  prev() { this.goTo(this.current - 1); }
+  play() { this.autoTimer = setInterval(() =&gt; this.next(), 4000); }
+  pause() { clearInterval(this.autoTimer); }
+}
+
+new Slider(document.getElementById('mySlider'));</pre>
+        </div>
+      </div>
+    </div>
+  </div>
+  <a href="../index.html" class="btn-back" style="margin-top:20px;">&#8592; Quay lại</a>
+  <script type="module">
+    import { codeToHtml } from 'https://esm.sh/shiki@1';
+    const raw = document.getElementById('code-raw').textContent;
+    const highlighted = await codeToHtml(raw, { lang: 'javascript', theme: 'github-dark' });
+    document.getElementById('code-highlight').innerHTML = highlighted;
+    const pre = document.getElementById('code-highlight').querySelector('pre');
+    if (pre) pre.style.cssText = 'border-radius:10px;padding:20px;font-size:0.87rem;overflow-x:auto;margin:0;line-height:1.7';
+  </script>
+</body>
+</html>

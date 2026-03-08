@@ -1,24 +1,95 @@
-﻿<!DOCTYPE html><html lang='vi'><head><meta charset='UTF-8'/><meta name='viewport' content='width=device-width,initial-scale=1'/><title>Bai 19 - CSS Specificity</title><link rel='stylesheet' href='../../shared.css'/></head><body><div class='page-header module-2'><div class='breadcrumb'><a href='../../index.html'>Trang Chu</a>  <a href='../index.html'>Module 2</a>  Bai 19</div><h1>Bai 19: CSS Specificity</h1><p>Module 2  CSS Co Ban</p></div><div class='exercise-page'><div class='exercise-box'><div class='ex-work'><h3>Yeu cau va Code mau:</h3><pre style='background:#1a202c;color:#e2e8f0;padding:20px;border-radius:8px;font-size:.88rem;line-height:1.7;overflow-x:auto;white-space:pre-wrap'>/* Thu tu uu tien CSS (tu cao den thap):
-   1. !important (tranh dung)
-   2. Inline style (1000 diem)
-   3. ID selector (100 diem)
-   4. Class, pseudo-class, attribute (10 diem)
-   5. Tag selector, pseudo-element (1 diem)
-   6. Universal (*) (0 diem)
-*/
+<!DOCTYPE html>
+<html lang="vi">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <meta name="keywords" content="Nền tảng,HTML,CSS,JavaScript,Lập trình,Web,Kiến thức,Đồ án">
+  <meta name="author" content="Dương Nguyễn Phú Cường">
+  <meta name="description" content="Thiết kế các kiểu button chuyên nghiệp bằng CSS thuần.">
+  <meta property="og:locale" content="vi_VN">
+  <meta property="og:type" content="website">
+  <meta property="og:title" content="Bài 19 – Tạo Button đẹp với CSS | NenTang.vn">
+  <meta property="og:description" content="Thiết kế các kiểu button chuyên nghiệp bằng CSS thuần.">
+  <meta property="og:url" content="https://nentang.vn/">
+  <meta property="og:site_name" content="Nền tảng Kiến thức">
+  <title>Bài 19 – Tạo Button đẹp với CSS | NenTang.vn</title>
+  <link rel="stylesheet" href="../../shared.css" />
+</head>
+<body>
+  <div class="page-header module-2">
+    <div class="breadcrumb">
+      <a href="../../index.html">Trang Chủ</a> &rsaquo;
+      <a href="../index.html">Module 2</a> &rsaquo; Bài 19
+    </div>
+    <h1>Bài 19: Tạo Button đẹp với CSS</h1>
+    <p>Module 2 – CSS Cơ Bản</p>
+  </div>
 
-/* Vi du tinh specificity */
-p { color: black; }                /* 0,0,0,1 = 1 diem */
-.text { color: blue; }             /* 0,0,1,0 = 10 diem */
-#title { color: green; }           /* 0,1,0,0 = 100 diem */
-#title.text p { color: red; }      /* 0,1,1,1 = 111 diem */
+  <div class="exercise-page">
+    <div class="exercise-box">
+      <div class="ex-head">
+        <h1>📝 Yêu cầu bài tập</h1>
+        <p>Thiết kế các kiểu button chuyên nghiệp bằng CSS thuần.</p>
+      </div>
+      <div class="ex-desc">
+        <h3>Mô tả</h3>
+        <p>Button (nút bấm) là thành phần UI quan trọng nhất. Thiết kế button đẹp đòi hỏi kết hợp nhiều thuộc tính CSS và xử lý tốt các trạng thái.</p>
+        <h3>Yêu cầu</h3>
+        <ul>
+          <li>Tạo 5 kiểu button: Primary, Secondary, Danger, Ghost, Icon button</li>
+          <li>Thêm hover effect: đổi màu, nổi lên (translateY)</li>
+          <li>Thêm active effect: nhấn xuống</li>
+          <li>Tạo loading button với spinner CSS animation</li>
+          <li>Tạo button group (dính liền nhau)</li>
+        </ul>
+        <h3>🧠 Kiến thức cần nhớ</h3>
+        <ul>
+          <li>Padding nên dùng em hoặc px: <code>padding: 0.6em 1.2em</code></li>
+          <li><code>cursor: pointer</code>: thay đổi trỏ chuột khi hover</li>
+          <li><code>transition: all 0.2s</code>: animation mượt khi hover/active</li>
+          <li><code>transform: translateY(-2px)</code>: hiệu ứng nổi lên</li>
+          <li><code>disabled</code> state: <code>opacity:0.6; cursor:not-allowed</code></li>
+        </ul>
+      </div>
+      <div class="ex-work">
+        <h3>💻 Code mẫu</h3>
+        <div id="code-highlight">
+          <pre id="code-raw" style="display:none">.btn {
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  padding: 10px 20px;
+  border: 2px solid transparent;
+  border-radius: 8px;
+  font-size: 15px;
+  font-weight: 600;
+  cursor: pointer;
+  transition: all 0.2s;
+}
+.btn:active { transform: scale(0.96); }
 
-/* Tranh dung !important */
-.van-ban { color: purple !important; } /* ghi de tat ca */
+.btn-primary { background: #3182ce; color: white; }
+.btn-primary:hover { background: #2c5282; box-shadow: 0 4px 12px rgba(49,130,206,0.4); transform: translateY(-2px); }
 
-/* Best practice */
-/* Dung class, tranh dung ID cho CSS */
-/* Tranh dung !important - dung khi thuc su can */
-/* Viet CSS cu the vua du, khong qua dai dong */
+.btn-ghost { background: transparent; border-color: #3182ce; color: #3182ce; }
+.btn-ghost:hover { background: #ebf8ff; }
 
-/* YEU CAU: Tao 5 quy tac CSS chong nhau, du doan mau nao se thang */</pre></div></div><a href='../index.html' class='btn-back' style='margin-top:20px;'> Quay lai</a></div></body></html>
+.btn-danger { background: #e53e3e; color: white; }
+.btn-danger:hover { background: #c53030; }
+
+.btn:disabled { opacity: 0.6; cursor: not-allowed; transform: none; }</pre>
+        </div>
+      </div>
+    </div>
+  </div>
+  <a href="../index.html" class="btn-back" style="margin-top:20px;">&#8592; Quay lại</a>
+  <script type="module">
+    import { codeToHtml } from 'https://esm.sh/shiki@1';
+    const raw = document.getElementById('code-raw').textContent;
+    const highlighted = await codeToHtml(raw, { lang: 'html', theme: 'github-dark' });
+    document.getElementById('code-highlight').innerHTML = highlighted;
+    const pre = document.getElementById('code-highlight').querySelector('pre');
+    if (pre) pre.style.cssText = 'border-radius:10px;padding:20px;font-size:0.87rem;overflow-x:auto;margin:0;line-height:1.7';
+  </script>
+</body>
+</html>

@@ -1,23 +1,111 @@
-﻿<!DOCTYPE html><html lang='vi'><head><meta charset='UTF-8'/><title>Bai 06 - Z-index va Stacking Context</title><link rel='stylesheet' href='../../shared.css'/></head><body><div class='page-header module-3'><div class='breadcrumb'><a href='../../index.html'>Trang Chu</a>  <a href='../index.html'>Module 3</a>  Bai 06</div><h1>Bai 06: Z-index va Stacking Context</h1><p>Module 3  CSS Layout & Responsive</p></div><div class='exercise-page'><div class='exercise-box'><div class='ex-work'><pre style='background:#1a202c;color:#e2e8f0;padding:20px;border-radius:8px;font-size:.88rem;line-height:1.7;overflow-x:auto;white-space:pre-wrap'>/* Z-index: chieu sau - so lon hien ra truoc */
-.phia-sau { z-index: 1; }
-.phia-truoc { z-index: 10; }
-.tren-cung  { z-index: 1000; }
+<!DOCTYPE html>
+<html lang="vi">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <meta name="keywords" content="Nền tảng,HTML,CSS,JavaScript,Lập trình,Web,Kiến thức,Đồ án">
+  <meta name="author" content="Dương Nguyễn Phú Cường">
+  <meta name="description" content="Kiểm soát thứ tự lớp chồng của các phần tử bằng z-index.">
+  <meta property="og:locale" content="vi_VN">
+  <meta property="og:type" content="website">
+  <meta property="og:title" content="Bài 06 – z-index – Thứ tự lớp chồng | NenTang.vn">
+  <meta property="og:description" content="Kiểm soát thứ tự lớp chồng của các phần tử bằng z-index.">
+  <meta property="og:url" content="https://nentang.vn/">
+  <meta property="og:site_name" content="Nền tảng Kiến thức">
+  <title>Bài 06 – z-index – Thứ tự lớp chồng | NenTang.vn</title>
+  <link rel="stylesheet" href="../../shared.css" />
+</head>
+<body>
+  <div class="page-header module-3">
+    <div class="breadcrumb">
+      <a href="../../index.html">Trang Chủ</a> &rsaquo;
+      <a href="../index.html">Module 3</a> &rsaquo; Bài 06
+    </div>
+    <h1>Bài 06: z-index – Thứ tự lớp chồng</h1>
+    <p>Module 3 – CSS Layout &amp; Responsive</p>
+  </div>
 
-/* Chi hoat dong voi position != static */
-.co-z-index { position: relative; z-index: 5; }
-
-/* He thong z-index */
+  <div class="exercise-page">
+    <div class="exercise-box">
+      <div class="ex-head">
+        <h1>📝 Yêu cầu bài tập</h1>
+        <p>Kiểm soát thứ tự lớp chồng của các phần tử bằng z-index.</p>
+      </div>
+      <div class="ex-desc">
+        <h3>Mô tả</h3>
+        <p>Khi các phần tử có position != static chồng lên nhau, z-index quyết định phần tử nào hiện lên trên. Giá trị lớn hơn = trên trước.</p>
+        <h3>Yêu cầu</h3>
+        <ul>
+          <li>Tạo 3 div chồng lên nhau, điều chỉnh z-index từ 1-3</li>
+          <li>Tạo modal popup hiển thị trên overlay</li>
+          <li>Tạo dropdown menu xuất hiện trên nội dung trang</li>
+          <li>Xử lý vấn đề stacking context</li>
+        </ul>
+        <h3>🧠 Kiến thức cần nhớ</h3>
+        <ul>
+          <li><code>z-index</code> chỉ hoạt động với phần tử có <code>position != static</code></li>
+          <li>Giá trị lớn hơn = hiện trên trước</li>
+          <li>Có thể là số âm (xuống dưới cùng)</li>
+          <li>Stacking context mới: khi có position+z-index, transform, opacity<1, isolation:isolate</li>
+          <li>Tránh dùng z-index quá cao (9999999) – lập kế hoạch z-index system</li>
+        </ul>
+      </div>
+      <div class="ex-work">
+        <h3>💻 Code mẫu</h3>
+        <div id="code-highlight">
+          <pre id="code-raw" style="display:none">/* Z-index system có tổ chức */
 :root {
+  --z-below:   -1;
+  --z-base:     0;
+  --z-raised:  10;
   --z-dropdown: 100;
-  --z-sticky: 200;
-  --z-fixed: 300;
-  --z-modal-backdrop: 400;
-  --z-modal: 500;
-  --z-tooltip: 600;
+  --z-sticky:  200;
+  --z-fixed:   300;
+  --z-overlay: 400;
+  --z-modal:   500;
+  --z-toast:   600;
 }
 
-/* Stacking context moi duoc tao boi:
-  position != static + z-index != auto
-  opacity < 1
-  transform != none
-  filter != none */</pre></div></div><a href='../index.html' class='btn-back' style='margin-top:20px;'> Quay lai</a></div></body></html>
+/* Modal overlay */
+.overlay {
+  position: fixed;
+  inset: 0;
+  background: rgba(0,0,0,0.5);
+  z-index: var(--z-overlay);
+}
+.modal {
+  position: fixed;
+  top: 50%; left: 50%;
+  transform: translate(-50%,-50%);
+  background: white;
+  border-radius: 12px;
+  padding: 32px;
+  z-index: var(--z-modal);
+  min-width: 320px;
+}
+
+/* Dropdown menu */
+.dropdown { position: relative; }
+.dropdown-menu {
+  position: absolute;
+  top: 100%; left: 0;
+  background: white;
+  box-shadow: 0 4px 16px rgba(0,0,0,0.15);
+  z-index: var(--z-dropdown);
+  border-radius: 8px;
+}</pre>
+        </div>
+      </div>
+    </div>
+  </div>
+  <a href="../index.html" class="btn-back" style="margin-top:20px;">&#8592; Quay lại</a>
+  <script type="module">
+    import { codeToHtml } from 'https://esm.sh/shiki@1';
+    const raw = document.getElementById('code-raw').textContent;
+    const highlighted = await codeToHtml(raw, { lang: 'css', theme: 'github-dark' });
+    document.getElementById('code-highlight').innerHTML = highlighted;
+    const pre = document.getElementById('code-highlight').querySelector('pre');
+    if (pre) pre.style.cssText = 'border-radius:10px;padding:20px;font-size:0.87rem;overflow-x:auto;margin:0;line-height:1.7';
+  </script>
+</body>
+</html>

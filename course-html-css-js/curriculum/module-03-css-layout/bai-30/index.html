@@ -1,33 +1,109 @@
-﻿<!DOCTYPE html><html lang='vi'><head><meta charset='UTF-8'/><title>Bai 30 - DU AN: Trang web ban hang Responsive</title><link rel='stylesheet' href='../../shared.css'/></head><body><div class='page-header module-3'><div class='breadcrumb'><a href='../../index.html'>Trang Chu</a>  <a href='../index.html'>Module 3</a>  Bai 30</div><h1>Bai 30: DU AN: Trang web ban hang Responsive</h1></div><div class='exercise-page'><div class='exercise-box'><div class='ex-work'><pre style='background:#1a202c;color:#e2e8f0;padding:20px;border-radius:8px;font-size:.88rem;line-height:1.7;overflow-x:auto;white-space:pre-wrap'>/* === DU AN CUOI MODULE 3 ===
-   Tao trang ban hang thoi trang HOAN CHINH va RESPONSIVE
-   
-   Yeu cau giao dien:
-   1. Header: logo + nav + gio hang
-   2. Hero Banner: anh nen day + tieu de + CTA
-   3. Danh muc: 4-6 danh muc hinh vuong
-   4. San pham noi bat: grid 4 cot -> 2 cot -> 1 cot
-   5. Banner quang cao giua trang
-   6. San pham moi: grid auto-fill
-   7. Footer: 4 cot thong tin
-   
-   Yeu cau ky thuat:
-   - Mobile-first approach
-   - CSS Grid + Flexbox ket hop
-   - CSS Variables cho color system
-   - Hover effects tren card va button
-   - Sticky header
-   - Responsive tren 4 kich thuoc: 320, 640, 1024, 1440px
-   
-   Breakpoints:
-   - xs: < 640px    - 1 cot san pham
-   - sm: 640-1024px  - 2 cot
-   - lg: 1024-1440px - 3 cot
-   - xl: > 1440px    - 4 cot
-*/
+<!DOCTYPE html>
+<html lang="vi">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <meta name="keywords" content="Nền tảng,HTML,CSS,JavaScript,Lập trình,Web,Kiến thức,Đồ án">
+  <meta name="author" content="Dương Nguyễn Phú Cường">
+  <meta name="description" content="Xây dựng trang thương mại điện tử responsive hoàn chỉnh bằng HTML + CSS.">
+  <meta property="og:locale" content="vi_VN">
+  <meta property="og:type" content="website">
+  <meta property="og:title" content="Bài 30 – 🏆 Dự án: Trang E-Commerce hoàn chỉnh | NenTang.vn">
+  <meta property="og:description" content="Xây dựng trang thương mại điện tử responsive hoàn chỉnh bằng HTML + CSS.">
+  <meta property="og:url" content="https://nentang.vn/">
+  <meta property="og:site_name" content="Nền tảng Kiến thức">
+  <title>Bài 30 – 🏆 Dự án: Trang E-Commerce hoàn chỉnh | NenTang.vn</title>
+  <link rel="stylesheet" href="../../shared.css" />
+</head>
+<body>
+  <div class="page-header module-3">
+    <div class="breadcrumb">
+      <a href="../../index.html">Trang Chủ</a> &rsaquo;
+      <a href="../index.html">Module 3</a> &rsaquo; Bài 30
+    </div>
+    <h1>Bài 30: 🏆 Dự án: Trang E-Commerce hoàn chỉnh</h1>
+    <p>Module 3 – CSS Layout &amp; Responsive</p>
+  </div>
 
-:root {
-  --primary: #5a67d8; --secondary: #ed64a6;
-  --text: #2d3748; --bg: #f7fafc;
-}
+  <div class="exercise-page">
+    <div class="exercise-box">
+      <div class="ex-head">
+        <h1>📝 Yêu cầu bài tập</h1>
+        <p>Xây dựng trang thương mại điện tử responsive hoàn chỉnh bằng HTML + CSS.</p>
+      </div>
+      <div class="ex-desc">
+        <h3>Mô tả</h3>
+        <p>Dự án cuối module tổng hợp TẤT CẢ kiến thức layout đã học. Tạo trang e-commerce gồm header, hero, product grid, filters, footer responsive.</p>
+        <h3>Yêu cầu</h3>
+        <ul>
+          <li>Header: logo, search bar, navigation, giỏ hàng – dùng Flexbox</li>
+          <li>Hero banner: gradient, text lớn, CTA button</li>
+          <li>Filter bar: tags lọc danh mục</li>
+          <li>Product grid: responsive 1-4 cột, mỗi card có ảnh/tên/giá/rating/nút thêm giỏ</li>
+          <li>Footer: 4 cột, responsive về 2 cột trên tablet và 1 cột mobile</li>
+          <li>Toàn trang responsive từ 320px đến 1440px</li>
+        </ul>
+        <h3>🧠 Kiến thức cần nhớ</h3>
+        <ul>
+          <li>Dùng named grid areas cho page layout tổng thể</li>
+          <li>Product grid: auto-fill + minmax để tự responsive</li>
+          <li>Header: flex layout với search bar co giãn</li>
+          <li>Mobile menu: hamburger toggle</li>
+          <li>sticky header khi cuộn trang</li>
+        </ul>
+      </div>
+      <div class="ex-work">
+        <h3>💻 Code mẫu</h3>
+        <div id="code-highlight">
+          <pre id="code-raw" style="display:none">/* Layout tổng thể */
+body { margin:0; font-family:'Segoe UI',sans-serif; }
+.page { display:grid; grid-template-rows:auto auto 1fr auto; min-height:100vh; }
 
-/* Bat dau viet code cua ban! */</pre></div></div><a href='../index.html' class='btn-back' style='margin-top:20px;'> Quay lai</a></div></body></html>
+/* Header */
+.header { position:sticky; top:0; z-index:100; background:white; box-shadow:0 1px 8px rgba(0,0,0,0.1);
+  display:flex; align-items:center; gap:16px; padding:0 24px; height:64px; }
+.header-logo { font-size:1.4rem; font-weight:800; color:#e53e3e; white-space:nowrap; }
+.header-search { flex:1; display:flex; }
+.header-search input { flex:1; padding:10px 16px; border:2px solid #e2e8f0; border-right:none; border-radius:8px 0 0 8px; outline:none; }
+.header-search button { padding:10px 16px; background:#e53e3e; color:white; border:none; border-radius:0 8px 8px 0; cursor:pointer; }
+.cart-btn { position:relative; background:none; border:none; font-size:1.4rem; cursor:pointer; }
+.cart-count { position:absolute; top:-6px; right:-6px; background:#e53e3e; color:white; font-size:11px; width:18px; height:18px; border-radius:50%; display:flex; align-items:center; justify-content:center; }
+
+/* Hero */
+.hero { background:linear-gradient(135deg,#667eea,#764ba2); color:white; text-align:center; padding:64px 24px; }
+.hero h1 { font-size:clamp(2rem,5vw,3.5rem); margin-bottom:16px; }
+.hero-btn { display:inline-block; padding:14px 40px; background:white; color:#764ba2; font-weight:bold; border-radius:999px; text-decoration:none; transition:transform .3s,box-shadow .3s; }
+.hero-btn:hover { transform:translateY(-3px); box-shadow:0 12px 32px rgba(0,0,0,0.2); }
+
+/* Products */
+.products-section { padding:40px 24px; max-width:1200px; margin:0 auto; width:100%; box-sizing:border-box; }
+.product-grid { display:grid; grid-template-columns:repeat(auto-fill,minmax(220px,1fr)); gap:20px; margin-top:24px; }
+.p-card { background:white; border-radius:12px; overflow:hidden; box-shadow:0 2px 8px rgba(0,0,0,0.08); transition:transform .3s,box-shadow .3s; display:flex; flex-direction:column; }
+.p-card:hover { transform:translateY(-4px); box-shadow:0 12px 24px rgba(0,0,0,0.15); }
+.p-card img { width:100%; aspect-ratio:1; object-fit:cover; }
+.p-body { padding:12px; flex:1; display:flex; flex-direction:column; }
+.p-name { font-weight:600; margin-bottom:4px; }
+.p-price { color:#e53e3e; font-size:1.1rem; font-weight:bold; margin-top:auto; }
+.p-btn { margin-top:8px; padding:8px; background:#3182ce; color:white; border:none; border-radius:6px; cursor:pointer; }
+
+/* Footer */
+.footer { background:#1a202c; color:#a0aec0; padding:48px 24px 24px; }
+.footer-grid { display:grid; grid-template-columns:repeat(4,1fr); gap:32px; margin-bottom:32px; }
+.footer h4 { color:white; margin-bottom:12px; }
+@media(max-width:768px) { .footer-grid { grid-template-columns:repeat(2,1fr); } }
+@media(max-width:480px) { .footer-grid { grid-template-columns:1fr; } .header-nav { display:none; } }</pre>
+        </div>
+      </div>
+    </div>
+  </div>
+  <a href="../index.html" class="btn-back" style="margin-top:20px;">&#8592; Quay lại</a>
+  <script type="module">
+    import { codeToHtml } from 'https://esm.sh/shiki@1';
+    const raw = document.getElementById('code-raw').textContent;
+    const highlighted = await codeToHtml(raw, { lang: 'css', theme: 'github-dark' });
+    document.getElementById('code-highlight').innerHTML = highlighted;
+    const pre = document.getElementById('code-highlight').querySelector('pre');
+    if (pre) pre.style.cssText = 'border-radius:10px;padding:20px;font-size:0.87rem;overflow-x:auto;margin:0;line-height:1.7';
+  </script>
+</body>
+</html>

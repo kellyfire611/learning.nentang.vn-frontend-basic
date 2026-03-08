@@ -1,34 +1,86 @@
-﻿<!DOCTYPE html>
+<!DOCTYPE html>
 <html lang="vi">
 <head>
-  <meta charset="UTF-8" /><meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>Bai 14 - Bang voi thead tbody tfoot</title>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <meta name="keywords" content="Nền tảng,HTML,CSS,JavaScript,Lập trình,Web,Kiến thức,Đồ án">
+  <meta name="author" content="Dương Nguyễn Phú Cường">
+  <meta name="description" content="Tạo bảng điểm học sinh có phân chia đầu–thân–chân rõ ràng.">
+  <meta property="og:locale" content="vi_VN">
+  <meta property="og:type" content="website">
+  <meta property="og:title" content="Bài 14 – Bảng nâng cao với thead tbody tfoot | NenTang.vn">
+  <meta property="og:description" content="Tạo bảng điểm học sinh có phân chia đầu–thân–chân rõ ràng.">
+  <meta property="og:url" content="https://nentang.vn/">
+  <meta property="og:site_name" content="Nền tảng Kiến thức">
+  <title>Bài 14 – Bảng nâng cao với thead tbody tfoot | NenTang.vn</title>
   <link rel="stylesheet" href="../../shared.css" />
 </head>
 <body>
   <div class="page-header module-1">
-    <div class="breadcrumb"><a href="../../index.html">Trang Chu</a> &rsaquo; <a href="../index.html">Module 1</a> &rsaquo; Bai 14</div>
-    <h1>Bai 14: Bang voi thead tbody tfoot</h1><p>Module 1 - HTML Co Ban</p>
+    <div class="breadcrumb">
+      <a href="../../index.html">Trang Chủ</a> &rsaquo;
+      <a href="../index.html">Module 1</a> &rsaquo; Bài 14
+    </div>
+    <h1>Bài 14: Bảng nâng cao với thead tbody tfoot</h1>
+    <p>Module 1 – HTML Cơ Bản</p>
   </div>
-  <div class="exercise-page"><div class="exercise-box">
-    <div class="ex-head"><h1>Yeu cau bai tap</h1><p>Tao bang diem hoc sinh co phan chia ro rang.</p></div>
-    <div class="ex-desc"><h3>Yeu cau</h3><ul><li>Tao bang diem 5 mon hoc, 5 hoc sinh</li><li>thead: tieu de; tbody: du lieu; tfoot: tong ket</li><li>Hang tong ket: tinh diem trung binh</li></ul><h3>Kien thuc can nho</h3><ul><li>thead - dau bang; tbody - than bang; tfoot - chan bang</li><li>Giup accessibility va CSS styling de hon</li></ul></div>
-    <div class="ex-work"><h3>Code mau:</h3><pre style="background:#1a202c;color:#e2e8f0;padding:20px;border-radius:8px;font-size:0.88rem;line-height:1.7;overflow-x:auto;white-space:pre-wrap">&lt;table border='1' style='border-collapse:collapse;width:100%'&gt;
+
+  <div class="exercise-page">
+    <div class="exercise-box">
+      <div class="ex-head">
+        <h1>📝 Yêu cầu bài tập</h1>
+        <p>Tạo bảng điểm học sinh có phân chia đầu–thân–chân rõ ràng.</p>
+      </div>
+      <div class="ex-desc">
+        <h3>Mô tả</h3>
+        <p>Các thẻ <thead>, <tbody>, <tfoot> giúp tổ chức bảng hợp lý, hỗ trợ accessibility, CSS dễ tùy chỉnh, và khi in ấn đầu/chân bảng tự lặp lại.</p>
+        <h3>Yêu cầu</h3>
+        <ul>
+          <li>Tạo bảng điểm 5 môn học, 5 học sinh</li>
+          <li>Dùng <code>&lt;thead&gt;</code> chứa hàng tiêu đề</li>
+          <li>Dùng <code>&lt;tbody&gt;</code> chứa dữ liệu học sinh</li>
+          <li>Dùng <code>&lt;tfoot&gt;</code> hiển thị điểm trung bình lớp</li>
+        </ul>
+        <h3>🧠 Kiến thức cần nhớ</h3>
+        <ul>
+          <li><code>&lt;thead&gt;</code>: đầu bảng – thường chứa <th></li>
+          <li><code>&lt;tbody&gt;</code>: thân bảng – dữ liệu chính</li>
+          <li><code>&lt;tfoot&gt;</code>: chân bảng – tổng kết, chú thích</li>
+          <li>CSS selector <code>thead tr</code>, <code>tbody tr:nth-child(even)</code> để tô màu xen kẽ</li>
+        </ul>
+      </div>
+      <div class="ex-work">
+        <h3>💻 Code mẫu</h3>
+        <div id="code-highlight">
+          <pre id="code-raw" style="display:none">&lt;table border="1" style="border-collapse:collapse; width:100%"&gt;
   &lt;thead&gt;
-    &lt;tr style='background:#3182ce;color:white'&gt;
-      &lt;th&gt;Ho ten&lt;/th&gt;&lt;th&gt;Toan&lt;/th&gt;&lt;th&gt;Van&lt;/th&gt;&lt;th&gt;Anh&lt;/th&gt;&lt;th&gt;TB&lt;/th&gt;
+    &lt;tr style="background:#2d3748; color:white"&gt;
+      &lt;th&gt;Họ tên&lt;/th&gt;&lt;th&gt;Toán&lt;/th&gt;&lt;th&gt;Văn&lt;/th&gt;&lt;th&gt;Anh&lt;/th&gt;&lt;th&gt;TB&lt;/th&gt;
     &lt;/tr&gt;
   &lt;/thead&gt;
   &lt;tbody&gt;
-    &lt;tr&gt;&lt;td&gt;Nguyen Van An&lt;/td&gt;&lt;td&gt;9&lt;/td&gt;&lt;td&gt;8&lt;/td&gt;&lt;td&gt;9.5&lt;/td&gt;&lt;td&gt;&lt;strong&gt;8.8&lt;/strong&gt;&lt;/td&gt;&lt;/tr&gt;
-    &lt;tr&gt;&lt;td&gt;Tran Thi Mai&lt;/td&gt;&lt;td&gt;7&lt;/td&gt;&lt;td&gt;8.5&lt;/td&gt;&lt;td&gt;8&lt;/td&gt;&lt;td&gt;&lt;strong&gt;7.8&lt;/strong&gt;&lt;/td&gt;&lt;/tr&gt;
+    &lt;tr&gt;&lt;td&gt;Nguyễn Văn An&lt;/td&gt;&lt;td&gt;9&lt;/td&gt;&lt;td&gt;8&lt;/td&gt;&lt;td&gt;9.5&lt;/td&gt;&lt;td&gt;&lt;b&gt;8.8&lt;/b&gt;&lt;/td&gt;&lt;/tr&gt;
+    &lt;tr&gt;&lt;td&gt;Trần Thị Mai&lt;/td&gt;&lt;td&gt;7&lt;/td&gt;&lt;td&gt;8.5&lt;/td&gt;&lt;td&gt;8&lt;/td&gt;&lt;td&gt;&lt;b&gt;7.8&lt;/b&gt;&lt;/td&gt;&lt;/tr&gt;
   &lt;/tbody&gt;
   &lt;tfoot&gt;
-    &lt;tr style='background:#ebf8ff'&gt;
-      &lt;td colspan='4'&gt;&lt;strong&gt;Diem TB toan lop&lt;/strong&gt;&lt;/td&gt;&lt;td&gt;&lt;strong&gt;8.3&lt;/strong&gt;&lt;/td&gt;
+    &lt;tr style="background:#ebf8ff"&gt;
+      &lt;td colspan="4"&gt;&lt;b&gt;Điểm TB toàn lớp&lt;/b&gt;&lt;/td&gt;
+      &lt;td&gt;&lt;b&gt;8.3&lt;/b&gt;&lt;/td&gt;
     &lt;/tr&gt;
   &lt;/tfoot&gt;
-&lt;/table&gt;</pre></div>
-  </div></div>
-  <a href="../index.html" class="btn-back" style="margin-top:20px;">&#8592; Quay lai</a>
-</body></html>
+&lt;/table&gt;</pre>
+        </div>
+      </div>
+    </div>
+  </div>
+  <a href="../index.html" class="btn-back" style="margin-top:20px;">&#8592; Quay lại</a>
+  <script type="module">
+    import { codeToHtml } from 'https://esm.sh/shiki@1';
+    const raw = document.getElementById('code-raw').textContent;
+    const highlighted = await codeToHtml(raw, { lang: 'html', theme: 'github-dark' });
+    document.getElementById('code-highlight').innerHTML = highlighted;
+    const pre = document.getElementById('code-highlight').querySelector('pre');
+    if (pre) pre.style.cssText = 'border-radius:10px;padding:20px;font-size:0.87rem;overflow-x:auto;margin:0;line-height:1.7';
+  </script>
+</body>
+</html>

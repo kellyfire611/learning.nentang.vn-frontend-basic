@@ -1,25 +1,101 @@
-﻿<!DOCTYPE html><html lang='vi'><head><meta charset='UTF-8'/><title>Bai 23 - Mobile-first Design</title><link rel='stylesheet' href='../../shared.css'/></head><body><div class='page-header module-3'><div class='breadcrumb'><a href='../../index.html'>Trang Chu</a>  <a href='../index.html'>Module 3</a>  Bai 23</div><h1>Bai 23: Mobile-first Design</h1></div><div class='exercise-page'><div class='exercise-box'><div class='ex-work'><pre style='background:#1a202c;color:#e2e8f0;padding:20px;border-radius:8px;font-size:.88rem;line-height:1.7;overflow-x:auto;white-space:pre-wrap'>/* MOBILE FIRST: Bat dau tu mobile nho nhat, them dan len */
+<!DOCTYPE html>
+<html lang="vi">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <meta name="keywords" content="Nền tảng,HTML,CSS,JavaScript,Lập trình,Web,Kiến thức,Đồ án">
+  <meta name="author" content="Dương Nguyễn Phú Cường">
+  <meta name="description" content="Cài đặt typography responsive với fluid font-size và viewport units.">
+  <meta property="og:locale" content="vi_VN">
+  <meta property="og:type" content="website">
+  <meta property="og:title" content="Bài 23 – Responsive Typography | NenTang.vn">
+  <meta property="og:description" content="Cài đặt typography responsive với fluid font-size và viewport units.">
+  <meta property="og:url" content="https://nentang.vn/">
+  <meta property="og:site_name" content="Nền tảng Kiến thức">
+  <title>Bài 23 – Responsive Typography | NenTang.vn</title>
+  <link rel="stylesheet" href="../../shared.css" />
+</head>
+<body>
+  <div class="page-header module-3">
+    <div class="breadcrumb">
+      <a href="../../index.html">Trang Chủ</a> &rsaquo;
+      <a href="../index.html">Module 3</a> &rsaquo; Bài 23
+    </div>
+    <h1>Bài 23: Responsive Typography</h1>
+    <p>Module 3 – CSS Layout &amp; Responsive</p>
+  </div>
 
-/* Base (mobile): tat ca style cho < 640px */
-.container { padding: 0 16px; }
-.card-grid { display: grid; gap: 16px; }
-/* Mac dinh: 1 cot */
+  <div class="exercise-page">
+    <div class="exercise-box">
+      <div class="ex-head">
+        <h1>📝 Yêu cầu bài tập</h1>
+        <p>Cài đặt typography responsive với fluid font-size và viewport units.</p>
+      </div>
+      <div class="ex-desc">
+        <h3>Mô tả</h3>
+        <p>Typography responsive đảm bảo chữ đọc được trên mọi kích thước màn hình. Fluid typography dùng clamp() để font tự scale mượt mà.</p>
+        <h3>Yêu cầu</h3>
+        <ul>
+          <li>Dùng clamp() tạo font-size tự scale: h1 từ 1.8rem (mobile) đến 3.5rem (desktop)</li>
+          <li>Cài đặt font-size tương đối bằng rem và em</li>
+          <li>Thiết lập line-height và max-width tối ưu đọc (65-75 ký tự)</li>
+          <li>Tạo modular type scale (ratio 1.25)</li>
+        </ul>
+        <h3>🧠 Kiến thức cần nhớ</h3>
+        <ul>
+          <li><code>clamp(min, preferred, max)</code>: giá trị tự scale trong khoảng</li>
+          <li><code>clamp(1.5rem, 4vw, 3rem)</code>: min 1.5rem, tốt nhất 4vw, max 3rem</li>
+          <li><code>vw</code>: viewport width – 1vw = 1% chiều rộng màn hình</li>
+          <li>Modular scale: mỗi cấp nhân với ratio (1.25 = Minor Third)</li>
+          <li><code>max-width: 65ch</code>: giới hạn 65 ký tự – tối ưu đọc</li>
+        </ul>
+      </div>
+      <div class="ex-work">
+        <h3>💻 Code mẫu</h3>
+        <div id="code-highlight">
+          <pre id="code-raw" style="display:none">/* Fluid typography với clamp */
+h1 { font-size: clamp(1.8rem, 5vw, 3.5rem); }
+h2 { font-size: clamp(1.4rem, 4vw, 2.5rem); }
+h3 { font-size: clamp(1.1rem, 3vw, 1.75rem); }
+p  { font-size: clamp(0.95rem, 2vw, 1.1rem); }
 
-/* Tablet: tu 640px */
-@media (min-width: 640px) {
-  .container { max-width: 720px; margin: auto; }
-  .card-grid { grid-template-columns: repeat(2, 1fr); } /* 2 cot */
+/* Type scale 1.25 ratio */
+:root {
+  --text-xs:   0.64rem;
+  --text-sm:   0.8rem;
+  --text-base: 1rem;
+  --text-lg:   1.25rem;
+  --text-xl:   1.563rem;
+  --text-2xl:  1.953rem;
+  --text-3xl:  2.441rem;
+  --text-4xl:  3.052rem;
 }
 
-/* Desktop: tu 1024px */
-@media (min-width: 1024px) {
-  .container { max-width: 1200px; }
-  .card-grid { grid-template-columns: repeat(4, 1fr); } /* 4 cot */
+/* Reading optimized */
+.article-body {
+  font-size: var(--text-lg);
+  line-height: 1.8;
+  max-width: 65ch;
+  margin: 0 auto;
 }
 
-/* Large Desktop: tu 1440px */
-@media (min-width: 1440px) {
-  .container { max-width: 1400px; }
-}
-
-/* YEU CAU: Redesign trang chu theo mobile-first */</pre></div></div><a href='../index.html' class='btn-back' style='margin-top:20px;'> Quay lai</a></div></body></html>
+/* Responsive đơn giản với media query */
+@media (max-width: 480px) {
+  h1 { font-size: 1.8rem; }
+  h2 { font-size: 1.4rem; }
+}</pre>
+        </div>
+      </div>
+    </div>
+  </div>
+  <a href="../index.html" class="btn-back" style="margin-top:20px;">&#8592; Quay lại</a>
+  <script type="module">
+    import { codeToHtml } from 'https://esm.sh/shiki@1';
+    const raw = document.getElementById('code-raw').textContent;
+    const highlighted = await codeToHtml(raw, { lang: 'css', theme: 'github-dark' });
+    document.getElementById('code-highlight').innerHTML = highlighted;
+    const pre = document.getElementById('code-highlight').querySelector('pre');
+    if (pre) pre.style.cssText = 'border-radius:10px;padding:20px;font-size:0.87rem;overflow-x:auto;margin:0;line-height:1.7';
+  </script>
+</body>
+</html>

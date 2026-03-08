@@ -1,17 +1,91 @@
-﻿<!DOCTYPE html><html lang='vi'><head><meta charset='UTF-8'/><title>Bai 03 - Clearfix ky thuat float</title><link rel='stylesheet' href='../../shared.css'/></head><body><div class='page-header module-3'><div class='breadcrumb'><a href='../../index.html'>Trang Chu</a>  <a href='../index.html'>Module 3</a>  Bai 03</div><h1>Bai 03: Clearfix ky thuat float</h1><p>Module 3  CSS Layout & Responsive</p></div><div class='exercise-page'><div class='exercise-box'><div class='ex-work'><pre style='background:#1a202c;color:#e2e8f0;padding:20px;border-radius:8px;font-size:.88rem;line-height:1.7;overflow-x:auto;white-space:pre-wrap'>/* Van de: cha bi sap khi cac con deu float */
-.parent { /* chieu cao = 0 vi cac con float */ }
+<!DOCTYPE html>
+<html lang="vi">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <meta name="keywords" content="Nền tảng,HTML,CSS,JavaScript,Lập trình,Web,Kiến thức,Đồ án">
+  <meta name="author" content="Dương Nguyễn Phú Cường">
+  <meta name="description" content="Áp dụng clearfix để ngăn container bị sụp khi chứa float elements.">
+  <meta property="og:locale" content="vi_VN">
+  <meta property="og:type" content="website">
+  <meta property="og:title" content="Bài 03 – Clearfix – Xử lý container bị sụp | NenTang.vn">
+  <meta property="og:description" content="Áp dụng clearfix để ngăn container bị sụp khi chứa float elements.">
+  <meta property="og:url" content="https://nentang.vn/">
+  <meta property="og:site_name" content="Nền tảng Kiến thức">
+  <title>Bài 03 – Clearfix – Xử lý container bị sụp | NenTang.vn</title>
+  <link rel="stylesheet" href="../../shared.css" />
+</head>
+<body>
+  <div class="page-header module-3">
+    <div class="breadcrumb">
+      <a href="../../index.html">Trang Chủ</a> &rsaquo;
+      <a href="../index.html">Module 3</a> &rsaquo; Bài 03
+    </div>
+    <h1>Bài 03: Clearfix – Xử lý container bị sụp</h1>
+    <p>Module 3 – CSS Layout &amp; Responsive</p>
+  </div>
 
-/* Giai phap 1: Clear truc tiep */
-.clear { clear: both; }
-
-/* Giai phap 2: Clearfix hack (pho bien nhat) */
-.clearfix::after {
+  <div class="exercise-page">
+    <div class="exercise-box">
+      <div class="ex-head">
+        <h1>📝 Yêu cầu bài tập</h1>
+        <p>Áp dụng clearfix để ngăn container bị sụp khi chứa float elements.</p>
+      </div>
+      <div class="ex-desc">
+        <h3>Mô tả</h3>
+        <p>Vấn đề lớn nhất của float: container không 'bọc' được các child float – height = 0. Clearfix là giải pháp CSS để sửa lỗi này.</p>
+        <h3>Yêu cầu</h3>
+        <ul>
+          <li>Tạo container chứa 3 float div – quan sát container bị sụp</li>
+          <li>Áp dụng clearfix bằng class .clearfix</li>
+          <li>So sánh cách dùng overflow:hidden và clearfix</li>
+          <li>Sau đó dùng thẻ div dưới cùng style='clear:both'</li>
+        </ul>
+        <h3>🧠 Kiến thức cần nhớ</h3>
+        <ul>
+          <li>Vấn đề: parent chứa float children có height = 0</li>
+          <li>Cách 1: <code>overflow: hidden</code> trên parent (đơn giản nhất)</li>
+          <li>Cách 2: thêm div <code>style='clear:both'</code> cuối parent</li>
+          <li>Cách 3 (tốt nhất): clearfix hack dùng <code>::after</code></li>
+          <li><code>clear: both</code>: đặt phần tử xuống dưới cả float left và right</li>
+        </ul>
+      </div>
+      <div class="ex-work">
+        <h3>💻 Code mẫu</h3>
+        <div id="code-highlight">
+          <pre id="code-raw" style="display:none">.clearfix::after {
   content: '';
   display: table;
   clear: both;
 }
+/* Hoặc ngắn gọn hơn */
+.clearfix::after {
+  content: '';
+  display: block;
+  clear: both;
+}
 
-/* Giai phap 3: overflow hidden */
-.parent { overflow: hidden; }
+/* Cách dùng */
+&lt;div class="clearfix"&gt;
+  &lt;div style="float:left; width:50%"&gt;Cột trái&lt;/div&gt;
+  &lt;div style="float:right; width:50%"&gt;Cột phải&lt;/div&gt;
+  &lt;!-- Không cần div clear nữa! --&gt;
+&lt;/div&gt;
 
-/* YEU CAU: Tao layout 3 cot bang float, dung clearfix fix container */</pre></div></div><a href='../index.html' class='btn-back' style='margin-top:20px;'> Quay lai</a></div></body></html>
+/* Cách overflow hidden */
+.container { overflow: hidden; } /* Cũng tự clear được */</pre>
+        </div>
+      </div>
+    </div>
+  </div>
+  <a href="../index.html" class="btn-back" style="margin-top:20px;">&#8592; Quay lại</a>
+  <script type="module">
+    import { codeToHtml } from 'https://esm.sh/shiki@1';
+    const raw = document.getElementById('code-raw').textContent;
+    const highlighted = await codeToHtml(raw, { lang: 'css', theme: 'github-dark' });
+    document.getElementById('code-highlight').innerHTML = highlighted;
+    const pre = document.getElementById('code-highlight').querySelector('pre');
+    if (pre) pre.style.cssText = 'border-radius:10px;padding:20px;font-size:0.87rem;overflow-x:auto;margin:0;line-height:1.7';
+  </script>
+</body>
+</html>

@@ -1,27 +1,96 @@
-﻿<!DOCTYPE html><html lang='vi'><head><meta charset='UTF-8'/><meta name='viewport' content='width=device-width,initial-scale=1'/><title>Bai 11 - CSS Gradient</title><link rel='stylesheet' href='../../shared.css'/></head><body><div class='page-header module-2'><div class='breadcrumb'><a href='../../index.html'>Trang Chu</a>  <a href='../index.html'>Module 2</a>  Bai 11</div><h1>Bai 11: CSS Gradient</h1><p>Module 2  CSS Co Ban</p></div><div class='exercise-page'><div class='exercise-box'><div class='ex-work'><h3>Yeu cau va Code mau:</h3><pre style='background:#1a202c;color:#e2e8f0;padding:20px;border-radius:8px;font-size:.88rem;line-height:1.7;overflow-x:auto;white-space:pre-wrap'>/* Linear Gradient */
-.bg-doc  { background: linear-gradient(to bottom, #667eea, #764ba2); }
-.bg-ngang { background: linear-gradient(to right, #f093fb, #f5576c); }
-.bg-cheo { background: linear-gradient(135deg, #4facfe, #00f2fe); }
+<!DOCTYPE html>
+<html lang="vi">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <meta name="keywords" content="Nền tảng,HTML,CSS,JavaScript,Lập trình,Web,Kiến thức,Đồ án">
+  <meta name="author" content="Dương Nguyễn Phú Cường">
+  <meta name="description" content="Tạo nền gradient đẹp bằng linear-gradient và radial-gradient.">
+  <meta property="og:locale" content="vi_VN">
+  <meta property="og:type" content="website">
+  <meta property="og:title" content="Bài 11 – CSS Gradient: linear và radial | NenTang.vn">
+  <meta property="og:description" content="Tạo nền gradient đẹp bằng linear-gradient và radial-gradient.">
+  <meta property="og:url" content="https://nentang.vn/">
+  <meta property="og:site_name" content="Nền tảng Kiến thức">
+  <title>Bài 11 – CSS Gradient: linear và radial | NenTang.vn</title>
+  <link rel="stylesheet" href="../../shared.css" />
+</head>
+<body>
+  <div class="page-header module-2">
+    <div class="breadcrumb">
+      <a href="../../index.html">Trang Chủ</a> &rsaquo;
+      <a href="../index.html">Module 2</a> &rsaquo; Bài 11
+    </div>
+    <h1>Bài 11: CSS Gradient: linear và radial</h1>
+    <p>Module 2 – CSS Cơ Bản</p>
+  </div>
 
-/* Nhieu mau */
-.cau-vong {
+  <div class="exercise-page">
+    <div class="exercise-box">
+      <div class="ex-head">
+        <h1>📝 Yêu cầu bài tập</h1>
+        <p>Tạo nền gradient đẹp bằng linear-gradient và radial-gradient.</p>
+      </div>
+      <div class="ex-desc">
+        <h3>Mô tả</h3>
+        <p>Gradient là hiệu ứng chuyển màu mượt mà giữa 2 hoặc nhiều màu. CSS gradient không cần ảnh, giúp trang nhanh hơn và sắc nét hơn.</p>
+        <h3>Yêu cầu</h3>
+        <ul>
+          <li>Tạo gradient ngang trái-phải: xanh → tím</li>
+          <li>Tạo gradient chéo 45 độ: cam → hồng</li>
+          <li>Tạo radial-gradient hình tròn từ trong ra ngoài</li>
+          <li>Tạo gradient nhiều màu (rainbow effect)</li>
+          <li>Tạo gradient với điểm dừng màu cụ thể (color stops)</li>
+        </ul>
+        <h3>🧠 Kiến thức cần nhớ</h3>
+        <ul>
+          <li><code>linear-gradient(hướng, màu1, màu2)</code></li>
+          <li>Hướng: <code>to right, to bottom, 45deg, 135deg</code></li>
+          <li><code>radial-gradient(shape, màu1, màu2)</code></li>
+          <li>Màu stop: <code>linear-gradient(red 0%, yellow 50%, green 100%)</code></li>
+          <li>Gradient là giá trị của <code>background-image</code> (không phải background-color)</li>
+        </ul>
+      </div>
+      <div class="ex-work">
+        <h3>💻 Code mẫu</h3>
+        <div id="code-highlight">
+          <pre id="code-raw" style="display:none">/* Linear gradient cơ bản */
+.g1 { background: linear-gradient(to right, #667eea, #764ba2); }
+.g2 { background: linear-gradient(135deg, #f093fb, #f5576c); }
+.g3 { background: linear-gradient(to bottom, #4facfe, #00f2fe); }
+
+/* Radial gradient */
+.r1 { background: radial-gradient(circle, #a8edea, #fed6e3); }
+.r2 { background: radial-gradient(ellipse at top, #e0c3fc, #8ec5fc); }
+
+/* Rainbow với nhiều màu */
+.rainbow {
   background: linear-gradient(to right,
     red, orange, yellow, green, blue, indigo, violet
   );
 }
 
-/* Radial Gradient - tu giua ra ngoai */
-.radial {
-  background: radial-gradient(circle, #fff 0%, #5a67d8 100%);
-}
-
-/* Repeating Gradient - tao soc */
-.soc {
-  background: repeating-linear-gradient(
-    45deg,
-    #f0f0f0 0px, #f0f0f0 10px,
-    #e0e0e0 10px, #e0e0e0 20px
+/* Gradient với color stops cụ thể */
+.sunset {
+  background: linear-gradient(
+    to bottom,
+    #0f2027 0%,
+    #203a43 40%,
+    #2c5364 100%
   );
-}
-
-/* YEU CAU: Tao 6 div voi 6 nen gradient dep khac nhau */</pre></div></div><a href='../index.html' class='btn-back' style='margin-top:20px;'> Quay lai</a></div></body></html>
+}</pre>
+        </div>
+      </div>
+    </div>
+  </div>
+  <a href="../index.html" class="btn-back" style="margin-top:20px;">&#8592; Quay lại</a>
+  <script type="module">
+    import { codeToHtml } from 'https://esm.sh/shiki@1';
+    const raw = document.getElementById('code-raw').textContent;
+    const highlighted = await codeToHtml(raw, { lang: 'html', theme: 'github-dark' });
+    document.getElementById('code-highlight').innerHTML = highlighted;
+    const pre = document.getElementById('code-highlight').querySelector('pre');
+    if (pre) pre.style.cssText = 'border-radius:10px;padding:20px;font-size:0.87rem;overflow-x:auto;margin:0;line-height:1.7';
+  </script>
+</body>
+</html>

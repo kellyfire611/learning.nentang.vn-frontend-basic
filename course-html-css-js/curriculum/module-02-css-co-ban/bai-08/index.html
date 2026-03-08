@@ -1,1 +1,88 @@
-﻿<!DOCTYPE html><html lang='vi'><head><meta charset='UTF-8'/><title>Bai 08 - Box Model - margin border padding</title><link rel='stylesheet' href='../../shared.css'/></head><body><div class='page-header module-2'><div class='breadcrumb'><a href='../../index.html'>Trang Chu</a>  <a href='../index.html'>Module 2</a>  Bai 08</div><h1>Bai 08: Box Model - margin border padding</h1><p>Module 2  CSS Co Ban</p></div><div class='exercise-page'><div class='exercise-box'><div class='ex-work'><h3>Noi dung bai tap CSS - Box Model - margin border padding</h3><p style='padding:20px;color:#718096'>Mo file CSS cua ban va thuc hanh ap dung cac khai niem: <strong>Box Model - margin border padding</strong></p></div></div><a href='../index.html' class='btn-back' style='margin-top:20px;'> Quay lai</a></div></body></html>
+<!DOCTYPE html>
+<html lang="vi">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <meta name="keywords" content="Nền tảng,HTML,CSS,JavaScript,Lập trình,Web,Kiến thức,Đồ án">
+  <meta name="author" content="Dương Nguyễn Phú Cường">
+  <meta name="description" content="Hiểu và thực hành mô hình hộp CSS (Box Model) đầy đủ.">
+  <meta property="og:locale" content="vi_VN">
+  <meta property="og:type" content="website">
+  <meta property="og:title" content="Bài 08 – Box Model: margin padding border | NenTang.vn">
+  <meta property="og:description" content="Hiểu và thực hành mô hình hộp CSS (Box Model) đầy đủ.">
+  <meta property="og:url" content="https://nentang.vn/">
+  <meta property="og:site_name" content="Nền tảng Kiến thức">
+  <title>Bài 08 – Box Model: margin padding border | NenTang.vn</title>
+  <link rel="stylesheet" href="../../shared.css" />
+</head>
+<body>
+  <div class="page-header module-2">
+    <div class="breadcrumb">
+      <a href="../../index.html">Trang Chủ</a> &rsaquo;
+      <a href="../index.html">Module 2</a> &rsaquo; Bài 08
+    </div>
+    <h1>Bài 08: Box Model: margin padding border</h1>
+    <p>Module 2 – CSS Cơ Bản</p>
+  </div>
+
+  <div class="exercise-page">
+    <div class="exercise-box">
+      <div class="ex-head">
+        <h1>📝 Yêu cầu bài tập</h1>
+        <p>Hiểu và thực hành mô hình hộp CSS (Box Model) đầy đủ.</p>
+      </div>
+      <div class="ex-desc">
+        <h3>Mô tả</h3>
+        <p>Mọi phần tử HTML là một hộp chữ nhật gồm 4 lớp từ trong ra ngoài: content → padding → border → margin. Hiểu box model là THIẾT YẾU để làm layout.</p>
+        <h3>Yêu cầu</h3>
+        <ul>
+          <li>Tạo div hiển thị rõ 4 phần: content (màu xanh), padding (màu vàng), border (đỏ), margin (xám)</li>
+          <li>Thực hành shorthand: margin/padding với 1, 2, 3, 4 giá trị</li>
+          <li>Dùng DevTools (F12) để kiểm tra box model</li>
+        </ul>
+        <h3>🧠 Kiến thức cần nhớ</h3>
+        <ul>
+          <li><code>content</code>: nội dung thực tế (text, ảnh)</li>
+          <li><code>padding</code>: khoảng cách bên TRONG (giữa content và border)</li>
+          <li><code>border</code>: viền bao quanh padding</li>
+          <li><code>margin</code>: khoảng cách bên NGOÀI (giữa phần tử này và phần tử khác)</li>
+          <li>Shorthand: <code>margin: top right bottom left</code> (clockwise)</li>
+          <li><code>margin: 10px 20px</code> = top&bottom:10px, left&right:20px</li>
+        </ul>
+      </div>
+      <div class="ex-work">
+        <h3>💻 Code mẫu</h3>
+        <div id="code-highlight">
+          <pre id="code-raw" style="display:none">/* Box Model đầy đủ */
+.box {
+  width: 200px;
+  height: 100px;         /* content */
+  padding: 20px;         /* khoảng trong */
+  border: 5px solid #e53e3e; /* viền */
+  margin: 30px auto;     /* khoảng ngoài, căn giữa */
+  background: #bee3f8;
+}
+
+/* Shorthand padding */
+.p1 { padding: 20px; }             /* 4 phía = 20px */
+.p2 { padding: 10px 20px; }        /* top-bottom: 10, left-right: 20 */
+.p3 { padding: 10px 20px 15px; }   /* top: 10, lr: 20, bottom: 15 */
+.p4 { padding: 10px 15px 20px 25px; } /* top right bottom left */
+
+/* Margin auto để căn giữa block element */
+.container { max-width: 800px; margin: 0 auto; }</pre>
+        </div>
+      </div>
+    </div>
+  </div>
+  <a href="../index.html" class="btn-back" style="margin-top:20px;">&#8592; Quay lại</a>
+  <script type="module">
+    import { codeToHtml } from 'https://esm.sh/shiki@1';
+    const raw = document.getElementById('code-raw').textContent;
+    const highlighted = await codeToHtml(raw, { lang: 'html', theme: 'github-dark' });
+    document.getElementById('code-highlight').innerHTML = highlighted;
+    const pre = document.getElementById('code-highlight').querySelector('pre');
+    if (pre) pre.style.cssText = 'border-radius:10px;padding:20px;font-size:0.87rem;overflow-x:auto;margin:0;line-height:1.7';
+  </script>
+</body>
+</html>

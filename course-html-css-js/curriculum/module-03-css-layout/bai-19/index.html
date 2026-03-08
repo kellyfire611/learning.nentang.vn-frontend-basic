@@ -1,28 +1,97 @@
-﻿<!DOCTYPE html><html lang='vi'><head><meta charset='UTF-8'/><title>Bai 19 - CSS Grid Named Areas</title><link rel='stylesheet' href='../../shared.css'/></head><body><div class='page-header module-3'><div class='breadcrumb'><a href='../../index.html'>Trang Chu</a>  <a href='../index.html'>Module 3</a>  Bai 19</div><h1>Bai 19: CSS Grid Named Areas</h1></div><div class='exercise-page'><div class='exercise-box'><div class='ex-work'><pre style='background:#1a202c;color:#e2e8f0;padding:20px;border-radius:8px;font-size:.88rem;line-height:1.7;overflow-x:auto;white-space:pre-wrap'>.page {
-  display: grid;
-  grid-template-areas:
-    'header  header  header'
-    'sidebar content content'
-    'footer  footer  footer';
-  grid-template-columns: 250px 1fr 1fr;
-  grid-template-rows: 60px auto 60px;
-  min-height: 100vh;
+<!DOCTYPE html>
+<html lang="vi">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <meta name="keywords" content="Nền tảng,HTML,CSS,JavaScript,Lập trình,Web,Kiến thức,Đồ án">
+  <meta name="author" content="Dương Nguyễn Phú Cường">
+  <meta name="description" content="Viết media query để website hiển thị khác nhau trên các kích thước màn hình.">
+  <meta property="og:locale" content="vi_VN">
+  <meta property="og:type" content="website">
+  <meta property="og:title" content="Bài 19 – Media Queries – Responsive cơ bản | NenTang.vn">
+  <meta property="og:description" content="Viết media query để website hiển thị khác nhau trên các kích thước màn hình.">
+  <meta property="og:url" content="https://nentang.vn/">
+  <meta property="og:site_name" content="Nền tảng Kiến thức">
+  <title>Bài 19 – Media Queries – Responsive cơ bản | NenTang.vn</title>
+  <link rel="stylesheet" href="../../shared.css" />
+</head>
+<body>
+  <div class="page-header module-3">
+    <div class="breadcrumb">
+      <a href="../../index.html">Trang Chủ</a> &rsaquo;
+      <a href="../index.html">Module 3</a> &rsaquo; Bài 19
+    </div>
+    <h1>Bài 19: Media Queries – Responsive cơ bản</h1>
+    <p>Module 3 – CSS Layout &amp; Responsive</p>
+  </div>
+
+  <div class="exercise-page">
+    <div class="exercise-box">
+      <div class="ex-head">
+        <h1>📝 Yêu cầu bài tập</h1>
+        <p>Viết media query để website hiển thị khác nhau trên các kích thước màn hình.</p>
+      </div>
+      <div class="ex-desc">
+        <h3>Mô tả</h3>
+        <p>Media query cho phép áp dụng CSS khác nhau dựa trên đặc điểm thiết bị như chiều rộng màn hình. Đây là nền tảng của Responsive Web Design.</p>
+        <h3>Yêu cầu</h3>
+        <ul>
+          <li>Tạo div đổi màu nền theo màn hình: mobile xanh, tablet vàng, desktop đỏ</li>
+          <li>Ẩn sidebar trên mobile (max-width: 768px)</li>
+          <li>Thay đổi font-size theo breakpoint</li>
+          <li>Tạo navigation ẩn/hiện khác nhau trên mobile/desktop</li>
+        </ul>
+        <h3>🧠 Kiến thức cần nhớ</h3>
+        <ul>
+          <li><code>@media (max-width: 768px) { }</code>: áp dụng khi <=768px</li>
+          <li><code>@media (min-width: 768px) { }</code>: áp dụng khi >=768px</li>
+          <li>Breakpoints phổ biến: 480px (mobile), 768px (tablet), 1024px (desktop), 1280px (wide)</li>
+          <li>Mobile-first: viết CSS cho mobile trước, dùng min-width để thêm cho màn lớn hơn</li>
+          <li>Desktop-first: viết cho desktop trước, dùng max-width để điều chỉnh nhỏ hơn</li>
+        </ul>
+      </div>
+      <div class="ex-work">
+        <h3>💻 Code mẫu</h3>
+        <div id="code-highlight">
+          <pre id="code-raw" style="display:none">/* Điều chỉnh layout theo breakpoint */
+/* Mobile: 1 cột, font nhỏ hơn */
+@media (max-width: 480px) {
+  .grid { grid-template-columns: 1fr; }
+  body { font-size: 14px; }
+  .hide-mobile { display: none; }
 }
 
-/* Gan vung cho phan tu */
-.header  { grid-area: header;  background: #2d3748; }
-.sidebar { grid-area: sidebar; background: #f7fafc; }
-.content { grid-area: content; padding: 24px; }
-.footer  { grid-area: footer;  background: #2d3748; }
+/* Tablet */
+@media (min-width: 481px) and (max-width: 1024px) {
+  .grid { grid-template-columns: repeat(2, 1fr); }
+}
 
-/* Responsive: thay doi areas theo man hinh */
-@media (max-width: 640px) {
-  .page {
-    grid-template-areas:
-      'header'
-      'content'
-      'sidebar'
-      'footer';
-    grid-template-columns: 1fr;
-  }
-}</pre></div></div><a href='../index.html' class='btn-back' style='margin-top:20px;'> Quay lai</a></div></body></html>
+/* Desktop */
+@media (min-width: 1025px) {
+  .grid { grid-template-columns: repeat(3, 1fr); }
+}
+
+/* Dark mode */
+@media (prefers-color-scheme: dark) {
+  body { background: #1a202c; color: #e2e8f0; }
+}
+
+/* Giảm animation cho người dùng nhạy cảm */
+@media (prefers-reduced-motion: reduce) {
+  * { animation-duration: 0.01ms !important; transition-duration: 0.01ms !important; }
+}</pre>
+        </div>
+      </div>
+    </div>
+  </div>
+  <a href="../index.html" class="btn-back" style="margin-top:20px;">&#8592; Quay lại</a>
+  <script type="module">
+    import { codeToHtml } from 'https://esm.sh/shiki@1';
+    const raw = document.getElementById('code-raw').textContent;
+    const highlighted = await codeToHtml(raw, { lang: 'css', theme: 'github-dark' });
+    document.getElementById('code-highlight').innerHTML = highlighted;
+    const pre = document.getElementById('code-highlight').querySelector('pre');
+    if (pre) pre.style.cssText = 'border-radius:10px;padding:20px;font-size:0.87rem;overflow-x:auto;margin:0;line-height:1.7';
+  </script>
+</body>
+</html>

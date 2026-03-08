@@ -1,45 +1,86 @@
-﻿<!DOCTYPE html><html lang='vi'><head><meta charset='UTF-8'/><meta name='viewport' content='width=device-width,initial-scale=1'/><title>Bai 17 - Pseudo-element before after</title><link rel='stylesheet' href='../../shared.css'/></head><body><div class='page-header module-2'><div class='breadcrumb'><a href='../../index.html'>Trang Chu</a>  <a href='../index.html'>Module 2</a>  Bai 17</div><h1>Bai 17: Pseudo-element before after</h1><p>Module 2  CSS Co Ban</p></div><div class='exercise-page'><div class='exercise-box'><div class='ex-work'><h3>Yeu cau va Code mau:</h3><pre style='background:#1a202c;color:#e2e8f0;padding:20px;border-radius:8px;font-size:.88rem;line-height:1.7;overflow-x:auto;white-space:pre-wrap'>/* ::before va ::after - them noi dung trang tri */
-/* Luon can "content" de hien thi */
+<!DOCTYPE html>
+<html lang="vi">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <meta name="keywords" content="Nền tảng,HTML,CSS,JavaScript,Lập trình,Web,Kiến thức,Đồ án">
+  <meta name="author" content="Dương Nguyễn Phú Cường">
+  <meta name="description" content="Hiểu quy tắc tính điểm độ ưu tiên CSS để debug style hiệu quả.">
+  <meta property="og:locale" content="vi_VN">
+  <meta property="og:type" content="website">
+  <meta property="og:title" content="Bài 17 – CSS Specificity – Độ ưu tiên | NenTang.vn">
+  <meta property="og:description" content="Hiểu quy tắc tính điểm độ ưu tiên CSS để debug style hiệu quả.">
+  <meta property="og:url" content="https://nentang.vn/">
+  <meta property="og:site_name" content="Nền tảng Kiến thức">
+  <title>Bài 17 – CSS Specificity – Độ ưu tiên | NenTang.vn</title>
+  <link rel="stylesheet" href="../../shared.css" />
+</head>
+<body>
+  <div class="page-header module-2">
+    <div class="breadcrumb">
+      <a href="../../index.html">Trang Chủ</a> &rsaquo;
+      <a href="../index.html">Module 2</a> &rsaquo; Bài 17
+    </div>
+    <h1>Bài 17: CSS Specificity – Độ ưu tiên</h1>
+    <p>Module 2 – CSS Cơ Bản</p>
+  </div>
 
-/* Them bieu tuong truoc tieu de */
-h2::before {
-  content: " ";
-}
+  <div class="exercise-page">
+    <div class="exercise-box">
+      <div class="ex-head">
+        <h1>📝 Yêu cầu bài tập</h1>
+        <p>Hiểu quy tắc tính điểm độ ưu tiên CSS để debug style hiệu quả.</p>
+      </div>
+      <div class="ex-desc">
+        <h3>Mô tả</h3>
+        <p>Khi nhiều rule CSS cùng áp dụng cho một phần tử, trình duyệt dùng specificity (điểm ưu tiên) để quyết định rule nào thắng. Hiểu điều này giúp debug CSS dễ hơn.</p>
+        <h3>Yêu cầu</h3>
+        <ul>
+          <li>Tạo ví dụ để thấy ID (100pts) thắng class (10pts) thắng tag (1pt)</li>
+          <li>Thực hành kết hợp selector: .nav li a vs ul li a</li>
+          <li>Hiểu khi nào dùng !important và tại sao nên tránh</li>
+          <li>Dùng DevTools xem computed style và crossed-out declarations</li>
+        </ul>
+        <h3>🧠 Kiến thức cần nhớ</h3>
+        <ul>
+          <li>Điểm specificity: ID=100, Class/Pseudo-class/Attr=10, Tag/Pseudo-element=1</li>
+          <li><code>p</code> = 1 | <code>.class</code> = 10 | <code>#id</code> = 100</li>
+          <li><code>div.box p</code> = 1+10+1 = 12 | <code>#header .nav a</code> = 100+10+1 = 111</li>
+          <li><code>!important</code>: ghi đè tất cả (dùng khi thực sự cần thiết)</li>
+          <li>Inline style = 1000 điểm, mạnh hơn tất cả selector</li>
+        </ul>
+      </div>
+      <div class="ex-work">
+        <h3>💻 Code mẫu</h3>
+        <div id="code-highlight">
+          <pre id="code-raw" style="display:none">/* Specificity thấp đến cao */
+p { color: gray; }               /* 1 pt  */
+.text { color: blue; }           /* 10 pts */
+p.text { color: green; }         /* 11 pts */
+#main p { color: red; }          /* 101 pts */
+#main p.text { color: purple; }  /* 111 pts */
 
-/* Them gach ngang dep */
-.tieu-de::after {
-  content: "";
-  display: block;
-  width: 60px;
-  height: 3px;
-  background: #5a67d8;
-  margin-top: 8px;
-}
+/* Inline style (1000pts) – ghi đè tất cả rule CSS */
+/* &lt;p style="color:orange"&gt; = thắng tất cả trên */
 
-/* Tao chuyen dan */
-a::after { content: " "; }
+/* !important – mạnh nhất (tránh lạm dụng) */
+.forced { color: pink !important; } /* thắng cả inline style */
 
-/* Tao badge "HOT" */
-.san-pham::before {
-  content: "HOT";
-  position: absolute;
-  top: 8px; right: 8px;
-  background: red;
-  color: white;
-  font-size: 10px;
-  padding: 2px 6px;
-  border-radius: 10px;
-}
-
-/* Tao overlay trang tri */
-.hinh-dep::after {
-  content: "";
-  position: absolute;
-  inset: 0;
-  background: rgba(90,103,216,0.2);
-  transition: opacity 0.3s;
-  opacity: 0;
-}
-.hinh-dep:hover::after { opacity: 1; }
-
-/* YEU CAU: Tao menu voi > truoc muc active, them tooltip sau icon */</pre></div></div><a href='../index.html' class='btn-back' style='margin-top:20px;'> Quay lai</a></div></body></html>
+/* Kỹ thuật tăng specificity không dùng !important */
+.nav.nav li a { color: white; } /* .nav.nav = 20pts */
+/* Thay vào đó hãy dùng selector rõ ràng hơn */</pre>
+        </div>
+      </div>
+    </div>
+  </div>
+  <a href="../index.html" class="btn-back" style="margin-top:20px;">&#8592; Quay lại</a>
+  <script type="module">
+    import { codeToHtml } from 'https://esm.sh/shiki@1';
+    const raw = document.getElementById('code-raw').textContent;
+    const highlighted = await codeToHtml(raw, { lang: 'html', theme: 'github-dark' });
+    document.getElementById('code-highlight').innerHTML = highlighted;
+    const pre = document.getElementById('code-highlight').querySelector('pre');
+    if (pre) pre.style.cssText = 'border-radius:10px;padding:20px;font-size:0.87rem;overflow-x:auto;margin:0;line-height:1.7';
+  </script>
+</body>
+</html>

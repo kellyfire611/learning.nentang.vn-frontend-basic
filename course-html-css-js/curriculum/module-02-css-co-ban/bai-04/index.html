@@ -1,1 +1,89 @@
-﻿<!DOCTYPE html><html lang='vi'><head><meta charset='UTF-8'/><title>Bai 04 - Font chu va kich thuoc</title><link rel='stylesheet' href='../../shared.css'/></head><body><div class='page-header module-2'><div class='breadcrumb'><a href='../../index.html'>Trang Chu</a>  <a href='../index.html'>Module 2</a>  Bai 04</div><h1>Bai 04: Font chu va kich thuoc</h1><p>Module 2  CSS Co Ban</p></div><div class='exercise-page'><div class='exercise-box'><div class='ex-work'><h3>Noi dung bai tap CSS - Font chu va kich thuoc</h3><p style='padding:20px;color:#718096'>Mo file CSS cua ban va thuc hanh ap dung cac khai niem: <strong>Font chu va kich thuoc</strong></p></div></div><a href='../index.html' class='btn-back' style='margin-top:20px;'> Quay lai</a></div></body></html>
+<!DOCTYPE html>
+<html lang="vi">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <meta name="keywords" content="Nền tảng,HTML,CSS,JavaScript,Lập trình,Web,Kiến thức,Đồ án">
+  <meta name="author" content="Dương Nguyễn Phú Cường">
+  <meta name="description" content="Sử dụng 3 cách biểu diễn màu trong CSS: HEX, RGB và HSL.">
+  <meta property="og:locale" content="vi_VN">
+  <meta property="og:type" content="website">
+  <meta property="og:title" content="Bài 04 – Màu sắc: HEX, RGB, HSL | NenTang.vn">
+  <meta property="og:description" content="Sử dụng 3 cách biểu diễn màu trong CSS: HEX, RGB và HSL.">
+  <meta property="og:url" content="https://nentang.vn/">
+  <meta property="og:site_name" content="Nền tảng Kiến thức">
+  <title>Bài 04 – Màu sắc: HEX, RGB, HSL | NenTang.vn</title>
+  <link rel="stylesheet" href="../../shared.css" />
+</head>
+<body>
+  <div class="page-header module-2">
+    <div class="breadcrumb">
+      <a href="../../index.html">Trang Chủ</a> &rsaquo;
+      <a href="../index.html">Module 2</a> &rsaquo; Bài 04
+    </div>
+    <h1>Bài 04: Màu sắc: HEX, RGB, HSL</h1>
+    <p>Module 2 – CSS Cơ Bản</p>
+  </div>
+
+  <div class="exercise-page">
+    <div class="exercise-box">
+      <div class="ex-head">
+        <h1>📝 Yêu cầu bài tập</h1>
+        <p>Sử dụng 3 cách biểu diễn màu trong CSS: HEX, RGB và HSL.</p>
+      </div>
+      <div class="ex-desc">
+        <h3>Mô tả</h3>
+        <p>CSS hỗ trợ nhiều cách khai báo màu. HEX phổ biến nhất, RGB cho phép điều chỉnh opacity (rgba), HSL trực quan hơn khi cần điều chỉnh sắc.</p>
+        <h3>Yêu cầu</h3>
+        <ul>
+          <li>Tạo 5 ô màu: mỗi ô dùng 1 cú pháp màu khác nhau (tên, HEX, RGB, RGBA, HSL)</li>
+          <li>Dùng RGBA tạo overlay trong suốt 50%</li>
+          <li>Dùng HSL điều chỉnh sắc tối/sáng của cùng 1 màu (lightness 20%, 40%, 60%, 80%)</li>
+        </ul>
+        <h3>🧠 Kiến thức cần nhớ</h3>
+        <ul>
+          <li>Tên màu: <code>red, blue, tomato, cornflowerblue</code>... (140+ tên)</li>
+          <li>HEX: <code>#RRGGBB</code> hoặc rút gọn <code>#RGB</code> (VD: #fff = #ffffff)</li>
+          <li>RGB: <code>rgb(255, 0, 0)</code> – mỗi kênh 0-255</li>
+          <li>RGBA: <code>rgba(0, 0, 0, 0.5)</code> – a: alpha 0 (trong) đến 1 (đục)</li>
+          <li>HSL: <code>hsl(hue, saturation%, lightness%)</code> – dễ điều chỉnh tông màu</li>
+        </ul>
+      </div>
+      <div class="ex-work">
+        <h3>💻 Code mẫu</h3>
+        <div id="code-highlight">
+          <pre id="code-raw" style="display:none">/* Tên màu */
+.box1 { background: tomato; }
+
+/* HEX – phổ biến nhất */
+.box2 { background: #3182ce; }
+.box3 { background: #fff; border: 1px solid #000; }
+
+/* RGB */
+.box4 { background: rgb(72, 187, 120); }
+
+/* RGBA – có độ trong suốt */
+.overlay { background: rgba(0, 0, 0, 0.5); }
+
+/* HSL – dễ điều chỉnh */
+.light { background: hsl(210, 80%, 80%); }
+.normal { background: hsl(210, 80%, 55%); }
+.dark { background: hsl(210, 80%, 30%); }
+
+/* CSS hiện đại – oklch (Chrome 111+) */
+.modern { background: oklch(0.6 0.2 240); }</pre>
+        </div>
+      </div>
+    </div>
+  </div>
+  <a href="../index.html" class="btn-back" style="margin-top:20px;">&#8592; Quay lại</a>
+  <script type="module">
+    import { codeToHtml } from 'https://esm.sh/shiki@1';
+    const raw = document.getElementById('code-raw').textContent;
+    const highlighted = await codeToHtml(raw, { lang: 'html', theme: 'github-dark' });
+    document.getElementById('code-highlight').innerHTML = highlighted;
+    const pre = document.getElementById('code-highlight').querySelector('pre');
+    if (pre) pre.style.cssText = 'border-radius:10px;padding:20px;font-size:0.87rem;overflow-x:auto;margin:0;line-height:1.7';
+  </script>
+</body>
+</html>

@@ -1,27 +1,92 @@
-﻿<!DOCTYPE html><html lang='vi'><head><meta charset='UTF-8'/><meta name='viewport' content='width=device-width,initial-scale=1'/><title>Bai 14 - Opacity va RGBA</title><link rel='stylesheet' href='../../shared.css'/></head><body><div class='page-header module-2'><div class='breadcrumb'><a href='../../index.html'>Trang Chu</a>  <a href='../index.html'>Module 2</a>  Bai 14</div><h1>Bai 14: Opacity va RGBA</h1><p>Module 2  CSS Co Ban</p></div><div class='exercise-page'><div class='exercise-box'><div class='ex-work'><h3>Yeu cau va Code mau:</h3><pre style='background:#1a202c;color:#e2e8f0;padding:20px;border-radius:8px;font-size:.88rem;line-height:1.7;overflow-x:auto;white-space:pre-wrap'>/* Opacity - anh huong den ca phan tu con */
-.trong-suot-50 { opacity: 0.5; }   /* 50% trong suot */
-.trong-suot-80 { opacity: 0.8; }   /* 80% trong suot */
-.hoan-toan     { opacity: 1; }     /* duc hoan toan (mac dinh) */
+<!DOCTYPE html>
+<html lang="vi">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <meta name="keywords" content="Nền tảng,HTML,CSS,JavaScript,Lập trình,Web,Kiến thức,Đồ án">
+  <meta name="author" content="Dương Nguyễn Phú Cường">
+  <meta name="description" content="Kiểm soát độ trong suốt của phần tử và màu sắc bằng opacity và RGBA.">
+  <meta property="og:locale" content="vi_VN">
+  <meta property="og:type" content="website">
+  <meta property="og:title" content="Bài 14 – opacity và RGBA | NenTang.vn">
+  <meta property="og:description" content="Kiểm soát độ trong suốt của phần tử và màu sắc bằng opacity và RGBA.">
+  <meta property="og:url" content="https://nentang.vn/">
+  <meta property="og:site_name" content="Nền tảng Kiến thức">
+  <title>Bài 14 – opacity và RGBA | NenTang.vn</title>
+  <link rel="stylesheet" href="../../shared.css" />
+</head>
+<body>
+  <div class="page-header module-2">
+    <div class="breadcrumb">
+      <a href="../../index.html">Trang Chủ</a> &rsaquo;
+      <a href="../index.html">Module 2</a> &rsaquo; Bài 14
+    </div>
+    <h1>Bài 14: opacity và RGBA</h1>
+    <p>Module 2 – CSS Cơ Bản</p>
+  </div>
 
-/* RGBA - chi nen trong suot, khong anh huong noi dung */
-.nen-nua-trong {
-  background-color: rgba(90, 103, 216, 0.3); /* tim, 30% */
-}
+  <div class="exercise-page">
+    <div class="exercise-box">
+      <div class="ex-head">
+        <h1>📝 Yêu cầu bài tập</h1>
+        <p>Kiểm soát độ trong suốt của phần tử và màu sắc bằng opacity và RGBA.</p>
+      </div>
+      <div class="ex-desc">
+        <h3>Mô tả</h3>
+        <p>opacity áp dụng độ trong suốt cho TOÀN BỘ phần tử (kể cả nội dung). rgba() chỉ áp dụng cho màu đó, không ảnh hưởng nội dung bên trong.</p>
+        <h3>Yêu cầu</h3>
+        <ul>
+          <li>Tạo ảnh nền với overlay bán trong suốt dùng rgba</li>
+          <li>So sánh opacity: 0.5 trên parent vs rgba trên background-color</li>
+          <li>Tạo hiệu ứng glass morphism: background rgba + backdrop-filter blur</li>
+          <li>Tạo tooltip trong suốt xuất hiện khi hover</li>
+        </ul>
+        <h3>🧠 Kiến thức cần nhớ</h3>
+        <ul>
+          <li><code>opacity: 0</code> (trong suốt) đến <code>opacity: 1</code> (đục hoàn toàn)</li>
+          <li><code>rgba(r, g, b, alpha)</code>: alpha 0-1 chỉ cho màu đó</li>
+          <li>opacity ảnh hưởng toàn bộ gồm cả text, border, con cháu</li>
+          <li>rgba chỉ ảnh hưởng màu background/border của phần tử đó</li>
+          <li><code>backdrop-filter: blur(10px)</code>: làm mờ nền phía sau (glass effect)</li>
+        </ul>
+      </div>
+      <div class="ex-work">
+        <h3>💻 Code mẫu</h3>
+        <div id="code-highlight">
+          <pre id="code-raw" style="display:none">/* opacity – ảnh hưởng toàn phần tử */
+.dim { opacity: 0.5; } /* Cả text lẫn nền đều bị mờ */
 
-/* Ung dung thuc te - overlay */
+/* rgba – chỉ mờ màu nền */
 .overlay {
-  position: absolute;
-  top: 0; left: 0;
-  width: 100%; height: 100%;
-  background-color: rgba(0, 0, 0, 0.5); /* nen den 50% */
+  background: rgba(0, 0, 0, 0.6); /* nền đen 60% trong suốt */
+  color: white; /* text vẫn rõ */
 }
 
-/* Hover de lo anh */
-.hinh img {
-  transition: opacity 0.3s;
-}
-.hinh:hover img {
-  opacity: 0.7;
+/* Glass morphism effect */
+.glass {
+  background: rgba(255, 255, 255, 0.15);
+  backdrop-filter: blur(10px);
+  -webkit-backdrop-filter: blur(10px);
+  border: 1px solid rgba(255,255,255,0.3);
+  border-radius: 16px;
+  padding: 24px;
 }
 
-/* YEU CAU: Tao gallery anh - hover lam mo anh va hien text caption */</pre></div></div><a href='../index.html' class='btn-back' style='margin-top:20px;'> Quay lai</a></div></body></html>
+/* Fade khi hover */
+.fade { opacity: 1; transition: opacity 0.3s; }
+.fade:hover { opacity: 0.7; }</pre>
+        </div>
+      </div>
+    </div>
+  </div>
+  <a href="../index.html" class="btn-back" style="margin-top:20px;">&#8592; Quay lại</a>
+  <script type="module">
+    import { codeToHtml } from 'https://esm.sh/shiki@1';
+    const raw = document.getElementById('code-raw').textContent;
+    const highlighted = await codeToHtml(raw, { lang: 'html', theme: 'github-dark' });
+    document.getElementById('code-highlight').innerHTML = highlighted;
+    const pre = document.getElementById('code-highlight').querySelector('pre');
+    if (pre) pre.style.cssText = 'border-radius:10px;padding:20px;font-size:0.87rem;overflow-x:auto;margin:0;line-height:1.7';
+  </script>
+</body>
+</html>

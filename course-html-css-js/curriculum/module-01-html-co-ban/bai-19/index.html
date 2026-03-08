@@ -1,18 +1,89 @@
-﻿<!DOCTYPE html><html lang='vi'><head><meta charset='UTF-8'/><meta name='viewport' content='width=device-width,initial-scale=1'/><title>Bai 19 - Radio buttons va Checkboxes</title><link rel='stylesheet' href='../../shared.css'/></head><body><div class='page-header module-1'><div class='breadcrumb'><a href='../../index.html'>Trang Chu</a>  <a href='../index.html'>Module 1</a>  Bai 19</div><h1>Bai 19: Radio buttons va Checkboxes</h1><p>Module 1  HTML Co Ban</p></div><div class='exercise-page'><div class='exercise-box'><div class='ex-work'><h3>Noi dung bai tap:</h3><pre style='background:#1a202c;color:#e2e8f0;padding:20px;border-radius:8px;font-size:.88rem;line-height:1.7;overflow-x:auto;white-space:pre-wrap'>&lt;h1&gt;Khao Sat Y Kien&lt;/h1&gt;
-&lt;form&gt;
-  &lt;h3&gt;Gioi tinh:&lt;/h3&gt;
-  &lt;input type="radio" id="male" name="gender" value="male" /&gt;
-  &lt;label for="male"&gt;Nam&lt;/label&gt;
-  &lt;input type="radio" id="female" name="gender" value="female" /&gt;
-  &lt;label for="female"&gt;Nu&lt;/label&gt;
-  &lt;input type="radio" id="other" name="gender" value="other" /&gt;
-  &lt;label for="other"&gt;Khac&lt;/label&gt;
+<!DOCTYPE html>
+<html lang="vi">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <meta name="keywords" content="Nền tảng,HTML,CSS,JavaScript,Lập trình,Web,Kiến thức,Đồ án">
+  <meta name="author" content="Dương Nguyễn Phú Cường">
+  <meta name="description" content="Tạo form khảo sát dùng radio button và checkbox.">
+  <meta property="og:locale" content="vi_VN">
+  <meta property="og:type" content="website">
+  <meta property="og:title" content="Bài 19 – Radio Button và Checkbox | NenTang.vn">
+  <meta property="og:description" content="Tạo form khảo sát dùng radio button và checkbox.">
+  <meta property="og:url" content="https://nentang.vn/">
+  <meta property="og:site_name" content="Nền tảng Kiến thức">
+  <title>Bài 19 – Radio Button và Checkbox | NenTang.vn</title>
+  <link rel="stylesheet" href="../../shared.css" />
+</head>
+<body>
+  <div class="page-header module-1">
+    <div class="breadcrumb">
+      <a href="../../index.html">Trang Chủ</a> &rsaquo;
+      <a href="../index.html">Module 1</a> &rsaquo; Bài 19
+    </div>
+    <h1>Bài 19: Radio Button và Checkbox</h1>
+    <p>Module 1 – HTML Cơ Bản</p>
+  </div>
 
-  &lt;h3&gt;Ngon ngu lap trinh ban biet:&lt;/h3&gt;
-  &lt;input type="checkbox" id="html" name="lang" value="html" /&gt;&lt;label for="html"&gt;HTML&lt;/label&gt;&lt;br /&gt;
-  &lt;input type="checkbox" id="css" name="lang" value="css" /&gt;&lt;label for="css"&gt;CSS&lt;/label&gt;&lt;br /&gt;
-  &lt;input type="checkbox" id="js" name="lang" value="js" /&gt;&lt;label for="js"&gt;JavaScript&lt;/label&gt;&lt;br /&gt;
-  &lt;input type="checkbox" id="py" name="lang" value="py" /&gt;&lt;label for="py"&gt;Python&lt;/label&gt;
+  <div class="exercise-page">
+    <div class="exercise-box">
+      <div class="ex-head">
+        <h1>📝 Yêu cầu bài tập</h1>
+        <p>Tạo form khảo sát dùng radio button và checkbox.</p>
+      </div>
+      <div class="ex-desc">
+        <h3>Mô tả</h3>
+        <p>Radio button cho phép chọn MỘT trong nhiều lựa chọn. Checkbox cho phép chọn NHIỀU lựa chọn cùng lúc. Cả hai đều cần attribute name để nhóm lại.</p>
+        <h3>Yêu cầu</h3>
+        <ul>
+          <li>Tạo nhóm radio chọn giới tính (Nam/Nữ/Khác)</li>
+          <li>Tạo nhóm radio chọn trình độ học vấn</li>
+          <li>Tạo nhóm checkbox chọn sở thích (ít nhất 5 lựa chọn)</li>
+          <li>Dùng <code>fieldset</code> và <code>legend</code> để nhóm trường</li>
+        </ul>
+        <h3>🧠 Kiến thức cần nhớ</h3>
+        <ul>
+          <li>Radio: cùng <code>name</code> → chỉ chọn được 1 lựa chọn</li>
+          <li>Checkbox: cùng <code>name</code> → chọn được nhiều lựa chọn</li>
+          <li><code>value</code>: giá trị gửi lên server khi chọn</li>
+          <li><code>checked</code>: mặc định được chọn sẵn</li>
+          <li><code>&lt;fieldset&gt;</code> + <code>&lt;legend&gt;</code> nhóm các input liên quan</li>
+        </ul>
+      </div>
+      <div class="ex-work">
+        <h3>💻 Code mẫu</h3>
+        <div id="code-highlight">
+          <pre id="code-raw" style="display:none">&lt;form&gt;
+  &lt;fieldset&gt;
+    &lt;legend&gt;Giới tính&lt;/legend&gt;
+    &lt;label&gt;&lt;input type="radio" name="gioitinh" value="nam"&gt; Nam&lt;/label&gt;
+    &lt;label&gt;&lt;input type="radio" name="gioitinh" value="nu"&gt; Nữ&lt;/label&gt;
+    &lt;label&gt;&lt;input type="radio" name="gioitinh" value="khac"&gt; Khác&lt;/label&gt;
+  &lt;/fieldset&gt;
 
-  &lt;br /&gt;&lt;button type="submit"&gt;Gui Khao Sat&lt;/button&gt;
-&lt;/form&gt;</pre></div></div><a href='../index.html' class='btn-back' style='margin-top:20px;'> Quay lai</a></div></body></html>
+  &lt;fieldset style="margin-top:16px"&gt;
+    &lt;legend&gt;Sở thích (chọn nhiều)&lt;/legend&gt;
+    &lt;label&gt;&lt;input type="checkbox" name="sothich" value="doc"&gt; 📚 Đọc sách&lt;/label&gt;&lt;br&gt;
+    &lt;label&gt;&lt;input type="checkbox" name="sothich" value="nhac" checked&gt; 🎵 Nghe nhạc&lt;/label&gt;&lt;br&gt;
+    &lt;label&gt;&lt;input type="checkbox" name="sothich" value="game"&gt; 🎮 Chơi game&lt;/label&gt;&lt;br&gt;
+    &lt;label&gt;&lt;input type="checkbox" name="sothich" value="du-lich"&gt; ✈️ Du lịch&lt;/label&gt;&lt;br&gt;
+    &lt;label&gt;&lt;input type="checkbox" name="sothich" value="nau-an"&gt; 🍳 Nấu ăn&lt;/label&gt;
+  &lt;/fieldset&gt;
+
+  &lt;button type="submit" style="margin-top:12px; padding:8px 20px"&gt;Gửi khảo sát&lt;/button&gt;
+&lt;/form&gt;</pre>
+        </div>
+      </div>
+    </div>
+  </div>
+  <a href="../index.html" class="btn-back" style="margin-top:20px;">&#8592; Quay lại</a>
+  <script type="module">
+    import { codeToHtml } from 'https://esm.sh/shiki@1';
+    const raw = document.getElementById('code-raw').textContent;
+    const highlighted = await codeToHtml(raw, { lang: 'html', theme: 'github-dark' });
+    document.getElementById('code-highlight').innerHTML = highlighted;
+    const pre = document.getElementById('code-highlight').querySelector('pre');
+    if (pre) pre.style.cssText = 'border-radius:10px;padding:20px;font-size:0.87rem;overflow-x:auto;margin:0;line-height:1.7';
+  </script>
+</body>
+</html>

@@ -1,9 +1,113 @@
-﻿<!DOCTYPE html>
-<html lang="vi"><head><meta charset="UTF-8"/><title>Fetch API - POST va xu ly headers</title><link rel="stylesheet" href="../../shared.css"/></head>
+<!DOCTYPE html>
+<html lang="vi">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <meta name="keywords" content="Nền tảng,HTML,CSS,JavaScript,Lập trình,Web,Kiến thức,Đồ án">
+  <meta name="author" content="Dương Nguyễn Phú Cường">
+  <meta name="description" content="Viết code hướng đối tượng với class trong JavaScript.">
+  <meta property="og:locale" content="vi_VN">
+  <meta property="og:type" content="website">
+  <meta property="og:title" content="Bài 10 – Class và OOP | NenTang.vn">
+  <meta property="og:description" content="Viết code hướng đối tượng với class trong JavaScript.">
+  <meta property="og:url" content="https://nentang.vn/">
+  <meta property="og:site_name" content="Nền tảng Kiến thức">
+  <title>Bài 10 – Class và OOP | NenTang.vn</title>
+  <link rel="stylesheet" href="../../shared.css" />
+</head>
 <body>
-<div class="page-header module-5"><div class="breadcrumb"><a href="../../index.html">Trang Chu</a> &rsaquo; <a href="../index.html">Module 5</a> &rsaquo; bai-10</div><h1>Fetch API - POST va xu ly headers</h1></div>
-<div class="container"><div class="exercise-content"><h2>Yeu cau</h2><p>Gui POST request toi JSONPlaceholder. Xu ly headers (Content-Type: application/json). Hien thi response. Viet lai voi PUT (cap nhat) va DELETE (xoa). Xu ly loi HTTP status.</p>
-<h2>Code mau</h2><pre><code>/* Viet code tai day */</code></pre>
-<h2>Ket qua</h2><div id="result" style="padding:16px;background:#f8f9fa;border-radius:8px;margin-top:8px;">Ket qua se hien thi o day...</div>
-<h2>Bai lam</h2><textarea id="code" style="width:100%;height:200px;font-family:monospace;font-size:14px;padding:12px;border:2px solid #dee2e6;border-radius:8px;"></textarea><br/><button onclick="try{eval(document.getElementById('code').value)}catch(e){document.getElementById('result').textContent=e.message}" style="margin-top:8px;padding:10px 24px;background:#a18cd1;color:#fff;border:none;border-radius:8px;cursor:pointer;font-size:15px;">Chay Code</button>
-</div><a href="../index.html" class="btn-back"> Quay lai Module 5</a></div></body></html>
+  <div class="page-header module-5">
+    <div class="breadcrumb">
+      <a href="../../index.html">Trang Chủ</a> &rsaquo;
+      <a href="../index.html">Module 5</a> &rsaquo; Bài 10
+    </div>
+    <h1>Bài 10: Class và OOP</h1>
+    <p>Module 5 – JavaScript Nâng Cao</p>
+  </div>
+
+  <div class="exercise-page">
+    <div class="exercise-box">
+      <div class="ex-head">
+        <h1>📝 Yêu cầu bài tập</h1>
+        <p>Viết code hướng đối tượng với class trong JavaScript.</p>
+      </div>
+      <div class="ex-desc">
+        <h3>Mô tả</h3>
+        <p>ES6 class giúp tổ chức code theo mô hình OOP (Object-Oriented Programming). Class là cú pháp sugar trên prototype-based system của JS.</p>
+        <h3>Yêu cầu</h3>
+        <ul>
+          <li>Tạo class SanPham với constructor và methods</li>
+          <li>Kế thừa: SanPhamKhuyenMai extends SanPham</li>
+          <li>Private field (#) và static method</li>
+          <li>Getter/setter</li>
+        </ul>
+        <h3>🧠 Kiến thức cần nhớ</h3>
+        <ul>
+          <li><code>class Animal { constructor() {} method() {} }</code></li>
+          <li><code>extends</code>: kế thừa</li>
+          <li><code>super()</code>: gọi constructor cha</li>
+          <li>Private field: <code>#privateField</code> (chỉ truy cập trong class)</li>
+          <li><code>static</code>: method/property thuộc class, không phải instance</li>
+          <li>Getter/setter: <code>get prop() { }</code> / <code>set prop(val) { }</code></li>
+        </ul>
+      </div>
+      <div class="ex-work">
+        <h3>💻 Code mẫu</h3>
+        <div id="code-highlight">
+          <pre id="code-raw" style="display:none">class SanPham {
+  #id;  // Private field
+  static count = 0;
+
+  constructor(ten, gia) {
+    SanPham.count++;
+    this.#id   = SanPham.count;
+    this.ten   = ten;
+    this._gia  = gia;
+    this.tags  = [];
+  }
+
+  // Getter
+  get gia() { return this._gia; }
+  // Setter với validation
+  set gia(val) {
+    if (val &lt; 0) throw new Error('Giá không thể âm');
+    this._gia = val;
+  }
+
+  get id() { return this.#id; }
+
+  themTag(...tags) { this.tags.push(...tags); return this; } // chaining
+  thongTin() { return `[${this.#id}] ${this.ten}: ${this._gia.toLocaleString()}đ`; }
+  toString() { return this.thongTin(); }
+
+  static timTheoTen(ds, ten) { return ds.find(sp =&gt; sp.ten === ten); }
+}
+
+// Kế thừa
+class SanPhamKM extends SanPham {
+  constructor(ten, gia, giam) {
+    super(ten, gia); // BẮT BUỘC gọi super()
+    this.giam = giam;
+  }
+  get giaKM() { return this.gia * (1 - this.giam / 100); }
+  thongTin() { return `${super.thongTin()} (giảm ${this.giam}% → ${this.giaKM.toLocaleString()}đ)`; }
+}
+
+const ao = new SanPhamKM('Áo Polo', 250000, 20);
+console.log(ao.thongTin()); // [1] Áo Polo: 250,000đ (giảm 20% → 200,000đ)
+console.log(SanPham.count); // số sản phẩm đã tạo</pre>
+        </div>
+      </div>
+    </div>
+  </div>
+  <a href="../index.html" class="btn-back" style="margin-top:20px;">&#8592; Quay lại</a>
+  <script type="module">
+    import { codeToHtml } from 'https://esm.sh/shiki@1';
+    const raw = document.getElementById('code-raw').textContent;
+    const highlighted = await codeToHtml(raw, { lang: 'javascript', theme: 'github-dark' });
+    document.getElementById('code-highlight').innerHTML = highlighted;
+    const pre = document.getElementById('code-highlight').querySelector('pre');
+    if (pre) pre.style.cssText = 'border-radius:10px;padding:20px;font-size:0.87rem;overflow-x:auto;margin:0;line-height:1.7';
+  </script>
+</body>
+</html>

@@ -1,25 +1,99 @@
-﻿<!DOCTYPE html><html lang='vi'><head><meta charset='UTF-8'/><title>Bai 27 - Menu ngang da cap</title><link rel='stylesheet' href='../../shared.css'/></head><body><div class='page-header module-3'><div class='breadcrumb'><a href='../../index.html'>Trang Chu</a>  <a href='../index.html'>Module 3</a>  Bai 27</div><h1>Bai 27: Menu ngang da cap</h1></div><div class='exercise-page'><div class='exercise-box'><div class='ex-work'><pre style='background:#1a202c;color:#e2e8f0;padding:20px;border-radius:8px;font-size:.88rem;line-height:1.7;overflow-x:auto;white-space:pre-wrap'>/* CSS-only Dropdown Menu */
-nav ul { list-style: none; display: flex; margin: 0; padding: 0; }
-nav ul li { position: relative; }
-nav ul li a { display: block; padding: 14px 20px; color: white; text-decoration: none; }
-nav ul li:hover > a { background: #5a67d8; }
+<!DOCTYPE html>
+<html lang="vi">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <meta name="keywords" content="Nền tảng,HTML,CSS,JavaScript,Lập trình,Web,Kiến thức,Đồ án">
+  <meta name="author" content="Dương Nguyễn Phú Cường">
+  <meta name="description" content="Dùng Container Queries để tạo component responsive theo kích thước container, không phải viewport.">
+  <meta property="og:locale" content="vi_VN">
+  <meta property="og:type" content="website">
+  <meta property="og:title" content="Bài 27 – CSS Container Queries | NenTang.vn">
+  <meta property="og:description" content="Dùng Container Queries để tạo component responsive theo kích thước container, không phải viewport.">
+  <meta property="og:url" content="https://nentang.vn/">
+  <meta property="og:site_name" content="Nền tảng Kiến thức">
+  <title>Bài 27 – CSS Container Queries | NenTang.vn</title>
+  <link rel="stylesheet" href="../../shared.css" />
+</head>
+<body>
+  <div class="page-header module-3">
+    <div class="breadcrumb">
+      <a href="../../index.html">Trang Chủ</a> &rsaquo;
+      <a href="../index.html">Module 3</a> &rsaquo; Bài 27
+    </div>
+    <h1>Bài 27: CSS Container Queries</h1>
+    <p>Module 3 – CSS Layout &amp; Responsive</p>
+  </div>
 
-/* Dropdown phan 2 (cap 2) */
-nav ul ul {
-  display: none; /* an mac dinh */
-  position: absolute; top: 100%; left: 0;
-  background: #2d3748; min-width: 200px;
-  box-shadow: 0 8px 24px rgba(0,0,0,.2);
+  <div class="exercise-page">
+    <div class="exercise-box">
+      <div class="ex-head">
+        <h1>📝 Yêu cầu bài tập</h1>
+        <p>Dùng Container Queries để tạo component responsive theo kích thước container, không phải viewport.</p>
+      </div>
+      <div class="ex-desc">
+        <h3>Mô tả</h3>
+        <p>Container Queries là tính năng CSS hiện đại cho phép component tự điều chỉnh theo kích thước CONTAINER chứa nó – linh hoạt hơn media queries.</p>
+        <h3>Yêu cầu</h3>
+        <ul>
+          <li>Khai báo container với container-type</li>
+          <li>Viết @container query thay đổi layout card theo chiều rộng container</li>
+          <li>So sánh card trong container nhỏ và container lớn</li>
+        </ul>
+        <h3>🧠 Kiến thức cần nhớ</h3>
+        <ul>
+          <li><code>container-type: inline-size</code>: khai báo phần tử là container</li>
+          <li><code>@container (min-width: 400px) { }</code>: style khi container >= 400px</li>
+          <li>Component sẽ thay đổi theo CONTAINER, không phải viewport</li>
+          <li>container-name: đặt tên container để query cụ thể</li>
+          <li>Hỗ trợ Chrome 105+, Firefox 110+, Safari 16+</li>
+        </ul>
+      </div>
+      <div class="ex-work">
+        <h3>💻 Code mẫu</h3>
+        <div id="code-highlight">
+          <pre id="code-raw" style="display:none">/* Container Queries */
+.card-wrapper {
+  container-type: inline-size;
+  container-name: card;
 }
-nav ul li:hover > ul { display: block; } /* hien khi hover */
 
-/* Dropdown cap 3 - sang phai */
-nav ul ul ul { left: 100%; top: 0; }
-nav ul ul li:hover > ul { display: block; }
-
-/* Animation mo */
-nav ul ul {
-  opacity: 0; visibility: hidden;
-  transition: opacity .2s, visibility .2s;
+/* Mặc định: layout dọc (container nhỏ) */
+.card {
+  display: flex;
+  flex-direction: column;
 }
-nav ul li:hover > ul { opacity: 1; visibility: visible; }</pre></div></div><a href='../index.html' class='btn-back' style='margin-top:20px;'> Quay lai</a></div></body></html>
+.card img { width: 100%; aspect-ratio: 16/9; object-fit: cover; }
+
+/* Khi container &gt;= 400px: layout ngang */
+@container card (min-width: 400px) {
+  .card {
+    flex-direction: row;
+  }
+  .card img {
+    width: 160px;
+    height: auto;
+    aspect-ratio: auto;
+  }
+}
+
+/* Khi container &gt;= 600px: card to hơn */
+@container card (min-width: 600px) {
+  .card { padding: 24px; gap: 24px; }
+  .card-title { font-size: 1.5rem; }
+}</pre>
+        </div>
+      </div>
+    </div>
+  </div>
+  <a href="../index.html" class="btn-back" style="margin-top:20px;">&#8592; Quay lại</a>
+  <script type="module">
+    import { codeToHtml } from 'https://esm.sh/shiki@1';
+    const raw = document.getElementById('code-raw').textContent;
+    const highlighted = await codeToHtml(raw, { lang: 'css', theme: 'github-dark' });
+    document.getElementById('code-highlight').innerHTML = highlighted;
+    const pre = document.getElementById('code-highlight').querySelector('pre');
+    if (pre) pre.style.cssText = 'border-radius:10px;padding:20px;font-size:0.87rem;overflow-x:auto;margin:0;line-height:1.7';
+  </script>
+</body>
+</html>

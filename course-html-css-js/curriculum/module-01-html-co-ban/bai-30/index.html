@@ -1,60 +1,129 @@
-﻿<!DOCTYPE html><html lang='vi'><head><meta charset='UTF-8'/><meta name='viewport' content='width=device-width,initial-scale=1'/><title>Bai 30 - DU AN: Trang gioi thieu ca nhan</title><link rel='stylesheet' href='../../shared.css'/></head><body><div class='page-header module-1'><div class='breadcrumb'><a href='../../index.html'>Trang Chu</a>  <a href='../index.html'>Module 1</a>  Bai 30</div><h1>Bai 30: DU AN: Trang gioi thieu ca nhan</h1><p>Module 1  HTML Co Ban</p></div><div class='exercise-page'><div class='exercise-box'><div class='ex-work'><h3>Noi dung / Code mau:</h3><pre style='background:#1a202c;color:#e2e8f0;padding:20px;border-radius:8px;font-size:.88rem;line-height:1.7;overflow-x:auto;white-space:pre-wrap'>&lt;!DOCTYPE html&gt;
+<!DOCTYPE html>
+<html lang="vi">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <meta name="keywords" content="Nền tảng,HTML,CSS,JavaScript,Lập trình,Web,Kiến thức,Đồ án">
+  <meta name="author" content="Dương Nguyễn Phú Cường">
+  <meta name="description" content="Xây dựng trang giới thiệu bản thân hoàn chỉnh bằng HTML thuần.">
+  <meta property="og:locale" content="vi_VN">
+  <meta property="og:type" content="website">
+  <meta property="og:title" content="Bài 30 – 🏆 Dự án: Trang Portfolio cá nhân | NenTang.vn">
+  <meta property="og:description" content="Xây dựng trang giới thiệu bản thân hoàn chỉnh bằng HTML thuần.">
+  <meta property="og:url" content="https://nentang.vn/">
+  <meta property="og:site_name" content="Nền tảng Kiến thức">
+  <title>Bài 30 – 🏆 Dự án: Trang Portfolio cá nhân | NenTang.vn</title>
+  <link rel="stylesheet" href="../../shared.css" />
+</head>
+<body>
+  <div class="page-header module-1">
+    <div class="breadcrumb">
+      <a href="../../index.html">Trang Chủ</a> &rsaquo;
+      <a href="../index.html">Module 1</a> &rsaquo; Bài 30
+    </div>
+    <h1>Bài 30: 🏆 Dự án: Trang Portfolio cá nhân</h1>
+    <p>Module 1 – HTML Cơ Bản</p>
+  </div>
+
+  <div class="exercise-page">
+    <div class="exercise-box">
+      <div class="ex-head">
+        <h1>📝 Yêu cầu bài tập</h1>
+        <p>Xây dựng trang giới thiệu bản thân hoàn chỉnh bằng HTML thuần.</p>
+      </div>
+      <div class="ex-desc">
+        <h3>Mô tả</h3>
+        <p>Dự án cuối module tổng hợp TẤT CẢ kiến thức HTML đã học. Trang portfolio là trang web cá nhân để giới thiệu kỹ năng và kinh nghiệm với nhà tuyển dụng.</p>
+        <h3>Yêu cầu</h3>
+        <ul>
+          <li>Header: ảnh đại diện, tên, chức danh, mạng xã hội</li>
+          <li>Section 'Về tôi': đoạn giới thiệu + danh sách kỹ năng</li>
+          <li>Section 'Dự án': bảng liệt kê dự án đã làm</li>
+          <li>Section 'Liên hệ': form liên hệ đầy đủ</li>
+          <li>Footer: thông tin bản quyền</li>
+          <li>Dùng ĐÚNG các thẻ semantic: header, nav, main, section, article, footer</li>
+        </ul>
+        <h3>🧠 Kiến thức cần nhớ</h3>
+        <ul>
+          <li>Portfolio cần: ảnh chuyên nghiệp, mô tả ngắn gọn, dự án nổi bật, contact</li>
+          <li>Dùng semantic HTML đúng cách: header, main, section, footer</li>
+          <li>Alt text cho ảnh quan trọng cho SEO và accessibility</li>
+          <li>Meta description mô tả bản thân ngắn gọn 160 ký tự</li>
+          <li>Form liên hệ với validate HTML5</li>
+        </ul>
+      </div>
+      <div class="ex-work">
+        <h3>💻 Code mẫu</h3>
+        <div id="code-highlight">
+          <pre id="code-raw" style="display:none">&lt;!DOCTYPE html&gt;
 &lt;html lang="vi"&gt;
 &lt;head&gt;
-  &lt;meta charset="UTF-8"/&gt;
-  &lt;meta name="viewport" content="width=device-width, initial-scale=1.0"/&gt;
-  &lt;meta name="description" content="Trang ca nhan cua Nguyen Van An - Sinh vien CNTT"/&gt;
-  &lt;title&gt;Nguyen Van An - Portfolio&lt;/title&gt;
+  &lt;meta charset="UTF-8"&gt;
+  &lt;title&gt;Nguyễn Văn A – Lập trình viên Web&lt;/title&gt;
+  &lt;meta name="description" content="Lập trình viên Web với 2 năm kinh nghiệm HTML, CSS, JavaScript"&gt;
 &lt;/head&gt;
 &lt;body&gt;
+  &lt;header&gt;
+    &lt;img src="avatar.jpg" alt="Ảnh của tôi" width="100"&gt;
+    &lt;h1&gt;Nguyễn Văn A&lt;/h1&gt;
+    &lt;p&gt;🖥️ Lập trình viên Web Junior&lt;/p&gt;
+    &lt;nav&gt;
+      &lt;a href="#gioi-thieu"&gt;Về tôi&lt;/a&gt; |
+      &lt;a href="#du-an"&gt;Dự án&lt;/a&gt; |
+      &lt;a href="#lien-he"&gt;Liên hệ&lt;/a&gt;
+    &lt;/nav&gt;
+  &lt;/header&gt;
 
-&lt;header&gt;
-  &lt;img src="https://picsum.photos/150/150?random=99" alt="Anh dai dien" /&gt;
-  &lt;h1&gt;Nguyen Van An&lt;/h1&gt;
-  &lt;p&gt;Sinh vien lap trinh web | Ho Chi Minh City&lt;/p&gt;
-  &lt;nav&gt;
-    &lt;a href="#about"&gt;Gioi Thieu&lt;/a&gt; |
-    &lt;a href="#skills"&gt;Ky Nang&lt;/a&gt; |
-    &lt;a href="#projects"&gt;Du An&lt;/a&gt; |
-    &lt;a href="#contact"&gt;Lien He&lt;/a&gt;
-  &lt;/nav&gt;
-&lt;/header&gt;
+  &lt;main&gt;
+    &lt;section id="gioi-thieu"&gt;
+      &lt;h2&gt;👋 Về tôi&lt;/h2&gt;
+      &lt;p&gt;Xin chào! Tôi là Văn A, sinh viên năm 3 ngành CNTT.
+         Đam mê lập trình web và luôn muốn học hỏi công nghệ mới.&lt;/p&gt;
+      &lt;h3&gt;Kỹ năng&lt;/h3&gt;
+      &lt;ul&gt;
+        &lt;li&gt;HTML5 &amp;amp; CSS3&lt;/li&gt;
+        &lt;li&gt;JavaScript (ES6+)&lt;/li&gt;
+        &lt;li&gt;Bootstrap 5&lt;/li&gt;
+      &lt;/ul&gt;
+    &lt;/section&gt;
 
-&lt;main&gt;
-  &lt;section id="about"&gt;
-    &lt;h2&gt;Gioi Thieu Ban Than&lt;/h2&gt;
-    &lt;p&gt;Toi la sinh vien nam 3 nganh Cong Nghe Thong Tin...&lt;/p&gt;
-  &lt;/section&gt;
+    &lt;section id="du-an"&gt;
+      &lt;h2&gt;🚀 Dự án đã làm&lt;/h2&gt;
+      &lt;table border="1"&gt;
+        &lt;tr&gt;&lt;th&gt;Dự án&lt;/th&gt;&lt;th&gt;Công nghệ&lt;/th&gt;&lt;th&gt;Link&lt;/th&gt;&lt;/tr&gt;
+        &lt;tr&gt;&lt;td&gt;Web giới thiệu cafe&lt;/td&gt;&lt;td&gt;HTML, CSS&lt;/td&gt;&lt;td&gt;&lt;a href="#"&gt;Xem&lt;/a&gt;&lt;/td&gt;&lt;/tr&gt;
+        &lt;tr&gt;&lt;td&gt;Todo List&lt;/td&gt;&lt;td&gt;JavaScript&lt;/td&gt;&lt;td&gt;&lt;a href="#"&gt;Xem&lt;/a&gt;&lt;/td&gt;&lt;/tr&gt;
+      &lt;/table&gt;
+    &lt;/section&gt;
 
-  &lt;section id="skills"&gt;
-    &lt;h2&gt;Ky Nang&lt;/h2&gt;
-    &lt;ul&gt;
-      &lt;li&gt;&lt;strong&gt;HTML5&lt;/strong&gt;  Thanh thao&lt;/li&gt;
-      &lt;li&gt;&lt;strong&gt;CSS3&lt;/strong&gt;  Kha&lt;/li&gt;
-      &lt;li&gt;&lt;strong&gt;JavaScript&lt;/strong&gt;  Dang hoc&lt;/li&gt;
-    &lt;/ul&gt;
-  &lt;/section&gt;
+    &lt;section id="lien-he"&gt;
+      &lt;h2&gt;📧 Liên hệ&lt;/h2&gt;
+      &lt;form&gt;
+        &lt;p&gt;&lt;label&gt;Tên: &lt;input type="text" required&gt;&lt;/label&gt;&lt;/p&gt;
+        &lt;p&gt;&lt;label&gt;Email: &lt;input type="email" required&gt;&lt;/label&gt;&lt;/p&gt;
+        &lt;p&gt;&lt;label&gt;Tin nhắn:&lt;br&gt;&lt;textarea rows="4" cols="40"&gt;&lt;/textarea&gt;&lt;/label&gt;&lt;/p&gt;
+        &lt;button type="submit"&gt;Gửi tin nhắn&lt;/button&gt;
+      &lt;/form&gt;
+    &lt;/section&gt;
+  &lt;/main&gt;
 
-  &lt;section id="projects"&gt;
-    &lt;h2&gt;Du An Da Lam&lt;/h2&gt;
-    &lt;ol&gt;
-      &lt;li&gt;Trang web ban hang thoi trang&lt;/li&gt;
-      &lt;li&gt;Trang blog ca nhan&lt;/li&gt;
-    &lt;/ol&gt;
-  &lt;/section&gt;
-
-  &lt;section id="contact"&gt;
-    &lt;h2&gt;Lien He&lt;/h2&gt;
-    &lt;address&gt;
-      Email: &lt;a href="mailto:an@example.com"&gt;an@example.com&lt;/a&gt;&lt;br /&gt;
-      Github: &lt;a href="https://github.com" target="_blank"&gt;github.com/nguyenvanan&lt;/a&gt;
-    &lt;/address&gt;
-  &lt;/section&gt;
-&lt;/main&gt;
-
-&lt;footer&gt;
-  &lt;p&gt;&amp;copy; 2026 Nguyen Van An. All rights reserved.&lt;/p&gt;
-&lt;/footer&gt;
-
+  &lt;footer&gt;
+    &lt;p&gt;&amp;copy; 2024 Nguyễn Văn A. Tất cả quyền được bảo lưu.&lt;/p&gt;
+  &lt;/footer&gt;
 &lt;/body&gt;
-&lt;/html&gt;</pre></div></div><a href='../index.html' class='btn-back' style='margin-top:20px;'> Quay lai</a></div></body></html>
+&lt;/html&gt;</pre>
+        </div>
+      </div>
+    </div>
+  </div>
+  <a href="../index.html" class="btn-back" style="margin-top:20px;">&#8592; Quay lại</a>
+  <script type="module">
+    import { codeToHtml } from 'https://esm.sh/shiki@1';
+    const raw = document.getElementById('code-raw').textContent;
+    const highlighted = await codeToHtml(raw, { lang: 'html', theme: 'github-dark' });
+    document.getElementById('code-highlight').innerHTML = highlighted;
+    const pre = document.getElementById('code-highlight').querySelector('pre');
+    if (pre) pre.style.cssText = 'border-radius:10px;padding:20px;font-size:0.87rem;overflow-x:auto;margin:0;line-height:1.7';
+  </script>
+</body>
+</html>

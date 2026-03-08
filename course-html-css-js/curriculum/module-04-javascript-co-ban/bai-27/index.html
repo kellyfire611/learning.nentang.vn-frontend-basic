@@ -1,9 +1,108 @@
-﻿<!DOCTYPE html>
-<html lang="vi"><head><meta charset="UTF-8"/><title>Su kien mouse va keyboard</title><link rel="stylesheet" href="../../shared.css"/></head>
+<!DOCTYPE html>
+<html lang="vi">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <meta name="keywords" content="Nền tảng,HTML,CSS,JavaScript,Lập trình,Web,Kiến thức,Đồ án">
+  <meta name="author" content="Dương Nguyễn Phú Cường">
+  <meta name="description" content="Hiểu scope và closure để viết code không bị lỗi biến toàn cục.">
+  <meta property="og:locale" content="vi_VN">
+  <meta property="og:type" content="website">
+  <meta property="og:title" content="Bài 27 – Closure và Scope | NenTang.vn">
+  <meta property="og:description" content="Hiểu scope và closure để viết code không bị lỗi biến toàn cục.">
+  <meta property="og:url" content="https://nentang.vn/">
+  <meta property="og:site_name" content="Nền tảng Kiến thức">
+  <title>Bài 27 – Closure và Scope | NenTang.vn</title>
+  <link rel="stylesheet" href="../../shared.css" />
+</head>
 <body>
-<div class="page-header module-4"><div class="breadcrumb"><a href="../../index.html">Trang Chu</a> &rsaquo; <a href="../index.html">Module 4</a> &rsaquo; bai-27</div><h1>Su kien mouse va keyboard</h1></div>
-<div class="container"><div class="exercise-content"><h2>Yeu cau</h2><p>Tao mini game: chuot di vao o vuong thi tang diem, di ra giam diem. Bat phim: Enter de xac nhan, Escape de huy, mui ten de di chuyen mot hop.</p>
-<h2>Code mau</h2><pre><code>/* Viet code tai day */</code></pre>
-<h2>Ket qua</h2><div id="result" style="padding:16px;background:#f8f9fa;border-radius:8px;margin-top:8px;">Ket qua se hien thi o day...</div>
-<h2>Bai lam</h2><textarea id="code" style="width:100%;height:180px;font-family:monospace;font-size:14px;padding:12px;border:2px solid #dee2e6;border-radius:8px;"></textarea><br/><button onclick="try{eval(document.getElementById('code').value)}catch(e){document.getElementById('result').textContent=e.message}" style="margin-top:8px;padding:10px 24px;background:#fa709a;color:#fff;border:none;border-radius:8px;cursor:pointer;font-size:15px;">Chay Code</button>
-</div><a href="../index.html" class="btn-back"> Quay lai Module 4</a></div></body></html>
+  <div class="page-header module-4">
+    <div class="breadcrumb">
+      <a href="../../index.html">Trang Chủ</a> &rsaquo;
+      <a href="../index.html">Module 4</a> &rsaquo; Bài 27
+    </div>
+    <h1>Bài 27: Closure và Scope</h1>
+    <p>Module 4 – JavaScript Cơ Bản</p>
+  </div>
+
+  <div class="exercise-page">
+    <div class="exercise-box">
+      <div class="ex-head">
+        <h1>📝 Yêu cầu bài tập</h1>
+        <p>Hiểu scope và closure để viết code không bị lỗi biến toàn cục.</p>
+      </div>
+      <div class="ex-desc">
+        <h3>Mô tả</h3>
+        <p>Scope xác định phạm vi biến có thể truy cập. Closure là hàm có thể nhớ scope bên ngoài sau khi scope đó đã kết thúc.</p>
+        <h3>Yêu cầu</h3>
+        <ul>
+          <li>Tạo counter factory bằng closure: mỗi counter độc lập</li>
+          <li>Meme kinh điển: vòng lặp setTimeout với var vs let</li>
+          <li>Tạo private variable bằng closure</li>
+        </ul>
+        <h3>🧠 Kiến thức cần nhớ</h3>
+        <ul>
+          <li>Block scope: <code>let/const</code> chỉ trong {} hiện tại</li>
+          <li>Function scope: <code>var</code> trong function</li>
+          <li>Global scope: ngoài tất cả function</li>
+          <li>Closure: hàm 'nhớ' biến từ scope cha dù scope cha đã kết thúc</li>
+          <li>Vấn đề var + vòng lặp: dùng let hoặc IIFE để fix</li>
+          <li>Module pattern dùng closure để tạo private state</li>
+        </ul>
+      </div>
+      <div class="ex-work">
+        <h3>💻 Code mẫu</h3>
+        <div id="code-highlight">
+          <pre id="code-raw" style="display:none">// Closure: counter factory
+function taoCounter(batDau = 0) {
+  let dem = batDau;  // private – bên ngoài không truy cập được
+  return {
+    tang:  () =&gt; ++dem,
+    giam:  () =&gt; --dem,
+    reset: () =&gt; { dem = batDau; },
+    lay:   () =&gt; dem,
+  };
+}
+const c1 = taoCounter(0);
+const c2 = taoCounter(10);
+c1.tang(); c1.tang(); // c1 = 2
+c2.giam();            // c2 = 9
+console.log(c1.lay(), c2.lay()); // 2, 9 – ĐỘC LẬP !
+
+// VAR vs LET trong vòng lặp
+// Vấn đề với var:
+for (var i = 0; i &lt; 3; i++) {
+  setTimeout(() =&gt; console.log('var:', i), 100);
+}
+// In ra: 3, 3, 3 (vì var chia sẻ cùng i)
+
+// Fix bằng let:
+for (let j = 0; j &lt; 3; j++) {
+  setTimeout(() =&gt; console.log('let:', j), 100);
+}
+// In ra: 0, 1, 2 (let có block scope riêng mỗi lần lặp)
+
+// Module pattern
+const BankAccount = (() =&gt; {
+  let balance = 0;           // private
+  return {
+    deposit: (n) =&gt; { if(n&gt;0) balance+=n; },
+    withdraw: (n) =&gt; { if(n&gt;0&amp;&amp;balance&gt;=n) balance-=n; },
+    getBalance: () =&gt; balance,
+  };
+})();</pre>
+        </div>
+      </div>
+    </div>
+  </div>
+  <a href="../index.html" class="btn-back" style="margin-top:20px;">&#8592; Quay lại</a>
+  <script type="module">
+    import { codeToHtml } from 'https://esm.sh/shiki@1';
+    const raw = document.getElementById('code-raw').textContent;
+    const highlighted = await codeToHtml(raw, { lang: 'javascript', theme: 'github-dark' });
+    document.getElementById('code-highlight').innerHTML = highlighted;
+    const pre = document.getElementById('code-highlight').querySelector('pre');
+    if (pre) pre.style.cssText = 'border-radius:10px;padding:20px;font-size:0.87rem;overflow-x:auto;margin:0;line-height:1.7';
+  </script>
+</body>
+</html>

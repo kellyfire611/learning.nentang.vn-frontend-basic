@@ -1,17 +1,93 @@
-﻿<!DOCTYPE html><html lang='vi'><head><meta charset='UTF-8'/><meta name='viewport' content='width=device-width,initial-scale=1'/><title>Bai 18 - Form dang nhap co ban</title><link rel='stylesheet' href='../../shared.css'/></head><body><div class='page-header module-1'><div class='breadcrumb'><a href='../../index.html'>Trang Chu</a>  <a href='../index.html'>Module 1</a>  Bai 18</div><h1>Bai 18: Form dang nhap co ban</h1><p>Module 1  HTML Co Ban</p></div><div class='exercise-page'><div class='exercise-box'><div class='ex-work'><h3>Noi dung bai tap:</h3><pre style='background:#1a202c;color:#e2e8f0;padding:20px;border-radius:8px;font-size:.88rem;line-height:1.7;overflow-x:auto;white-space:pre-wrap'>&lt;h1&gt;Dang Nhap&lt;/h1&gt;
-&lt;form action="#" method="post"&gt;
-  &lt;div&gt;
-    &lt;label for="username"&gt;Ten dang nhap:&lt;/label&gt;&lt;br /&gt;
-    &lt;input type="text" id="username" name="username" placeholder="Nhap ten dang nhap" /&gt;
+<!DOCTYPE html>
+<html lang="vi">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <meta name="keywords" content="Nền tảng,HTML,CSS,JavaScript,Lập trình,Web,Kiến thức,Đồ án">
+  <meta name="author" content="Dương Nguyễn Phú Cường">
+  <meta name="description" content="Tạo form đăng nhập với email và mật khẩu.">
+  <meta property="og:locale" content="vi_VN">
+  <meta property="og:type" content="website">
+  <meta property="og:title" content="Bài 18 – Form đăng nhập cơ bản | NenTang.vn">
+  <meta property="og:description" content="Tạo form đăng nhập với email và mật khẩu.">
+  <meta property="og:url" content="https://nentang.vn/">
+  <meta property="og:site_name" content="Nền tảng Kiến thức">
+  <title>Bài 18 – Form đăng nhập cơ bản | NenTang.vn</title>
+  <link rel="stylesheet" href="../../shared.css" />
+</head>
+<body>
+  <div class="page-header module-1">
+    <div class="breadcrumb">
+      <a href="../../index.html">Trang Chủ</a> &rsaquo;
+      <a href="../index.html">Module 1</a> &rsaquo; Bài 18
+    </div>
+    <h1>Bài 18: Form đăng nhập cơ bản</h1>
+    <p>Module 1 – HTML Cơ Bản</p>
+  </div>
+
+  <div class="exercise-page">
+    <div class="exercise-box">
+      <div class="ex-head">
+        <h1>📝 Yêu cầu bài tập</h1>
+        <p>Tạo form đăng nhập với email và mật khẩu.</p>
+      </div>
+      <div class="ex-desc">
+        <h3>Mô tả</h3>
+        <p>Form HTML cho phép người dùng nhập và gửi dữ liệu. Form đăng nhập là form phổ biến nhất, bao gồm trường email/tên đăng nhập và mật khẩu.</p>
+        <h3>Yêu cầu</h3>
+        <ul>
+          <li>Tạo form với action và method</li>
+          <li>Thẻ <code>&lt;label&gt;</code> liên kết với from input (dùng for và id)</li>
+          <li>Input type='email' và type='password'</li>
+          <li>Nút Submit với giá trị 'Đăng nhập'</li>
+          <li>Thêm placeholder và required cho các trường</li>
+        </ul>
+        <h3>🧠 Kiến thức cần nhớ</h3>
+        <ul>
+          <li><code>&lt;form action='' method='post'&gt;</code>: tạo form</li>
+          <li><code>&lt;label for='id'&gt;</code>: nhãn liên kết với input cùng id</li>
+          <li><code>type='email'</code>: tự validate định dạng email</li>
+          <li><code>type='password'</code>: ẩn ký tự nhập</li>
+          <li><code>required</code>: bắt buộc nhập trước khi submit</li>
+        </ul>
+      </div>
+      <div class="ex-work">
+        <h3>💻 Code mẫu</h3>
+        <div id="code-highlight">
+          <pre id="code-raw" style="display:none">&lt;form action="#" method="post" style="max-width:400px; margin:auto; padding:24px; background:#f7fafc; border-radius:12px"&gt;
+  &lt;h2 style="text-align:center; color:#2d3748"&gt;Đăng nhập&lt;/h2&gt;
+
+  &lt;div style="margin-bottom:16px"&gt;
+    &lt;label for="email" style="display:block; font-weight:bold; margin-bottom:6px"&gt;Email&lt;/label&gt;
+    &lt;input type="email" id="email" name="email"
+           placeholder="ten@email.com" required
+           style="width:100%; padding:10px; border:1px solid #cbd5e0; border-radius:6px; font-size:15px"&gt;
   &lt;/div&gt;
-  &lt;div&gt;
-    &lt;label for="password"&gt;Mat khau:&lt;/label&gt;&lt;br /&gt;
-    &lt;input type="password" id="password" name="password" placeholder="Nhap mat khau" /&gt;
+
+  &lt;div style="margin-bottom:20px"&gt;
+    &lt;label for="pass" style="display:block; font-weight:bold; margin-bottom:6px"&gt;Mật khẩu&lt;/label&gt;
+    &lt;input type="password" id="pass" name="password"
+           placeholder="Nhập mật khẩu" required
+           style="width:100%; padding:10px; border:1px solid #cbd5e0; border-radius:6px; font-size:15px"&gt;
   &lt;/div&gt;
-  &lt;div&gt;
-    &lt;input type="checkbox" id="remember" name="remember" /&gt;
-    &lt;label for="remember"&gt;Ghi nho dang nhap&lt;/label&gt;
-  &lt;/div&gt;
-  &lt;button type="submit"&gt;Dang Nhap&lt;/button&gt;
-  &lt;a href="register.html"&gt;Chua co tai khoan? Dang ky ngay&lt;/a&gt;
-&lt;/form&gt;</pre></div></div><a href='../index.html' class='btn-back' style='margin-top:20px;'> Quay lai</a></div></body></html>
+
+  &lt;button type="submit"
+          style="width:100%; padding:12px; background:#3182ce; color:white; border:none; border-radius:8px; font-size:16px; cursor:pointer"&gt;
+    Đăng nhập
+  &lt;/button&gt;
+&lt;/form&gt;</pre>
+        </div>
+      </div>
+    </div>
+  </div>
+  <a href="../index.html" class="btn-back" style="margin-top:20px;">&#8592; Quay lại</a>
+  <script type="module">
+    import { codeToHtml } from 'https://esm.sh/shiki@1';
+    const raw = document.getElementById('code-raw').textContent;
+    const highlighted = await codeToHtml(raw, { lang: 'html', theme: 'github-dark' });
+    document.getElementById('code-highlight').innerHTML = highlighted;
+    const pre = document.getElementById('code-highlight').querySelector('pre');
+    if (pre) pre.style.cssText = 'border-radius:10px;padding:20px;font-size:0.87rem;overflow-x:auto;margin:0;line-height:1.7';
+  </script>
+</body>
+</html>

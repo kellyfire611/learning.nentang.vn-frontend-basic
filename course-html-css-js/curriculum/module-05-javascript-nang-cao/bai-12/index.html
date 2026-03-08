@@ -1,9 +1,107 @@
-﻿<!DOCTYPE html>
-<html lang="vi"><head><meta charset="UTF-8"/><title>localStorage va sessionStorage</title><link rel="stylesheet" href="../../shared.css"/></head>
+<!DOCTYPE html>
+<html lang="vi">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <meta name="keywords" content="Nền tảng,HTML,CSS,JavaScript,Lập trình,Web,Kiến thức,Đồ án">
+  <meta name="author" content="Dương Nguyễn Phú Cường">
+  <meta name="description" content="Tổ chức code thành các module với import và export.">
+  <meta property="og:locale" content="vi_VN">
+  <meta property="og:type" content="website">
+  <meta property="og:title" content="Bài 12 – Module ES6 (import/export) | NenTang.vn">
+  <meta property="og:description" content="Tổ chức code thành các module với import và export.">
+  <meta property="og:url" content="https://nentang.vn/">
+  <meta property="og:site_name" content="Nền tảng Kiến thức">
+  <title>Bài 12 – Module ES6 (import/export) | NenTang.vn</title>
+  <link rel="stylesheet" href="../../shared.css" />
+</head>
 <body>
-<div class="page-header module-5"><div class="breadcrumb"><a href="../../index.html">Trang Chu</a> &rsaquo; <a href="../index.html">Module 5</a> &rsaquo; bai-12</div><h1>localStorage va sessionStorage</h1></div>
-<div class="container"><div class="exercise-content"><h2>Yeu cau</h2><p>Xay dung he thong luu tuy chinh nguoi dung: chu de (sang/toi), co chu, mau nen. Luu vao localStorage. Phuc hoi khi tai trang. Them nut 'Xoa tuy chinh'. So sanh voi sessionStorage.</p>
-<h2>Code mau</h2><pre><code>/* Viet code tai day */</code></pre>
-<h2>Ket qua</h2><div id="result" style="padding:16px;background:#f8f9fa;border-radius:8px;margin-top:8px;">Ket qua se hien thi o day...</div>
-<h2>Bai lam</h2><textarea id="code" style="width:100%;height:200px;font-family:monospace;font-size:14px;padding:12px;border:2px solid #dee2e6;border-radius:8px;"></textarea><br/><button onclick="try{eval(document.getElementById('code').value)}catch(e){document.getElementById('result').textContent=e.message}" style="margin-top:8px;padding:10px 24px;background:#a18cd1;color:#fff;border:none;border-radius:8px;cursor:pointer;font-size:15px;">Chay Code</button>
-</div><a href="../index.html" class="btn-back"> Quay lai Module 5</a></div></body></html>
+  <div class="page-header module-5">
+    <div class="breadcrumb">
+      <a href="../../index.html">Trang Chủ</a> &rsaquo;
+      <a href="../index.html">Module 5</a> &rsaquo; Bài 12
+    </div>
+    <h1>Bài 12: Module ES6 (import/export)</h1>
+    <p>Module 5 – JavaScript Nâng Cao</p>
+  </div>
+
+  <div class="exercise-page">
+    <div class="exercise-box">
+      <div class="ex-head">
+        <h1>📝 Yêu cầu bài tập</h1>
+        <p>Tổ chức code thành các module với import và export.</p>
+      </div>
+      <div class="ex-desc">
+        <h3>Mô tả</h3>
+        <p>Modules giúp tách code thành file nhỏ, tái sử dụng. ES6 Module là chuẩn JavaScript hiện đại, hỗ trợ trên browser và Node.js.</p>
+        <h3>Yêu cầu</h3>
+        <ul>
+          <li>Xuất hàm và class từ module</li>
+          <li>Import cụ thể, import all, import default</li>
+          <li>Re-export từ module khác</li>
+          <li>Dùng type='module' trong thẻ script</li>
+        </ul>
+        <h3>🧠 Kiến thức cần nhớ</h3>
+        <ul>
+          <li><code>export function f() { }</code>: named export</li>
+          <li><code>export default class X { }</code>: default export (1 file 1 default)</li>
+          <li><code>import { f } from './module.js'</code>: import named</li>
+          <li><code>import X from './module.js'</code>: import default</li>
+          <li><code>import * as utils from './utils.js'</code>: import tất cả</li>
+          <li>HTML: <code>&lt;script type='module' src='app.js'&gt;</code></li>
+          <li>Module luôn ở strict mode, defer tự động, scope riêng</li>
+        </ul>
+      </div>
+      <div class="ex-work">
+        <h3>💻 Code mẫu</h3>
+        <div id="code-highlight">
+          <pre id="code-raw" style="display:none">// === utils.js ===
+export const PI = 3.14159;
+
+export function tinhChuVi(r) { return 2 * PI * r; }
+export function tinhDienTich(r) { return PI * r * r; }
+
+// === api.js ===
+const BASE = 'https://api.example.com';
+export async function layDuLieu(path) {
+  const res = await fetch(BASE + path);
+  return res.json();
+}
+export default { layDuLieu }; // default export
+
+// === models/User.js ===
+export class User {
+  constructor(data) { Object.assign(this, data); }
+  get initials() { return this.ten.split(' ').map(w=&gt;w[0]).join(''); }
+}
+
+// === app.js (main) ===
+import { PI, tinhChuVi, tinhDienTich } from './utils.js';
+import api from './api.js';           // default import
+import { User } from './models/User.js';
+import * as Calc from './utils.js';   // namespace import
+
+console.log(tinhChuVi(5));     // 31.41...
+console.log(Calc.tinhDienTich(3)); // 28.27...
+
+// Dynamic import – load khi cần
+const btn = document.getElementById('load');
+btn.addEventListener('click', async () =&gt; {
+  const { Chart } = await import('./chart.js'); // lazy load
+  new Chart('#canvas', data);
+});</pre>
+        </div>
+      </div>
+    </div>
+  </div>
+  <a href="../index.html" class="btn-back" style="margin-top:20px;">&#8592; Quay lại</a>
+  <script type="module">
+    import { codeToHtml } from 'https://esm.sh/shiki@1';
+    const raw = document.getElementById('code-raw').textContent;
+    const highlighted = await codeToHtml(raw, { lang: 'javascript', theme: 'github-dark' });
+    document.getElementById('code-highlight').innerHTML = highlighted;
+    const pre = document.getElementById('code-highlight').querySelector('pre');
+    if (pre) pre.style.cssText = 'border-radius:10px;padding:20px;font-size:0.87rem;overflow-x:auto;margin:0;line-height:1.7';
+  </script>
+</body>
+</html>

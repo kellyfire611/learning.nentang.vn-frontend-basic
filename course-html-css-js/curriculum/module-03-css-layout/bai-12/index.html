@@ -1,15 +1,113 @@
-﻿<!DOCTYPE html><html lang='vi'><head><meta charset='UTF-8'/><title>Bai 12 - Flexbox order va align-self</title><link rel='stylesheet' href='../../shared.css'/></head><body><div class='page-header module-3'><div class='breadcrumb'><a href='../../index.html'>Trang Chu</a>  <a href='../index.html'>Module 3</a>  Bai 12</div><h1>Bai 12: Flexbox order va align-self</h1></div><div class='exercise-page'><div class='exercise-box'><div class='ex-work'><pre style='background:#1a202c;color:#e2e8f0;padding:20px;border-radius:8px;font-size:.88rem;line-height:1.7;overflow-x:auto;white-space:pre-wrap'>/* order: thay doi thu tu hien thi (mac dinh = 0) */
-.vat-1 { order: 3; } /* hien thi sau cung */
-.vat-2 { order: 1; } /* hien thi dau tien */
-.vat-3 { order: 2; } /* hien thi giua */
+<!DOCTYPE html>
+<html lang="vi">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <meta name="keywords" content="Nền tảng,HTML,CSS,JavaScript,Lập trình,Web,Kiến thức,Đồ án">
+  <meta name="author" content="Dương Nguyễn Phú Cường">
+  <meta name="description" content="Xây dựng layout trang web hoàn chỉnh Header-Sidebar-Main-Footer bằng Flexbox.">
+  <meta property="og:locale" content="vi_VN">
+  <meta property="og:type" content="website">
+  <meta property="og:title" content="Bài 12 – Flexbox: Tạo Page Layout đầy đủ | NenTang.vn">
+  <meta property="og:description" content="Xây dựng layout trang web hoàn chỉnh Header-Sidebar-Main-Footer bằng Flexbox.">
+  <meta property="og:url" content="https://nentang.vn/">
+  <meta property="og:site_name" content="Nền tảng Kiến thức">
+  <title>Bài 12 – Flexbox: Tạo Page Layout đầy đủ | NenTang.vn</title>
+  <link rel="stylesheet" href="../../shared.css" />
+</head>
+<body>
+  <div class="page-header module-3">
+    <div class="breadcrumb">
+      <a href="../../index.html">Trang Chủ</a> &rsaquo;
+      <a href="../index.html">Module 3</a> &rsaquo; Bài 12
+    </div>
+    <h1>Bài 12: Flexbox: Tạo Page Layout đầy đủ</h1>
+    <p>Module 3 – CSS Layout &amp; Responsive</p>
+  </div>
 
-/* align-self: ghi de align-items cho TUNG item */
-.container { display: flex; align-items: center; }
-.item-dac-biet { align-self: flex-end; } /* item nay o cuoi */
-.item-top      { align-self: flex-start; }
-.item-gian     { align-self: stretch; }
+  <div class="exercise-page">
+    <div class="exercise-box">
+      <div class="ex-head">
+        <h1>📝 Yêu cầu bài tập</h1>
+        <p>Xây dựng layout trang web hoàn chỉnh Header-Sidebar-Main-Footer bằng Flexbox.</p>
+      </div>
+      <div class="ex-desc">
+        <h3>Mô tả</h3>
+        <p>Bài tập thực hành tổng hợp Flexbox để tạo layout trang web thực tế với header, nav, sidebar, main content và footer.</p>
+        <h3>Yêu cầu</h3>
+        <ul>
+          <li>Header full width với logo và nav</li>
+          <li>Body section: sidebar 260px bên trái + main co giãn</li>
+          <li>Footer full width</li>
+          <li>Các phần tử trong header và footer đều dùng flexbox để căn chỉnh</li>
+        </ul>
+        <h3>🧠 Kiến thức cần nhớ</h3>
+        <ul>
+          <li>Flexbox lồng nhau (nested flexbox): container flex chứa flex container</li>
+          <li>Outer layout: column direction (header, body, footer xếp dọc)</li>
+          <li>Body: row direction (sidebar + main xếp ngang)</li>
+          <li><code>min-height: 100vh</code>: trang đủ cao để đẩy footer xuống dưới</li>
+          <li>Sidebar: <code>flex: 0 0 260px</code> để không co giãn</li>
+        </ul>
+      </div>
+      <div class="ex-work">
+        <h3>💻 Code mẫu</h3>
+        <div id="code-highlight">
+          <pre id="code-raw" style="display:none">body {
+  display: flex;
+  flex-direction: column;
+  min-height: 100vh;
+  margin: 0;
+}
 
-/* Ung dung: Pin footer xuong cuoi */
-.page { display: flex; flex-direction: column; min-height: 100vh; }
-.main-content { flex: 1; } /* chiem phan con lai */
-.footer { /* tu dong xuong cuoi */ }</pre></div></div><a href='../index.html' class='btn-back' style='margin-top:20px;'> Quay lai</a></div></body></html>
+header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 0 32px;
+  height: 64px;
+  background: #1a202c;
+  color: white;
+}
+
+.body-section {
+  display: flex;
+  flex: 1;
+}
+
+.sidebar {
+  flex: 0 0 260px;
+  background: #f7fafc;
+  padding: 24px;
+  border-right: 1px solid #e2e8f0;
+}
+
+.main-content {
+  flex: 1;
+  padding: 32px;
+  overflow-y: auto;
+}
+
+footer {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 20px 32px;
+  background: #2d3748;
+  color: #a0aec0;
+}</pre>
+        </div>
+      </div>
+    </div>
+  </div>
+  <a href="../index.html" class="btn-back" style="margin-top:20px;">&#8592; Quay lại</a>
+  <script type="module">
+    import { codeToHtml } from 'https://esm.sh/shiki@1';
+    const raw = document.getElementById('code-raw').textContent;
+    const highlighted = await codeToHtml(raw, { lang: 'css', theme: 'github-dark' });
+    document.getElementById('code-highlight').innerHTML = highlighted;
+    const pre = document.getElementById('code-highlight').querySelector('pre');
+    if (pre) pre.style.cssText = 'border-radius:10px;padding:20px;font-size:0.87rem;overflow-x:auto;margin:0;line-height:1.7';
+  </script>
+</body>
+</html>

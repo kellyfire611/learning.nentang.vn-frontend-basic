@@ -1,23 +1,96 @@
-﻿<!DOCTYPE html><html lang='vi'><head><meta charset='UTF-8'/><meta name='viewport' content='width=device-width,initial-scale=1'/><title>Bai 20 - Dropdown Select va Textarea</title><link rel='stylesheet' href='../../shared.css'/></head><body><div class='page-header module-1'><div class='breadcrumb'><a href='../../index.html'>Trang Chu</a>  <a href='../index.html'>Module 1</a>  Bai 20</div><h1>Bai 20: Dropdown Select va Textarea</h1><p>Module 1  HTML Co Ban</p></div><div class='exercise-page'><div class='exercise-box'><div class='ex-work'><h3>Noi dung bai tap:</h3><pre style='background:#1a202c;color:#e2e8f0;padding:20px;border-radius:8px;font-size:.88rem;line-height:1.7;overflow-x:auto;white-space:pre-wrap'>&lt;h1&gt;Form Lien He&lt;/h1&gt;
-&lt;form&gt;
-  &lt;label for="province"&gt;Tinh/Thanh:&lt;/label&gt;&lt;br /&gt;
-  &lt;select id="province" name="province"&gt;
-    &lt;option value=""&gt;-- Chon tinh/thanh --&lt;/option&gt;
-    &lt;option value="hn"&gt;Ha Noi&lt;/option&gt;
-    &lt;option value="hcm"&gt;TP. Ho Chi Minh&lt;/option&gt;
-    &lt;option value="dn"&gt;Da Nang&lt;/option&gt;
-    &lt;option value="ct"&gt;Can Tho&lt;/option&gt;
-  &lt;/select&gt;
+<!DOCTYPE html>
+<html lang="vi">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <meta name="keywords" content="Nền tảng,HTML,CSS,JavaScript,Lập trình,Web,Kiến thức,Đồ án">
+  <meta name="author" content="Dương Nguyễn Phú Cường">
+  <meta name="description" content="Tạo form liên hệ với dropdown chọn chủ đề và textarea nhập nội dung.">
+  <meta property="og:locale" content="vi_VN">
+  <meta property="og:type" content="website">
+  <meta property="og:title" content="Bài 20 – Select Dropdown và Textarea | NenTang.vn">
+  <meta property="og:description" content="Tạo form liên hệ với dropdown chọn chủ đề và textarea nhập nội dung.">
+  <meta property="og:url" content="https://nentang.vn/">
+  <meta property="og:site_name" content="Nền tảng Kiến thức">
+  <title>Bài 20 – Select Dropdown và Textarea | NenTang.vn</title>
+  <link rel="stylesheet" href="../../shared.css" />
+</head>
+<body>
+  <div class="page-header module-1">
+    <div class="breadcrumb">
+      <a href="../../index.html">Trang Chủ</a> &rsaquo;
+      <a href="../index.html">Module 1</a> &rsaquo; Bài 20
+    </div>
+    <h1>Bài 20: Select Dropdown và Textarea</h1>
+    <p>Module 1 – HTML Cơ Bản</p> 
+  </div>
 
-  &lt;br /&gt;&lt;label for="subject"&gt;Chu de:&lt;/label&gt;&lt;br /&gt;
-  &lt;select id="subject" name="subject" size="3"&gt;
-    &lt;option&gt;Hop tac kinh doanh&lt;/option&gt;
-    &lt;option&gt;Ho tro ky thuat&lt;/option&gt;
-    &lt;option selected&gt;Phản hoi&lt;/option&gt;
-  &lt;/select&gt;
+  <div class="exercise-page">
+    <div class="exercise-box">
+      <div class="ex-head">
+        <h1>📝 Yêu cầu bài tập</h1>
+        <p>Tạo form liên hệ với dropdown chọn chủ đề và textarea nhập nội dung.</p>
+      </div>
+      <div class="ex-desc">
+        <h3>Mô tả</h3>
+        <p>Thẻ <select> tạo danh sách dropdown để chọn một hoặc nhiều tùy chọn. Thẻ <textarea> cho phép nhập đoạn văn bản nhiều dòng.</p>
+        <h3>Yêu cầu</h3>
+        <ul>
+          <li>Tạo dropdown chọn chủ đề liên hệ (Hỗ trợ/Khiếu nại/Góp ý/Khác)</li>
+          <li>Thêm <code>&lt;optgroup&gt;</code> nhóm các tùy chọn</li>
+          <li>Tạo textarea 5 hàng nhập nội dung tin nhắn</li>
+          <li>Tạo select multiple chọn nhiều quốc gia yêu thích</li>
+        </ul>
+        <h3>🧠 Kiến thức cần nhớ</h3>
+        <ul>
+          <li><code>&lt;select&gt;&lt;option&gt;</code>: dropdown chọn 1</li>
+          <li><code>&lt;select multiple&gt;</code>: giữ Ctrl/Cmd để chọn nhiều</li>
+          <li><code>&lt;optgroup label=''&gt;</code>: nhóm các option</li>
+          <li><code>&lt;textarea rows='' cols=''&gt;</code>: ô nhập nhiều dòng</li>
+          <li>Textarea không phải self-closing, nội dung mặc định đặt giữa thẻ mở/đóng</li>
+        </ul>
+      </div>
+      <div class="ex-work">
+        <h3>💻 Code mẫu</h3>
+        <div id="code-highlight">
+          <pre id="code-raw" style="display:none">&lt;!-- Dropdown đơn --&gt;
+&lt;label for="topic"&gt;Chủ đề:&lt;/label&gt;
+&lt;select id="topic" name="topic"&gt;
+  &lt;optgroup label="Hỗ trợ"&gt;
+    &lt;option value="billing"&gt;Thanh toán&lt;/option&gt;
+    &lt;option value="technical"&gt;Kỹ thuật&lt;/option&gt;
+  &lt;/optgroup&gt;
+  &lt;optgroup label="Phản hồi"&gt;
+    &lt;option value="feedback"&gt;Góp ý&lt;/option&gt;
+    &lt;option value="complaint"&gt;Khiếu nại&lt;/option&gt;
+  &lt;/optgroup&gt;
+&lt;/select&gt;
 
-  &lt;br /&gt;&lt;label for="message"&gt;Noi dung:&lt;/label&gt;&lt;br /&gt;
-  &lt;textarea id="message" name="message" rows="5" cols="40" placeholder="Nhap noi dung..."&gt;&lt;/textarea&gt;
+&lt;!-- Dropdown nhiều lựa chọn --&gt;
+&lt;label for="country"&gt;Quốc gia yêu thích (Ctrl+click):&lt;/label&gt;
+&lt;select id="country" name="country" multiple size="4"&gt;
+  &lt;option&gt;Việt Nam&lt;/option&gt;
+  &lt;option&gt;Nhật Bản&lt;/option&gt;
+  &lt;option&gt;Hàn Quốc&lt;/option&gt;
+  &lt;option&gt;Pháp&lt;/option&gt;
+&lt;/select&gt;
 
-  &lt;br /&gt;&lt;button type="submit"&gt;Gui&lt;/button&gt;
-&lt;/form&gt;</pre></div></div><a href='../index.html' class='btn-back' style='margin-top:20px;'> Quay lai</a></div></body></html>
+&lt;!-- Textarea --&gt;
+&lt;label for="msg"&gt;Nội dung:&lt;/label&gt;
+&lt;textarea id="msg" name="message" rows="5" cols="40"
+          placeholder="Nhập tin nhắn của bạn..."&gt;&lt;/textarea&gt;</pre>
+        </div>
+      </div>
+    </div>
+  </div>
+  <a href="../index.html" class="btn-back" style="margin-top:20px;">&#8592; Quay lại</a>
+  <script type="module">
+    import { codeToHtml } from 'https://esm.sh/shiki@1';
+    const raw = document.getElementById('code-raw').textContent;
+    const highlighted = await codeToHtml(raw, { lang: 'html', theme: 'github-dark' });
+    document.getElementById('code-highlight').innerHTML = highlighted;
+    const pre = document.getElementById('code-highlight').querySelector('pre');
+    if (pre) pre.style.cssText = 'border-radius:10px;padding:20px;font-size:0.87rem;overflow-x:auto;margin:0;line-height:1.7';
+  </script>
+</body>
+</html>

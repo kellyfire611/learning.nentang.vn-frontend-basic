@@ -1,22 +1,102 @@
-﻿<!DOCTYPE html><html lang='vi'><head><meta charset='UTF-8'/><title>Bai 24 - Responsive Navigation</title><link rel='stylesheet' href='../../shared.css'/></head><body><div class='page-header module-3'><div class='breadcrumb'><a href='../../index.html'>Trang Chu</a>  <a href='../index.html'>Module 3</a>  Bai 24</div><h1>Bai 24: Responsive Navigation</h1></div><div class='exercise-page'><div class='exercise-box'><div class='ex-work'><pre style='background:#1a202c;color:#e2e8f0;padding:20px;border-radius:8px;font-size:.88rem;line-height:1.7;overflow-x:auto;white-space:pre-wrap'>/* Desktop Nav */
-.nav { display: flex; justify-content: space-between; align-items: center; padding: 0 24px; }
-.nav-menu { display: flex; list-style: none; gap: 24px; }
-.hamburger { display: none; }
+<!DOCTYPE html>
+<html lang="vi">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <meta name="keywords" content="Nền tảng,HTML,CSS,JavaScript,Lập trình,Web,Kiến thức,Đồ án">
+  <meta name="author" content="Dương Nguyễn Phú Cường">
+  <meta name="description" content="Tạo menu điều hướng có dropdown nhiều cấp bằng CSS thuần.">
+  <meta property="og:locale" content="vi_VN">
+  <meta property="og:type" content="website">
+  <meta property="og:title" content="Bài 24 – Multi-level Dropdown Menu | NenTang.vn">
+  <meta property="og:description" content="Tạo menu điều hướng có dropdown nhiều cấp bằng CSS thuần.">
+  <meta property="og:url" content="https://nentang.vn/">
+  <meta property="og:site_name" content="Nền tảng Kiến thức">
+  <title>Bài 24 – Multi-level Dropdown Menu | NenTang.vn</title>
+  <link rel="stylesheet" href="../../shared.css" />
+</head>
+<body>
+  <div class="page-header module-3">
+    <div class="breadcrumb">
+      <a href="../../index.html">Trang Chủ</a> &rsaquo;
+      <a href="../index.html">Module 3</a> &rsaquo; Bài 24
+    </div>
+    <h1>Bài 24: Multi-level Dropdown Menu</h1>
+    <p>Module 3 – CSS Layout &amp; Responsive</p>
+  </div>
 
-/* Mobile Nav */
-@media (max-width: 768px) {
-  .hamburger { display: block; cursor: pointer; }
-  .nav-menu {
-    display: none; /* an di mac dinh */
-    flex-direction: column;
-    position: absolute; top: 60px; left: 0; right: 0;
-    background: white; padding: 20px;
-    box-shadow: 0 4px 12px rgba(0,0,0,.1);
-  }
-  .nav-menu.open { display: flex; } /* hien khi JavaScript toggle class */
+  <div class="exercise-page">
+    <div class="exercise-box">
+      <div class="ex-head">
+        <h1>📝 Yêu cầu bài tập</h1>
+        <p>Tạo menu điều hướng có dropdown nhiều cấp bằng CSS thuần.</p>
+      </div>
+      <div class="ex-desc">
+        <h3>Mô tả</h3>
+        <p>Dropdown menu cho phép tổ chức nhiều link trong ít không gian. CSS-only dropdown dùng :hover để hiển thị menu con.</p>
+        <h3>Yêu cầu</h3>
+        <ul>
+          <li>Tạo navbar có dropdown 2 cấp</li>
+          <li>Dropdown hiển thị khi hover menu item</li>
+          <li>Dropdown cấp 2 hiển thị bên phải cấp 1</li>
+          <li>Transition mượt mà khi mở/đóng dropdown</li>
+          <li>Hỗ trợ keyboard: :focus-within thay :hover</li>
+        </ul>
+        <h3>🧠 Kiến thức cần nhớ</h3>
+        <ul>
+          <li><code>.dropdown:hover .dropdown-menu</code>: hiển thị khi hover</li>
+          <li>Dropdown ẩn: <code>opacity:0; visibility:hidden; pointer-events:none</code> (dùng thay display:none để transition được)</li>
+          <li><code>visibility:hidden</code> + opacity khác với <code>display:none</code>: transition được</li>
+          <li><code>:focus-within</code>: mở dropdown khi focus bất kỳ child (keyboard accessible)</li>
+          <li>Dropdown cấp 2: <code>left: 100%; top: 0</code></li>
+        </ul>
+      </div>
+      <div class="ex-work">
+        <h3>💻 Code mẫu</h3>
+        <div id="code-highlight">
+          <pre id="code-raw" style="display:none">.nav { display: flex; list-style: none; background: #1a202c; padding: 0 16px; }
+.nav &gt; li { position: relative; }
+.nav a { color: #a0aec0; text-decoration: none; display: block; padding: 18px 16px; }
+.nav &gt; li:hover &gt; a { color: white; background: rgba(255,255,255,0.1); }
+
+/* Dropdown */
+.dropdown-menu {
+  position: absolute;
+  top: 100%; left: 0;
+  background: white;
+  min-width: 200px;
+  border-radius: 8px;
+  box-shadow: 0 8px 24px rgba(0,0,0,0.15);
+  opacity: 0;
+  visibility: hidden;
+  transform: translateY(-8px);
+  transition: all 0.2s;
+  z-index: 100;
+}
+.dropdown-menu a { color: #2d3748; padding: 10px 16px; }
+.dropdown-menu a:hover { background: #ebf8ff; color: #3182ce; }
+
+li:hover &gt; .dropdown-menu,
+li:focus-within &gt; .dropdown-menu {
+  opacity: 1;
+  visibility: visible;
+  transform: translateY(0);
 }
 
-/* JavaScript can de toggle open class */
-/* document.querySelector('.hamburger').addEventListener('click', () => {
-  document.querySelector('.nav-menu').classList.toggle('open');
-}); */</pre></div></div><a href='../index.html' class='btn-back' style='margin-top:20px;'> Quay lai</a></div></body></html>
+/* Level 2 – hiện bên phải */
+.dropdown-menu .dropdown-menu { top: 0; left: 100%; }</pre>
+        </div>
+      </div>
+    </div>
+  </div>
+  <a href="../index.html" class="btn-back" style="margin-top:20px;">&#8592; Quay lại</a>
+  <script type="module">
+    import { codeToHtml } from 'https://esm.sh/shiki@1';
+    const raw = document.getElementById('code-raw').textContent;
+    const highlighted = await codeToHtml(raw, { lang: 'css', theme: 'github-dark' });
+    document.getElementById('code-highlight').innerHTML = highlighted;
+    const pre = document.getElementById('code-highlight').querySelector('pre');
+    if (pre) pre.style.cssText = 'border-radius:10px;padding:20px;font-size:0.87rem;overflow-x:auto;margin:0;line-height:1.7';
+  </script>
+</body>
+</html>

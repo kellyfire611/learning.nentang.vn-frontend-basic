@@ -1,1 +1,82 @@
-﻿<!DOCTYPE html><html lang='vi'><head><meta charset='UTF-8'/><title>Bai 01 - 3 cach nhung CSS vao HTML</title><link rel='stylesheet' href='../../shared.css'/></head><body><div class='page-header module-2'><div class='breadcrumb'><a href='../../index.html'>Trang Chu</a>  <a href='../index.html'>Module 2</a>  Bai 01</div><h1>Bai 01: 3 cach nhung CSS vao HTML</h1><p>Module 2  CSS Co Ban</p></div><div class='exercise-page'><div class='exercise-box'><div class='ex-work'><h3>Noi dung bai tap CSS - 3 cach nhung CSS vao HTML</h3><p style='padding:20px;color:#718096'>Mo file CSS cua ban va thuc hanh ap dung cac khai niem: <strong>3 cach nhung CSS vao HTML</strong></p></div></div><a href='../index.html' class='btn-back' style='margin-top:20px;'> Quay lai</a></div></body></html>
+<!DOCTYPE html>
+<html lang="vi">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <meta name="keywords" content="Nền tảng,HTML,CSS,JavaScript,Lập trình,Web,Kiến thức,Đồ án">
+  <meta name="author" content="Dương Nguyễn Phú Cường">
+  <meta name="description" content="Thực hành nhúng CSS bằng inline, internal (style tag) và external (file .css).">
+  <meta property="og:locale" content="vi_VN">
+  <meta property="og:type" content="website">
+  <meta property="og:title" content="Bài 01 – 3 cách nhúng CSS vào HTML | NenTang.vn">
+  <meta property="og:description" content="Thực hành nhúng CSS bằng inline, internal (style tag) và external (file .css).">
+  <meta property="og:url" content="https://nentang.vn/">
+  <meta property="og:site_name" content="Nền tảng Kiến thức">
+  <title>Bài 01 – 3 cách nhúng CSS vào HTML | NenTang.vn</title>
+  <link rel="stylesheet" href="../../shared.css" />
+</head>
+<body>
+  <div class="page-header module-2">
+    <div class="breadcrumb">
+      <a href="../../index.html">Trang Chủ</a> &rsaquo;
+      <a href="../index.html">Module 2</a> &rsaquo; Bài 01
+    </div>
+    <h1>Bài 01: 3 cách nhúng CSS vào HTML</h1>
+    <p>Module 2 – CSS Cơ Bản</p>
+  </div>
+
+  <div class="exercise-page">
+    <div class="exercise-box">
+      <div class="ex-head">
+        <h1>📝 Yêu cầu bài tập</h1>
+        <p>Thực hành nhúng CSS bằng inline, internal (style tag) và external (file .css).</p>
+      </div>
+      <div class="ex-desc">
+        <h3>Mô tả</h3>
+        <p>CSS có thể được áp dụng theo 3 cách: inline trực tiếp trên thẻ, internal trong thẻ &lt;style&gt; ở head, hoặc external link đến file .css. External được dùng phổ biến nhất vì tách biệt HTML và CSS.</p>
+        <h3>Yêu cầu</h3>
+        <ul>
+          <li>Tạo 3 đoạn văn bản: mỗi đoạn dùng 1 cách CSS khác nhau</li>
+          <li>Inline: tô màu đỏ trực tiếp trong thẻ &lt;p&gt;</li>
+          <li>Internal: &lt;style&gt; trong &lt;head&gt; tô màu xanh</li>
+          <li>External: link file style.css tô màu tím</li>
+        </ul>
+        <h3>🧠 Kiến thức cần nhớ</h3>
+        <ul>
+          <li><code>style='color:red'</code>: inline – ưu tiên cao nhất nhưng khó bảo trì</li>
+          <li><code>&lt;style&gt;...&lt;/style&gt;</code>: internal – trong &lt;head&gt;</li>
+          <li><code>&lt;link rel='stylesheet' href='style.css'&gt;</code>: external – cách tốt nhất</li>
+          <li>Thứ tự ưu tiên: Inline &gt; Internal/External (cái nào sau thắng)</li>
+        </ul>
+      </div>
+      <div class="ex-work">
+        <h3>💻 Code mẫu</h3>
+        <div id="code-highlight">
+          <pre id="code-raw" style="display:none">&lt;!-- 1. Inline CSS --&gt;
+&lt;p style="color:red; font-size:18px"&gt;Tôi dùng Inline CSS&lt;/p&gt;
+
+&lt;!-- 2. Internal CSS --&gt;
+&lt;style&gt;
+  .internal { color: blue; font-weight: bold; }
+&lt;/style&gt;
+&lt;p class="internal"&gt;Tôi dùng Internal CSS&lt;/p&gt;
+
+&lt;!-- 3. External CSS (tạo file style.css riêng) --&gt;
+&lt;link rel="stylesheet" href="style.css"&gt;
+&lt;p class="external"&gt;Tôi dùng External CSS&lt;/p&gt;
+&lt;!-- Trong style.css: .external { color: purple; } --&gt;</pre>
+        </div>
+      </div>
+    </div>
+  </div>
+  <a href="../index.html" class="btn-back" style="margin-top:20px;">&#8592; Quay lại</a>
+  <script type="module">
+    import { codeToHtml } from 'https://esm.sh/shiki@1';
+    const raw = document.getElementById('code-raw').textContent;
+    const highlighted = await codeToHtml(raw, { lang: 'html', theme: 'github-dark' });
+    document.getElementById('code-highlight').innerHTML = highlighted;
+    const pre = document.getElementById('code-highlight').querySelector('pre');
+    if (pre) pre.style.cssText = 'border-radius:10px;padding:20px;font-size:0.87rem;overflow-x:auto;margin:0;line-height:1.7';
+  </script>
+</body>
+</html>

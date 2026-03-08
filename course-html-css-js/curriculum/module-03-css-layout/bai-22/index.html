@@ -1,24 +1,118 @@
-﻿<!DOCTYPE html><html lang='vi'><head><meta charset='UTF-8'/><title>Bai 22 - Media Queries co ban</title><link rel='stylesheet' href='../../shared.css'/></head><body><div class='page-header module-3'><div class='breadcrumb'><a href='../../index.html'>Trang Chu</a>  <a href='../index.html'>Module 3</a>  Bai 22</div><h1>Bai 22: Media Queries co ban</h1></div><div class='exercise-page'><div class='exercise-box'><div class='ex-work'><pre style='background:#1a202c;color:#e2e8f0;padding:20px;border-radius:8px;font-size:.88rem;line-height:1.7;overflow-x:auto;white-space:pre-wrap'>/* Diem ngat pho bien */
-/* Mobile:  < 640px  */
-/* Tablet:  640-1024px */
-/* Desktop: > 1024px */
+<!DOCTYPE html>
+<html lang="vi">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <meta name="keywords" content="Nền tảng,HTML,CSS,JavaScript,Lập trình,Web,Kiến thức,Đồ án">
+  <meta name="author" content="Dương Nguyễn Phú Cường">
+  <meta name="description" content="Tạo grid card sản phẩm tự động thay đổi số cột theo màn hình.">
+  <meta property="og:locale" content="vi_VN">
+  <meta property="og:type" content="website">
+  <meta property="og:title" content="Bài 22 – Responsive Card Grid | NenTang.vn">
+  <meta property="og:description" content="Tạo grid card sản phẩm tự động thay đổi số cột theo màn hình.">
+  <meta property="og:url" content="https://nentang.vn/">
+  <meta property="og:site_name" content="Nền tảng Kiến thức">
+  <title>Bài 22 – Responsive Card Grid | NenTang.vn</title>
+  <link rel="stylesheet" href="../../shared.css" />
+</head>
+<body>
+  <div class="page-header module-3">
+    <div class="breadcrumb">
+      <a href="../../index.html">Trang Chủ</a> &rsaquo;
+      <a href="../index.html">Module 3</a> &rsaquo; Bài 22
+    </div>
+    <h1>Bài 22: Responsive Card Grid</h1>
+    <p>Module 3 – CSS Layout &amp; Responsive</p>
+  </div>
 
-/* Desktop-first (viet cho desktop truoc, thu nho lai) */
-.container { width: 1200px; }
-@media (max-width: 1024px) { .container { width: 100%; padding: 0 20px; } }
-@media (max-width: 640px)  { .container { padding: 0 16px; } }
-
-/* Ket hop dieu kien */
-@media (min-width: 640px) and (max-width: 1024px) {
-  /* Chi ap dung cho tablet */
+  <div class="exercise-page">
+    <div class="exercise-box">
+      <div class="ex-head">
+        <h1>📝 Yêu cầu bài tập</h1>
+        <p>Tạo grid card sản phẩm tự động thay đổi số cột theo màn hình.</p>
+      </div>
+      <div class="ex-desc">
+        <h3>Mô tả</h3>
+        <p>Card grid là pattern phổ biến nhất trong web hiện đại. Dùng auto-fill/auto-fit + minmax để tạo grid responsive không cần media query.</p>
+        <h3>Yêu cầu</h3>
+        <ul>
+          <li>Tạo grid 12 card sản phẩm tự responsive</li>
+          <li>Mobile: 1 cột, Tablet: 2-3 cột, Desktop: 4 cột</li>
+          <li>Card: ảnh, tên, giá, rating, nút thêm giỏ</li>
+          <li>Hover effect: card nổi lên, ảnh zoom</li>
+        </ul>
+        <h3>🧠 Kiến thức cần nhớ</h3>
+        <ul>
+          <li><code>repeat(auto-fill, minmax(240px, 1fr))</code>: tự tính số cột</li>
+          <li>Card nên dùng <code>display:flex; flex-direction:column</code></li>
+          <li><code>flex: 1</code> cho phần nội dung để card đều chiều cao</li>
+          <li>Ảnh luôn cố định height + object-fit:cover</li>
+          <li>Thêm <code>aspect-ratio: 4/3</code> cho ảnh giữ tỷ lệ</li>
+        </ul>
+      </div>
+      <div class="ex-work">
+        <h3>💻 Code mẫu</h3>
+        <div id="code-highlight">
+          <pre id="code-raw" style="display:none">/* Grid responsive */
+.product-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(240px, 1fr));
+  gap: 24px;
+  padding: 24px;
 }
 
-/* Theo huong man hinh */
-@media (orientation: landscape) { /* man hinh ngang */ }
-@media (orientation: portrait)  { /* man hinh doc */ }
+/* Card */
+.product-card {
+  background: white;
+  border-radius: 12px;
+  overflow: hidden;
+  box-shadow: 0 2px 8px rgba(0,0,0,0.1);
+  display: flex;
+  flex-direction: column;
+  transition: transform 0.3s, box-shadow 0.3s;
+}
+.product-card:hover {
+  transform: translateY(-6px);
+  box-shadow: 0 12px 32px rgba(0,0,0,0.15);
+}
+.product-card img {
+  width: 100%;
+  aspect-ratio: 4/3;
+  object-fit: cover;
+  transition: transform 0.4s;
+}
+.product-card:hover img { transform: scale(1.05); }
 
-/* Chieu cao */
-@media (max-height: 500px) { .hero { height: auto; padding: 40px; } }
-
-/* In an */
-@media print { .no-print { display: none; } }</pre></div></div><a href='../index.html' class='btn-back' style='margin-top:20px;'> Quay lai</a></div></body></html>
+.card-body {
+  padding: 16px;
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+}
+.card-price { color: #e53e3e; font-size: 1.2rem; font-weight: bold; margin-top: auto; }
+.btn-cart {
+  margin-top: 12px;
+  padding: 10px;
+  background: #3182ce;
+  color: white;
+  border: none;
+  border-radius: 8px;
+  cursor: pointer;
+  transition: background 0.2s;
+}
+.btn-cart:hover { background: #2c5282; }</pre>
+        </div>
+      </div>
+    </div>
+  </div>
+  <a href="../index.html" class="btn-back" style="margin-top:20px;">&#8592; Quay lại</a>
+  <script type="module">
+    import { codeToHtml } from 'https://esm.sh/shiki@1';
+    const raw = document.getElementById('code-raw').textContent;
+    const highlighted = await codeToHtml(raw, { lang: 'css', theme: 'github-dark' });
+    document.getElementById('code-highlight').innerHTML = highlighted;
+    const pre = document.getElementById('code-highlight').querySelector('pre');
+    if (pre) pre.style.cssText = 'border-radius:10px;padding:20px;font-size:0.87rem;overflow-x:auto;margin:0;line-height:1.7';
+  </script>
+</body>
+</html>

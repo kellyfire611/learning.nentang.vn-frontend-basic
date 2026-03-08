@@ -1,21 +1,99 @@
-﻿<!DOCTYPE html><html lang='vi'><head><meta charset='UTF-8'/><title>Bai 10 - Flexbox align-items va align-content</title><link rel='stylesheet' href='../../shared.css'/></head><body><div class='page-header module-3'><div class='breadcrumb'><a href='../../index.html'>Trang Chu</a>  <a href='../index.html'>Module 3</a>  Bai 10</div><h1>Bai 10: Flexbox align-items va align-content</h1><p>Module 3  CSS Layout & Responsive</p></div><div class='exercise-page'><div class='exercise-box'><div class='ex-work'><pre style='background:#1a202c;color:#e2e8f0;padding:20px;border-radius:8px;font-size:.88rem;line-height:1.7;overflow-x:auto;white-space:pre-wrap'>/* Can chinh tren CROSS AXIS (vuong goc voi main axis) */
+<!DOCTYPE html>
+<html lang="vi">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <meta name="keywords" content="Nền tảng,HTML,CSS,JavaScript,Lập trình,Web,Kiến thức,Đồ án">
+  <meta name="author" content="Dương Nguyễn Phú Cường">
+  <meta name="description" content="Kiểm soát cách flex items co giãn với flex-grow, flex-shrink, flex-basis.">
+  <meta property="og:locale" content="vi_VN">
+  <meta property="og:type" content="website">
+  <meta property="og:title" content="Bài 10 – Flexbox: flex-grow shrink basis | NenTang.vn">
+  <meta property="og:description" content="Kiểm soát cách flex items co giãn với flex-grow, flex-shrink, flex-basis.">
+  <meta property="og:url" content="https://nentang.vn/">
+  <meta property="og:site_name" content="Nền tảng Kiến thức">
+  <title>Bài 10 – Flexbox: flex-grow shrink basis | NenTang.vn</title>
+  <link rel="stylesheet" href="../../shared.css" />
+</head>
+<body>
+  <div class="page-header module-3">
+    <div class="breadcrumb">
+      <a href="../../index.html">Trang Chủ</a> &rsaquo;
+      <a href="../index.html">Module 3</a> &rsaquo; Bài 10
+    </div>
+    <h1>Bài 10: Flexbox: flex-grow shrink basis</h1>
+    <p>Module 3 – CSS Layout &amp; Responsive</p>
+  </div>
 
-/* align-items: moi hang rieng le */
-.stretch     { align-items: stretch; }      /* gian ra day (mac dinh) */
-.flex-start   { align-items: flex-start; }   /* sat tren */
-.flex-end     { align-items: flex-end; }     /* sat duoi */
-.center       { align-items: center; }       /* giua (rat hay dung!) */
-.baseline     { align-items: baseline; }     /* chung baseline */
-
-/* align-content: nhieu hang cung luc */
-/* Chi hoat dong khi flex-wrap: wrap va co nhieu hang */
-.content-center  { align-content: center; }
-.content-between { align-content: space-between; }
-
-/* Tuyet chieu: Can giua hoan toan */
-.can-giua {
+  <div class="exercise-page">
+    <div class="exercise-box">
+      <div class="ex-head">
+        <h1>📝 Yêu cầu bài tập</h1>
+        <p>Kiểm soát cách flex items co giãn với flex-grow, flex-shrink, flex-basis.</p>
+      </div>
+      <div class="ex-desc">
+        <h3>Mô tả</h3>
+        <p>Ba thuộc tính này điều khiển cách items phân chia không gian còn lại trong container. Shorthand flex: [grow] [shrink] [basis].</p>
+        <h3>Yêu cầu</h3>
+        <ul>
+          <li>Tạo sidebar 250px cố định + content co giãn dùng flex-grow</li>
+          <li>Tạo 3 cột tỷ lệ 1:2:1 dùng flex-grow</li>
+          <li>Thực hành flex-shrink để ngăn items bị thu nhỏ</li>
+          <li>Dùng flex: 1 shorthand cho các cột đều nhau</li>
+        </ul>
+        <h3>🧠 Kiến thức cần nhớ</h3>
+        <ul>
+          <li><code>flex-grow: n</code>: tỷ lệ nhận không gian dư (0 = không nhận)</li>
+          <li><code>flex-shrink: n</code>: tỷ lệ co lại khi thiếu không gian (1 = co bình thường)</li>
+          <li><code>flex-basis: px|%|auto</code>: kích thước ban đầu trước khi grow/shrink</li>
+          <li><code>flex: 1</code> = <code>flex: 1 1 0</code>: co giãn đều nhau</li>
+          <li><code>flex: none</code> = <code>flex: 0 0 auto</code>: không co giãn</li>
+        </ul>
+      </div>
+      <div class="ex-work">
+        <h3>💻 Code mẫu</h3>
+        <div id="code-highlight">
+          <pre id="code-raw" style="display:none">/* Sidebar + Main layout */
+.layout {
   display: flex;
-  justify-content: center;
-  align-items: center;
-  /* min-height: 100vh; */
-}</pre></div></div><a href='../index.html' class='btn-back' style='margin-top:20px;'> Quay lai</a></div></body></html>
+  gap: 24px;
+}
+.sidebar {
+  flex: 0 0 250px; /* không grow, không shrink, luôn 250px */
+  /* hoặc: flex-shrink:0; width:250px */
+}
+.main-content {
+  flex: 1; /* nhận hết không gian còn lại */
+}
+
+/* 3 cột tỷ lệ 1:2:1 */
+.col-1 { flex: 1; }  /* 1 phần */
+.col-2 { flex: 2; }  /* 2 phần */
+.col-3 { flex: 1; }  /* 1 phần */
+
+/* Ngăn co lại */
+.no-shrink { flex-shrink: 0; }
+
+/* Điền đầy phần còn lại */
+.fill { flex: 1; }
+
+/* Min-width để không bị nhỏ quá */
+.card-item {
+  flex: 1 1 200px; /* grow, shrink, min-width 200px */
+  max-width: 300px;
+}</pre>
+        </div>
+      </div>
+    </div>
+  </div>
+  <a href="../index.html" class="btn-back" style="margin-top:20px;">&#8592; Quay lại</a>
+  <script type="module">
+    import { codeToHtml } from 'https://esm.sh/shiki@1';
+    const raw = document.getElementById('code-raw').textContent;
+    const highlighted = await codeToHtml(raw, { lang: 'css', theme: 'github-dark' });
+    document.getElementById('code-highlight').innerHTML = highlighted;
+    const pre = document.getElementById('code-highlight').querySelector('pre');
+    if (pre) pre.style.cssText = 'border-radius:10px;padding:20px;font-size:0.87rem;overflow-x:auto;margin:0;line-height:1.7';
+  </script>
+</body>
+</html>

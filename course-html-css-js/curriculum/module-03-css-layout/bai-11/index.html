@@ -1,18 +1,90 @@
-﻿<!DOCTYPE html><html lang='vi'><head><meta charset='UTF-8'/><title>Bai 11 - Flexbox flex-grow shrink basis</title><link rel='stylesheet' href='../../shared.css'/></head><body><div class='page-header module-3'><div class='breadcrumb'><a href='../../index.html'>Trang Chu</a>  <a href='../index.html'>Module 3</a>  Bai 11</div><h1>Bai 11: Flexbox flex-grow shrink basis</h1></div><div class='exercise-page'><div class='exercise-box'><div class='ex-work'><pre style='background:#1a202c;color:#e2e8f0;padding:20px;border-radius:8px;font-size:.88rem;line-height:1.7;overflow-x:auto;white-space:pre-wrap'>.container { display: flex; }
+<!DOCTYPE html>
+<html lang="vi">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <meta name="keywords" content="Nền tảng,HTML,CSS,JavaScript,Lập trình,Web,Kiến thức,Đồ án">
+  <meta name="author" content="Dương Nguyễn Phú Cường">
+  <meta name="description" content="Thay đổi thứ tự hiển thị và căn chỉnh riêng từng flex item.">
+  <meta property="og:locale" content="vi_VN">
+  <meta property="og:type" content="website">
+  <meta property="og:title" content="Bài 11 – Flexbox: order và align-self | NenTang.vn">
+  <meta property="og:description" content="Thay đổi thứ tự hiển thị và căn chỉnh riêng từng flex item.">
+  <meta property="og:url" content="https://nentang.vn/">
+  <meta property="og:site_name" content="Nền tảng Kiến thức">
+  <title>Bài 11 – Flexbox: order và align-self | NenTang.vn</title>
+  <link rel="stylesheet" href="../../shared.css" />
+</head>
+<body>
+  <div class="page-header module-3">
+    <div class="breadcrumb">
+      <a href="../../index.html">Trang Chủ</a> &rsaquo;
+      <a href="../index.html">Module 3</a> &rsaquo; Bài 11
+    </div>
+    <h1>Bài 11: Flexbox: order và align-self</h1>
+    <p>Module 3 – CSS Layout &amp; Responsive</p>
+  </div>
 
-/* flex-grow: ty le phong to khi co khong gian thua */
-.col-1 { flex-grow: 1; } /* phan thua chia deu */
-.col-2 { flex-grow: 2; } /* nhan gap doi phan thua */
+  <div class="exercise-page">
+    <div class="exercise-box">
+      <div class="ex-head">
+        <h1>📝 Yêu cầu bài tập</h1>
+        <p>Thay đổi thứ tự hiển thị và căn chỉnh riêng từng flex item.</p>
+      </div>
+      <div class="ex-desc">
+        <h3>Mô tả</h3>
+        <p>order thay đổi thứ tự hiển thị mà không cần thay đổi HTML. align-self ghi đè align-items cho một item cụ thể.</p>
+        <h3>Yêu cầu</h3>
+        <ul>
+          <li>Tạo layout có Sidebar sau Main trong HTML nhưng hiển thị trước</li>
+          <li>Tạo card grid: card đặc biệt kéo dài hết chiều cao cột dùng align-self: stretch</li>
+          <li>Tạo navigation với item 'Đăng nhập' căn phải</li>
+        </ul>
+        <h3>🧠 Kiến thức cần nhớ</h3>
+        <ul>
+          <li><code>order: n</code>: thứ tự hiển thị – mặc định 0, số lớn hơn hiển thị sau</li>
+          <li><code>order: -1</code>: hiển thị đầu tiên</li>
+          <li><code>align-self</code>: ghi đè align-items cho 1 item cụ thể</li>
+          <li>Giá trị align-self: auto, flex-start, flex-end, center, stretch, baseline</li>
+          <li>order chỉ thay đổi thứ tự HIỂN THỊ, không thay đổi DOM thực tế</li>
+        </ul>
+      </div>
+      <div class="ex-work">
+        <h3>💻 Code mẫu</h3>
+        <div id="code-highlight">
+          <pre id="code-raw" style="display:none">/* Order */
+.nav-item-login { order: 100; } /* luôn ở cuối */
+.nav-brand { order: -1; }       /* luôn ở đầu */
 
-/* flex-shrink: ty le thu nho khi thieu khong gian */
-.khong-thu { flex-shrink: 0; } /* khong bao gio thu nho */
-.thu-nhieu { flex-shrink: 2; } /* thu nho gap doi */
+/* Sidebar đặt sau main trong HTML nhưng hiển thị trước */
+.sidebar { order: -1; }  /* hiện trước main */
+.main { order: 0; }
 
-/* flex-basis: kich thuoc ban dau */
-.co-dinh { flex-basis: 200px; }
-.phan-tram { flex-basis: 33.333%; }
+/* align-self */
+.flex-container {
+  display: flex;
+  align-items: flex-start; /* mặc định cho tất cả */
+  height: 200px;
+}
+.item-stretch { align-self: stretch; }  /* kéo dài hết chiều cao */
+.item-center  { align-self: center; }   /* chỉ item này căn giữa */
+.item-end     { align-self: flex-end; } /* chỉ item này xuống dưới */
 
-/* Shorthand flex: grow shrink basis */
-.col { flex: 1 1 0%; }      /* grow=1, shrink=1, basis=0 */
-.co-dinh { flex: 0 0 200px; } /* khong thay doi kich thuoc */
-.tu-do { flex: 1; }          /* grow=1, shrink=1, basis=0 */</pre></div></div><a href='../index.html' class='btn-back' style='margin-top:20px;'> Quay lai</a></div></body></html>
+/* Nav với login button bên phải */
+.nav-links { display: flex; align-items: center; gap: 0; }
+.nav-login  { margin-left: auto; } /* đẩy sang phải */</pre>
+        </div>
+      </div>
+    </div>
+  </div>
+  <a href="../index.html" class="btn-back" style="margin-top:20px;">&#8592; Quay lại</a>
+  <script type="module">
+    import { codeToHtml } from 'https://esm.sh/shiki@1';
+    const raw = document.getElementById('code-raw').textContent;
+    const highlighted = await codeToHtml(raw, { lang: 'css', theme: 'github-dark' });
+    document.getElementById('code-highlight').innerHTML = highlighted;
+    const pre = document.getElementById('code-highlight').querySelector('pre');
+    if (pre) pre.style.cssText = 'border-radius:10px;padding:20px;font-size:0.87rem;overflow-x:auto;margin:0;line-height:1.7';
+  </script>
+</body>
+</html>

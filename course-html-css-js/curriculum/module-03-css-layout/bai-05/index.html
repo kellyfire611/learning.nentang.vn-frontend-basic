@@ -1,24 +1,112 @@
-﻿<!DOCTYPE html><html lang='vi'><head><meta charset='UTF-8'/><title>Bai 05 - Position fixed va sticky</title><link rel='stylesheet' href='../../shared.css'/></head><body><div class='page-header module-3'><div class='breadcrumb'><a href='../../index.html'>Trang Chu</a>  <a href='../index.html'>Module 3</a>  Bai 05</div><h1>Bai 05: Position fixed va sticky</h1><p>Module 3  CSS Layout & Responsive</p></div><div class='exercise-page'><div class='exercise-box'><div class='ex-work'><pre style='background:#1a202c;color:#e2e8f0;padding:20px;border-radius:8px;font-size:.88rem;line-height:1.7;overflow-x:auto;white-space:pre-wrap'>/* fixed - co dinh theo viewport, khong cuon theo trang */
-.header-fixed {
+<!DOCTYPE html>
+<html lang="vi">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <meta name="keywords" content="Nền tảng,HTML,CSS,JavaScript,Lập trình,Web,Kiến thức,Đồ án">
+  <meta name="author" content="Dương Nguyễn Phú Cường">
+  <meta name="description" content="Tạo navbar cố định và header dính bằng position fixed và sticky.">
+  <meta property="og:locale" content="vi_VN">
+  <meta property="og:type" content="website">
+  <meta property="og:title" content="Bài 05 – Position: fixed và sticky | NenTang.vn">
+  <meta property="og:description" content="Tạo navbar cố định và header dính bằng position fixed và sticky.">
+  <meta property="og:url" content="https://nentang.vn/">
+  <meta property="og:site_name" content="Nền tảng Kiến thức">
+  <title>Bài 05 – Position: fixed và sticky | NenTang.vn</title>
+  <link rel="stylesheet" href="../../shared.css" />
+</head>
+<body>
+  <div class="page-header module-3">
+    <div class="breadcrumb">
+      <a href="../../index.html">Trang Chủ</a> &rsaquo;
+      <a href="../index.html">Module 3</a> &rsaquo; Bài 05
+    </div>
+    <h1>Bài 05: Position: fixed và sticky</h1>
+    <p>Module 3 – CSS Layout &amp; Responsive</p>
+  </div>
+
+  <div class="exercise-page">
+    <div class="exercise-box">
+      <div class="ex-head">
+        <h1>📝 Yêu cầu bài tập</h1>
+        <p>Tạo navbar cố định và header dính bằng position fixed và sticky.</p>
+      </div>
+      <div class="ex-desc">
+        <h3>Mô tả</h3>
+        <p>fixed: phần tử cố định theo viewport (màn hình), không cuộn theo trang. sticky: như relative bình thường nhưng 'dính' khi cuộn đến vị trí xác định.</p>
+        <h3>Yêu cầu</h3>
+        <ul>
+          <li>Tạo navbar fixed cố định trên đầu trang khi cuộn</li>
+          <li>Tạo nút 'Về đầu trang' fixed góc dưới phải</li>
+          <li>Tạo header bảng sticky: cố định khi cuộn bảng dài</li>
+          <li>Tạo sidebar sticky đi theo khi cuộn trang</li>
+        </ul>
+        <h3>🧠 Kiến thức cần nhớ</h3>
+        <ul>
+          <li><code>position: fixed</code>: cố định theo viewport, không cuộn theo trang</li>
+          <li><code>position: sticky</code>: dính khi đến ngưỡng top/bottom xác định</li>
+          <li>fixed thoát khỏi flow hoàn toàn – phải thêm padding-top body bằng chiều cao navbar</li>
+          <li>sticky KHÔNG thoát flow – vẫn chiếm không gian ban đầu</li>
+          <li>sticky cần parent có đủ height để 'dính' trong</li>
+        </ul>
+      </div>
+      <div class="ex-work">
+        <h3>💻 Code mẫu</h3>
+        <div id="code-highlight">
+          <pre id="code-raw" style="display:none">/* Navbar fixed */
+.navbar {
   position: fixed;
   top: 0; left: 0; right: 0;
-  z-index: 1000;
-  background: white;
-  box-shadow: 0 2px 8px rgba(0,0,0,.1);
-}
-
-/* sticky - binh thuong den khi gap nguong, roi co dinh */
-.header-sticky {
-  position: sticky;
-  top: 0;   /* gan vao top khi cuon den day */
+  height: 60px;
+  background: #1a202c;
   z-index: 100;
+  /* NHỚ thêm padding-top cho body */
+}
+body { padding-top: 60px; }
+
+/* Nút back-to-top */
+.back-top {
+  position: fixed;
+  bottom: 32px;
+  right: 32px;
+  width: 48px; height: 48px;
+  background: #3182ce;
+  color: white;
+  border-radius: 50%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  cursor: pointer;
+  z-index: 99;
 }
 
-/* Sidebar sticky */
+/* Sticky header bảng */
+.table-sticky th {
+  position: sticky;
+  top: 0;
+  background: #2d3748;
+  color: white;
+  z-index: 10;
+}
+
+/* Sticky sidebar */
 .sidebar {
   position: sticky;
-  top: 80px;  /* 80px tu tren xuong */
-  height: fit-content;
-}
-
-/* YEU CAU: Tao trang co header sticky, back-to-top button fixed */</pre></div></div><a href='../index.html' class='btn-back' style='margin-top:20px;'> Quay lai</a></div></body></html>
+  top: 80px; /* 80px từ top viewport */
+  align-self: flex-start;
+}</pre>
+        </div>
+      </div>
+    </div>
+  </div>
+  <a href="../index.html" class="btn-back" style="margin-top:20px;">&#8592; Quay lại</a>
+  <script type="module">
+    import { codeToHtml } from 'https://esm.sh/shiki@1';
+    const raw = document.getElementById('code-raw').textContent;
+    const highlighted = await codeToHtml(raw, { lang: 'css', theme: 'github-dark' });
+    document.getElementById('code-highlight').innerHTML = highlighted;
+    const pre = document.getElementById('code-highlight').querySelector('pre');
+    if (pre) pre.style.cssText = 'border-radius:10px;padding:20px;font-size:0.87rem;overflow-x:auto;margin:0;line-height:1.7';
+  </script>
+</body>
+</html>

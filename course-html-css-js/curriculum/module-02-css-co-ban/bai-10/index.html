@@ -1,1 +1,97 @@
-﻿<!DOCTYPE html><html lang='vi'><head><meta charset='UTF-8'/><title>Bai 10 - Background Image va shorthand</title><link rel='stylesheet' href='../../shared.css'/></head><body><div class='page-header module-2'><div class='breadcrumb'><a href='../../index.html'>Trang Chu</a>  <a href='../index.html'>Module 2</a>  Bai 10</div><h1>Bai 10: Background Image va shorthand</h1><p>Module 2  CSS Co Ban</p></div><div class='exercise-page'><div class='exercise-box'><div class='ex-work'><h3>Noi dung bai tap CSS - Background Image va shorthand</h3><p style='padding:20px;color:#718096'>Mo file CSS cua ban va thuc hanh ap dung cac khai niem: <strong>Background Image va shorthand</strong></p></div></div><a href='../index.html' class='btn-back' style='margin-top:20px;'> Quay lai</a></div></body></html>
+<!DOCTYPE html>
+<html lang="vi">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <meta name="keywords" content="Nền tảng,HTML,CSS,JavaScript,Lập trình,Web,Kiến thức,Đồ án">
+  <meta name="author" content="Dương Nguyễn Phú Cường">
+  <meta name="description" content="Tạo các nền đẹp bằng màu sắc, hình ảnh và gradient trong CSS.">
+  <meta property="og:locale" content="vi_VN">
+  <meta property="og:type" content="website">
+  <meta property="og:title" content="Bài 10 – Background: màu và hình ảnh | NenTang.vn">
+  <meta property="og:description" content="Tạo các nền đẹp bằng màu sắc, hình ảnh và gradient trong CSS.">
+  <meta property="og:url" content="https://nentang.vn/">
+  <meta property="og:site_name" content="Nền tảng Kiến thức">
+  <title>Bài 10 – Background: màu và hình ảnh | NenTang.vn</title>
+  <link rel="stylesheet" href="../../shared.css" />
+</head>
+<body>
+  <div class="page-header module-2">
+    <div class="breadcrumb">
+      <a href="../../index.html">Trang Chủ</a> &rsaquo;
+      <a href="../index.html">Module 2</a> &rsaquo; Bài 10
+    </div>
+    <h1>Bài 10: Background: màu và hình ảnh</h1>
+    <p>Module 2 – CSS Cơ Bản</p>
+  </div>
+
+  <div class="exercise-page">
+    <div class="exercise-box">
+      <div class="ex-head">
+        <h1>📝 Yêu cầu bài tập</h1>
+        <p>Tạo các nền đẹp bằng màu sắc, hình ảnh và gradient trong CSS.</p>
+      </div>
+      <div class="ex-desc">
+        <h3>Mô tả</h3>
+        <p>Thuộc tính background trong CSS cực kỳ linh hoạt: có thể đặt màu, ảnh, lặp lại, định vị, điều chỉnh kích thước ảnh nền.</p>
+        <h3>Yêu cầu</h3>
+        <ul>
+          <li>Đặt background-color bằng HEX, RGB và tên màu</li>
+          <li>Đặt background-image từ URL picsum.photos</li>
+          <li>Thực hành background-repeat: no-repeat, repeat-x, repeat-y</li>
+          <li>Thực hành background-size: cover, contain, 50% 50%</li>
+          <li>Thực hành background-position: center, top right</li>
+        </ul>
+        <h3>🧠 Kiến thức cần nhớ</h3>
+        <ul>
+          <li><code>background-color: #hex</code>: màu nền</li>
+          <li><code>background-image: url('ảnh.jpg')</code>: ảnh nền</li>
+          <li><code>background-size: cover</code>: phủ đầy, giữ tỷ lệ (cắt nếu cần)</li>
+          <li><code>background-size: contain</code>: hiện toàn bộ ảnh (có thể trống)</li>
+          <li><code>background-position: center</code>: căn giữa ảnh nền</li>
+          <li>Shorthand: <code>background: url() no-repeat center/cover</code></li>
+        </ul>
+      </div>
+      <div class="ex-work">
+        <h3>💻 Code mẫu</h3>
+        <div id="code-highlight">
+          <pre id="code-raw" style="display:none">/* Màu nền đơn giản */
+.box1 { background-color: #3182ce; }
+
+/* Ảnh nền cơ bản */
+.box2 {
+  background-image: url('https://picsum.photos/800/400');
+  background-repeat: no-repeat;
+  background-size: cover;
+  background-position: center;
+  height: 300px;
+}
+
+/* Nhiều lớp background (multiple backgrounds) */
+.multi {
+  background:
+    url('overlay.png') no-repeat center,
+    url('background.jpg') no-repeat center / cover;
+}
+
+/* Shorthand đầy đủ */
+.hero {
+  background: url('hero.jpg') no-repeat center center / cover;
+  min-height: 80vh;
+  color: white;
+}</pre>
+        </div>
+      </div>
+    </div>
+  </div>
+  <a href="../index.html" class="btn-back" style="margin-top:20px;">&#8592; Quay lại</a>
+  <script type="module">
+    import { codeToHtml } from 'https://esm.sh/shiki@1';
+    const raw = document.getElementById('code-raw').textContent;
+    const highlighted = await codeToHtml(raw, { lang: 'html', theme: 'github-dark' });
+    document.getElementById('code-highlight').innerHTML = highlighted;
+    const pre = document.getElementById('code-highlight').querySelector('pre');
+    if (pre) pre.style.cssText = 'border-radius:10px;padding:20px;font-size:0.87rem;overflow-x:auto;margin:0;line-height:1.7';
+  </script>
+</body>
+</html>

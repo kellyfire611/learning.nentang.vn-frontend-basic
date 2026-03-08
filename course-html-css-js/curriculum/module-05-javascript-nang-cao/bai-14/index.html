@@ -1,9 +1,107 @@
-﻿<!DOCTYPE html>
-<html lang="vi"><head><meta charset="UTF-8"/><title>Error Handling try catch finally</title><link rel="stylesheet" href="../../shared.css"/></head>
+<!DOCTYPE html>
+<html lang="vi">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <meta name="keywords" content="Nền tảng,HTML,CSS,JavaScript,Lập trình,Web,Kiến thức,Đồ án">
+  <meta name="author" content="Dương Nguyễn Phú Cường">
+  <meta name="description" content="Dùng IntersectionObserver để lazy load ảnh và trigger animation khi scroll.">
+  <meta property="og:locale" content="vi_VN">
+  <meta property="og:type" content="website">
+  <meta property="og:title" content="Bài 14 – IntersectionObserver – Lazy Loading | NenTang.vn">
+  <meta property="og:description" content="Dùng IntersectionObserver để lazy load ảnh và trigger animation khi scroll.">
+  <meta property="og:url" content="https://nentang.vn/">
+  <meta property="og:site_name" content="Nền tảng Kiến thức">
+  <title>Bài 14 – IntersectionObserver – Lazy Loading | NenTang.vn</title>
+  <link rel="stylesheet" href="../../shared.css" />
+</head>
 <body>
-<div class="page-header module-5"><div class="breadcrumb"><a href="../../index.html">Trang Chu</a> &rsaquo; <a href="../index.html">Module 5</a> &rsaquo; bai-14</div><h1>Error Handling try catch finally</h1></div>
-<div class="container"><div class="exercise-content"><h2>Yeu cau</h2><p>Viet ham chia an toan (nem loi khi chia cho 0). Custom Error class 'ValidationError'. Xu ly loi khi fetch that bai. Phuc hoi gracefully: hien thi thong bao thay vi trang trang.</p>
-<h2>Code mau</h2><pre><code>/* Viet code tai day */</code></pre>
-<h2>Ket qua</h2><div id="result" style="padding:16px;background:#f8f9fa;border-radius:8px;margin-top:8px;">Ket qua se hien thi o day...</div>
-<h2>Bai lam</h2><textarea id="code" style="width:100%;height:200px;font-family:monospace;font-size:14px;padding:12px;border:2px solid #dee2e6;border-radius:8px;"></textarea><br/><button onclick="try{eval(document.getElementById('code').value)}catch(e){document.getElementById('result').textContent=e.message}" style="margin-top:8px;padding:10px 24px;background:#a18cd1;color:#fff;border:none;border-radius:8px;cursor:pointer;font-size:15px;">Chay Code</button>
-</div><a href="../index.html" class="btn-back"> Quay lai Module 5</a></div></body></html>
+  <div class="page-header module-5">
+    <div class="breadcrumb">
+      <a href="../../index.html">Trang Chủ</a> &rsaquo;
+      <a href="../index.html">Module 5</a> &rsaquo; Bài 14
+    </div>
+    <h1>Bài 14: IntersectionObserver – Lazy Loading</h1>
+    <p>Module 5 – JavaScript Nâng Cao</p>
+  </div>
+
+  <div class="exercise-page">
+    <div class="exercise-box">
+      <div class="ex-head">
+        <h1>📝 Yêu cầu bài tập</h1>
+        <p>Dùng IntersectionObserver để lazy load ảnh và trigger animation khi scroll.</p>
+      </div>
+      <div class="ex-desc">
+        <h3>Mô tả</h3>
+        <p>IntersectionObserver theo dõi khi phần tử vào/ra khỏi viewport. Dùng để lazy load ảnh, trigger animation, infinite scroll.</p>
+        <h3>Yêu cầu</h3>
+        <ul>
+          <li>Lazy load ảnh: chỉ tải khi sắp vào viewport</li>
+          <li>Fade-in animation khi element scroll vào view</li>
+          <li>Infinite scroll: tải thêm data khi scroll xuống dưới</li>
+        </ul>
+        <h3>🧠 Kiến thức cần nhớ</h3>
+        <ul>
+          <li><code>new IntersectionObserver(callback, options)</code></li>
+          <li><code>observer.observe(el)</code>: bắt đầu theo dõi</li>
+          <li><code>observer.unobserve(el)</code>: dừng theo dõi phần tử đó</li>
+          <li><code>entry.isIntersecting</code>: true khi vào viewport</li>
+          <li><code>entry.intersectionRatio</code>: tỷ lệ phần tử trong viewport (0-1)</li>
+          <li>threshold: 0 (bất kỳ pixel nào), 0.5 (50%), 1 (toàn bộ)</li>
+        </ul>
+      </div>
+      <div class="ex-work">
+        <h3>💻 Code mẫu</h3>
+        <div id="code-highlight">
+          <pre id="code-raw" style="display:none">// Lazy load ảnh
+const imageObserver = new IntersectionObserver((entries, obs) =&gt; {
+  entries.forEach(entry =&gt; {
+    if (!entry.isIntersecting) return;
+    const img = entry.target;
+    img.src = img.dataset.src;  // data-src → src thực
+    img.classList.add('loaded');
+    obs.unobserve(img);         // Dừng theo dõi sau khi load
+  });
+}, { rootMargin: '200px' }); // Tải trước khi vào view 200px
+
+document.querySelectorAll('img[data-src]').forEach(img =&gt; {
+  imageObserver.observe(img);
+});
+
+// Scroll animation
+const animObserver = new IntersectionObserver((entries) =&gt; {
+  entries.forEach(entry =&gt; {
+    if (entry.isIntersecting) {
+      entry.target.classList.add('visible');
+    }
+  });
+}, { threshold: 0.1 });
+
+document.querySelectorAll('.animate-on-scroll').forEach(el =&gt; {
+  animObserver.observe(el);
+});
+
+// Infinite scroll: sentinel element ở cuối
+const sentinel = document.getElementById('sentinel');
+const scrollObserver = new IntersectionObserver(async (entries) =&gt; {
+  if (entries[0].isIntersecting) {
+    const morePosts = await fetchMorePosts(currentPage++);
+    appendPosts(morePosts);
+  }
+});
+scrollObserver.observe(sentinel);</pre>
+        </div>
+      </div>
+    </div>
+  </div>
+  <a href="../index.html" class="btn-back" style="margin-top:20px;">&#8592; Quay lại</a>
+  <script type="module">
+    import { codeToHtml } from 'https://esm.sh/shiki@1';
+    const raw = document.getElementById('code-raw').textContent;
+    const highlighted = await codeToHtml(raw, { lang: 'javascript', theme: 'github-dark' });
+    document.getElementById('code-highlight').innerHTML = highlighted;
+    const pre = document.getElementById('code-highlight').querySelector('pre');
+    if (pre) pre.style.cssText = 'border-radius:10px;padding:20px;font-size:0.87rem;overflow-x:auto;margin:0;line-height:1.7';
+  </script>
+</body>
+</html>

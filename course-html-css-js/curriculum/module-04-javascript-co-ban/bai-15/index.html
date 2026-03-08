@@ -1,9 +1,104 @@
-﻿<!DOCTYPE html>
-<html lang="vi"><head><meta charset="UTF-8"/><title>Mang: slice splice indexOf find</title><link rel="stylesheet" href="../../shared.css"/></head>
+<!DOCTYPE html>
+<html lang="vi">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <meta name="keywords" content="Nền tảng,HTML,CSS,JavaScript,Lập trình,Web,Kiến thức,Đồ án">
+  <meta name="author" content="Dương Nguyễn Phú Cường">
+  <meta name="description" content="Thao tác chuỗi với các phương thức phổ biến của String.">
+  <meta property="og:locale" content="vi_VN">
+  <meta property="og:type" content="website">
+  <meta property="og:title" content="Bài 15 – String Methods | NenTang.vn">
+  <meta property="og:description" content="Thao tác chuỗi với các phương thức phổ biến của String.">
+  <meta property="og:url" content="https://nentang.vn/">
+  <meta property="og:site_name" content="Nền tảng Kiến thức">
+  <title>Bài 15 – String Methods | NenTang.vn</title>
+  <link rel="stylesheet" href="../../shared.css" />
+</head>
 <body>
-<div class="page-header module-4"><div class="breadcrumb"><a href="../../index.html">Trang Chu</a> &rsaquo; <a href="../index.html">Module 4</a> &rsaquo; bai-15</div><h1>Mang: slice splice indexOf find</h1></div>
-<div class="container"><div class="exercise-content"><h2>Yeu cau</h2><p>Voi mang so [1..10]: cat ra phan tu 3-7 (slice). Xoa va them vao vi tri bat ky (splice). Tim vi tri phan tu (indexOf). Tim phan tu thoa dieu kien (find, findIndex).</p>
-<h2>Code mau</h2><pre><code>/* Viet code tai day */</code></pre>
-<h2>Ket qua</h2><div id="result" style="padding:16px;background:#f8f9fa;border-radius:8px;margin-top:8px;">Ket qua se hien thi o day...</div>
-<h2>Bai lam</h2><textarea id="code" style="width:100%;height:180px;font-family:monospace;font-size:14px;padding:12px;border:2px solid #dee2e6;border-radius:8px;"></textarea><br/><button onclick="try{eval(document.getElementById('code').value)}catch(e){document.getElementById('result').textContent=e.message}" style="margin-top:8px;padding:10px 24px;background:#fa709a;color:#fff;border:none;border-radius:8px;cursor:pointer;font-size:15px;">Chay Code</button>
-</div><a href="../index.html" class="btn-back"> Quay lai Module 4</a></div></body></html>
+  <div class="page-header module-4">
+    <div class="breadcrumb">
+      <a href="../../index.html">Trang Chủ</a> &rsaquo;
+      <a href="../index.html">Module 4</a> &rsaquo; Bài 15
+    </div>
+    <h1>Bài 15: String Methods</h1>
+    <p>Module 4 – JavaScript Cơ Bản</p>
+  </div>
+
+  <div class="exercise-page">
+    <div class="exercise-box">
+      <div class="ex-head">
+        <h1>📝 Yêu cầu bài tập</h1>
+        <p>Thao tác chuỗi với các phương thức phổ biến của String.</p>
+      </div>
+      <div class="ex-desc">
+        <h3>Mô tả</h3>
+        <p>JavaScript có nhiều phương thức string hữu ích để xử lý, tìm kiếm, thay thế và định dạng văn bản.</p>
+        <h3>Yêu cầu</h3>
+        <ul>
+          <li>Tạo hàm kiểm tra email hợp lệ (đơn giản) dùng includes, endsWith</li>
+          <li>Chuẩn hóa tên: trim, capitalize từng từ</li>
+          <li>Tách chuỗi CSV thành mảng dùng split</li>
+        </ul>
+        <h3>🧠 Kiến thức cần nhớ</h3>
+        <ul>
+          <li><code>str.toUpperCase()</code> / <code>toLowerCase()</code></li>
+          <li><code>str.trim()</code>: xóa khoảng trắng 2 đầu</li>
+          <li><code>str.includes(sub)</code>: kiểm tra có chuỗi con không</li>
+          <li><code>str.startsWith(s)</code> / <code>endsWith(s)</code></li>
+          <li><code>str.replace(old, new)</code>: thay thế lần đầu tiên</li>
+          <li><code>str.replaceAll(old, new)</code>: thay thế tất cả</li>
+          <li><code>str.split(sep)</code>: tách chuỗi thành mảng</li>
+          <li><code>arr.join(sep)</code>: gộp mảng thành chuỗi</li>
+          <li><code>str.slice(start, end)</code>: cắt chuỗi con</li>
+        </ul>
+      </div>
+      <div class="ex-work">
+        <h3>💻 Code mẫu</h3>
+        <div id="code-highlight">
+          <pre id="code-raw" style="display:none">// Xử lý tên
+const tenDirty = '  nguyễn văn   an  ';
+const tenSach = tenDirty.trim()
+  .split(' ')
+  .filter(w =&gt; w.length &gt; 0)
+  .map(w =&gt; w[0].toUpperCase() + w.slice(1).toLowerCase())
+  .join(' ');
+console.log(tenSach); // 'Nguyễn Văn An'
+
+// Kiểm tra email đơn giản
+function kiemTraEmail(email) {
+  const e = email.trim().toLowerCase();
+  return e.includes('@') &amp;&amp; e.includes('.') &amp;&amp; !e.startsWith('@') &amp;&amp; !e.endsWith('.');
+}
+
+// Xử lý CSV
+const csv = 'An,20,HCM;Bình,22,HN;Chi,19,ĐN';
+const nguoi = csv.split(';').map(row =&gt; {
+  const [ten, tuoi, thanh_pho] = row.split(',');
+  return { ten, tuoi: +tuoi, thanh_pho };
+});
+console.log(nguoi);
+
+// Pad và repeat
+const so = 42;
+console.log(String(so).padStart(5, '0')); // '00042'
+console.log('=-'.repeat(10) + '=');       // trang trí
+
+// replace với regex
+const text = 'Xin chào chào chào!';
+console.log(text.replaceAll('chào', 'hello')); // thay tất cả</pre>
+        </div>
+      </div>
+    </div>
+  </div>
+  <a href="../index.html" class="btn-back" style="margin-top:20px;">&#8592; Quay lại</a>
+  <script type="module">
+    import { codeToHtml } from 'https://esm.sh/shiki@1';
+    const raw = document.getElementById('code-raw').textContent;
+    const highlighted = await codeToHtml(raw, { lang: 'javascript', theme: 'github-dark' });
+    document.getElementById('code-highlight').innerHTML = highlighted;
+    const pre = document.getElementById('code-highlight').querySelector('pre');
+    if (pre) pre.style.cssText = 'border-radius:10px;padding:20px;font-size:0.87rem;overflow-x:auto;margin:0;line-height:1.7';
+  </script>
+</body>
+</html>

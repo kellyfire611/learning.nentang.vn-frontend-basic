@@ -1,23 +1,97 @@
-﻿<!DOCTYPE html><html lang='vi'><head><meta charset='UTF-8'/><meta name='viewport' content='width=device-width,initial-scale=1'/><title>Bai 18 - CSS Selector nang cao</title><link rel='stylesheet' href='../../shared.css'/></head><body><div class='page-header module-2'><div class='breadcrumb'><a href='../../index.html'>Trang Chu</a>  <a href='../index.html'>Module 2</a>  Bai 18</div><h1>Bai 18: CSS Selector nang cao</h1><p>Module 2  CSS Co Ban</p></div><div class='exercise-page'><div class='exercise-box'><div class='ex-work'><h3>Yeu cau va Code mau:</h3><pre style='background:#1a202c;color:#e2e8f0;padding:20px;border-radius:8px;font-size:.88rem;line-height:1.7;overflow-x:auto;white-space:pre-wrap'>/* Child combinator (>) - chi phan tu con truc tiep */
-nav > ul { list-style: none; }           /* ul trong nav */
-.card > .title { font-weight: bold; }    /* .title la con truc tiep */
+<!DOCTYPE html>
+<html lang="vi">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <meta name="keywords" content="Nền tảng,HTML,CSS,JavaScript,Lập trình,Web,Kiến thức,Đồ án">
+  <meta name="author" content="Dương Nguyễn Phú Cường">
+  <meta name="description" content="Tạo và sử dụng biến CSS để quản lý màu sắc và giá trị nhất quán.">
+  <meta property="og:locale" content="vi_VN">
+  <meta property="og:type" content="website">
+  <meta property="og:title" content="Bài 18 – CSS Variables – Custom Properties | NenTang.vn">
+  <meta property="og:description" content="Tạo và sử dụng biến CSS để quản lý màu sắc và giá trị nhất quán.">
+  <meta property="og:url" content="https://nentang.vn/">
+  <meta property="og:site_name" content="Nền tảng Kiến thức">
+  <title>Bài 18 – CSS Variables – Custom Properties | NenTang.vn</title>
+  <link rel="stylesheet" href="../../shared.css" />
+</head>
+<body>
+  <div class="page-header module-2">
+    <div class="breadcrumb">
+      <a href="../../index.html">Trang Chủ</a> &rsaquo;
+      <a href="../index.html">Module 2</a> &rsaquo; Bài 18
+    </div>
+    <h1>Bài 18: CSS Variables – Custom Properties</h1>
+    <p>Module 2 – CSS Cơ Bản</p>
+  </div>
 
-/* Adjacent sibling (+) - ngay sau */
-h2 + p { font-size: 1.1em; color: #555; }   /* p ngay sau h2 */
+  <div class="exercise-page">
+    <div class="exercise-box">
+      <div class="ex-head">
+        <h1>📝 Yêu cầu bài tập</h1>
+        <p>Tạo và sử dụng biến CSS để quản lý màu sắc và giá trị nhất quán.</p>
+      </div>
+      <div class="ex-desc">
+        <h3>Mô tả</h3>
+        <p>CSS Custom Properties (biến CSS) cho phép định nghĩa giá trị 1 lần và dùng ở nhiều nơi. Dễ thay đổi toàn bộ theme chỉ bằng cách sửa 1 chỗ. Rất mạnh khi kết hợp với JavaScript.</p>
+        <h3>Yêu cầu</h3>
+        <ul>
+          <li>Định nghĩa color palette trong :root (primary, secondary, accent, background, text)</li>
+          <li>Tạo spacing system: --space-s, --space-m, --space-l</li>
+          <li>Áp dụng variables cho button, card, navbar</li>
+          <li>Dùng JavaScript thay đổi biến CSS để toggle dark mode</li>
+        </ul>
+        <h3>🧠 Kiến thức cần nhớ</h3>
+        <ul>
+          <li>Khai báo: <code>--ten-bien: gia-tri;</code> trong selector</li>
+          <li><code>:root { }</code>: scope toàn trang – dùng cho global variables</li>
+          <li>Sử dụng: <code>var(--ten-bien)</code> hoặc <code>var(--ten-bien, fallback)</code></li>
+          <li>Variables kế thừa theo cascade, có thể override trong component</li>
+          <li>JavaScript: <code>element.style.setProperty('--bien', 'gia-tri')</code></li>
+        </ul>
+      </div>
+      <div class="ex-work">
+        <h3>💻 Code mẫu</h3>
+        <div id="code-highlight">
+          <pre id="code-raw" style="display:none">:root {
+  /* Color palette */
+  --color-primary: #3182ce;
+  --color-secondary: #805ad5;
+  --color-accent: #ed8936;
+  --color-bg: #f7fafc;
+  --color-text: #2d3748;
+  --color-text-light: #718096;
 
-/* General sibling (~) - tat ca phan tu sau */
-h2 ~ p { margin-left: 20px; }
+  /* Spacing */
+  --space-xs: 4px;
+  --space-s: 8px;
+  --space-m: 16px;
+  --space-l: 32px;
+  --space-xl: 64px;
 
-/* Attribute Selector */
-[type="text"]       { border: 1px solid #ccc; }
-[href^="https"]     { color: green; }   /* bat dau bang https */
-[href$=".pdf"]      { color: red; }     /* ket thuc bang .pdf */
-[href*="google"]    { font-weight: bold; } /* chua google */
-[class~="active"]   { background: blue; }  /* co class "active" */
-[lang|="en"]        { font-family: serif; } /* lang bat dau bang en */
+  /* Border */
+  --radius: 8px;
+  --radius-full: 9999px;
+}
 
-/* :not() - loai tru */
-li:not(:last-child) { border-bottom: 1px solid #eee; }
-input:not([type="submit"]) { border-radius: 4px; }
-
-/* YEU CAU: Viet CSS selector chon dung phan tu theo yeu cau (khong them class) */</pre></div></div><a href='../index.html' class='btn-back' style='margin-top:20px;'> Quay lai</a></div></body></html>
+/* Dùng trong component */
+.btn-primary {
+  background: var(--color-primary);
+  padding: var(--space-s) var(--space-m);
+  border-radius: var(--radius);
+}</pre>
+        </div>
+      </div>
+    </div>
+  </div>
+  <a href="../index.html" class="btn-back" style="margin-top:20px;">&#8592; Quay lại</a>
+  <script type="module">
+    import { codeToHtml } from 'https://esm.sh/shiki@1';
+    const raw = document.getElementById('code-raw').textContent;
+    const highlighted = await codeToHtml(raw, { lang: 'html', theme: 'github-dark' });
+    document.getElementById('code-highlight').innerHTML = highlighted;
+    const pre = document.getElementById('code-highlight').querySelector('pre');
+    if (pre) pre.style.cssText = 'border-radius:10px;padding:20px;font-size:0.87rem;overflow-x:auto;margin:0;line-height:1.7';
+  </script>
+</body>
+</html>

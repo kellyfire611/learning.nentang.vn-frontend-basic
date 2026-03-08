@@ -1,1 +1,90 @@
-﻿<!DOCTYPE html><html lang='vi'><head><meta charset='UTF-8'/><title>Bai 07 - Line-height va letter-spacing</title><link rel='stylesheet' href='../../shared.css'/></head><body><div class='page-header module-2'><div class='breadcrumb'><a href='../../index.html'>Trang Chu</a>  <a href='../index.html'>Module 2</a>  Bai 07</div><h1>Bai 07: Line-height va letter-spacing</h1><p>Module 2  CSS Co Ban</p></div><div class='exercise-page'><div class='exercise-box'><div class='ex-work'><h3>Noi dung bai tap CSS - Line-height va letter-spacing</h3><p style='padding:20px;color:#718096'>Mo file CSS cua ban va thuc hanh ap dung cac khai niem: <strong>Line-height va letter-spacing</strong></p></div></div><a href='../index.html' class='btn-back' style='margin-top:20px;'> Quay lai</a></div></body></html>
+<!DOCTYPE html>
+<html lang="vi">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <meta name="keywords" content="Nền tảng,HTML,CSS,JavaScript,Lập trình,Web,Kiến thức,Đồ án">
+  <meta name="author" content="Dương Nguyễn Phú Cường">
+  <meta name="description" content="Điều chỉnh căn lề, khoảng cách dòng và khoảng cách chữ cái.">
+  <meta property="og:locale" content="vi_VN">
+  <meta property="og:type" content="website">
+  <meta property="og:title" content="Bài 07 – text-align, line-height, letter-spacing | NenTang.vn">
+  <meta property="og:description" content="Điều chỉnh căn lề, khoảng cách dòng và khoảng cách chữ cái.">
+  <meta property="og:url" content="https://nentang.vn/">
+  <meta property="og:site_name" content="Nền tảng Kiến thức">
+  <title>Bài 07 – text-align, line-height, letter-spacing | NenTang.vn</title>
+  <link rel="stylesheet" href="../../shared.css" />
+</head>
+<body>
+  <div class="page-header module-2">
+    <div class="breadcrumb">
+      <a href="../../index.html">Trang Chủ</a> &rsaquo;
+      <a href="../index.html">Module 2</a> &rsaquo; Bài 07
+    </div>
+    <h1>Bài 07: text-align, line-height, letter-spacing</h1>
+    <p>Module 2 – CSS Cơ Bản</p>
+  </div>
+
+  <div class="exercise-page">
+    <div class="exercise-box">
+      <div class="ex-head">
+        <h1>📝 Yêu cầu bài tập</h1>
+        <p>Điều chỉnh căn lề, khoảng cách dòng và khoảng cách chữ cái.</p>
+      </div>
+      <div class="ex-desc">
+        <h3>Mô tả</h3>
+        <p>Những thuộc tính này ảnh hưởng trực tiếp đến khả năng đọc (readability) của văn bản. line-height tốt (1.5-1.8) và letter-spacing phù hợp giúp văn bản dễ đọc hơn nhiều.</p>
+        <h3>Yêu cầu</h3>
+        <ul>
+          <li>Tạo 4 đoạn văn với 4 cách căn lề: left, center, right, justify</li>
+          <li>So sánh line-height: 1.0, 1.5, 2.0 trên cùng đoạn văn</li>
+          <li>Thêm letter-spacing cho tiêu đề: 0.1em đến 0.3em</li>
+          <li>Dùng word-spacing điều chỉnh khoảng cách giữa các từ</li>
+        </ul>
+        <h3>🧠 Kiến thức cần nhớ</h3>
+        <ul>
+          <li><code>text-align: left|center|right|justify</code></li>
+          <li><code>line-height: 1.6</code>: không đơn vị – tốt nhất cho responsive</li>
+          <li><code>letter-spacing: 0.1em</code>: dùng em thay px để theo tỷ lệ font</li>
+          <li><code>word-spacing: 0.2em</code>: khoảng cách giữa từ</li>
+          <li>Tiêu đề chữ hoa (uppercase) nên có letter-spacing rộng hơn</li>
+        </ul>
+      </div>
+      <div class="ex-work">
+        <h3>💻 Code mẫu</h3>
+        <div id="code-highlight">
+          <pre id="code-raw" style="display:none">h1 {
+  text-align: center;
+  letter-spacing: 0.15em;
+  text-transform: uppercase;
+}
+
+.justify { text-align: justify; } /* Căn đều 2 bên */
+.right { text-align: right; }
+
+/* Khoảng cách dòng */
+.tight { line-height: 1.2; }     /* Chật – tránh cho văn bản dài */
+.normal { line-height: 1.6; }    /* Tốt cho body text */
+.loose { line-height: 2.0; }     /* Thoáng – dùng cho trích dẫn */
+
+/* Khoảng cách chữ */
+.tracking-wide { letter-spacing: 0.2em; }
+.tracking-tight { letter-spacing: -0.02em; } /* Chữ to, thu lại tí */
+
+/* Khoảng cách từ */
+.word-space { word-spacing: 0.3em; }</pre>
+        </div>
+      </div>
+    </div>
+  </div>
+  <a href="../index.html" class="btn-back" style="margin-top:20px;">&#8592; Quay lại</a>
+  <script type="module">
+    import { codeToHtml } from 'https://esm.sh/shiki@1';
+    const raw = document.getElementById('code-raw').textContent;
+    const highlighted = await codeToHtml(raw, { lang: 'html', theme: 'github-dark' });
+    document.getElementById('code-highlight').innerHTML = highlighted;
+    const pre = document.getElementById('code-highlight').querySelector('pre');
+    if (pre) pre.style.cssText = 'border-radius:10px;padding:20px;font-size:0.87rem;overflow-x:auto;margin:0;line-height:1.7';
+  </script>
+</body>
+</html>

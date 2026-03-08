@@ -1,21 +1,88 @@
-﻿<!DOCTYPE html><html lang='vi'><head><meta charset='UTF-8'/><meta name='viewport' content='width=device-width,initial-scale=1'/><title>Bai 26 - The meta va SEO co ban</title><link rel='stylesheet' href='../../shared.css'/></head><body><div class='page-header module-1'><div class='breadcrumb'><a href='../../index.html'>Trang Chu</a>  <a href='../index.html'>Module 1</a>  Bai 26</div><h1>Bai 26: The meta va SEO co ban</h1><p>Module 1  HTML Co Ban</p></div><div class='exercise-page'><div class='exercise-box'><div class='ex-work'><h3>Noi dung / Code mau:</h3><pre style='background:#1a202c;color:#e2e8f0;padding:20px;border-radius:8px;font-size:.88rem;line-height:1.7;overflow-x:auto;white-space:pre-wrap'>&lt;!-- Cac the meta quan trong cho SEO --&gt;
-&lt;head&gt;
-  &lt;meta charset="UTF-8" /&gt;
-  &lt;meta name="viewport" content="width=device-width, initial-scale=1.0" /&gt;
+<!DOCTYPE html>
+<html lang="vi">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <meta name="keywords" content="Nền tảng,HTML,CSS,JavaScript,Lập trình,Web,Kiến thức,Đồ án">
+  <meta name="author" content="Dương Nguyễn Phú Cường">
+  <meta name="description" content="Dùng thẻ iframe để nhúng trang web khác, bản đồ, video YouTube vào trang.">
+  <meta property="og:locale" content="vi_VN">
+  <meta property="og:type" content="website">
+  <meta property="og:title" content="Bài 26 – Nhúng nội dung với Iframe | NenTang.vn">
+  <meta property="og:description" content="Dùng thẻ iframe để nhúng trang web khác, bản đồ, video YouTube vào trang.">
+  <meta property="og:url" content="https://nentang.vn/">
+  <meta property="og:site_name" content="Nền tảng Kiến thức">
+  <title>Bài 26 – Nhúng nội dung với Iframe | NenTang.vn</title>
+  <link rel="stylesheet" href="../../shared.css" />
+</head>
+<body>
+  <div class="page-header module-1">
+    <div class="breadcrumb">
+      <a href="../../index.html">Trang Chủ</a> &rsaquo;
+      <a href="../index.html">Module 1</a> &rsaquo; Bài 26
+    </div>
+    <h1>Bài 26: Nhúng nội dung với Iframe</h1>
+    <p>Module 1 – HTML Cơ Bản</p>
+  </div>
 
-  &lt;!-- SEO --&gt;
-  &lt;meta name="description" content="Hoc lap trinh HTML CSS JS tai Nentang.vn - Khoa hoc lap trinh web tu co ban den nang cao." /&gt;
-  &lt;meta name="keywords" content="hoc lap trinh, HTML, CSS, JavaScript, web, khoa hoc" /&gt;
-  &lt;meta name="author" content="Nguyen Van An" /&gt;
-  &lt;meta name="robots" content="index, follow" /&gt;
+  <div class="exercise-page">
+    <div class="exercise-box">
+      <div class="ex-head">
+        <h1>📝 Yêu cầu bài tập</h1>
+        <p>Dùng thẻ iframe để nhúng trang web khác, bản đồ, video YouTube vào trang.</p>
+      </div>
+      <div class="ex-desc">
+        <h3>Mô tả</h3>
+        <p>Iframe (Inline Frame) cho phép hiển thị một trang web khác bên trong trang hiện tại. Rất hay dùng để nhúng Google Maps, video YouTube, tài liệu PDF.</p>
+        <h3>Yêu cầu</h3>
+        <ul>
+          <li>Nhúng video YouTube (dùng embed URL)</li>
+          <li>Nhúng Google Maps vị trí Hà Nội</li>
+          <li>Nhúng trang Wikipedia tiếng Việt</li>
+          <li>Thêm sandbox attribute cho iframe không đáng tin</li>
+        </ul>
+        <h3>🧠 Kiến thức cần nhớ</h3>
+        <ul>
+          <li><code>&lt;iframe src='' width='' height=''&gt;</code>: nhúng nội dung</li>
+          <li>YouTube embed URL: <code>https://www.youtube.com/embed/VIDEO_ID</code></li>
+          <li><code>allowfullscreen</code>: cho phép toàn màn hình</li>
+          <li><code>sandbox</code>: giới hạn quyền của iframe (bảo mật)</li>
+          <li><code>loading='lazy'</code>: chỉ tải khi gần đến viewport</li>
+        </ul>
+      </div>
+      <div class="ex-work">
+        <h3>💻 Code mẫu</h3>
+        <div id="code-highlight">
+          <pre id="code-raw" style="display:none">&lt;!-- Nhúng video YouTube --&gt;
+&lt;iframe width="560" height="315"
+  src="https://www.youtube.com/embed/dQw4w9WgXcQ"
+  title="YouTube video"
+  frameborder="0"
+  allow="accelerometer; autoplay; clipboard-write; encrypted-media"
+  allowfullscreen
+  loading="lazy"&gt;
+&lt;/iframe&gt;
 
-  &lt;!-- Open Graph (Social Media) --&gt;
-  &lt;meta property="og:title" content="Hoc Lap Trinh Web tai Nentang.vn" /&gt;
-  &lt;meta property="og:description" content="Khoa hoc HTML CSS JS chat luong cao." /&gt;
-  &lt;meta property="og:image" content="https://example.com/og-image.jpg" /&gt;
-  &lt;meta property="og:url" content="https://nentang.vn" /&gt;
-  &lt;meta property="og:type" content="website" /&gt;
-
-  &lt;title&gt;Hoc Lap Trinh Web | Nentang.vn&lt;/title&gt;
-&lt;/head&gt;
-&lt;!-- Yeu cau: Tao trang web voi day du cac the meta dung chuan --&gt;</pre></div></div><a href='../index.html' class='btn-back' style='margin-top:20px;'> Quay lai</a></div></body></html>
+&lt;!-- Nhúng Google Maps --&gt;
+&lt;iframe
+  src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d3723.8!2d105.85!3d21.028!..."
+  width="600" height="400"
+  style="border:0; border-radius:8px"
+  allowfullscreen=""
+  loading="lazy"&gt;
+&lt;/iframe&gt;</pre>
+        </div>
+      </div>
+    </div>
+  </div>
+  <a href="../index.html" class="btn-back" style="margin-top:20px;">&#8592; Quay lại</a>
+  <script type="module">
+    import { codeToHtml } from 'https://esm.sh/shiki@1';
+    const raw = document.getElementById('code-raw').textContent;
+    const highlighted = await codeToHtml(raw, { lang: 'html', theme: 'github-dark' });
+    document.getElementById('code-highlight').innerHTML = highlighted;
+    const pre = document.getElementById('code-highlight').querySelector('pre');
+    if (pre) pre.style.cssText = 'border-radius:10px;padding:20px;font-size:0.87rem;overflow-x:auto;margin:0;line-height:1.7';
+  </script>
+</body>
+</html>

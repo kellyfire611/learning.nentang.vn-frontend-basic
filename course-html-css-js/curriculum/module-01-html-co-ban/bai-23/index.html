@@ -1,20 +1,84 @@
-﻿<!DOCTYPE html><html lang='vi'><head><meta charset='UTF-8'/><meta name='viewport' content='width=device-width,initial-scale=1'/><title>Bai 23 - The figure va figcaption</title><link rel='stylesheet' href='../../shared.css'/></head><body><div class='page-header module-1'><div class='breadcrumb'><a href='../../index.html'>Trang Chu</a>  <a href='../index.html'>Module 1</a>  Bai 23</div><h1>Bai 23: The figure va figcaption</h1><p>Module 1  HTML Co Ban</p></div><div class='exercise-page'><div class='exercise-box'><div class='ex-work'><h3>Noi dung / Code mau:</h3><pre style='background:#1a202c;color:#e2e8f0;padding:20px;border-radius:8px;font-size:.88rem;line-height:1.7;overflow-x:auto;white-space:pre-wrap'>&lt;h1&gt;Thu Vien Anh Phong Canh&lt;/h1&gt;
+<!DOCTYPE html>
+<html lang="vi">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <meta name="keywords" content="Nền tảng,HTML,CSS,JavaScript,Lập trình,Web,Kiến thức,Đồ án">
+  <meta name="author" content="Dương Nguyễn Phú Cường">
+  <meta name="description" content="Dùng figure và figcaption để thêm chú thích cho hình ảnh.">
+  <meta property="og:locale" content="vi_VN">
+  <meta property="og:type" content="website">
+  <meta property="og:title" content="Bài 23 – Thẻ figure và figcaption | NenTang.vn">
+  <meta property="og:description" content="Dùng figure và figcaption để thêm chú thích cho hình ảnh.">
+  <meta property="og:url" content="https://nentang.vn/">
+  <meta property="og:site_name" content="Nền tảng Kiến thức">
+  <title>Bài 23 – Thẻ figure và figcaption | NenTang.vn</title>
+  <link rel="stylesheet" href="../../shared.css" />
+</head>
+<body>
+  <div class="page-header module-1">
+    <div class="breadcrumb">
+      <a href="../../index.html">Trang Chủ</a> &rsaquo;
+      <a href="../index.html">Module 1</a> &rsaquo; Bài 23
+    </div>
+    <h1>Bài 23: Thẻ figure và figcaption</h1>
+    <p>Module 1 – HTML Cơ Bản</p>
+  </div>
 
-&lt;figure&gt;
-  &lt;img src="https://picsum.photos/600/400?random=10"
-       alt="Rung nhiet doi" width="600" /&gt;
-  &lt;figcaption&gt;Hinh 1: Rung nhiet doi Amazon  Brazil&lt;/figcaption&gt;
+  <div class="exercise-page">
+    <div class="exercise-box">
+      <div class="ex-head">
+        <h1>📝 Yêu cầu bài tập</h1>
+        <p>Dùng figure và figcaption để thêm chú thích cho hình ảnh.</p>
+      </div>
+      <div class="ex-desc">
+        <h3>Mô tả</h3>
+        <p>Thẻ <figure> bọc nội dung độc lập (hình ảnh, code, biểu đồ). <figcaption> thêm chú thích mô tả. Giúp HTML semantic và SEO tốt hơn.</p>
+        <h3>Yêu cầu</h3>
+        <ul>
+          <li>Tạo thư viện ảnh 4 ảnh mỗi ảnh có figcaption</li>
+          <li>Dùng CSS tạo caption xuất hiện khi hover</li>
+          <li>Bọc đoạn code bằng figure + figcaption 'Ví dụ code Python'</li>
+          <li>Tạo hình ảnh có caption bên dưới căn giữa</li>
+        </ul>
+        <h3>🧠 Kiến thức cần nhớ</h3>
+        <ul>
+          <li><code>&lt;figure&gt;</code>: bọc nội dung độc lập (ảnh, code, biểu đồ)</li>
+          <li><code>&lt;figcaption&gt;</code>: chú thích – đặt trước hoặc sau nội dung</li>
+          <li>figure + figcaption tốt hơn img + p vì ngữ nghĩa rõ ràng</li>
+          <li>Hỗ trợ accessibility: screen reader đọc caption liên quan đến hình</li>
+          <li>Có thể chứa nhiều hình ảnh trong 1 figure</li>
+        </ul>
+      </div>
+      <div class="ex-work">
+        <h3>💻 Code mẫu</h3>
+        <div id="code-highlight">
+          <pre id="code-raw" style="display:none">&lt;figure style="text-align:center; max-width:400px; margin:auto"&gt;
+  &lt;img src="https://picsum.photos/400/250?random=1"
+       alt="Phong cảnh thiên nhiên" style="width:100%; border-radius:8px"&gt;
+  &lt;figcaption style="margin-top:8px; color:#718096; font-style:italic"&gt;
+    Hình 1: Phong cảnh thiên nhiên tuyệt đẹp
+  &lt;/figcaption&gt;
 &lt;/figure&gt;
 
-&lt;figure&gt;
-  &lt;img src="https://picsum.photos/600/400?random=20"
-       alt="Bai bien" width="600" /&gt;
-  &lt;figcaption&gt;Hinh 2: Bai bien Maldives  An Do Duong&lt;/figcaption&gt;
-&lt;/figure&gt;
-
-&lt;figure&gt;
-  &lt;pre&gt;&lt;code&gt;function hello() {
-  return "Hello World!";
-}&lt;/code&gt;&lt;/pre&gt;
-  &lt;figcaption&gt;Doan code 1: Ham chao the gioi JavaScript&lt;/figcaption&gt;
-&lt;/figure&gt;</pre></div></div><a href='../index.html' class='btn-back' style='margin-top:20px;'> Quay lai</a></div></body></html>
+&lt;figure style="background:#1a202c; padding:16px; border-radius:8px; margin-top:20px"&gt;
+  &lt;pre&gt;&lt;code style="color:#e2e8f0"&gt;print("Xin chào, Việt Nam!")&lt;/code&gt;&lt;/pre&gt;
+  &lt;figcaption style="color:#a0aec0; margin-top:8px"&gt;
+    Đoạn code Python in lời chào
+  &lt;/figcaption&gt;
+&lt;/figure&gt;</pre>
+        </div>
+      </div>
+    </div>
+  </div>
+  <a href="../index.html" class="btn-back" style="margin-top:20px;">&#8592; Quay lại</a>
+  <script type="module">
+    import { codeToHtml } from 'https://esm.sh/shiki@1';
+    const raw = document.getElementById('code-raw').textContent;
+    const highlighted = await codeToHtml(raw, { lang: 'html', theme: 'github-dark' });
+    document.getElementById('code-highlight').innerHTML = highlighted;
+    const pre = document.getElementById('code-highlight').querySelector('pre');
+    if (pre) pre.style.cssText = 'border-radius:10px;padding:20px;font-size:0.87rem;overflow-x:auto;margin:0;line-height:1.7';
+  </script>
+</body>
+</html>

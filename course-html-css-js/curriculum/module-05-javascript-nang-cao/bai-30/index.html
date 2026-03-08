@@ -1,9 +1,134 @@
-﻿<!DOCTYPE html>
-<html lang="vi"><head><meta charset="UTF-8"/><title>Du An Ket Thuc: Weather App</title><link rel="stylesheet" href="../../shared.css"/></head>
+<!DOCTYPE html>
+<html lang="vi">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <meta name="keywords" content="Nền tảng,HTML,CSS,JavaScript,Lập trình,Web,Kiến thức,Đồ án">
+  <meta name="author" content="Dương Nguyễn Phú Cường">
+  <meta name="description" content="Xây dựng ứng dụng thời tiết lấy dữ liệu từ API thực tế.">
+  <meta property="og:locale" content="vi_VN">
+  <meta property="og:type" content="website">
+  <meta property="og:title" content="Bài 30 – 🏆 Dự án: Weather App | NenTang.vn">
+  <meta property="og:description" content="Xây dựng ứng dụng thời tiết lấy dữ liệu từ API thực tế.">
+  <meta property="og:url" content="https://nentang.vn/">
+  <meta property="og:site_name" content="Nền tảng Kiến thức">
+  <title>Bài 30 – 🏆 Dự án: Weather App | NenTang.vn</title>
+  <link rel="stylesheet" href="../../shared.css" />
+</head>
 <body>
-<div class="page-header module-5"><div class="breadcrumb"><a href="../../index.html">Trang Chu</a> &rsaquo; <a href="../index.html">Module 5</a> &rsaquo; bai-30</div><h1>Du An Ket Thuc: Weather App</h1></div>
-<div class="container"><div class="exercise-content"><h2>Yeu cau</h2><p>Ung dung thoi tiet: (1) O nhap ten thanh pho, (2) Goi OpenWeatherMap API (hoac mock data), (3) Hien thi nhiet do, mo ta, bieu tuong dep, (4) Luu 5 thanh pho gan nhat (localStorage), (5) Background thay doi theo thoi tiet.</p>
-<h2>Code mau</h2><pre><code>/* Viet code tai day */</code></pre>
-<h2>Ket qua</h2><div id="result" style="padding:16px;background:#f8f9fa;border-radius:8px;margin-top:8px;">Ket qua se hien thi o day...</div>
-<h2>Bai lam</h2><textarea id="code" style="width:100%;height:200px;font-family:monospace;font-size:14px;padding:12px;border:2px solid #dee2e6;border-radius:8px;"></textarea><br/><button onclick="try{eval(document.getElementById('code').value)}catch(e){document.getElementById('result').textContent=e.message}" style="margin-top:8px;padding:10px 24px;background:#a18cd1;color:#fff;border:none;border-radius:8px;cursor:pointer;font-size:15px;">Chay Code</button>
-</div><a href="../index.html" class="btn-back"> Quay lai Module 5</a></div></body></html>
+  <div class="page-header module-5">
+    <div class="breadcrumb">
+      <a href="../../index.html">Trang Chủ</a> &rsaquo;
+      <a href="../index.html">Module 5</a> &rsaquo; Bài 30
+    </div>
+    <h1>Bài 30: 🏆 Dự án: Weather App</h1>
+    <p>Module 5 – JavaScript Nâng Cao</p>
+  </div>
+
+  <div class="exercise-page">
+    <div class="exercise-box">
+      <div class="ex-head">
+        <h1>📝 Yêu cầu bài tập</h1>
+        <p>Xây dựng ứng dụng thời tiết lấy dữ liệu từ API thực tế.</p>
+      </div>
+      <div class="ex-desc">
+        <h3>Mô tả</h3>
+        <p>Dự án cuối tổng hợp tất cả kiến thức Module 5: Fetch API, async/await, DOM manipulation, localStorage, error handling. Lấy dữ liệu thời tiết thực.</p>
+        <h3>Yêu cầu</h3>
+        <ul>
+          <li>Ô nhập tên thành phố, nút tìm kiếm</li>
+          <li>Fetch dữ liệu từ OpenWeatherMap API (cần API key miễn phí)</li>
+          <li>Hiển thị: nhiệt độ, mô tả, độ ẩm, tốc độ gió, icon thời tiết</li>
+          <li>Lưu lịch sử 5 thành phố gần nhất vào localStorage</li>
+          <li>Xử lý lỗi: tên thành phố sai, offline, API key hết hạn</li>
+          <li>Loading state và skeleton screen</li>
+          <li>Đổi đơn vị: Celsius ↔ Fahrenheit</li>
+        </ul>
+        <h3>🧠 Kiến thức cần nhớ</h3>
+        <ul>
+          <li>OpenWeatherMap API: đăng ký miễn phí tại openweathermap.org</li>
+          <li>URL: <code>https://api.openweathermap.org/data/2.5/weather?q={city}&appid={key}&units=metric&lang=vi</code></li>
+          <li>Icon: <code>https://openweathermap.org/img/wn/{icon}@2x.png</code></li>
+          <li>Cache kết quả trong sessionStorage để tránh gọi API nhiều lần</li>
+          <li>Geolocation API để lấy thời tiết vị trí hiện tại</li>
+        </ul>
+      </div>
+      <div class="ex-work">
+        <h3>💻 Code mẫu</h3>
+        <div id="code-highlight">
+          <pre id="code-raw" style="display:none">const API_KEY = 'YOUR_API_KEY'; // Đăng ký tại openweathermap.org
+const BASE = 'https://api.openweathermap.org/data/2.5';
+
+// Cache ngắn hạn (10 phút)
+const cache = new Map();
+const CACHE_TTL = 10 * 60 * 1000;
+
+async function layThoiTiet(city) {
+  const cacheKey = city.toLowerCase();
+  const cached = cache.get(cacheKey);
+  if (cached &amp;&amp; Date.now() - cached.time &lt; CACHE_TTL) return cached.data;
+
+  const url = `${BASE}/weather?q=${encodeURIComponent(city)}&amp;appid=${API_KEY}&amp;units=metric&amp;lang=vi`;
+  const res = await fetch(url);
+  if (!res.ok) {
+    if (res.status === 404) throw new Error(`Không tìm thấy thành phố "${city}"`);
+    throw new Error(`Lỗi API: ${res.status}`);
+  }
+  const data = await res.json();
+  cache.set(cacheKey, { data, time: Date.now() });
+  return data;
+}
+
+function hienThiThoiTiet(d) {
+  let nhietDo = d.main.temp;
+  document.getElementById('city').textContent = `${d.name}, ${d.sys.country}`;
+  document.getElementById('temp').textContent = `${Math.round(nhietDo)}°C`;
+  document.getElementById('desc').textContent = d.weather[0].description;
+  document.getElementById('humidity').textContent = `${d.main.humidity}%`;
+  document.getElementById('wind').textContent = `${d.wind.speed} m/s`;
+  document.getElementById('icon').src = `https://openweathermap.org/img/wn/${d.weather[0].icon}@2x.png`;
+}
+
+async function timKiem(city) {
+  try {
+    hienLoading(true);
+    const data = await layThoiTiet(city);
+    hienThiThoiTiet(data);
+    luuLichSu(city);
+  } catch (err) {
+    hienLoi(err.message);
+  } finally {
+    hienLoading(false);
+  }
+}
+
+// Lịch sử
+function luuLichSu(city) {
+  let lich = JSON.parse(localStorage.getItem('weather-history') || '[]');
+  lich = [city, ...lich.filter(c =&gt; c.toLowerCase() !== city.toLowerCase())].slice(0, 5);
+  localStorage.setItem('weather-history', JSON.stringify(lich));
+  renderLichSu(lich);
+}
+
+// Geolocation
+navigator.geolocation?.getCurrentPosition(async pos =&gt; {
+  const { latitude: lat, longitude: lon } = pos.coords;
+  const res = await fetch(`${BASE}/weather?lat=${lat}&amp;lon=${lon}&amp;appid=${API_KEY}&amp;units=metric&amp;lang=vi`);
+  const data = await res.json();
+  hienThiThoiTiet(data);
+});</pre>
+        </div>
+      </div>
+    </div>
+  </div>
+  <a href="../index.html" class="btn-back" style="margin-top:20px;">&#8592; Quay lại</a>
+  <script type="module">
+    import { codeToHtml } from 'https://esm.sh/shiki@1';
+    const raw = document.getElementById('code-raw').textContent;
+    const highlighted = await codeToHtml(raw, { lang: 'javascript', theme: 'github-dark' });
+    document.getElementById('code-highlight').innerHTML = highlighted;
+    const pre = document.getElementById('code-highlight').querySelector('pre');
+    if (pre) pre.style.cssText = 'border-radius:10px;padding:20px;font-size:0.87rem;overflow-x:auto;margin:0;line-height:1.7';
+  </script>
+</body>
+</html>

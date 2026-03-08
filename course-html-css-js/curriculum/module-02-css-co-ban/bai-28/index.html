@@ -1,27 +1,112 @@
-﻿<!DOCTYPE html><html lang='vi'><head><meta charset='UTF-8'/><title>Bai 28 - CSS Filter</title><link rel='stylesheet' href='../../shared.css'/></head><body><div class='page-header module-2'><div class='breadcrumb'><a href='../../index.html'>Trang Chu</a>  <a href='../index.html'>Module 2</a>  Bai 28</div><h1>Bai 28: CSS Filter</h1></div><div class='exercise-page'><div class='exercise-box'><div class='ex-work'><pre style='background:#1a202c;color:#e2e8f0;padding:20px;border-radius:8px;font-size:.88rem;line-height:1.7;overflow-x:auto;white-space:pre-wrap'>img { transition: filter 0.3s; }
+<!DOCTYPE html>
+<html lang="vi">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <meta name="keywords" content="Nền tảng,HTML,CSS,JavaScript,Lập trình,Web,Kiến thức,Đồ án">
+  <meta name="author" content="Dương Nguyễn Phú Cường">
+  <meta name="description" content="Tạo trang landing page mini tổng hợp kiến thức CSS cơ bản đã học.">
+  <meta property="og:locale" content="vi_VN">
+  <meta property="og:type" content="website">
+  <meta property="og:title" content="Bài 28 – Tổng hợp: Trang Landing Page đơn giản | NenTang.vn">
+  <meta property="og:description" content="Tạo trang landing page mini tổng hợp kiến thức CSS cơ bản đã học.">
+  <meta property="og:url" content="https://nentang.vn/">
+  <meta property="og:site_name" content="Nền tảng Kiến thức">
+  <title>Bài 28 – Tổng hợp: Trang Landing Page đơn giản | NenTang.vn</title>
+  <link rel="stylesheet" href="../../shared.css" />
+</head>
+<body>
+  <div class="page-header module-2">
+    <div class="breadcrumb">
+      <a href="../../index.html">Trang Chủ</a> &rsaquo;
+      <a href="../index.html">Module 2</a> &rsaquo; Bài 28
+    </div>
+    <h1>Bài 28: Tổng hợp: Trang Landing Page đơn giản</h1>
+    <p>Module 2 – CSS Cơ Bản</p>
+  </div>
 
-/* Bo lot co ban */
-.lam-mo       { filter: blur(5px); }
-.trang-den    { filter: grayscale(100%); }
-.sepia        { filter: sepia(80%); }
-.sang         { filter: brightness(130%); }
-.toi          { filter: brightness(70%); }
-.tuong-phan   { filter: contrast(150%); }
-.khoi         { filter: hue-rotate(90deg); }
-.dao-mau      { filter: invert(100%); }
-.bao-hoa      { filter: saturate(2); }
-.bo-sang      { filter: opacity(0.5); }
-
-/* Bong do vat (theo hinh dang thuc) */
-.bong-vat {
-  filter: drop-shadow(4px 4px 8px rgba(0,0,0,0.5));
+  <div class="exercise-page">
+    <div class="exercise-box">
+      <div class="ex-head">
+        <h1>📝 Yêu cầu bài tập</h1>
+        <p>Tạo trang landing page mini tổng hợp kiến thức CSS cơ bản đã học.</p>
+      </div>
+      <div class="ex-desc">
+        <h3>Mô tả</h3>
+        <p>Landing page là trang đích khi người dùng click quảng cáo hay tìm kiếm. Cần có: Hero section, Features section, CTA button, Footer.</p>
+        <h3>Yêu cầu</h3>
+        <ul>
+          <li>Hero section: nền gradient, tiêu đề lớn, mô tả, 2 nút CTA</li>
+          <li>Features section: 3 icon cards</li>
+          <li>CTA section: nền đậm, lời kêu gọi, nút đăng ký</li>
+          <li>Footer: đơn giản với copyright</li>
+          <li>Dùng đầy đủ: gradient, shadow, border-radius, transition, fonts</li>
+        </ul>
+        <h3>🧠 Kiến thức cần nhớ</h3>
+        <ul>
+          <li>Landing page cần: Hero(trên đầu), Value props, CTA(kêu gọi hành động), Social proof</li>
+          <li>CTA button phải nổi bật: màu tương phản, to, dễ nhấn</li>
+          <li>Giữ màu sắc nhất quán theo palette đã định</li>
+          <li>Above the fold: nội dung quan trọng nhất phải thấy ngay khi vào</li>
+          <li>White space (khoảng trắng) là bạn của thiết kế đẹp</li>
+        </ul>
+      </div>
+      <div class="ex-work">
+        <h3>💻 Code mẫu</h3>
+        <div id="code-highlight">
+          <pre id="code-raw" style="display:none">/* Hero */
+.hero {
+  background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+  color: white;
+  text-align: center;
+  padding: 120px 32px;
 }
-
-/* Ket hop nhieu filter */
-.hinh-nghe-thuat {
-  filter: sepia(50%) brightness(110%) contrast(110%);
+.hero h1 { font-size: 3rem; margin-bottom: 16px; }
+.hero p { font-size: 1.2rem; opacity: 0.9; margin-bottom: 32px; }
+.btn-hero {
+  display: inline-block;
+  padding: 16px 40px;
+  background: white;
+  color: #764ba2;
+  border-radius: 999px;
+  font-weight: bold;
+  text-decoration: none;
+  font-size: 1.1rem;
+  box-shadow: 0 8px 24px rgba(0,0,0,0.2);
+  transition: transform 0.3s, box-shadow 0.3s;
 }
+.btn-hero:hover { transform: translateY(-3px); box-shadow: 0 16px 40px rgba(0,0,0,0.3); }
 
-/* Hover bo filter */
-.hinh:hover { filter: none; }
-/* YEU CAU: Tao gallery - hover de xem mau goc, mac dinh hien trang den */</pre></div></div><a href='../index.html' class='btn-back' style='margin-top:20px;'> Quay lai</a></div></body></html>
+/* Features */
+.features {
+  display: flex;
+  justify-content: center;
+  gap: 32px;
+  padding: 80px 32px;
+  flex-wrap: wrap;
+}
+.feature-card {
+  text-align: center;
+  width: 260px;
+  padding: 32px 24px;
+  border-radius: 16px;
+  box-shadow: 0 4px 20px rgba(0,0,0,0.1);
+  transition: transform 0.3s;
+}
+.feature-card:hover { transform: translateY(-6px); }
+.feature-icon { font-size: 2.5rem; margin-bottom: 16px; }</pre>
+        </div>
+      </div>
+    </div>
+  </div>
+  <a href="../index.html" class="btn-back" style="margin-top:20px;">&#8592; Quay lại</a>
+  <script type="module">
+    import { codeToHtml } from 'https://esm.sh/shiki@1';
+    const raw = document.getElementById('code-raw').textContent;
+    const highlighted = await codeToHtml(raw, { lang: 'html', theme: 'github-dark' });
+    document.getElementById('code-highlight').innerHTML = highlighted;
+    const pre = document.getElementById('code-highlight').querySelector('pre');
+    if (pre) pre.style.cssText = 'border-radius:10px;padding:20px;font-size:0.87rem;overflow-x:auto;margin:0;line-height:1.7';
+  </script>
+</body>
+</html>

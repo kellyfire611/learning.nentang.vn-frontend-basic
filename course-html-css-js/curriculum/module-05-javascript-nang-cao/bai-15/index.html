@@ -1,9 +1,117 @@
-﻿<!DOCTYPE html>
-<html lang="vi"><head><meta charset="UTF-8"/><title>ES Modules import export</title><link rel="stylesheet" href="../../shared.css"/></head>
+<!DOCTYPE html>
+<html lang="vi">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <meta name="keywords" content="Nền tảng,HTML,CSS,JavaScript,Lập trình,Web,Kiến thức,Đồ án">
+  <meta name="author" content="Dương Nguyễn Phú Cường">
+  <meta name="description" content="Tối ưu hiệu năng với debounce và throttle cho sự kiện tần suất cao.">
+  <meta property="og:locale" content="vi_VN">
+  <meta property="og:type" content="website">
+  <meta property="og:title" content="Bài 15 – Debounce và Throttle | NenTang.vn">
+  <meta property="og:description" content="Tối ưu hiệu năng với debounce và throttle cho sự kiện tần suất cao.">
+  <meta property="og:url" content="https://nentang.vn/">
+  <meta property="og:site_name" content="Nền tảng Kiến thức">
+  <title>Bài 15 – Debounce và Throttle | NenTang.vn</title>
+  <link rel="stylesheet" href="../../shared.css" />
+</head>
 <body>
-<div class="page-header module-5"><div class="breadcrumb"><a href="../../index.html">Trang Chu</a> &rsaquo; <a href="../index.html">Module 5</a> &rsaquo; bai-15</div><h1>ES Modules import export</h1></div>
-<div class="container"><div class="exercise-content"><h2>Yeu cau</h2><p>Tao cac module: mathUtils.js (cac ham toan hoc), formatUtils.js (dinh dang ngay, tien), validators.js. Import vao app.js. Su dung ca named export va default export.</p>
-<h2>Code mau</h2><pre><code>/* Viet code tai day */</code></pre>
-<h2>Ket qua</h2><div id="result" style="padding:16px;background:#f8f9fa;border-radius:8px;margin-top:8px;">Ket qua se hien thi o day...</div>
-<h2>Bai lam</h2><textarea id="code" style="width:100%;height:200px;font-family:monospace;font-size:14px;padding:12px;border:2px solid #dee2e6;border-radius:8px;"></textarea><br/><button onclick="try{eval(document.getElementById('code').value)}catch(e){document.getElementById('result').textContent=e.message}" style="margin-top:8px;padding:10px 24px;background:#a18cd1;color:#fff;border:none;border-radius:8px;cursor:pointer;font-size:15px;">Chay Code</button>
-</div><a href="../index.html" class="btn-back"> Quay lai Module 5</a></div></body></html>
+  <div class="page-header module-5">
+    <div class="breadcrumb">
+      <a href="../../index.html">Trang Chủ</a> &rsaquo;
+      <a href="../index.html">Module 5</a> &rsaquo; Bài 15
+    </div>
+    <h1>Bài 15: Debounce và Throttle</h1>
+    <p>Module 5 – JavaScript Nâng Cao</p>
+  </div>
+
+  <div class="exercise-page">
+    <div class="exercise-box">
+      <div class="ex-head">
+        <h1>📝 Yêu cầu bài tập</h1>
+        <p>Tối ưu hiệu năng với debounce và throttle cho sự kiện tần suất cao.</p>
+      </div>
+      <div class="ex-desc">
+        <h3>Mô tả</h3>
+        <p>Scroll, resize, input gây ra hàng trăm sự kiện mỗi giây. Debounce và throttle giới hạn tần suất gọi hàm để tránh lag.</p>
+        <h3>Yêu cầu</h3>
+        <ul>
+          <li>Debounce input search: chỉ tìm kiếm sau 300ms dừng gõ</li>
+          <li>Throttle scroll handler: chỉ cập nhật mỗi 100ms</li>
+          <li>So sánh hành vi debounce vs throttle</li>
+        </ul>
+        <h3>🧠 Kiến thức cần nhớ</h3>
+        <ul>
+          <li>Debounce: chờ N ms sau lần gọi CUỐI, rồi thực thi (1 lần)</li>
+          <li>Throttle: thực thi tối đa 1 lần mỗi N ms</li>
+          <li>Debounce dùng cho: search input, window resize</li>
+          <li>Throttle dùng cho: scroll, mouse move, game loop</li>
+          <li>lodash có sẵn _.debounce và _.throttle</li>
+        </ul>
+      </div>
+      <div class="ex-work">
+        <h3>💻 Code mẫu</h3>
+        <div id="code-highlight">
+          <pre id="code-raw" style="display:none">// Debounce implementation
+function debounce(fn, delay) {
+  let timer;
+  return function (...args) {
+    clearTimeout(timer);
+    timer = setTimeout(() =&gt; fn.apply(this, args), delay);
+  };
+}
+
+// Throttle implementation
+function throttle(fn, limit) {
+  let lastRun = 0;
+  return function (...args) {
+    const now = Date.now();
+    if (now - lastRun &gt;= limit) {
+      lastRun = now;
+      fn.apply(this, args);
+    }
+  };
+}
+
+// Debounce search input
+const timKiem = debounce((query) =&gt; {
+  console.log('Tìm kiếm:', query);
+  fetch(`/api/search?q=${query}`).then(r =&gt; r.json()).then(render);
+}, 300);
+
+document.getElementById('search').addEventListener('input', (e) =&gt; {
+  timKiem(e.target.value);
+});
+
+// Throttle scroll
+const xuLyScroll = throttle(() =&gt; {
+  const scrollY = window.scrollY;
+  // Hiện/ẩn header, back-to-top button...
+  document.getElementById('header').classList.toggle('sticky', scrollY &gt; 100);
+}, 100);
+
+window.addEventListener('scroll', xuLyScroll);
+
+// requestAnimationFrame throttle (tốt hơn cho animation)
+let rafId;
+window.addEventListener('scroll', () =&gt; {
+  cancelAnimationFrame(rafId);
+  rafId = requestAnimationFrame(() =&gt; {
+    // Code cập nhật UI
+  });
+});</pre>
+        </div>
+      </div>
+    </div>
+  </div>
+  <a href="../index.html" class="btn-back" style="margin-top:20px;">&#8592; Quay lại</a>
+  <script type="module">
+    import { codeToHtml } from 'https://esm.sh/shiki@1';
+    const raw = document.getElementById('code-raw').textContent;
+    const highlighted = await codeToHtml(raw, { lang: 'javascript', theme: 'github-dark' });
+    document.getElementById('code-highlight').innerHTML = highlighted;
+    const pre = document.getElementById('code-highlight').querySelector('pre');
+    if (pre) pre.style.cssText = 'border-radius:10px;padding:20px;font-size:0.87rem;overflow-x:auto;margin:0;line-height:1.7';
+  </script>
+</body>
+</html>

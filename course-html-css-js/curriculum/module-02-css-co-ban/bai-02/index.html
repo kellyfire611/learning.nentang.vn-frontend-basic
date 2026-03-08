@@ -1,1 +1,85 @@
-﻿<!DOCTYPE html><html lang='vi'><head><meta charset='UTF-8'/><title>Bai 02 - CSS Selector co ban - tag class id</title><link rel='stylesheet' href='../../shared.css'/></head><body><div class='page-header module-2'><div class='breadcrumb'><a href='../../index.html'>Trang Chu</a>  <a href='../index.html'>Module 2</a>  Bai 02</div><h1>Bai 02: CSS Selector co ban - tag class id</h1><p>Module 2  CSS Co Ban</p></div><div class='exercise-page'><div class='exercise-box'><div class='ex-work'><h3>Noi dung bai tap CSS - CSS Selector co ban - tag class id</h3><p style='padding:20px;color:#718096'>Mo file CSS cua ban va thuc hanh ap dung cac khai niem: <strong>CSS Selector co ban - tag class id</strong></p></div></div><a href='../index.html' class='btn-back' style='margin-top:20px;'> Quay lai</a></div></body></html>
+<!DOCTYPE html>
+<html lang="vi">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <meta name="keywords" content="Nền tảng,HTML,CSS,JavaScript,Lập trình,Web,Kiến thức,Đồ án">
+  <meta name="author" content="Dương Nguyễn Phú Cường">
+  <meta name="description" content="Thực hành chọn phần tử HTML bằng selector tag, class và id.">
+  <meta property="og:locale" content="vi_VN">
+  <meta property="og:type" content="website">
+  <meta property="og:title" content="Bài 02 – CSS Selectors: tag, class, id | NenTang.vn">
+  <meta property="og:description" content="Thực hành chọn phần tử HTML bằng selector tag, class và id.">
+  <meta property="og:url" content="https://nentang.vn/">
+  <meta property="og:site_name" content="Nền tảng Kiến thức">
+  <title>Bài 02 – CSS Selectors: tag, class, id | NenTang.vn</title>
+  <link rel="stylesheet" href="../../shared.css" />
+</head>
+<body>
+  <div class="page-header module-2">
+    <div class="breadcrumb">
+      <a href="../../index.html">Trang Chủ</a> &rsaquo;
+      <a href="../index.html">Module 2</a> &rsaquo; Bài 02
+    </div>
+    <h1>Bài 02: CSS Selectors: tag, class, id</h1>
+    <p>Module 2 – CSS Cơ Bản</p>
+  </div>
+
+  <div class="exercise-page">
+    <div class="exercise-box">
+      <div class="ex-head">
+        <h1>📝 Yêu cầu bài tập</h1>
+        <p>Thực hành chọn phần tử HTML bằng selector tag, class và id.</p>
+      </div>
+      <div class="ex-desc">
+        <h3>Mô tả</h3>
+        <p>Selector là cách CSS 'chọn' phần tử cần tạo kiểu. Ba loại cơ bản: tag (tên thẻ), class (.ten-class) và id (#ten-id).</p>
+        <h3>Yêu cầu</h3>
+        <ul>
+          <li>Tạo đoạn HTML với 5 thẻ p, h2, div</li>
+          <li>Dùng tag selector tô màu tất cả thẻ p</li>
+          <li>Dùng class selector tạo 3 màu nền khác nhau</li>
+          <li>Dùng id selector style cho phần tử duy nhất</li>
+          <li>Kết hợp nhiều selector với dấu phẩy</li>
+        </ul>
+        <h3>🧠 Kiến thức cần nhớ</h3>
+        <ul>
+          <li><code>p { }</code>: chọn tất cả thẻ &lt;p&gt;</li>
+          <li><code>.ten-class { }</code>: chọn tất cả phần tử có class đó</li>
+          <li><code>#ten-id { }</code>: chọn phần tử có id đó (duy nhất)</li>
+          <li><code>h1, h2, h3 { }</code>: chọn nhiều loại cùng lúc</li>
+          <li>ID có độ ưu tiên cao hơn class, class cao hơn tag</li>
+        </ul>
+      </div>
+      <div class="ex-work">
+        <h3>💻 Code mẫu</h3>
+        <div id="code-highlight">
+          <pre id="code-raw" style="display:none">/* Tag selector */
+p { color: #2d3748; line-height: 1.6; }
+h2 { color: #2b6cb0; }
+
+/* Class selector */
+.highlight { background-color: #fef3cd; padding: 8px; border-radius: 4px; }
+.success { color: #276749; background: #c6f6d5; padding: 8px; }
+.danger { color: #9b2c2c; background: #fed7d7; padding: 8px; }
+
+/* ID selector */
+#tieu-de-chinh { font-size: 2rem; text-transform: uppercase; letter-spacing: 2px; }
+
+/* Nhóm selector */
+h1, h2, h3 { font-family: Georgia, serif; }</pre>
+        </div>
+      </div>
+    </div>
+  </div>
+  <a href="../index.html" class="btn-back" style="margin-top:20px;">&#8592; Quay lại</a>
+  <script type="module">
+    import { codeToHtml } from 'https://esm.sh/shiki@1';
+    const raw = document.getElementById('code-raw').textContent;
+    const highlighted = await codeToHtml(raw, { lang: 'html', theme: 'github-dark' });
+    document.getElementById('code-highlight').innerHTML = highlighted;
+    const pre = document.getElementById('code-highlight').querySelector('pre');
+    if (pre) pre.style.cssText = 'border-radius:10px;padding:20px;font-size:0.87rem;overflow-x:auto;margin:0;line-height:1.7';
+  </script>
+</body>
+</html>

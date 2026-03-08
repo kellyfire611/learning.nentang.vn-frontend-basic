@@ -1,7 +1,76 @@
-﻿<!DOCTYPE html><html lang='vi'><head><meta charset='UTF-8'/><meta name='viewport' content='width=device-width,initial-scale=1'/><title>Bai 16 - Ky tu dac biet trong HTML</title><link rel='stylesheet' href='../../shared.css'/></head><body><div class='page-header module-1'><div class='breadcrumb'><a href='../../index.html'>Trang Chu</a>  <a href='../index.html'>Module 1</a>  Bai 16</div><h1>Bai 16: Ky tu dac biet trong HTML</h1><p>Module 1  HTML Co Ban</p></div><div class='exercise-page'><div class='exercise-box'><div class='ex-work'><h3>Noi dung bai tap:</h3><pre style='background:#1a202c;color:#e2e8f0;padding:20px;border-radius:8px;font-size:.88rem;line-height:1.7;overflow-x:auto;white-space:pre-wrap'><!-- Su dung ky tu dac biet (HTML entities) -->
-&lt;p&gt;Ky tu ngoac: &amp;lt; &amp;gt;&lt;/p&gt;
-&lt;p&gt;Dau va chuong: &amp;amp; &amp;copy; &amp;reg; &amp;trade;&lt;/p&gt;
-&lt;p&gt;Tien te: &amp;dollar; &amp;euro; &amp;pound; &amp;yen;&lt;/p&gt;
-&lt;p&gt;Mui ten: &amp;larr; &amp;rarr; &amp;uarr; &amp;darr;&lt;/p&gt;
-&lt;p&gt;Tim: &amp;hearts; Sao: &amp;star; Note: &amp;note;&lt;/p&gt;
-&lt;!-- Yeu cau: Tao trang hien thi 20 ky tu dac biet pho bien --&gt;</pre></div></div><a href='../index.html' class='btn-back' style='margin-top:20px;'> Quay lai</a></div></body></html>
+<!DOCTYPE html>
+<html lang="vi">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <meta name="keywords" content="Nền tảng,HTML,CSS,JavaScript,Lập trình,Web,Kiến thức,Đồ án">
+  <meta name="author" content="Dương Nguyễn Phú Cường">
+  <meta name="description" content="Hiển thị đúng các ký tự đặc biệt trong HTML bằng HTML entities.">
+  <meta property="og:locale" content="vi_VN">
+  <meta property="og:type" content="website">
+  <meta property="og:title" content="Bài 16 – Ký tự đặc biệt HTML Entities | NenTang.vn">
+  <meta property="og:description" content="Hiển thị đúng các ký tự đặc biệt trong HTML bằng HTML entities.">
+  <meta property="og:url" content="https://nentang.vn/">
+  <meta property="og:site_name" content="Nền tảng Kiến thức">
+  <title>Bài 16 – Ký tự đặc biệt HTML Entities | NenTang.vn</title>
+  <link rel="stylesheet" href="../../shared.css" />
+</head>
+<body>
+  <div class="page-header module-1">
+    <div class="breadcrumb">
+      <a href="../../index.html">Trang Chủ</a> &rsaquo;
+      <a href="../index.html">Module 1</a> &rsaquo; Bài 16
+    </div>
+    <h1>Bài 16: Ký tự đặc biệt HTML Entities</h1>
+    <p>Module 1 – HTML Cơ Bản</p>
+  </div>
+
+  <div class="exercise-page">
+    <div class="exercise-box">
+      <div class="ex-head">
+        <h1>📝 Yêu cầu bài tập</h1>
+        <p>Hiển thị đúng các ký tự đặc biệt trong HTML bằng HTML entities.</p>
+      </div>
+      <div class="ex-desc">
+        <h3>Mô tả</h3>
+        <p>Một số ký tự như <, >, &, ©, ™ cần dùng entities để tránh trình duyệt hiểu nhầm là mã HTML. Entities bắt đầu bằng & và kết thúc bằng ;</p>
+        <h3>Yêu cầu</h3>
+        <ul>
+          <li>Tạo bảng liệt kê 10 entities phổ biến: &amp;, &lt;, &gt;, &copy;, &#169;, &nbsp;, &hearts;</li>
+          <li>Tạo đoạn văn có chứa ký hiệu toán học: ≤, ≥, ±, ×, ÷</li>
+          <li>Hiển thị đoạn code HTML bằng entities thay vì thẻ thực</li>
+        </ul>
+        <h3>🧠 Kiến thức cần nhớ</h3>
+        <ul>
+          <li><code>&amp;lt;</code> → &lt; | <code>&amp;gt;</code> → &gt; | <code>&amp;amp;</code> → &amp;</li>
+          <li><code>&amp;copy;</code> → © | <code>&amp;reg;</code> → ® | <code>&amp;trade;</code> → ™</li>
+          <li><code>&amp;nbsp;</code>: khoảng trắng không ngắt dòng (non-breaking space)</li>
+          <li>Có thể dùng mã số: <code>&amp;#169;</code> = © | <code>&amp;#9829;</code> = ♥</li>
+        </ul>
+      </div>
+      <div class="ex-work">
+        <h3>💻 Code mẫu</h3>
+        <div id="code-highlight">
+          <pre id="code-raw" style="display:none">&lt;!-- Ký tự đặc biệt thường dùng --&gt;
+&lt;p&gt;&amp;lt;p&amp;gt; là thẻ đoạn văn trong HTML&lt;/p&gt;
+&lt;p&gt;5 &amp;lt; 10 và 20 &amp;gt; 15&lt;/p&gt;
+&lt;p&gt;Công thức: a&amp;sup2; + b&amp;sup2; = c&amp;sup2;&lt;/p&gt;
+&lt;p&gt;Bản quyền &amp;copy; 2024 Công ty ABC&lt;/p&gt;
+&lt;p&gt;Giá: 500&amp;nbsp;000&amp;nbsp;đ (dùng &amp;amp;nbsp; tránh ngắt số)&lt;/p&gt;
+&lt;p&gt;Ký hiệu: &amp;hearts; &amp;clubs; &amp;diams; &amp;spades;&lt;/p&gt;
+&lt;p&gt;Toán học: 2&amp;times;3&amp;divide;6&amp;plusmn;1 &amp;le; 2 &amp;ge; 0&lt;/p&gt;</pre>
+        </div>
+      </div>
+    </div>
+  </div>
+  <a href="../index.html" class="btn-back" style="margin-top:20px;">&#8592; Quay lại</a>
+  <script type="module">
+    import { codeToHtml } from 'https://esm.sh/shiki@1';
+    const raw = document.getElementById('code-raw').textContent;
+    const highlighted = await codeToHtml(raw, { lang: 'html', theme: 'github-dark' });
+    document.getElementById('code-highlight').innerHTML = highlighted;
+    const pre = document.getElementById('code-highlight').querySelector('pre');
+    if (pre) pre.style.cssText = 'border-radius:10px;padding:20px;font-size:0.87rem;overflow-x:auto;margin:0;line-height:1.7';
+  </script>
+</body>
+</html>

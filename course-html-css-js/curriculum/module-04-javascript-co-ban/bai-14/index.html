@@ -1,9 +1,99 @@
-﻿<!DOCTYPE html>
-<html lang="vi"><head><meta charset="UTF-8"/><title>Mang: push pop shift unshift</title><link rel="stylesheet" href="../../shared.css"/></head>
+<!DOCTYPE html>
+<html lang="vi">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <meta name="keywords" content="Nền tảng,HTML,CSS,JavaScript,Lập trình,Web,Kiến thức,Đồ án">
+  <meta name="author" content="Dương Nguyễn Phú Cường">
+  <meta name="description" content="Xử lý mảng hàm bậc cao: biến đổi, lọc và tổng hợp dữ liệu.">
+  <meta property="og:locale" content="vi_VN">
+  <meta property="og:type" content="website">
+  <meta property="og:title" content="Bài 14 – Array Methods: map, filter, reduce | NenTang.vn">
+  <meta property="og:description" content="Xử lý mảng hàm bậc cao: biến đổi, lọc và tổng hợp dữ liệu.">
+  <meta property="og:url" content="https://nentang.vn/">
+  <meta property="og:site_name" content="Nền tảng Kiến thức">
+  <title>Bài 14 – Array Methods: map, filter, reduce | NenTang.vn</title>
+  <link rel="stylesheet" href="../../shared.css" />
+</head>
 <body>
-<div class="page-header module-4"><div class="breadcrumb"><a href="../../index.html">Trang Chu</a> &rsaquo; <a href="../index.html">Module 4</a> &rsaquo; bai-14</div><h1>Mang: push pop shift unshift</h1></div>
-<div class="container"><div class="exercise-content"><h2>Yeu cau</h2><p>Tao mang danh sach cong viec. Them vao cuoi (push), xoa cuoi (pop), them dau (unshift), xoa dau (shift). Hien thi mang sau moi thao tac.</p>
-<h2>Code mau</h2><pre><code>/* Viet code tai day */</code></pre>
-<h2>Ket qua</h2><div id="result" style="padding:16px;background:#f8f9fa;border-radius:8px;margin-top:8px;">Ket qua se hien thi o day...</div>
-<h2>Bai lam</h2><textarea id="code" style="width:100%;height:180px;font-family:monospace;font-size:14px;padding:12px;border:2px solid #dee2e6;border-radius:8px;"></textarea><br/><button onclick="try{eval(document.getElementById('code').value)}catch(e){document.getElementById('result').textContent=e.message}" style="margin-top:8px;padding:10px 24px;background:#fa709a;color:#fff;border:none;border-radius:8px;cursor:pointer;font-size:15px;">Chay Code</button>
-</div><a href="../index.html" class="btn-back"> Quay lai Module 4</a></div></body></html>
+  <div class="page-header module-4">
+    <div class="breadcrumb">
+      <a href="../../index.html">Trang Chủ</a> &rsaquo;
+      <a href="../index.html">Module 4</a> &rsaquo; Bài 14
+    </div>
+    <h1>Bài 14: Array Methods: map, filter, reduce</h1>
+    <p>Module 4 – JavaScript Cơ Bản</p>
+  </div>
+
+  <div class="exercise-page">
+    <div class="exercise-box">
+      <div class="ex-head">
+        <h1>📝 Yêu cầu bài tập</h1>
+        <p>Xử lý mảng hàm bậc cao: biến đổi, lọc và tổng hợp dữ liệu.</p>
+      </div>
+      <div class="ex-desc">
+        <h3>Mô tả</h3>
+        <p>map, filter, reduce là bộ ba quyền năng của functional programming trong JS. Kết hợp chúng để xử lý dữ liệu mảng theo chuỗi.</p>
+        <h3>Yêu cầu</h3>
+        <ul>
+          <li>Dùng map: chuyển mảng giá sang mảng giá sau VAT (10%)</li>
+          <li>Dùng filter: lọc sản phẩm còn hàng</li>
+          <li>Dùng reduce: tính tổng giá trị giỏ hàng</li>
+          <li>Chuỗi method: filter → map → reduce</li>
+        </ul>
+        <h3>🧠 Kiến thức cần nhớ</h3>
+        <ul>
+          <li><code>map(fn)</code>: biến đổi từng phần tử, trả về mảng MỚI cùng độ dài</li>
+          <li><code>filter(fn)</code>: lọc, trả về mảng MỚI chỉ gồm phần tử thỏa điều kiện</li>
+          <li><code>reduce(fn, initial)</code>: gộp toàn mảng về 1 giá trị</li>
+          <li>Cả 3 đều KHÔNG thay đổi mảng gốc (immutable)</li>
+          <li>Chaining: <code>arr.filter(...).map(...).reduce(...)</code></li>
+          <li>Callback nhận 3 tham số: (phần_tử, index, mảng_gốc)</li>
+        </ul>
+      </div>
+      <div class="ex-work">
+        <h3>💻 Code mẫu</h3>
+        <div id="code-highlight">
+          <pre id="code-raw" style="display:none">const gio_hang = [
+  { ten:'Áo T-shirt', gia:150, sl:2, con_hang:true },
+  { ten:'Quần Jeans', gia:320, sl:1, con_hang:false },
+  { ten:'Giày Nike', gia:850, sl:1, con_hang:true },
+  { ten:'Mũ Cap', gia:95,  sl:3, con_hang:true },
+];
+
+// map: thêm trường thanh_tien
+const voi_tien = gio_hang.map(sp =&gt; ({
+  ...sp,
+  thanh_tien: sp.gia * sp.sl
+}));
+
+// filter: chỉ lấy sản phẩm còn hàng
+const con_hang = gio_hang.filter(sp =&gt; sp.con_hang);
+console.log('Còn hàng:', con_hang.length); // 3
+
+// reduce: tổng tiền
+const tong_tien = gio_hang
+  .filter(sp =&gt; sp.con_hang)
+  .reduce((total, sp) =&gt; total + sp.gia * sp.sl, 0);
+
+console.log(`Tổng tiền: ${tong_tien.toLocaleString('vi-VN')}đ`);
+// 150*2 + 850*1 + 95*3 = 300 + 850 + 285 = 1435
+
+// flat/flatMap
+const nested = [[1,2],[3,4],[5,6]];
+console.log(nested.flat()); // [1,2,3,4,5,6]</pre>
+        </div>
+      </div>
+    </div>
+  </div>
+  <a href="../index.html" class="btn-back" style="margin-top:20px;">&#8592; Quay lại</a>
+  <script type="module">
+    import { codeToHtml } from 'https://esm.sh/shiki@1';
+    const raw = document.getElementById('code-raw').textContent;
+    const highlighted = await codeToHtml(raw, { lang: 'javascript', theme: 'github-dark' });
+    document.getElementById('code-highlight').innerHTML = highlighted;
+    const pre = document.getElementById('code-highlight').querySelector('pre');
+    if (pre) pre.style.cssText = 'border-radius:10px;padding:20px;font-size:0.87rem;overflow-x:auto;margin:0;line-height:1.7';
+  </script>
+</body>
+</html>

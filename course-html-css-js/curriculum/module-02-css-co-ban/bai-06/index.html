@@ -1,1 +1,89 @@
-﻿<!DOCTYPE html><html lang='vi'><head><meta charset='UTF-8'/><title>Bai 06 - Can chinh va trang tri van ban</title><link rel='stylesheet' href='../../shared.css'/></head><body><div class='page-header module-2'><div class='breadcrumb'><a href='../../index.html'>Trang Chu</a>  <a href='../index.html'>Module 2</a>  Bai 06</div><h1>Bai 06: Can chinh va trang tri van ban</h1><p>Module 2  CSS Co Ban</p></div><div class='exercise-page'><div class='exercise-box'><div class='ex-work'><h3>Noi dung bai tap CSS - Can chinh va trang tri van ban</h3><p style='padding:20px;color:#718096'>Mo file CSS cua ban va thuc hanh ap dung cac khai niem: <strong>Can chinh va trang tri van ban</strong></p></div></div><a href='../index.html' class='btn-back' style='margin-top:20px;'> Quay lai</a></div></body></html>
+<!DOCTYPE html>
+<html lang="vi">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <meta name="keywords" content="Nền tảng,HTML,CSS,JavaScript,Lập trình,Web,Kiến thức,Đồ án">
+  <meta name="author" content="Dương Nguyễn Phú Cường">
+  <meta name="description" content="Thực hành các thuộc tính định dạng văn bản cơ bản trong CSS.">
+  <meta property="og:locale" content="vi_VN">
+  <meta property="og:type" content="website">
+  <meta property="og:title" content="Bài 06 – font-weight, font-style, text-transform | NenTang.vn">
+  <meta property="og:description" content="Thực hành các thuộc tính định dạng văn bản cơ bản trong CSS.">
+  <meta property="og:url" content="https://nentang.vn/">
+  <meta property="og:site_name" content="Nền tảng Kiến thức">
+  <title>Bài 06 – font-weight, font-style, text-transform | NenTang.vn</title>
+  <link rel="stylesheet" href="../../shared.css" />
+</head>
+<body>
+  <div class="page-header module-2">
+    <div class="breadcrumb">
+      <a href="../../index.html">Trang Chủ</a> &rsaquo;
+      <a href="../index.html">Module 2</a> &rsaquo; Bài 06
+    </div>
+    <h1>Bài 06: font-weight, font-style, text-transform</h1>
+    <p>Module 2 – CSS Cơ Bản</p>
+  </div>
+
+  <div class="exercise-page">
+    <div class="exercise-box">
+      <div class="ex-head">
+        <h1>📝 Yêu cầu bài tập</h1>
+        <p>Thực hành các thuộc tính định dạng văn bản cơ bản trong CSS.</p>
+      </div>
+      <div class="ex-desc">
+        <h3>Mô tả</h3>
+        <p>CSS cung cấp nhiều thuộc tính để định dạng chữ: độ đậm, nghiêng, chuyển đổi chữ hoa/thường, và trang trí gạch chân.</p>
+        <h3>Yêu cầu</h3>
+        <ul>
+          <li>Tạo các đoạn văn với font-weight từ 100 đến 900</li>
+          <li>Thực hành font-style: normal, italic, oblique</li>
+          <li>Dùng text-transform: uppercase, lowercase, capitalize</li>
+          <li>Dùng text-decoration: underline, overline, line-through, none</li>
+        </ul>
+        <h3>🧠 Kiến thức cần nhớ</h3>
+        <ul>
+          <li><code>font-weight</code>: 100 (mỏng) đến 900 (đậm), hoặc bold/normal</li>
+          <li><code>font-style: italic</code>: nghiêng theo thiết kế font</li>
+          <li><code>font-style: oblique</code>: nghiêng bằng cách chuyển đổi cơ học</li>
+          <li><code>text-transform: uppercase</code>: IN HOA tất cả</li>
+          <li><code>text-decoration: underline dotted red</code>: gạch chân tùy chỉnh</li>
+        </ul>
+      </div>
+      <div class="ex-work">
+        <h3>💻 Code mẫu</h3>
+        <div id="code-highlight">
+          <pre id="code-raw" style="display:none">/* font-weight */
+.w100 { font-weight: 100; } /* Thin */
+.w400 { font-weight: 400; } /* Normal */
+.w700 { font-weight: 700; } /* Bold */
+.w900 { font-weight: 900; } /* Black */
+
+/* font-style */
+.italic { font-style: italic; }
+.oblique { font-style: oblique 15deg; }
+
+/* text-transform */
+.upper { text-transform: uppercase; }   /* VĂN BẢN */
+.lower { text-transform: lowercase; }   /* văn bản */
+.cap { text-transform: capitalize; }    /* Văn Bản */
+
+/* text-decoration */
+.underline { text-decoration: underline wavy red; }
+.through { text-decoration: line-through; }
+.no-underline a { text-decoration: none; } /* Bỏ gạch chân link */</pre>
+        </div>
+      </div>
+    </div>
+  </div>
+  <a href="../index.html" class="btn-back" style="margin-top:20px;">&#8592; Quay lại</a>
+  <script type="module">
+    import { codeToHtml } from 'https://esm.sh/shiki@1';
+    const raw = document.getElementById('code-raw').textContent;
+    const highlighted = await codeToHtml(raw, { lang: 'html', theme: 'github-dark' });
+    document.getElementById('code-highlight').innerHTML = highlighted;
+    const pre = document.getElementById('code-highlight').querySelector('pre');
+    if (pre) pre.style.cssText = 'border-radius:10px;padding:20px;font-size:0.87rem;overflow-x:auto;margin:0;line-height:1.7';
+  </script>
+</body>
+</html>

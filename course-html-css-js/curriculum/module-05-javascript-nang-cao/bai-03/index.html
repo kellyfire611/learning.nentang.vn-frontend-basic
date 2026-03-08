@@ -1,9 +1,110 @@
-﻿<!DOCTYPE html>
-<html lang="vi"><head><meta charset="UTF-8"/><title>Destructuring: Object va Array</title><link rel="stylesheet" href="../../shared.css"/></head>
+<!DOCTYPE html>
+<html lang="vi">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <meta name="keywords" content="Nền tảng,HTML,CSS,JavaScript,Lập trình,Web,Kiến thức,Đồ án">
+  <meta name="author" content="Dương Nguyễn Phú Cường">
+  <meta name="description" content="Hiểu và sử dụng callback – hàm được truyền như tham số cho hàm khác.">
+  <meta property="og:locale" content="vi_VN">
+  <meta property="og:type" content="website">
+  <meta property="og:title" content="Bài 03 – Callback Function | NenTang.vn">
+  <meta property="og:description" content="Hiểu và sử dụng callback – hàm được truyền như tham số cho hàm khác.">
+  <meta property="og:url" content="https://nentang.vn/">
+  <meta property="og:site_name" content="Nền tảng Kiến thức">
+  <title>Bài 03 – Callback Function | NenTang.vn</title>
+  <link rel="stylesheet" href="../../shared.css" />
+</head>
 <body>
-<div class="page-header module-5"><div class="breadcrumb"><a href="../../index.html">Trang Chu</a> &rsaquo; <a href="../index.html">Module 5</a> &rsaquo; bai-03</div><h1>Destructuring: Object va Array</h1></div>
-<div class="container"><div class="exercise-content"><h2>Yeu cau</h2><p>Dung object destructuring de lay ten, tuoi tu object hocSinh. Dung array destructuring lay phan tu dau, thu hai. Ket hop: destructuring trong tham so ham, rename bien.</p>
-<h2>Code mau</h2><pre><code>/* Viet code tai day */</code></pre>
-<h2>Ket qua</h2><div id="result" style="padding:16px;background:#f8f9fa;border-radius:8px;margin-top:8px;">Ket qua se hien thi o day...</div>
-<h2>Bai lam</h2><textarea id="code" style="width:100%;height:200px;font-family:monospace;font-size:14px;padding:12px;border:2px solid #dee2e6;border-radius:8px;"></textarea><br/><button onclick="try{eval(document.getElementById('code').value)}catch(e){document.getElementById('result').textContent=e.message}" style="margin-top:8px;padding:10px 24px;background:#a18cd1;color:#fff;border:none;border-radius:8px;cursor:pointer;font-size:15px;">Chay Code</button>
-</div><a href="../index.html" class="btn-back"> Quay lai Module 5</a></div></body></html>
+  <div class="page-header module-5">
+    <div class="breadcrumb">
+      <a href="../../index.html">Trang Chủ</a> &rsaquo;
+      <a href="../index.html">Module 5</a> &rsaquo; Bài 03
+    </div>
+    <h1>Bài 03: Callback Function</h1>
+    <p>Module 5 – JavaScript Nâng Cao</p>
+  </div>
+
+  <div class="exercise-page">
+    <div class="exercise-box">
+      <div class="ex-head">
+        <h1>📝 Yêu cầu bài tập</h1>
+        <p>Hiểu và sử dụng callback – hàm được truyền như tham số cho hàm khác.</p>
+      </div>
+      <div class="ex-desc">
+        <h3>Mô tả</h3>
+        <p>Callback là nền tảng của lập trình bất đồng bộ trong JavaScript. Các array methods như map, filter, sort đều dùng callback.</p>
+        <h3>Yêu cầu</h3>
+        <ul>
+          <li>Viết hàm xử lý danh sách với callback lọc tùy chỉnh</li>
+          <li>Callback Error-first (Node.js style)</li>
+          <li>Vấn đề Callback Hell và cách nhận biết</li>
+        </ul>
+        <h3>🧠 Kiến thức cần nhớ</h3>
+        <ul>
+          <li>Callback là function truyền vào function khác làm tham số</li>
+          <li>Các array methods (map/filter/sort/forEach) đều dùng callback</li>
+          <li>Callback bất đồng bộ: setTimeout, fetch, event listener</li>
+          <li>Error-first callback: <code>function(err, data) { }</code> – quy ước Node.js</li>
+          <li>Callback Hell: callback lồng callback lồng callback → khó đọc, khó debug</li>
+          <li>Giải pháp cho callback hell: Promise hoặc async/await</li>
+        </ul>
+      </div>
+      <div class="ex-work">
+        <h3>💻 Code mẫu</h3>
+        <div id="code-highlight">
+          <pre id="code-raw" style="display:none">// Callback cơ bản
+function xuLyDanhSach(arr, locFn, sxFn, hienFn) {
+  const loc = arr.filter(locFn);
+  const sx  = loc.sort(sxFn);
+  sx.forEach(hienFn);
+}
+xuLyDanhSach(
+  sanPhams,
+  sp =&gt; sp.gia &lt; 500,              // lọc: giá &lt; 500
+  (a,b) =&gt; a.ten.localeCompare(b.ten), // sắp xếp: tên A-Z
+  sp =&gt; console.log(sp.ten),       // in tên
+);
+
+// Error-first callback (Node.js style)
+function layDuLieu(url, callback) {
+  setTimeout(() =&gt; {
+    const success = Math.random() &gt; 0.3;
+    if (!success) {
+      callback(new Error('Không thể kết nối'), null);
+    } else {
+      callback(null, { data: [1,2,3] });
+    }
+  }, 500);
+}
+layDuLieu('/api/users', (err, data) =&gt; {
+  if (err) { console.error('Lỗi:', err.message); return; }
+  console.log('Dữ liệu:', data);
+});
+
+// Callback Hell – TRÁNH!
+getData(id, (err, user) =&gt; {
+  if (err) return;
+  getPosts(user.id, (err, posts) =&gt; {
+    if (err) return;
+    getComments(posts[0].id, (err, comments) =&gt; {
+      // Khó đọc, khó debug...
+    });
+  });
+});
+// → Dùng Promise hoặc async/await thay thế</pre>
+        </div>
+      </div>
+    </div>
+  </div>
+  <a href="../index.html" class="btn-back" style="margin-top:20px;">&#8592; Quay lại</a>
+  <script type="module">
+    import { codeToHtml } from 'https://esm.sh/shiki@1';
+    const raw = document.getElementById('code-raw').textContent;
+    const highlighted = await codeToHtml(raw, { lang: 'javascript', theme: 'github-dark' });
+    document.getElementById('code-highlight').innerHTML = highlighted;
+    const pre = document.getElementById('code-highlight').querySelector('pre');
+    if (pre) pre.style.cssText = 'border-radius:10px;padding:20px;font-size:0.87rem;overflow-x:auto;margin:0;line-height:1.7';
+  </script>
+</body>
+</html>

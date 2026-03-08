@@ -1,9 +1,125 @@
-﻿<!DOCTYPE html>
-<html lang="vi"><head><meta charset="UTF-8"/><title>Du An: To-do List hoan chinh</title><link rel="stylesheet" href="../../shared.css"/></head>
+<!DOCTYPE html>
+<html lang="vi">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <meta name="keywords" content="Nền tảng,HTML,CSS,JavaScript,Lập trình,Web,Kiến thức,Đồ án">
+  <meta name="author" content="Dương Nguyễn Phú Cường">
+  <meta name="description" content="Xây dựng hệ thống validation form phức tạp có thể tái sử dụng.">
+  <meta property="og:locale" content="vi_VN">
+  <meta property="og:type" content="website">
+  <meta property="og:title" content="Bài 23 – Advanced Form Validation | NenTang.vn">
+  <meta property="og:description" content="Xây dựng hệ thống validation form phức tạp có thể tái sử dụng.">
+  <meta property="og:url" content="https://nentang.vn/">
+  <meta property="og:site_name" content="Nền tảng Kiến thức">
+  <title>Bài 23 – Advanced Form Validation | NenTang.vn</title>
+  <link rel="stylesheet" href="../../shared.css" />
+</head>
 <body>
-<div class="page-header module-5"><div class="breadcrumb"><a href="../../index.html">Trang Chu</a> &rsaquo; <a href="../index.html">Module 5</a> &rsaquo; bai-23</div><h1>Du An: To-do List hoan chinh</h1></div>
-<div class="container"><div class="exercise-content"><h2>Yeu cau</h2><p>To-do list co: them, xoa, sua, danh dau hoan thanh, loc (tat ca/chua xong/da xong), drag-drop sap xep, luu localStorage, hien thi so task chua xong.</p>
-<h2>Code mau</h2><pre><code>/* Viet code tai day */</code></pre>
-<h2>Ket qua</h2><div id="result" style="padding:16px;background:#f8f9fa;border-radius:8px;margin-top:8px;">Ket qua se hien thi o day...</div>
-<h2>Bai lam</h2><textarea id="code" style="width:100%;height:200px;font-family:monospace;font-size:14px;padding:12px;border:2px solid #dee2e6;border-radius:8px;"></textarea><br/><button onclick="try{eval(document.getElementById('code').value)}catch(e){document.getElementById('result').textContent=e.message}" style="margin-top:8px;padding:10px 24px;background:#a18cd1;color:#fff;border:none;border-radius:8px;cursor:pointer;font-size:15px;">Chay Code</button>
-</div><a href="../index.html" class="btn-back"> Quay lai Module 5</a></div></body></html>
+  <div class="page-header module-5">
+    <div class="breadcrumb">
+      <a href="../../index.html">Trang Chủ</a> &rsaquo;
+      <a href="../index.html">Module 5</a> &rsaquo; Bài 23
+    </div>
+    <h1>Bài 23: Advanced Form Validation</h1>
+    <p>Module 5 – JavaScript Nâng Cao</p>
+  </div>
+
+  <div class="exercise-page">
+    <div class="exercise-box">
+      <div class="ex-head">
+        <h1>📝 Yêu cầu bài tập</h1>
+        <p>Xây dựng hệ thống validation form phức tạp có thể tái sử dụng.</p>
+      </div>
+      <div class="ex-desc">
+        <h3>Mô tả</h3>
+        <p>Form validation production-level cần: validate rules có thể cấu hình, message t rực quan, async validation (check username tồn tại), sanitize input.</p>
+        <h3>Yêu cầu</h3>
+        <ul>
+          <li>Validator class có thể cấu hình rules</li>
+          <li>Async validation: check email chưa đăng ký (giả lập API)</li>
+          <li>Real-time feedback khi gõ</li>
+          <li>Submit chỉ khi tất cả hợp lệ</li>
+        </ul>
+        <h3>🧠 Kiến thức cần nhớ</h3>
+        <ul>
+          <li>Tách rules validation khỏi UI</li>
+          <li>Async validator: debounce + fetch để tránh quá nhiều request</li>
+          <li>Sanitize: trim, lowercase email, remove script tags</li>
+          <li>UX tốt: chỉ validate sau blur lần đầu, sau đó validate mỗi keystroke</li>
+        </ul>
+      </div>
+      <div class="ex-work">
+        <h3>💻 Code mẫu</h3>
+        <div id="code-highlight">
+          <pre id="code-raw" style="display:none">class Validator {
+  constructor(form) {
+    this.form = form;
+    this.rules = {};
+    this.touched = new Set();
+    this.form.addEventListener('submit', e =&gt; this.handleSubmit(e));
+  }
+
+  field(name, ...rules) {
+    this.rules[name] = rules;
+    const input = this.form.elements[name];
+    input.addEventListener('blur', () =&gt; { this.touched.add(name); this.validate(name); });
+    input.addEventListener('input', () =&gt; { if (this.touched.has(name)) this.validate(name); });
+    return this;
+  }
+
+  async validate(name) {
+    const input = this.form.elements[name];
+    const val   = input.value.trim();
+    let err = null;
+    for (const rule of this.rules[name]) {
+      const result = await rule(val);
+      if (result !== true) { err = result; break; }
+    }
+    this.showResult(name, err);
+    return !err;
+  }
+
+  showResult(name, err) {
+    const input = this.form.elements[name];
+    const wrap  = input.closest('.field');
+    input.classList.toggle('error', !!err);
+    input.classList.toggle('valid', !err);
+    let msg = wrap.querySelector('.msg');
+    if (!msg) { msg = document.createElement('p'); msg.className = 'msg'; wrap.appendChild(msg); }
+    msg.textContent = err || '';
+  }
+
+  async handleSubmit(e) {
+    e.preventDefault();
+    Object.keys(this.rules).forEach(n =&gt; this.touched.add(n));
+    const results = await Promise.all(Object.keys(this.rules).map(n =&gt; this.validate(n)));
+    if (results.every(Boolean)) this.form.dispatchEvent(new Event('valid-submit'));
+  }
+}
+
+// Rules tái sử dụng
+const required = (v) =&gt; v ? true : 'Bắt buộc điền';
+const minLen = n =&gt; v =&gt; v.length &gt;= n || `Tối thiểu ${n} ký tự`;
+const email = v =&gt; /^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(v) || 'Email không hợp lệ';
+const checkEmail = async v =&gt; { await new Promise(r =&gt; setTimeout(r, 500)); return v.includes('test') ? 'Email đã tồn tại' : true; };
+
+const v = new Validator(document.getElementById('reg'));
+v.field('ten', required, minLen(2))
+ .field('email', required, email, checkEmail)
+ .field('password', required, minLen(8));</pre>
+        </div>
+      </div>
+    </div>
+  </div>
+  <a href="../index.html" class="btn-back" style="margin-top:20px;">&#8592; Quay lại</a>
+  <script type="module">
+    import { codeToHtml } from 'https://esm.sh/shiki@1';
+    const raw = document.getElementById('code-raw').textContent;
+    const highlighted = await codeToHtml(raw, { lang: 'javascript', theme: 'github-dark' });
+    document.getElementById('code-highlight').innerHTML = highlighted;
+    const pre = document.getElementById('code-highlight').querySelector('pre');
+    if (pre) pre.style.cssText = 'border-radius:10px;padding:20px;font-size:0.87rem;overflow-x:auto;margin:0;line-height:1.7';
+  </script>
+</body>
+</html>

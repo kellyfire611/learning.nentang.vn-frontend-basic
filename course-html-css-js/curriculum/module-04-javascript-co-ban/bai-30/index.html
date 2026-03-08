@@ -1,9 +1,139 @@
-﻿<!DOCTYPE html>
-<html lang="vi"><head><meta charset="UTF-8"/><title>Du An: May tinh bam phim hoan chinh</title><link rel="stylesheet" href="../../shared.css"/></head>
+<!DOCTYPE html>
+<html lang="vi">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <meta name="keywords" content="Nền tảng,HTML,CSS,JavaScript,Lập trình,Web,Kiến thức,Đồ án">
+  <meta name="author" content="Dương Nguyễn Phú Cường">
+  <meta name="description" content="Xây dựng máy tính bỏ túi đầy đủ bằng HTML, CSS và JavaScript.">
+  <meta property="og:locale" content="vi_VN">
+  <meta property="og:type" content="website">
+  <meta property="og:title" content="Bài 30 – 🏆 Dự án: Máy Tính Bỏ Túi | NenTang.vn">
+  <meta property="og:description" content="Xây dựng máy tính bỏ túi đầy đủ bằng HTML, CSS và JavaScript.">
+  <meta property="og:url" content="https://nentang.vn/">
+  <meta property="og:site_name" content="Nền tảng Kiến thức">
+  <title>Bài 30 – 🏆 Dự án: Máy Tính Bỏ Túi | NenTang.vn</title>
+  <link rel="stylesheet" href="../../shared.css" />
+</head>
 <body>
-<div class="page-header module-4"><div class="breadcrumb"><a href="../../index.html">Trang Chu</a> &rsaquo; <a href="../index.html">Module 4</a> &rsaquo; bai-30</div><h1>Du An: May tinh bam phim hoan chinh</h1></div>
-<div class="container"><div class="exercise-content"><h2>Yeu cau</h2><p>Tao may tinh co: 4 phep tinh co ban, nut C (xoa tat ca) va CE (xoa 1 ky tu), lich su tinh toan 10 phep gan nhat, ho tro nhap bang ban phim so va Enter.</p>
-<h2>Code mau</h2><pre><code>/* Viet code tai day */</code></pre>
-<h2>Ket qua</h2><div id="result" style="padding:16px;background:#f8f9fa;border-radius:8px;margin-top:8px;">Ket qua se hien thi o day...</div>
-<h2>Bai lam</h2><textarea id="code" style="width:100%;height:180px;font-family:monospace;font-size:14px;padding:12px;border:2px solid #dee2e6;border-radius:8px;"></textarea><br/><button onclick="try{eval(document.getElementById('code').value)}catch(e){document.getElementById('result').textContent=e.message}" style="margin-top:8px;padding:10px 24px;background:#fa709a;color:#fff;border:none;border-radius:8px;cursor:pointer;font-size:15px;">Chay Code</button>
-</div><a href="../index.html" class="btn-back"> Quay lai Module 4</a></div></body></html>
+  <div class="page-header module-4">
+    <div class="breadcrumb">
+      <a href="../../index.html">Trang Chủ</a> &rsaquo;
+      <a href="../index.html">Module 4</a> &rsaquo; Bài 30
+    </div>
+    <h1>Bài 30: 🏆 Dự án: Máy Tính Bỏ Túi</h1>
+    <p>Module 4 – JavaScript Cơ Bản</p>
+  </div>
+
+  <div class="exercise-page">
+    <div class="exercise-box">
+      <div class="ex-head">
+        <h1>📝 Yêu cầu bài tập</h1>
+        <p>Xây dựng máy tính bỏ túi đầy đủ bằng HTML, CSS và JavaScript.</p>
+      </div>
+      <div class="ex-desc">
+        <h3>Mô tả</h3>
+        <p>Dự án cuối module tổng hợp: DOM manipulation, sự kiện, logic toán học, edge cases xử lý. Máy tính có giao diện giống iPhone Calculator.</p>
+        <h3>Yêu cầu</h3>
+        <ul>
+          <li>Giao diện HTML/CSS giống máy tính thực tế</li>
+          <li>Xử lý click phím số 0-9</li>
+          <li>Xử lý phép tính: +, -, ×, ÷</li>
+          <li>Xử lý dấu thập phân, phần trăm, đổi dấu +/-</li>
+          <li>Nút AC xóa tất cả, C xóa 1 ký tự</li>
+          <li>Hiển thị lịch sử phép tính</li>
+          <li>Keyboard support: nhấn phím số và phép tính</li>
+        </ul>
+        <h3>🧠 Kiến thức cần nhớ</h3>
+        <ul>
+          <li>State management: lưu currentValue, previousValue, operator, waitingForSecond</li>
+          <li>Edge cases: chia cho 0, số quá lớn, dấu phẩy chỉ 1 lần</li>
+          <li>Sử dụng eval() không an toàn – tự viết logic tính</li>
+          <li>parseFloat để xử lý số thập phân</li>
+          <li>toFixed() để tránh floating point issue: 0.1+0.2</li>
+        </ul>
+      </div>
+      <div class="ex-work">
+        <h3>💻 Code mẫu</h3>
+        <div id="code-highlight">
+          <pre id="code-raw" style="display:none">// State
+const state = {
+  current: '0',
+  previous: '',
+  operator: null,
+  justEvaluated: false,
+};
+
+// UI elements
+const hienThi = document.getElementById('display');
+const lich_su = document.getElementById('history');
+
+function capNhatManHinh() {
+  hienThi.textContent = parseFloat(state.current).toLocaleString() || '0';
+}
+
+function nhapSo(so) {
+  if (state.justEvaluated) { state.current = so; state.justEvaluated = false; return; }
+  if (state.current === '0' &amp;&amp; so !== '.') { state.current = so; return; }
+  if (so === '.' &amp;&amp; state.current.includes('.')) return;
+  if (state.current.replace('.','').length &gt;= 10) return;
+  state.current += so;
+}
+
+function chonPhep(phep) {
+  if (state.operator &amp;&amp; !state.justEvaluated) bTinhKetQua();
+  state.previous = state.current;
+  state.operator = phep;
+  state.justEvaluated = false;
+  state.current = '0';
+  lich_su.textContent = `${state.previous} ${phep}`;
+}
+
+function bTinhKetQua() {
+  const a = parseFloat(state.previous), b = parseFloat(state.current);
+  let kq;
+  switch (state.operator) {
+    case '+': kq = a + b; break;
+    case '-': kq = a - b; break;
+    case '×': kq = a * b; break;
+    case '÷': kq = b !== 0 ? a / b : 'Lỗi'; break;
+    default: return;
+  }
+  lich_su.textContent = `${a} ${state.operator} ${b} =`;
+  state.current = kq === 'Lỗi' ? '0' : String(parseFloat(kq.toFixed(10)));
+  state.operator = null; state.justEvaluated = true;
+}
+
+function xoaTat() { state.current = '0'; state.previous = ''; state.operator = null; lich_su.textContent = ''; }
+function xoa1() { state.current = state.current.length &gt; 1 ? state.current.slice(0,-1) : '0'; }
+function doiDau() { state.current = String(-parseFloat(state.current)); }
+function phanTram() { state.current = String(parseFloat(state.current) / 100); }
+
+// Keyboard support
+document.addEventListener('keydown', (e) =&gt; {
+  if (e.key &gt;= '0' &amp;&amp; e.key &lt;= '9') nhapSo(e.key);
+  if (e.key === '.') nhapSo('.');
+  if (e.key === '+') chonPhep('+');
+  if (e.key === '-') chonPhep('-');
+  if (e.key === '*') chonPhep('×');
+  if (e.key === '/') { e.preventDefault(); chonPhep('÷'); }
+  if (e.key === 'Enter' || e.key === '=') bTinhKetQua();
+  if (e.key === 'Escape') xoaTat();
+  if (e.key === 'Backspace') xoa1();
+  capNhatManHinh();
+});</pre>
+        </div>
+      </div>
+    </div>
+  </div>
+  <a href="../index.html" class="btn-back" style="margin-top:20px;">&#8592; Quay lại</a>
+  <script type="module">
+    import { codeToHtml } from 'https://esm.sh/shiki@1';
+    const raw = document.getElementById('code-raw').textContent;
+    const highlighted = await codeToHtml(raw, { lang: 'javascript', theme: 'github-dark' });
+    document.getElementById('code-highlight').innerHTML = highlighted;
+    const pre = document.getElementById('code-highlight').querySelector('pre');
+    if (pre) pre.style.cssText = 'border-radius:10px;padding:20px;font-size:0.87rem;overflow-x:auto;margin:0;line-height:1.7';
+  </script>
+</body>
+</html>

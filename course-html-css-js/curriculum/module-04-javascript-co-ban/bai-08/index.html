@@ -1,9 +1,108 @@
-﻿<!DOCTYPE html>
-<html lang="vi"><head><meta charset="UTF-8"/><title>Vong lap for co ban</title><link rel="stylesheet" href="../../shared.css"/></head>
+<!DOCTYPE html>
+<html lang="vi">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <meta name="keywords" content="Nền tảng,HTML,CSS,JavaScript,Lập trình,Web,Kiến thức,Đồ án">
+  <meta name="author" content="Dương Nguyễn Phú Cường">
+  <meta name="description" content="Dùng vòng lặp for để lặp qua danh sách và thực hiện tác vụ nhiều lần.">
+  <meta property="og:locale" content="vi_VN">
+  <meta property="og:type" content="website">
+  <meta property="og:title" content="Bài 08 – Vòng lặp for | NenTang.vn">
+  <meta property="og:description" content="Dùng vòng lặp for để lặp qua danh sách và thực hiện tác vụ nhiều lần.">
+  <meta property="og:url" content="https://nentang.vn/">
+  <meta property="og:site_name" content="Nền tảng Kiến thức">
+  <title>Bài 08 – Vòng lặp for | NenTang.vn</title>
+  <link rel="stylesheet" href="../../shared.css" />
+</head>
 <body>
-<div class="page-header module-4"><div class="breadcrumb"><a href="../../index.html">Trang Chu</a> &rsaquo; <a href="../index.html">Module 4</a> &rsaquo; bai-08</div><h1>Vong lap for co ban</h1></div>
-<div class="container"><div class="exercise-content"><h2>Yeu cau</h2><p>Dung vong lap for de: (1) In so tu 1 den 10, (2) Tinh tong 1+2+...+n (n do nguoi dung nhap), (3) In bang cuu chuong cua mot so bat ky.</p>
-<h2>Code mau</h2><pre><code>/* Viet code tai day */</code></pre>
-<h2>Ket qua</h2><div id="result" style="padding:16px;background:#f8f9fa;border-radius:8px;margin-top:8px;">Ket qua se hien thi o day...</div>
-<h2>Bai lam</h2><textarea id="code" style="width:100%;height:180px;font-family:monospace;font-size:14px;padding:12px;border:2px solid #dee2e6;border-radius:8px;"></textarea><br/><button onclick="try{eval(document.getElementById('code').value)}catch(e){document.getElementById('result').textContent=e.message}" style="margin-top:8px;padding:10px 24px;background:#fa709a;color:#fff;border:none;border-radius:8px;cursor:pointer;font-size:15px;">Chay Code</button>
-</div><a href="../index.html" class="btn-back"> Quay lai Module 4</a></div></body></html>
+  <div class="page-header module-4">
+    <div class="breadcrumb">
+      <a href="../../index.html">Trang Chủ</a> &rsaquo;
+      <a href="../index.html">Module 4</a> &rsaquo; Bài 08
+    </div>
+    <h1>Bài 08: Vòng lặp for</h1>
+    <p>Module 4 – JavaScript Cơ Bản</p>
+  </div>
+
+  <div class="exercise-page">
+    <div class="exercise-box">
+      <div class="ex-head">
+        <h1>📝 Yêu cầu bài tập</h1>
+        <p>Dùng vòng lặp for để lặp qua danh sách và thực hiện tác vụ nhiều lần.</p>
+      </div>
+      <div class="ex-desc">
+        <h3>Mô tả</h3>
+        <p>Vòng lặp cho phép thực thi code nhiều lần mà không cần viết lặp. for là vòng lặp phổ biến nhất khi biết trước số lần lặp.</p>
+        <h3>Yêu cầu</h3>
+        <ul>
+          <li>In bảng cửu chương từ 1 đến 9</li>
+          <li>Tính tổng từ 1 đến 100</li>
+          <li>Tìm số nguyên tố từ 2 đến 50</li>
+          <li>In tam giác sao bằng vòng lặp lồng nhau</li>
+        </ul>
+        <h3>🧠 Kiến thức cần nhớ</h3>
+        <ul>
+          <li><code>for (let i=0; i&lt;10; i++) { }</code>: i từ 0 đến 9</li>
+          <li>Biến đếm thường đặt tên i, j, k (quy ước)</li>
+          <li>Vòng lặp lồng: 2 vòng for, tổng độ phức tạp O(n²)</li>
+          <li><code>break</code>: thoát vòng lặp ngay lập tức</li>
+          <li><code>continue</code>: bỏ qua lần lặp hiện tại, tiếp tục lần sau</li>
+          <li>for-of: lặp qua iterable (array, string) – xem bài mảng</li>
+        </ul>
+      </div>
+      <div class="ex-work">
+        <h3>💻 Code mẫu</h3>
+        <div id="code-highlight">
+          <pre id="code-raw" style="display:none">// Bảng cửu chương 3
+for (let i = 1; i &lt;= 10; i++) {
+  console.log(`3 x ${i} = ${3 * i}`);
+}
+
+// Tổng 1 đến n
+function tongDen(n) {
+  let tong = 0;
+  for (let i = 1; i &lt;= n; i++) {
+    tong += i;
+  }
+  return tong;
+}
+console.log(tongDen(100)); // 5050
+
+// Số nguyên tố
+function laNguyenTo(n) {
+  if (n &lt; 2) return false;
+  for (let i = 2; i &lt;= Math.sqrt(n); i++) {
+    if (n % i === 0) return false;
+  }
+  return true;
+}
+
+// Lọc số nguyên tố từ 2 đến 50
+const ntp = [];
+for (let i = 2; i &lt;= 50; i++) {
+  if (laNguyenTo(i)) ntp.push(i);
+}
+console.log('Số nguyên tố:', ntp.join(', '));
+
+// break và continue
+for (let i = 0; i &lt; 10; i++) {
+  if (i === 3) continue; // bỏ qua 3
+  if (i === 7) break;    // dừng tại 7
+  console.log(i); // 0, 1, 2, 4, 5, 6
+}</pre>
+        </div>
+      </div>
+    </div>
+  </div>
+  <a href="../index.html" class="btn-back" style="margin-top:20px;">&#8592; Quay lại</a>
+  <script type="module">
+    import { codeToHtml } from 'https://esm.sh/shiki@1';
+    const raw = document.getElementById('code-raw').textContent;
+    const highlighted = await codeToHtml(raw, { lang: 'javascript', theme: 'github-dark' });
+    document.getElementById('code-highlight').innerHTML = highlighted;
+    const pre = document.getElementById('code-highlight').querySelector('pre');
+    if (pre) pre.style.cssText = 'border-radius:10px;padding:20px;font-size:0.87rem;overflow-x:auto;margin:0;line-height:1.7';
+  </script>
+</body>
+</html>

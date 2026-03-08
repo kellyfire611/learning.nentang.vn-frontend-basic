@@ -1,9 +1,112 @@
-﻿<!DOCTYPE html>
-<html lang="vi"><head><meta charset="UTF-8"/><title>Du An: May tinh khoa hoc</title><link rel="stylesheet" href="../../shared.css"/></head>
+<!DOCTYPE html>
+<html lang="vi">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <meta name="keywords" content="Nền tảng,HTML,CSS,JavaScript,Lập trình,Web,Kiến thức,Đồ án">
+  <meta name="author" content="Dương Nguyễn Phú Cường">
+  <meta name="description" content="Chạy tác vụ nặng tính toán trong background thread với Web Workers.">
+  <meta property="og:locale" content="vi_VN">
+  <meta property="og:type" content="website">
+  <meta property="og:title" content="Bài 24 – Web Workers | NenTang.vn">
+  <meta property="og:description" content="Chạy tác vụ nặng tính toán trong background thread với Web Workers.">
+  <meta property="og:url" content="https://nentang.vn/">
+  <meta property="og:site_name" content="Nền tảng Kiến thức">
+  <title>Bài 24 – Web Workers | NenTang.vn</title>
+  <link rel="stylesheet" href="../../shared.css" />
+</head>
 <body>
-<div class="page-header module-5"><div class="breadcrumb"><a href="../../index.html">Trang Chu</a> &rsaquo; <a href="../index.html">Module 5</a> &rsaquo; bai-24</div><h1>Du An: May tinh khoa hoc</h1></div>
-<div class="container"><div class="exercise-content"><h2>Yeu cau</h2><p>May tinh co: 4 phep co ban, sin, cos, tan, log, sqrt, pi, e, luy thua, ngoac don. Hien thi lich su 20 phep tinh. Ho tro nhap phim. Them che do Radian/Degree.</p>
-<h2>Code mau</h2><pre><code>/* Viet code tai day */</code></pre>
-<h2>Ket qua</h2><div id="result" style="padding:16px;background:#f8f9fa;border-radius:8px;margin-top:8px;">Ket qua se hien thi o day...</div>
-<h2>Bai lam</h2><textarea id="code" style="width:100%;height:200px;font-family:monospace;font-size:14px;padding:12px;border:2px solid #dee2e6;border-radius:8px;"></textarea><br/><button onclick="try{eval(document.getElementById('code').value)}catch(e){document.getElementById('result').textContent=e.message}" style="margin-top:8px;padding:10px 24px;background:#a18cd1;color:#fff;border:none;border-radius:8px;cursor:pointer;font-size:15px;">Chay Code</button>
-</div><a href="../index.html" class="btn-back"> Quay lai Module 5</a></div></body></html>
+  <div class="page-header module-5">
+    <div class="breadcrumb">
+      <a href="../../index.html">Trang Chủ</a> &rsaquo;
+      <a href="../index.html">Module 5</a> &rsaquo; Bài 24
+    </div>
+    <h1>Bài 24: Web Workers</h1>
+    <p>Module 5 – JavaScript Nâng Cao</p>
+  </div>
+
+  <div class="exercise-page">
+    <div class="exercise-box">
+      <div class="ex-head">
+        <h1>📝 Yêu cầu bài tập</h1>
+        <p>Chạy tác vụ nặng tính toán trong background thread với Web Workers.</p>
+      </div>
+      <div class="ex-desc">
+        <h3>Mô tả</h3>
+        <p>JavaScript là single-threaded – tác vụ nặng làm UI đơ. Web Worker cho phép chạy code trong thread riêng mà không block giao diện người dùng.</p>
+        <h3>Yêu cầu</h3>
+        <ul>
+          <li>Tính số Fibonacci lớn trong Worker (không block UI)</li>
+          <li>Giao tiếp qua postMessage</li>
+          <li>So sánh: chạy trong main thread vs Worker</li>
+        </ul>
+        <h3>🧠 Kiến thức cần nhớ</h3>
+        <ul>
+          <li>Worker chạy trong thread riêng, không truy cập DOM</li>
+          <li><code>worker.postMessage(data)</code>: gửi dữ liệu sang worker</li>
+          <li><code>worker.onmessage = e => { e.data }</code>: nhận từ worker</li>
+          <li>Trong worker: <code>self.onmessage / self.postMessage</code></li>
+          <li>Terminate: <code>worker.terminate()</code></li>
+          <li>SharedArrayBuffer + Atomics: dùng bộ nhớ chung giữa threads (nâng cao)</li>
+        </ul>
+      </div>
+      <div class="ex-work">
+        <h3>💻 Code mẫu</h3>
+        <div id="code-highlight">
+          <pre id="code-raw" style="display:none">// worker.js – file riêng
+self.onmessage = function(e) {
+  const { type, data } = e.data;
+  if (type === 'fibonacci') {
+    const result = fibonacci(data.n);
+    self.postMessage({ type: 'result', result });
+  }
+  if (type === 'sort') {
+    const sorted = data.arr.sort((a.b) =&gt; a - b);
+    self.postMessage({ type: 'sorted', sorted });
+  }
+};
+
+function fibonacci(n) {
+  if (n &lt;= 1) return n;
+  return fibonacci(n-1) + fibonacci(n-2);
+}
+
+// main.js
+const worker = new Worker('worker.js');
+
+worker.onmessage = (e) =&gt; {
+  const { type, result } = e.data;
+  if (type === 'result') {
+    document.getElementById('output').textContent = `Fibonacci: ${result}`;
+    document.getElementById('loading').hidden = true;
+  }
+};
+
+worker.onerror = (err) =&gt; {
+  console.error('Worker error:', err);
+};
+
+document.getElementById('calc').addEventListener('click', () =&gt; {
+  const n = +document.getElementById('n').value;
+  document.getElementById('loading').hidden = false;
+  worker.postMessage({ type: 'fibonacci', data: { n } });
+});
+
+// Inline worker (không cần file riêng)
+const blob = new Blob([`self.onmessage=e=&gt;{self.postMessage(e.data*2)}`], {type:'text/javascript'});
+const inlineWorker = new Worker(URL.createObjectURL(blob));</pre>
+        </div>
+      </div>
+    </div>
+  </div>
+  <a href="../index.html" class="btn-back" style="margin-top:20px;">&#8592; Quay lại</a>
+  <script type="module">
+    import { codeToHtml } from 'https://esm.sh/shiki@1';
+    const raw = document.getElementById('code-raw').textContent;
+    const highlighted = await codeToHtml(raw, { lang: 'javascript', theme: 'github-dark' });
+    document.getElementById('code-highlight').innerHTML = highlighted;
+    const pre = document.getElementById('code-highlight').querySelector('pre');
+    if (pre) pre.style.cssText = 'border-radius:10px;padding:20px;font-size:0.87rem;overflow-x:auto;margin:0;line-height:1.7';
+  </script>
+</body>
+</html>

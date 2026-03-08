@@ -1,9 +1,125 @@
-﻿<!DOCTYPE html>
-<html lang="vi"><head><meta charset="UTF-8"/><title>Closure va ung dung thuc te</title><link rel="stylesheet" href="../../shared.css"/></head>
+<!DOCTYPE html>
+<html lang="vi">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <meta name="keywords" content="Nền tảng,HTML,CSS,JavaScript,Lập trình,Web,Kiến thức,Đồ án">
+  <meta name="author" content="Dương Nguyễn Phú Cường">
+  <meta name="description" content="Xây dựng ứng dụng Todo hoàn chỉnh với thêm, sửa, xóa, lọc và lưu localStorage.">
+  <meta property="og:locale" content="vi_VN">
+  <meta property="og:type" content="website">
+  <meta property="og:title" content="Bài 18 – Todo App đầy đủ | NenTang.vn">
+  <meta property="og:description" content="Xây dựng ứng dụng Todo hoàn chỉnh với thêm, sửa, xóa, lọc và lưu localStorage.">
+  <meta property="og:url" content="https://nentang.vn/">
+  <meta property="og:site_name" content="Nền tảng Kiến thức">
+  <title>Bài 18 – Todo App đầy đủ | NenTang.vn</title>
+  <link rel="stylesheet" href="../../shared.css" />
+</head>
 <body>
-<div class="page-header module-5"><div class="breadcrumb"><a href="../../index.html">Trang Chu</a> &rsaquo; <a href="../index.html">Module 5</a> &rsaquo; bai-18</div><h1>Closure va ung dung thuc te</h1></div>
-<div class="container"><div class="exercise-content"><h2>Yeu cau</h2><p>Tao counter() bang closure (so dem kiem soat). Tao makeMultiplier(n) tra ve ham nhan voi n. Tao module pattern bang IIFE. Private bien voi closure. Giai thich classic setTimeout loop bug.</p>
-<h2>Code mau</h2><pre><code>/* Viet code tai day */</code></pre>
-<h2>Ket qua</h2><div id="result" style="padding:16px;background:#f8f9fa;border-radius:8px;margin-top:8px;">Ket qua se hien thi o day...</div>
-<h2>Bai lam</h2><textarea id="code" style="width:100%;height:200px;font-family:monospace;font-size:14px;padding:12px;border:2px solid #dee2e6;border-radius:8px;"></textarea><br/><button onclick="try{eval(document.getElementById('code').value)}catch(e){document.getElementById('result').textContent=e.message}" style="margin-top:8px;padding:10px 24px;background:#a18cd1;color:#fff;border:none;border-radius:8px;cursor:pointer;font-size:15px;">Chay Code</button>
-</div><a href="../index.html" class="btn-back"> Quay lai Module 5</a></div></body></html>
+  <div class="page-header module-5">
+    <div class="breadcrumb">
+      <a href="../../index.html">Trang Chủ</a> &rsaquo;
+      <a href="../index.html">Module 5</a> &rsaquo; Bài 18
+    </div>
+    <h1>Bài 18: Todo App đầy đủ</h1>
+    <p>Module 5 – JavaScript Nâng Cao</p>
+  </div>
+
+  <div class="exercise-page">
+    <div class="exercise-box">
+      <div class="ex-head">
+        <h1>📝 Yêu cầu bài tập</h1>
+        <p>Xây dựng ứng dụng Todo hoàn chỉnh với thêm, sửa, xóa, lọc và lưu localStorage.</p>
+      </div>
+      <div class="ex-desc">
+        <h3>Mô tả</h3>
+        <p>Todo App là project thực hành kinh điển tổng hợp: DOM, events, array manipulation, localStorage. Implement đủ 4 thao tác CRUD.</p>
+        <h3>Yêu cầu</h3>
+        <ul>
+          <li>Thêm todo mới khi nhấn Enter hoặc nút +</li>
+          <li>Đánh dấu hoàn thành khi click checkbox</li>
+          <li>Xóa todo, sửa todo inline</li>
+          <li>Lọc: All / Active / Completed</li>
+          <li>Lưu vào localStorage, load khi mở lại</li>
+          <li>Đếm số việc chưa xong</li>
+        </ul>
+        <h3>🧠 Kiến thức cần nhớ</h3>
+        <ul>
+          <li>State trung tâm: mảng todos</li>
+          <li>Mỗi action: cập nhật state → re-render → lưu localStorage</li>
+          <li>Filter chỉ ảnh hưởng hiển thị, không ảnh hưởng data</li>
+          <li>Edit inline: click label → input, blur → lưu</li>
+          <li>ID: dùng Date.now() để tạo unique id đơn giản</li>
+        </ul>
+      </div>
+      <div class="ex-work">
+        <h3>💻 Code mẫu</h3>
+        <div id="code-highlight">
+          <pre id="code-raw" style="display:none">// State
+let todos = JSON.parse(localStorage.getItem('todos') || '[]');
+let filter = 'all'; // 'all' | 'active' | 'done'
+
+// Actions
+const addTodo = (text) =&gt; {
+  if (!text.trim()) return;
+  todos.push({ id: Date.now(), text: text.trim(), done: false });
+  save(); render();
+};
+const toggleTodo = (id) =&gt; {
+  todos = todos.map(t =&gt; t.id === id ? {...t, done: !t.done} : t);
+  save(); render();
+};
+const deleteTodo  = (id) =&gt; { todos = todos.filter(t =&gt; t.id !== id); save(); render(); };
+const editTodo    = (id, text) =&gt; {
+  if (!text.trim()) { deleteTodo(id); return; }
+  todos = todos.map(t =&gt; t.id === id ? {...t, text: text.trim()} : t);
+  save(); render();
+};
+const clearDone = () =&gt; { todos = todos.filter(t =&gt; !t.done); save(); render(); };
+const save = () =&gt; localStorage.setItem('todos', JSON.stringify(todos));
+
+// Render
+function render() {
+  const filtered = todos.filter(t =&gt;
+    filter === 'all' ? true : filter === 'active' ? !t.done : t.done
+  );
+  const list = document.getElementById('todo-list');
+  list.innerHTML = filtered.length ? filtered.map(t =&gt; `
+    &lt;li class="${t.done ? 'done' : ''}" data-id="${t.id}"&gt;
+      &lt;input type="checkbox" ${t.done?'checked':''} class="cb" /&gt;
+      &lt;span class="text" contenteditable="true"&gt;${t.text}&lt;/span&gt;
+      &lt;button class="del"&gt;✕&lt;/button&gt;
+    &lt;/li&gt;`).join('') : '&lt;li class="empty"&gt;Không có việc nào&lt;/li&gt;';
+  document.getElementById('count').textContent = todos.filter(t=&gt;!t.done).length;
+}
+
+// Events
+document.getElementById('new-input').addEventListener('keydown', e =&gt; {
+  if (e.key === 'Enter') { addTodo(e.target.value); e.target.value = ''; }
+});
+document.getElementById('todo-list').addEventListener('click', e =&gt; {
+  const id = +e.target.closest('li')?.dataset.id;
+  if (!id) return;
+  if (e.target.matches('.cb')) toggleTodo(id);
+  if (e.target.matches('.del')) deleteTodo(id);
+});
+document.getElementById('todo-list').addEventListener('blur', e =&gt; {
+  if (e.target.matches('.text')) editTodo(+e.target.closest('li').dataset.id, e.target.textContent);
+}, true);
+
+render();</pre>
+        </div>
+      </div>
+    </div>
+  </div>
+  <a href="../index.html" class="btn-back" style="margin-top:20px;">&#8592; Quay lại</a>
+  <script type="module">
+    import { codeToHtml } from 'https://esm.sh/shiki@1';
+    const raw = document.getElementById('code-raw').textContent;
+    const highlighted = await codeToHtml(raw, { lang: 'javascript', theme: 'github-dark' });
+    document.getElementById('code-highlight').innerHTML = highlighted;
+    const pre = document.getElementById('code-highlight').querySelector('pre');
+    if (pre) pre.style.cssText = 'border-radius:10px;padding:20px;font-size:0.87rem;overflow-x:auto;margin:0;line-height:1.7';
+  </script>
+</body>
+</html>

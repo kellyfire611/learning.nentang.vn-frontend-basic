@@ -1,1 +1,92 @@
-﻿<!DOCTYPE html><html lang='vi'><head><meta charset='UTF-8'/><title>Bai 09 - Width Height va box-sizing</title><link rel='stylesheet' href='../../shared.css'/></head><body><div class='page-header module-2'><div class='breadcrumb'><a href='../../index.html'>Trang Chu</a>  <a href='../index.html'>Module 2</a>  Bai 09</div><h1>Bai 09: Width Height va box-sizing</h1><p>Module 2  CSS Co Ban</p></div><div class='exercise-page'><div class='exercise-box'><div class='ex-work'><h3>Noi dung bai tap CSS - Width Height va box-sizing</h3><p style='padding:20px;color:#718096'>Mo file CSS cua ban va thuc hanh ap dung cac khai niem: <strong>Width Height va box-sizing</strong></p></div></div><a href='../index.html' class='btn-back' style='margin-top:20px;'> Quay lai</a></div></body></html>
+<!DOCTYPE html>
+<html lang="vi">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <meta name="keywords" content="Nền tảng,HTML,CSS,JavaScript,Lập trình,Web,Kiến thức,Đồ án">
+  <meta name="author" content="Dương Nguyễn Phú Cường">
+  <meta name="description" content="Hiểu sự khác biệt giữa content-box và border-box và tại sao nên dùng border-box.">
+  <meta property="og:locale" content="vi_VN">
+  <meta property="og:type" content="website">
+  <meta property="og:title" content="Bài 09 – box-sizing: border-box | NenTang.vn">
+  <meta property="og:description" content="Hiểu sự khác biệt giữa content-box và border-box và tại sao nên dùng border-box.">
+  <meta property="og:url" content="https://nentang.vn/">
+  <meta property="og:site_name" content="Nền tảng Kiến thức">
+  <title>Bài 09 – box-sizing: border-box | NenTang.vn</title>
+  <link rel="stylesheet" href="../../shared.css" />
+</head>
+<body>
+  <div class="page-header module-2">
+    <div class="breadcrumb">
+      <a href="../../index.html">Trang Chủ</a> &rsaquo;
+      <a href="../index.html">Module 2</a> &rsaquo; Bài 09
+    </div>
+    <h1>Bài 09: box-sizing: border-box</h1>
+    <p>Module 2 – CSS Cơ Bản</p>
+  </div>
+
+  <div class="exercise-page">
+    <div class="exercise-box">
+      <div class="ex-head">
+        <h1>📝 Yêu cầu bài tập</h1>
+        <p>Hiểu sự khác biệt giữa content-box và border-box và tại sao nên dùng border-box.</p>
+      </div>
+      <div class="ex-desc">
+        <h3>Mô tả</h3>
+        <p>Mặc định CSS dùng content-box: width chỉ tính nội dung, padding và border được cộng thêm. border-box: width = tổng cả padding + border + content – trực quan hơn nhiều.</p>
+        <h3>Yêu cầu</h3>
+        <ul>
+          <li>Tạo 2 div width:300px – một content-box, một border-box</li>
+          <li>Thêm padding:20px và border:5px cho cả hai</li>
+          <li>So sánh chiều rộng thực tế của 2 div</li>
+          <li>Áp dụng box-sizing: border-box toàn trang bằng * selector</li>
+        </ul>
+        <h3>🧠 Kiến thức cần nhớ</h3>
+        <ul>
+          <li><code>box-sizing: content-box</code>: mặc định – width + padding + border</li>
+          <li><code>box-sizing: border-box</code>: width đã BAO GỒM padding và border</li>
+          <li>Best practice: <code>*, *::before, *::after { box-sizing: border-box; }</code></li>
+          <li>Với border-box: width: 300px + padding: 20px → content = 260px</li>
+          <li>Với content-box: width: 300px + padding: 20px → tổng = 340px</li>
+        </ul>
+      </div>
+      <div class="ex-work">
+        <h3>💻 Code mẫu</h3>
+        <div id="code-highlight">
+          <pre id="code-raw" style="display:none">/* Reset tốt nhất – áp dụng cho toàn dự án */
+*, *::before, *::after {
+  box-sizing: border-box;
+}
+
+/* So sánh content-box vs border-box */
+.content-box {
+  box-sizing: content-box; /* mặc định */
+  width: 300px;
+  padding: 20px;
+  border: 5px solid red;
+  /* Chiều rộng thực: 300 + 40 + 10 = 350px */
+}
+
+.border-box {
+  box-sizing: border-box;
+  width: 300px;
+  padding: 20px;
+  border: 5px solid blue;
+  /* Chiều rộng thực: 300px (không đổi!) */
+  /* content = 300 - 40 - 10 = 250px */
+}</pre>
+        </div>
+      </div>
+    </div>
+  </div>
+  <a href="../index.html" class="btn-back" style="margin-top:20px;">&#8592; Quay lại</a>
+  <script type="module">
+    import { codeToHtml } from 'https://esm.sh/shiki@1';
+    const raw = document.getElementById('code-raw').textContent;
+    const highlighted = await codeToHtml(raw, { lang: 'html', theme: 'github-dark' });
+    document.getElementById('code-highlight').innerHTML = highlighted;
+    const pre = document.getElementById('code-highlight').querySelector('pre');
+    if (pre) pre.style.cssText = 'border-radius:10px;padding:20px;font-size:0.87rem;overflow-x:auto;margin:0;line-height:1.7';
+  </script>
+</body>
+</html>

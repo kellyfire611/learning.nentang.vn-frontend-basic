@@ -1,29 +1,100 @@
-﻿<!DOCTYPE html><html lang='vi'><head><meta charset='UTF-8'/><meta name='viewport' content='width=device-width,initial-scale=1'/><title>Bai 12 - Border va Border-radius</title><link rel='stylesheet' href='../../shared.css'/></head><body><div class='page-header module-2'><div class='breadcrumb'><a href='../../index.html'>Trang Chu</a>  <a href='../index.html'>Module 2</a>  Bai 12</div><h1>Bai 12: Border va Border-radius</h1><p>Module 2  CSS Co Ban</p></div><div class='exercise-page'><div class='exercise-box'><div class='ex-work'><h3>Yeu cau va Code mau:</h3><pre style='background:#1a202c;color:#e2e8f0;padding:20px;border-radius:8px;font-size:.88rem;line-height:1.7;overflow-x:auto;white-space:pre-wrap'>/* Border shorthand */
-.vien-day  { border: 3px solid #5a67d8; }
-.vien-net  { border: 2px dashed #e53e3e; }
-.vien-cham { border: 2px dotted #38a169; }
+<!DOCTYPE html>
+<html lang="vi">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <meta name="keywords" content="Nền tảng,HTML,CSS,JavaScript,Lập trình,Web,Kiến thức,Đồ án">
+  <meta name="author" content="Dương Nguyễn Phú Cường">
+  <meta name="description" content="Tạo viền đa dạng và bo góc các phần tử bằng CSS.">
+  <meta property="og:locale" content="vi_VN">
+  <meta property="og:type" content="website">
+  <meta property="og:title" content="Bài 12 – Border và border-radius | NenTang.vn">
+  <meta property="og:description" content="Tạo viền đa dạng và bo góc các phần tử bằng CSS.">
+  <meta property="og:url" content="https://nentang.vn/">
+  <meta property="og:site_name" content="Nền tảng Kiến thức">
+  <title>Bài 12 – Border và border-radius | NenTang.vn</title>
+  <link rel="stylesheet" href="../../shared.css" />
+</head>
+<body>
+  <div class="page-header module-2">
+    <div class="breadcrumb">
+      <a href="../../index.html">Trang Chủ</a> &rsaquo;
+      <a href="../index.html">Module 2</a> &rsaquo; Bài 12
+    </div>
+    <h1>Bài 12: Border và border-radius</h1>
+    <p>Module 2 – CSS Cơ Bản</p>
+  </div>
 
-/* Tung phia */
-.vien-duoi { border-bottom: 3px solid #5a67d8; }
-.vien-trai { border-left: 5px solid #e53e3e; }
+  <div class="exercise-page">
+    <div class="exercise-box">
+      <div class="ex-head">
+        <h1>📝 Yêu cầu bài tập</h1>
+        <p>Tạo viền đa dạng và bo góc các phần tử bằng CSS.</p>
+      </div>
+      <div class="ex-desc">
+        <h3>Mô tả</h3>
+        <p>Border và border-radius là hai thuộc tính cơ bản để tạo kiểu dáng cho box. Kết hợp đúng tạo ra button, card, avatar bo góc đẹp mắt.</p>
+        <h3>Yêu cầu</h3>
+        <ul>
+          <li>Tạo border với đủ style: solid, dashed, dotted, double, groove</li>
+          <li>Đặt màu viền khác nhau cho 4 cạnh</li>
+          <li>Dùng border-radius: 8px tạo góc bo tròn đều</li>
+          <li>Dùng border-radius: 50% tạo hình tròn từ div vuông</li>
+          <li>Tạo avatar tròn từ ảnh bằng border-radius: 50%</li>
+        </ul>
+        <h3>🧠 Kiến thức cần nhớ</h3>
+        <ul>
+          <li><code>border: 2px solid #color</code>: shorthand width style color</li>
+          <li>Styles: solid, dashed, dotted, double, groove, ridge, inset, outset</li>
+          <li><code>border-radius: 8px</code>: bo 4 góc đều nhau</li>
+          <li><code>border-radius: 50%</code>: hình tròn hoàn hảo (cần width=height)</li>
+          <li><code>border-radius: 10px 20px 30px 40px</code>: bo từng góc khác nhau</li>
+          <li><code>border-top: 4px solid blue</code>: chỉ viền 1 cạnh</li>
+        </ul>
+      </div>
+      <div class="ex-work">
+        <h3>💻 Code mẫu</h3>
+        <div id="code-highlight">
+          <pre id="code-raw" style="display:none">/* Các kiểu border */
+.solid { border: 2px solid #3182ce; }
+.dashed { border: 2px dashed #e53e3e; }
+.dotted { border: 4px dotted #38a169; }
+.double { border: 6px double #805ad5; }
 
-/* Mau, kieu, do day rieng */
-.co-vien {
-  border-color: blue;
-  border-style: groove;
-  border-width: 4px;
+/* Viền từng cạnh */
+.accentbox {
+  border-top: 4px solid #3182ce;
+  border-left: 4px solid #3182ce;
+  border-bottom: 1px solid #e2e8f0;
+  border-right: 1px solid #e2e8f0;
 }
 
-/* Border Radius - lam tron goc */
-.goc-tron { border-radius: 8px; }
-.nua-tron  { border-radius: 50px; }
-.hinh-tron { 
-  border-radius: 50%;   /* tao hinh tron hoan hao */
-  width: 100px;
-  height: 100px;
-}
+/* Border radius */
+.rounded { border-radius: 8px; }
+.pill { border-radius: 9999px; }   /* dạng viên thuốc */
+.circle { border-radius: 50%; }    /* hình tròn */
 
-/* Goc tron khac nhau */
-.bong-noi  { border-radius: 20px 0 20px 0; } /* goc 1, 3 tron */
-
-/* YEU CAU: Tao avatar hinh tron, badge bo goc, card co shadow */</pre></div></div><a href='../index.html' class='btn-back' style='margin-top:20px;'> Quay lai</a></div></body></html>
+/* Avatar tròn */
+.avatar {
+  width: 80px;
+  height: 80px;
+  border-radius: 50%;
+  border: 3px solid white;
+  box-shadow: 0 0 0 2px #3182ce;
+  object-fit: cover;
+}</pre>
+        </div>
+      </div>
+    </div>
+  </div>
+  <a href="../index.html" class="btn-back" style="margin-top:20px;">&#8592; Quay lại</a>
+  <script type="module">
+    import { codeToHtml } from 'https://esm.sh/shiki@1';
+    const raw = document.getElementById('code-raw').textContent;
+    const highlighted = await codeToHtml(raw, { lang: 'html', theme: 'github-dark' });
+    document.getElementById('code-highlight').innerHTML = highlighted;
+    const pre = document.getElementById('code-highlight').querySelector('pre');
+    if (pre) pre.style.cssText = 'border-radius:10px;padding:20px;font-size:0.87rem;overflow-x:auto;margin:0;line-height:1.7';
+  </script>
+</body>
+</html>
