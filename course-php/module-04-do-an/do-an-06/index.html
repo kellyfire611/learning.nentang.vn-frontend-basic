@@ -1,0 +1,221 @@
+<!DOCTYPE html>
+<html lang="vi">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <meta name="description" content="Đồ án tổng hợp lớn nhất: website bán hàng đầy đủ với shop frontend và admin backend.">
+  <meta name="author" content="Dương Nguyễn Phú Cường">
+  <meta property="og:locale" content="vi_VN">
+  <meta property="og:type" content="website">
+  <meta property="og:title" content="Đồ Án 6: Website Bán Hàng Mini Với Admin Panel | NenTang.vn">
+  <meta property="og:url" content="https://nentang.vn/">
+  <meta property="og:site_name" content="Nền tảng Kiến thức">
+  <title>Đồ Án 6: Website Bán Hàng Mini Với Admin Panel | NenTang.vn</title>
+  <link rel="stylesheet" href="../../shared.css" />
+</head>
+<body>
+  <div class="page-header module-php-p">
+    <div class="breadcrumb">
+      <a href="../../index.html">PHP Course</a> &rsaquo;
+      <a href="../index.html">Đồ Án</a> &rsaquo; Dự Án 6
+    </div>
+    <h1>🏗️ Đồ Án 6: Website Bán Hàng Mini Với Admin Panel</h1>
+    <p>Module 4 – Đồ Án Tổng Hợp PHP</p>
+  </div>
+
+  <div class="exercise-page">
+    <div class="exercise-box">
+      <div class="ex-head">
+        <h1>📋 Mô Tả Dự Án</h1>
+        <p>Đồ án tổng hợp lớn nhất: website bán hàng đầy đủ với shop frontend và admin backend.</p>
+      </div>
+      <div class="ex-desc">
+        <h3>✅ Tính năng cần xây dựng</h3>
+        <ul>
+          <li>Frontend: trang chủ, danh mục, tìm kiếm, chi tiết SP, giỏ hàng, checkout</li>
+          <li>Admin panel: quản lý SP/danh mục, đơn hàng, khách hàng, báo cáo</li>
+          <li>Authentication: phân quyền admin/staff/user</li>
+          <li>Upload ảnh sản phẩm multiple images</li>
+          <li>Mã giảm giá (coupon): % hoặc fixed, có hạn sử dụng</li>
+          <li>Dashboard: doanh thu realtime, biểu đồ, thống kê</li>
+        </ul>
+        <h3>🧠 Kiến thức áp dụng</h3>
+        <ul>
+          <li>Separation của public/ và admin/ paths</li>
+          <li>CDN cho static assets: images, CSS, JS</li>
+          <li>Lazy loading ảnh trong danh sách SP</li>
+          <li>.htaccess: rewrite rules, block direct access các folder nhạy cảm</li>
+          <li>Cron job: tự động hủy đơn hàng chờ quá 24h, gửi email nhắc nhở</li>
+        </ul>
+      </div>
+      <div class="ex-work">
+        <h3>💻 Code mẫu / Kiến trúc tham khảo</h3>
+        <div id="code-highlight">
+          <pre id="code-raw" style="display:none">&lt;?php
+// ════════════════════════════════════
+// ĐỒ ÁN 6: E-COMMERCE MINI
+// ════════════════════════════════════
+
+/* Cấu trúc thư mục:
+shop/
+├── config/
+│   ├── app.php          (constants, timezone, locale)
+│   ├── database.php     (PDO singleton)
+│   └── routes.php       (route definitions)
+├── src/
+│   ├── Core/
+│   │   ├── App.php      (bootstrap, routing)
+│   │   ├── Request.php
+│   │   ├── Response.php
+│   │   └── View.php     (template engine)
+│   ├── Middleware/
+│   │   ├── Auth.php
+│   │   ├── Admin.php
+│   │   └── Csrf.php
+│   ├── Models/
+│   │   ├── Product.php
+│   │   ├── Category.php
+│   │   ├── Order.php
+│   │   ├── Coupon.php
+│   │   └── User.php
+│   └── Controllers/
+│       ├── Shop/
+│       │   ├── HomeController.php
+│       │   ├── ProductController.php
+│       │   └── CartController.php
+│       └── Admin/
+│           ├── DashboardController.php
+│           ├── ProductController.php
+│           ├── OrderController.php
+│           └── ReportController.php
+├── views/
+│   ├── layouts/
+│   │   ├── shop.php
+│   │   └── admin.php
+│   ├── shop/
+│   │   ├── home.php
+│   │   ├── products.php
+│   │   ├── product-detail.php
+│   │   └── cart.php
+│   └── admin/
+│       ├── dashboard.php
+│       ├── products/index.php
+│       └── orders/index.php
+├── public/
+│   ├── index.php        (entry point)
+│   ├── .htaccess
+│   ├── css/
+│   ├── js/
+│   └── uploads/
+└── composer.json
+*/
+
+// config/app.php
+define('APP_NAME', 'NenTang Shop');
+define('APP_URL',  'http://localhost:8000');
+define('TIMEZONE', 'Asia/Ho_Chi_Minh');
+define('UPLOAD_DIR', __DIR__ . '/../public/uploads/');
+date_default_timezone_set(TIMEZONE);
+
+// ── Coupon System ─────────────────
+class CouponService {
+    public function __construct(private PDO $pdo) {}
+
+    public function apply(string $code, float $order_total): array {
+        $stmt = $this-&gt;pdo-&gt;prepare("
+            SELECT * FROM coupons
+            WHERE code = ? AND active = 1
+              AND (expires_at IS NULL OR expires_at &gt; NOW())
+              AND (max_uses IS NULL OR used_count &lt; max_uses)
+              AND (min_order IS NULL OR min_order &lt;= ?)
+        ");
+        $stmt-&gt;execute([$code, $order_total]);
+        $coupon = $stmt-&gt;fetch();
+        if (!$coupon) throw new RuntimeException("Mã giảm giá không hợp lệ hoặc đã hết hạn");
+
+        $discount = $coupon['type'] === 'percent'
+            ? min($order_total, $order_total * $coupon['value'] / 100)
+            : min($order_total, $coupon['value']);
+
+        return ['coupon' =&gt; $coupon, 'discount' =&gt; round($discount, 0)];
+    }
+
+    public function use(string $code): void {
+        $this-&gt;pdo-&gt;prepare("UPDATE coupons SET used_count = used_count + 1 WHERE code = ?")-&gt;execute([$code]);
+    }
+}
+
+// ── Dashboard Stats ───────────────
+class DashboardService {
+    public function __construct(private PDO $pdo) {}
+
+    public function getStats(string $period = 'today'): array {
+        $where = match($period) {
+            'today'   =&gt; "DATE(created_at) = CURDATE()",
+            'week'    =&gt; "created_at &gt;= DATE_SUB(NOW(), INTERVAL 7 DAY)",
+            'month'   =&gt; "MONTH(created_at) = MONTH(NOW()) AND YEAR(created_at) = YEAR(NOW())",
+            'year'    =&gt; "YEAR(created_at) = YEAR(NOW())",
+            default   =&gt; "1=1",
+        };
+        $don = $this-&gt;pdo-&gt;query("SELECT COUNT(*) as so_don, SUM(tong_cong) as doanh_thu FROM don_hang WHERE $where")-&gt;fetch();
+        $sp_ban_chay = $this-&gt;pdo-&gt;query("
+            SELECT sp.ten, SUM(ct.so_luong) as da_ban FROM chi_tiet_don ct
+            JOIN don_hang dh ON dh.id = ct.don_hang_id
+            JOIN san_pham sp ON sp.id = ct.san_pham_id
+            WHERE $where GROUP BY ct.san_pham_id ORDER BY da_ban DESC LIMIT 5
+        ")-&gt;fetchAll();
+        $theo_ngay = $this-&gt;pdo-&gt;query("
+            SELECT DATE(created_at) as ngay, COUNT(*) as so_don, SUM(tong_cong) as doanh_thu
+            FROM don_hang WHERE created_at &gt;= DATE_SUB(NOW(), INTERVAL 30 DAY)
+            GROUP BY DATE(created_at) ORDER BY ngay
+        ")-&gt;fetchAll();
+
+        return [
+            'so_don'       =&gt; (int)$don['so_don'],
+            'doanh_thu'    =&gt; (float)$don['doanh_thu'],
+            'sp_ban_chay'  =&gt; $sp_ban_chay,
+            'theo_ngay'    =&gt; $theo_ngay,
+            'tong_sp'      =&gt; $this-&gt;pdo-&gt;query("SELECT COUNT(*) FROM san_pham WHERE active=1")-&gt;fetchColumn(),
+            'don_cho'      =&gt; $this-&gt;pdo-&gt;query("SELECT COUNT(*) FROM don_hang WHERE trang_thai='pending'")-&gt;fetchColumn(),
+        ];
+    }
+}
+
+// ── Demo ──────────────────────────
+echo "=== E-Commerce Mini – Tổng Quan ===&lt;br&gt;&lt;br&gt;";
+echo "&lt;strong&gt;Frontend routes:&lt;/strong&gt;&lt;br&gt;";
+$frontend = ['GET /' =&gt; 'Trang chủ + banner + SP nổi bật',
+    'GET /shop' =&gt; 'Danh sách SP + lọc + tìm kiếm + phân trang',
+    'GET /shop/{slug}' =&gt; 'Chi tiết SP (ảnh, mô tả, đánh giá)',
+    'GET /cart' =&gt; 'Giỏ hàng', 'POST /cart/add' =&gt; 'Thêm vào giỏ',
+    'POST /checkout' =&gt; 'Đặt hàng', 'GET /orders/{id}' =&gt; 'Xác nhận đơn',
+    'GET /account' =&gt; 'Trang cá nhân + lịch sử'];
+foreach ($frontend as $r =&gt; $d) echo "• &lt;code&gt;$r&lt;/code&gt;: $d&lt;br&gt;";
+
+echo "&lt;br&gt;&lt;strong&gt;Admin routes:&lt;/strong&gt;&lt;br&gt;";
+$admin = ['GET /admin' =&gt; '📊 Dashboard realtime',
+    'GET/POST /admin/products' =&gt; '📦 CRUD sản phẩm + upload ảnh',
+    'GET/POST /admin/categories' =&gt; '🗂️ Quản lý danh mục',
+    'GET/PUT /admin/orders' =&gt; '🛒 Đơn hàng + cập nhật trạng thái',
+    'GET /admin/customers' =&gt; '👥 Danh sách khách hàng',
+    'GET/POST /admin/coupons' =&gt; '🎫 Mã giảm giá',
+    'GET /admin/reports' =&gt; '📈 Báo cáo + export Excel'];
+foreach ($admin as $r =&gt; $d) echo "• &lt;code&gt;$r&lt;/code&gt;: $d&lt;br&gt;";
+
+echo "&lt;br&gt;✅ Đồ án hoàn chỉnh – áp dụng mọi kiến thức đã học!&lt;br&gt;";
+echo "Stack: PHP 8.2 + MySQL 8 + PDO + Sessions + JWT + Shiki&lt;br&gt;";</pre>
+        </div>
+      </div>
+    </div>
+  </div>
+  <a href="../index.html" class="btn-back">&#8592; Quay lại Đồ Án</a>
+  <script type="module">
+    import { codeToHtml } from 'https://esm.sh/shiki@1';
+    const raw = document.getElementById('code-raw').textContent;
+    const highlighted = await codeToHtml(raw, { lang: 'php', theme: 'github-dark' });
+    document.getElementById('code-highlight').innerHTML = highlighted;
+    const pre = document.getElementById('code-highlight').querySelector('pre');
+    if (pre) pre.style.cssText = 'border-radius:10px;padding:20px;font-size:0.87rem;overflow-x:auto;margin:0;line-height:1.7';
+  </script>
+</body>
+</html>

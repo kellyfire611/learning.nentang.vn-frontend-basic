@@ -1,0 +1,186 @@
+<!DOCTYPE html>
+<html lang="vi">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <meta name="description" content="Xây dựng CRUD hoàn chỉnh cho module Sản Phẩm theo kiến trúc OOP-PDO sạch.">
+  <meta name="author" content="Dương Nguyễn Phú Cường">
+  <meta property="og:locale" content="vi_VN">
+  <meta property="og:type" content="website">
+  <meta property="og:title" content="Bài 13 – CRUD Hoàn Chỉnh với PDO và OOP | NenTang.vn">
+  <meta property="og:url" content="https://nentang.vn/">
+  <meta property="og:site_name" content="Nền tảng Kiến thức">
+  <title>Bài 13 – CRUD Hoàn Chỉnh với PDO và OOP | NenTang.vn</title>
+  <link rel="stylesheet" href="../../shared.css" />
+</head>
+<body>
+  <div class="page-header module-php-3">
+    <div class="breadcrumb">
+      <a href="../../index.html">PHP Course</a> &rsaquo;
+      <a href="../index.html">Module 3</a> &rsaquo; Bài 13
+    </div>
+    <h1>Bài 13: CRUD Hoàn Chỉnh với PDO và OOP</h1>
+    <p>Module 3 – PHP &amp; MySQL Thực Chiến</p>
+  </div>
+
+  <div class="exercise-page">
+    <div class="exercise-box">
+      <div class="ex-head">
+        <h1>📝 Yêu cầu bài tập</h1>
+        <p>Xây dựng CRUD hoàn chỉnh cho module Sản Phẩm theo kiến trúc OOP-PDO sạch.</p>
+      </div>
+      <div class="ex-desc">
+        <h3>Yêu cầu</h3>
+        <ul>
+          <li>ProductRepository với đầy đủ CRUD</li>
+          <li>Validation với DTO (Data Transfer Object)</li>
+          <li>Error handling với custom exceptions</li>
+          <li>Pagination tích hợp trong repository</li>
+          <li>Unit test cho repository</li>
+        </ul>
+        <h3>🧠 Kiến thức cần nhớ</h3>
+        <ul>
+          <li>DTO: object chuyên chứa dữ liệu truyền vào, có thể validate ngay</li>
+          <li>Custom Exception: <code>class NotFoundException extends RuntimeException {}</code></li>
+          <li>Repository method: <code>findAll, findById, create, update, delete, paginate</code></li>
+          <li><code>readonly</code> properties cho DTO: tránh thay đổi sau khi tạo</li>
+          <li>Separation of concerns: Repository chỉ CRUD, không biết về HTTP</li>
+        </ul>
+      </div>
+      <div class="ex-work">
+        <h3>💻 Code mẫu</h3>
+        <div id="code-highlight">
+          <pre id="code-raw" style="display:none">&lt;?php
+$pdo = get_pdo();
+
+// ── Custom Exceptions ─────────────
+class NotFoundException      extends RuntimeException {}
+class ValidationException    extends InvalidArgumentException {
+    public function __construct(private array $errors) {
+        parent::__construct("Validation thất bại: " . implode(', ', $errors));
+    }
+    public function getErrors(): array { return $this-&gt;errors; }
+}
+
+// ── DTO ───────────────────────────
+readonly class CreateProductDTO {
+    public string $ten;
+    public float  $gia;
+    public int    $so_luong;
+    public ?int   $danh_muc_id;
+
+    public function __construct(array $data) {
+        $errors = [];
+        $this-&gt;ten       = trim($data['ten'] ?? '');
+        if (strlen($this-&gt;ten) &lt; 2) $errors[] = "Tên ít nhất 2 ký tự";
+        $this-&gt;gia       = (float)($data['gia'] ?? 0);
+        if ($this-&gt;gia &lt; 0) $errors[] = "Giá không âm";
+        $this-&gt;so_luong  = (int)($data['so_luong'] ?? 0);
+        if ($this-&gt;so_luong &lt; 0) $errors[] = "Số lượng không âm";
+        $this-&gt;danh_muc_id = isset($data['danh_muc_id']) ? (int)$data['danh_muc_id'] : null;
+        if ($errors) throw new ValidationException($errors);
+    }
+}
+
+// ── Repository ────────────────────
+class ProductRepository {
+    public function __construct(private PDO $pdo) {}
+
+    public function findAll(int $page = 1, int $per_page = 10): array {
+        $offset = ($page-1) * $per_page;
+        $items  = $this-&gt;pdo-&gt;prepare("SELECT * FROM san_pham WHERE active=1 ORDER BY id DESC LIMIT ? OFFSET ?");
+        $items-&gt;execute([$per_page, $offset]);
+        $total  = (int)$this-&gt;pdo-&gt;query("SELECT COUNT(*) FROM san_pham WHERE active=1")-&gt;fetchColumn();
+        return ['items' =&gt; $items-&gt;fetchAll(), 'total' =&gt; $total, 'page' =&gt; $page, 'per_page' =&gt; $per_page];
+    }
+
+    public function findById(int $id): array {
+        $stmt = $this-&gt;pdo-&gt;prepare("SELECT * FROM san_pham WHERE id = ? AND active = 1");
+        $stmt-&gt;execute([$id]);
+        $row = $stmt-&gt;fetch();
+        if (!$row) throw new NotFoundException("Sản phẩm #$id không tồn tại");
+        return $row;
+    }
+
+    public function create(CreateProductDTO $dto): array {
+        $slug = $this-&gt;slugify($dto-&gt;ten);
+        $stmt = $this-&gt;pdo-&gt;prepare(
+            "INSERT INTO san_pham (ten, slug, gia, so_luong, danh_muc_id) VALUES (:ten,:slug,:gia,:sl,:dm)"
+        );
+        $stmt-&gt;execute([':ten'=&gt;$dto-&gt;ten,':slug'=&gt;$slug,':gia'=&gt;$dto-&gt;gia,':sl'=&gt;$dto-&gt;so_luong,':dm'=&gt;$dto-&gt;danh_muc_id]);
+        return $this-&gt;findById((int)$this-&gt;pdo-&gt;lastInsertId());
+    }
+
+    public function update(int $id, array $data): array {
+        $this-&gt;findById($id);  // throws if not found
+        $fields = []; $params = [];
+        foreach (['ten','gia','so_luong','gia_km','danh_muc_id'] as $col) {
+            if (array_key_exists($col, $data)) {
+                $fields[] = "$col = :$col";
+                $params[":$col"] = $data[$col];
+            }
+        }
+        if (empty($fields)) return $this-&gt;findById($id);
+        $params[':id'] = $id;
+        $this-&gt;pdo-&gt;prepare("UPDATE san_pham SET " . implode(',', $fields) . ", updated_at=NOW() WHERE id=:id")-&gt;execute($params);
+        return $this-&gt;findById($id);
+    }
+
+    public function delete(int $id): void {
+        $this-&gt;findById($id);
+        $this-&gt;pdo-&gt;prepare("UPDATE san_pham SET active=0, deleted_at=NOW() WHERE id=?")-&gt;execute([$id]);
+    }
+
+    private function slugify(string $text): string {
+        $text = iconv('UTF-8','ASCII//TRANSLIT//IGNORE',$text);
+        return strtolower(trim(preg_replace('/[^a-z0-9]+/','-',$text),'-')) . '-' . substr(md5(uniqid()),0,6);
+    }
+}
+
+// ── Test CRUD ─────────────────────
+$repo = new ProductRepository($pdo);
+
+// Create
+try {
+    $new = $repo-&gt;create(new CreateProductDTO(['ten'=&gt;'Sản phẩm test','gia'=&gt;299000,'so_luong'=&gt;10,'danh_muc_id'=&gt;1]));
+    echo "✅ Tạo: {$new['ten']} (#{$new['id']})&lt;br&gt;";
+
+    // Read
+    $found = $repo-&gt;findById($new['id']);
+    echo "✅ Đọc: {$found['ten']}&lt;br&gt;";
+
+    // Update
+    $updated = $repo-&gt;update($new['id'], ['gia'=&gt;399000,'so_luong'=&gt;20]);
+    echo "✅ Cập nhật: gia={$updated['gia']}, sl={$updated['so_luong']}&lt;br&gt;";
+
+    // Delete
+    $repo-&gt;delete($new['id']);
+    echo "✅ Xóa thành công&lt;br&gt;";
+
+    // 404
+    $repo-&gt;findById(99999);
+} catch (ValidationException $e) {
+    echo "❌ Validation: " . implode(', ', $e-&gt;getErrors()) . "&lt;br&gt;";
+} catch (NotFoundException $e) {
+    echo "ℹ️  {$e-&gt;getMessage()}&lt;br&gt;";
+}
+
+// List + pagination
+$list = $repo-&gt;findAll(1, 3);
+echo "&lt;br&gt;Danh sách (tổng {$list['total']}):&lt;br&gt;";
+foreach ($list['items'] as $sp) echo "• {$sp['ten']}: " . number_format($sp['gia'],0,',','.') . "đ&lt;br&gt;";</pre>
+        </div>
+      </div>
+    </div>
+  </div>
+  <a href="../index.html" class="btn-back">&#8592; Quay lại Module 3</a>
+  <script type="module">
+    import { codeToHtml } from 'https://esm.sh/shiki@1';
+    const raw = document.getElementById('code-raw').textContent;
+    const highlighted = await codeToHtml(raw, { lang: 'php', theme: 'github-dark' });
+    document.getElementById('code-highlight').innerHTML = highlighted;
+    const pre = document.getElementById('code-highlight').querySelector('pre');
+    if (pre) pre.style.cssText = 'border-radius:10px;padding:20px;font-size:0.87rem;overflow-x:auto;margin:0;line-height:1.7';
+  </script>
+</body>
+</html>

@@ -1,0 +1,131 @@
+<!DOCTYPE html>
+<html lang="vi">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <meta name="description" content="Tối ưu hiệu năng database với indexes, EXPLAIN và các kỹ thuật query tốt hơn.">
+  <meta name="author" content="Dương Nguyễn Phú Cường">
+  <meta property="og:locale" content="vi_VN">
+  <meta property="og:type" content="website">
+  <meta property="og:title" content="Bài 14 – Tối Ưu Hiệu Năng – Index và Query Optimization | NenTang.vn">
+  <meta property="og:url" content="https://nentang.vn/">
+  <meta property="og:site_name" content="Nền tảng Kiến thức">
+  <title>Bài 14 – Tối Ưu Hiệu Năng – Index và Query Optimization | NenTang.vn</title>
+  <link rel="stylesheet" href="../../shared.css" />
+</head>
+<body>
+  <div class="page-header module-php-3">
+    <div class="breadcrumb">
+      <a href="../../index.html">PHP Course</a> &rsaquo;
+      <a href="../index.html">Module 3</a> &rsaquo; Bài 14
+    </div>
+    <h1>Bài 14: Tối Ưu Hiệu Năng – Index và Query Optimization</h1>
+    <p>Module 3 – PHP &amp; MySQL Thực Chiến</p>
+  </div>
+
+  <div class="exercise-page">
+    <div class="exercise-box">
+      <div class="ex-head">
+        <h1>📝 Yêu cầu bài tập</h1>
+        <p>Tối ưu hiệu năng database với indexes, EXPLAIN và các kỹ thuật query tốt hơn.</p>
+      </div>
+      <div class="ex-desc">
+        <h3>Yêu cầu</h3>
+        <ul>
+          <li>Tạo index đơn và composite index</li>
+          <li>Dùng EXPLAIN để phân tích query plan</li>
+          <li>Tránh N+1 query problem</li>
+          <li>Eager loading với JOIN thay vì nhiều query</li>
+          <li>Query caching và connection pooling</li>
+        </ul>
+        <h3>🧠 Kiến thức cần nhớ</h3>
+        <ul>
+          <li>Index: cấu trúc dữ liệu tăng tốc SELECT nhưng chậm INSERT/UPDATE</li>
+          <li><code>EXPLAIN SELECT ...</code>: hiển thị query execution plan</li>
+          <li><code>type: ALL</code> trong EXPLAIN = full table scan (xấu); <code>ref</code> hay <code>const</code> = dùng index (tốt)</li>
+          <li>N+1 problem: loop 100 sản phẩm, mỗi cái query thêm → 101 queries; Eager load = 2 queries</li>
+          <li>Composite index: <code>INDEX(col1, col2)</code> – thứ tự column quan trọng</li>
+        </ul>
+      </div>
+      <div class="ex-work">
+        <h3>💻 Code mẫu</h3>
+        <div id="code-highlight">
+          <pre id="code-raw" style="display:none">&lt;?php
+$pdo = get_pdo();
+
+// ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+// 1. Tạo Indexes
+// ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+// Single column index
+try {
+    $pdo-&gt;exec("CREATE INDEX idx_sp_gia ON san_pham(gia)");
+    $pdo-&gt;exec("CREATE INDEX idx_sp_active ON san_pham(active)");
+    // Composite index (thường dùng cùng nhau)
+    $pdo-&gt;exec("CREATE INDEX idx_sp_active_gia ON san_pham(active, gia)");
+    // Full-text index cho tìm kiếm
+    $pdo-&gt;exec("CREATE FULLTEXT INDEX ft_sp_ten ON san_pham(ten)");
+    echo "✅ Indexes tạo thành công&lt;br&gt;";
+} catch (PDOException $e) { echo "Index đã tồn tại hoặc lỗi: {$e-&gt;getMessage()}&lt;br&gt;"; }
+
+// ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+// 2. EXPLAIN phân tích query
+// ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+$explain = $pdo-&gt;query("EXPLAIN SELECT * FROM san_pham WHERE active=1 AND gia BETWEEN 100000 AND 500000")-&gt;fetchAll();
+echo "&lt;br&gt;EXPLAIN kết quả:&lt;br&gt;";
+foreach ($explain as $row) {
+    echo "type={$row['type']} | possible_keys={$row['possible_keys']} | key={$row['key']} | rows={$row['rows']}&lt;br&gt;";
+}
+
+// ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+// 3. N+1 Problem – BẬY ĐỪNG LÀM
+// ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+// ❌ BAD: N+1 – 1 query lấy SP, N query lấy danh mục
+$bad_start = microtime(true);
+$sps = $pdo-&gt;query("SELECT id, ten, danh_muc_id FROM san_pham WHERE active=1 LIMIT 8")-&gt;fetchAll();
+foreach ($sps as &amp;$sp) {
+    // 1 query mỗi sản phẩm để lấy danh mục ← N+1!
+    $dm = $pdo-&gt;prepare("SELECT ten FROM danh_muc WHERE id = ?");
+    $dm-&gt;execute([$sp['danh_muc_id']]);
+    $sp['danh_muc'] = $dm-&gt;fetchColumn();
+}
+$bad_ms = round((microtime(true)-$bad_start)*1000, 2);
+
+// ✅ GOOD: JOIN – chỉ 1 query
+$good_start = microtime(true);
+$sps_good = $pdo-&gt;query("
+    SELECT sp.id, sp.ten, dm.ten AS danh_muc
+    FROM san_pham sp
+    LEFT JOIN danh_muc dm ON dm.id = sp.danh_muc_id
+    WHERE sp.active = 1 LIMIT 8
+")-&gt;fetchAll();
+$good_ms = round((microtime(true)-$good_start)*1000, 2);
+
+echo "&lt;br&gt;N+1: {$bad_ms}ms | JOIN: {$good_ms}ms&lt;br&gt;";
+echo "JOIN " . ($bad_ms &gt; $good_ms ? "nhanh hơn" : "tương đương") . "&lt;br&gt;";
+
+// ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+// 4. Full-text search (nếu có FT index)
+// ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+try {
+    $ft = $pdo-&gt;prepare("SELECT ten, MATCH(ten) AGAINST(? IN BOOLEAN MODE) AS score FROM san_pham WHERE MATCH(ten) AGAINST(? IN BOOLEAN MODE) ORDER BY score DESC LIMIT 5");
+    $ft-&gt;execute(['áo*', 'áo*']);
+    echo "&lt;br&gt;Full-text 'áo':&lt;br&gt;";
+    foreach ($ft-&gt;fetchAll() as $sp) {
+        echo "→ {$sp['ten']} (score: {$sp['score']})&lt;br&gt;";
+    }
+} catch (PDOException $e) { echo "Full-text: {$e-&gt;getMessage()}&lt;br&gt;"; }</pre>
+        </div>
+      </div>
+    </div>
+  </div>
+  <a href="../index.html" class="btn-back">&#8592; Quay lại Module 3</a>
+  <script type="module">
+    import { codeToHtml } from 'https://esm.sh/shiki@1';
+    const raw = document.getElementById('code-raw').textContent;
+    const highlighted = await codeToHtml(raw, { lang: 'php', theme: 'github-dark' });
+    document.getElementById('code-highlight').innerHTML = highlighted;
+    const pre = document.getElementById('code-highlight').querySelector('pre');
+    if (pre) pre.style.cssText = 'border-radius:10px;padding:20px;font-size:0.87rem;overflow-x:auto;margin:0;line-height:1.7';
+  </script>
+</body>
+</html>

@@ -1,0 +1,118 @@
+<!DOCTYPE html>
+<html lang="vi">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <meta name="keywords" content="PHP,Lập trình PHP,Web,NenTang,Bài tập PHP,PHP cơ bản">
+  <meta name="author" content="Dương Nguyễn Phú Cường">
+  <meta name="description" content="Sử dụng cookie để lưu và đọc thông tin nhỏ ở phía trình duyệt người dùng.">
+  <meta property="og:locale" content="vi_VN">
+  <meta property="og:type" content="website">
+  <meta property="og:title" content="Bài 16 – Cookie – Lưu Dữ Liệu Phía Client | NenTang.vn">
+  <meta property="og:description" content="Sử dụng cookie để lưu và đọc thông tin nhỏ ở phía trình duyệt người dùng.">
+  <meta property="og:url" content="https://nentang.vn/">
+  <meta property="og:site_name" content="Nền tảng Kiến thức">
+  <title>Bài 16 – Cookie – Lưu Dữ Liệu Phía Client | NenTang.vn</title>
+  <link rel="stylesheet" href="../../shared.css" />
+</head>
+<body>
+  <div class="page-header module-php-1">
+    <div class="breadcrumb">
+      <a href="../../index.html">PHP Course</a> &rsaquo;
+      <a href="../index.html">Module 1</a> &rsaquo; Bài 16
+    </div>
+    <h1>Bài 16: Cookie – Lưu Dữ Liệu Phía Client</h1>
+    <p>Module 1 – PHP Cơ Bản</p>
+  </div>
+
+  <div class="exercise-page">
+    <div class="exercise-box">
+      <div class="ex-head">
+        <h1>📝 Yêu cầu bài tập</h1>
+        <p>Sử dụng cookie để lưu và đọc thông tin nhỏ ở phía trình duyệt người dùng.</p>
+      </div>
+      <div class="ex-desc">
+        <h3>Yêu cầu</h3>
+        <ul>
+          <li>Tạo cookie với <code>setcookie()</code> có thời gian hết hạn</li>
+          <li>Đọc cookie từ <code>$_COOKIE</code></li>
+          <li>Xóa cookie bằng cách đặt thời gian quá khứ</li>
+          <li>Lưu tùy chọn giao diện (theme) của người dùng</li>
+          <li>Cookie vs Session – khi nào dùng cái nào</li>
+        </ul>
+        <h3>🧠 Kiến thức cần nhớ</h3>
+        <ul>
+          <li><code>setcookie($name, $value, $expire, $path, $domain, $secure, $httponly)</code></li>
+          <li>Cookie phải gọi trước <code>echo</code> hoặc output HTML</li>
+          <li>Cookie lưu ở client (trình duyệt) — người dùng có thể xem và sửa</li>
+          <li>Thời gian: <code>time() + 86400</code> = 1 ngày; <code>time() + 30*86400</code> = 30 ngày</li>
+          <li>Dùng <code>httponly=true</code> để JavaScript không đọc được cookie</li>
+        </ul>
+      </div>
+      <div class="ex-work">
+        <h3>💻 Code mẫu</h3>
+        <div id="code-highlight">
+          <pre id="code-raw" style="display:none">&lt;?php
+// ── Đặt cookie ───────────────────
+if (isset($_POST['luu_theme'])) {
+    $theme = in_array($_POST['theme'], ['light', 'dark', 'blue']) ? $_POST['theme'] : 'light';
+    setcookie('theme', $theme, time() + 30 * 86400, '/', '', false, true);
+    setcookie('user_name', htmlspecialchars($_POST['ten'] ?? 'Khách'), time() + 7 * 86400, '/');
+    header('Location: ' . $_SERVER['PHP_SELF']);
+    exit;
+}
+
+// ── Đọc cookie ───────────────────
+$theme     = $_COOKIE['theme']     ?? 'light';
+$user_name = $_COOKIE['user_name'] ?? 'Khách';
+
+// ── Xóa cookie ───────────────────
+if (isset($_GET['xoa_cookie'])) {
+    setcookie('theme', '', time() - 3600, '/');       // đặt thời gian quá khứ
+    setcookie('user_name', '', time() - 3600, '/');
+    header('Location: ' . $_SERVER['PHP_SELF']);
+    exit;
+}
+
+// ── Hiển thị theme hiện tại ───────
+$bg_colors = ['light' =&gt; '#fff', 'dark' =&gt; '#1a1a2e', 'blue' =&gt; '#ebf8ff'];
+$text_colors = ['light' =&gt; '#333', 'dark' =&gt; '#eee', 'blue' =&gt; '#2c5282'];
+$bg   = $bg_colors[$theme]   ?? '#fff';
+$text = $text_colors[$theme] ?? '#333';
+?&gt;
+&lt;!DOCTYPE html&gt;
+&lt;html lang="vi"&gt;
+&lt;body style="background:&lt;?= $bg ?&gt;;color:&lt;?= $text ?&gt;;padding:24px"&gt;
+  &lt;h2&gt;Xin chào, &lt;?= htmlspecialchars($user_name) ?&gt;! 🍪&lt;/h2&gt;
+  &lt;p&gt;Theme hiện tại: &lt;strong&gt;&lt;?= $theme ?&gt;&lt;/strong&gt;&lt;/p&gt;
+  
+  &lt;form method="POST"&gt;
+    &lt;label&gt;Tên: &lt;input type="text" name="ten" value="&lt;?= htmlspecialchars($user_name) ?&gt;"&gt;&lt;/label&gt;&lt;br&gt;
+    &lt;label&gt;Chọn theme:
+      &lt;select name="theme"&gt;
+        &lt;option value="light" &lt;?= $theme==='light'?'selected':'' ?&gt;&gt;Light&lt;/option&gt;
+        &lt;option value="dark"  &lt;?= $theme==='dark' ?'selected':'' ?&gt;&gt;Dark&lt;/option&gt;
+        &lt;option value="blue"  &lt;?= $theme==='blue' ?'selected':'' ?&gt;&gt;Blue&lt;/option&gt;
+      &lt;/select&gt;
+    &lt;/label&gt;&lt;br&gt;
+    &lt;button type="submit" name="luu_theme"&gt;Lưu tùy chọn (30 ngày)&lt;/button&gt;
+  &lt;/form&gt;
+  &lt;br&gt;
+  &lt;a href="?xoa_cookie=1"&gt;🗑️ Xóa tất cả cookie&lt;/a&gt;
+  &lt;pre style="margin-top:16px;background:#f0f0f0;padding:12px;color:#333"&gt;&lt;?php print_r($_COOKIE); ?&gt;&lt;/pre&gt;
+&lt;/body&gt;&lt;/html&gt;</pre>
+        </div>
+      </div>
+    </div>
+  </div>
+  <a href="../index.html" class="btn-back">&#8592; Quay lại Module 1</a>
+  <script type="module">
+    import { codeToHtml } from 'https://esm.sh/shiki@1';
+    const raw = document.getElementById('code-raw').textContent;
+    const highlighted = await codeToHtml(raw, { lang: 'php', theme: 'github-dark' });
+    document.getElementById('code-highlight').innerHTML = highlighted;
+    const pre = document.getElementById('code-highlight').querySelector('pre');
+    if (pre) pre.style.cssText = 'border-radius:10px;padding:20px;font-size:0.87rem;overflow-x:auto;margin:0;line-height:1.7';
+  </script>
+</body>
+</html>

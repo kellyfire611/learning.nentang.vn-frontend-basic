@@ -3,7 +3,16 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>Bài 06 – Danh sách có thứ tự ol</title>
+  <meta name="keywords" content="Nền tảng,HTML,CSS,JavaScript,Lập trình,Web,Kiến thức,Đồ án">
+  <meta name="author" content="Dương Nguyễn Phú Cường">
+  <meta name="description" content="Tạo danh sách các bước hướng dẫn nấu ăn với ol và li.">
+  <meta property="og:locale" content="vi_VN">
+  <meta property="og:type" content="website">
+  <meta property="og:title" content="Bài 06 – Danh sách có thứ tự ol | NenTang.vn">
+  <meta property="og:description" content="Tạo danh sách các bước hướng dẫn nấu ăn với ol và li.">
+  <meta property="og:url" content="https://nentang.vn/">
+  <meta property="og:site_name" content="Nền tảng Kiến thức">
+  <title>Bài 06 – Danh sách có thứ tự ol | NenTang.vn</title>
   <link rel="stylesheet" href="../../shared.css" />
 </head>
 <body>
@@ -42,8 +51,9 @@
         </ul>
       </div>
       <div class="ex-work">
-        <h3>✏️ Code mẫu – Hướng dẫn nấu phở bò:</h3>
-        <pre style="background:#1a202c;color:#e2e8f0;padding:20px;border-radius:8px;font-size:0.88rem;line-height:1.7;overflow-x:auto;">&lt;h1&gt;🍜 Công Thức Nấu Phở Bò Hà Nội&lt;/h1&gt;
+        <h3>💻 Code mẫu</h3>
+        <div id="code-highlight">
+          <pre id="code-raw" style="display:none">&lt;h1&gt;🍜 Công Thức Nấu Phở Bò Hà Nội&lt;/h1&gt;
 
 &lt;h2&gt;Nguyên liệu&lt;/h2&gt;
 &lt;ul&gt;
@@ -64,9 +74,18 @@
   &lt;li&gt;Thái thịt bò mỏng, xếp lên trên bánh phở&lt;/li&gt;
   &lt;li&gt;Chan nước dùng sôi, trang trí hành lá và rau thơm&lt;/li&gt;
 &lt;/ol&gt;</pre>
+        </div>
       </div>
     </div>
     <a href="../index.html" class="btn-back" style="margin-top:20px;">← Quay lại danh sách</a>
   </div>
+  <script type="module">
+    import { codeToHtml } from 'https://esm.sh/shiki@1';
+    const raw = document.getElementById('code-raw').textContent;
+    const highlighted = await codeToHtml(raw, { lang: 'html', theme: 'github-dark' });
+    document.getElementById('code-highlight').innerHTML = highlighted;
+    const pre = document.getElementById('code-highlight').querySelector('pre');
+    if (pre) pre.style.cssText = 'border-radius:10px;padding:20px;font-size:0.87rem;overflow-x:auto;margin:0;line-height:1.7';
+  </script>
 </body>
 </html>

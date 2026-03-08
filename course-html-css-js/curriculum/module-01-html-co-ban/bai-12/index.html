@@ -2,7 +2,16 @@
 <html lang="vi">
 <head>
   <meta charset="UTF-8" /><meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>Bài 12  Liên kết neo (Anchor Link)</title>
+  <meta name="keywords" content="Nền tảng,HTML,CSS,JavaScript,Lập trình,Web,Kiến thức,Đồ án">
+  <meta name="author" content="Dương Nguyễn Phú Cường">
+  <meta name="description" content="Tạo trang dài với mục lục điều hướng bằng anchor link.">
+  <meta property="og:locale" content="vi_VN">
+  <meta property="og:type" content="website">
+  <meta property="og:title" content="Bài 12 – Liên kết neo Anchor Link | NenTang.vn">
+  <meta property="og:description" content="Tạo trang dài với mục lục điều hướng bằng anchor link.">
+  <meta property="og:url" content="https://nentang.vn/">
+  <meta property="og:site_name" content="Nền tảng Kiến thức">
+  <title>Bài 12  Liên kết neo (Anchor Link) | NenTang.vn</title>
   <link rel="stylesheet" href="../../shared.css" />
 </head>
 <body>
@@ -19,8 +28,9 @@
         <h3>Kiến thức cần nhớ</h3><ul><li><code>href='#section1'</code>  liên kết đến phần tử có id='section1'</li><li><code>id='section1'</code>  đánh dấu điểm neo</li><li>Kết hợp với CSS <code>scroll-behavior: smooth</code> để cuộn mượt</li></ul>
       </div>
       <div class="ex-work">
-        <h3> Code mẫu:</h3>
-        <pre style="background:#1a202c;color:#e2e8f0;padding:20px;border-radius:8px;font-size:0.88rem;line-height:1.7;overflow-x:auto;">&lt;!-- Mục lục --&gt;
+        <h3>💻 Code mẫu</h3>
+        <div id="code-highlight">
+          <pre id="code-raw" style="display:none">&lt;!-- Mục lục --&gt;
 &lt;nav&gt;
   &lt;h2&gt;Mục Lục&lt;/h2&gt;
   &lt;a href="#phan1"&gt;1. Nguồn gốc Internet&lt;/a&gt;&lt;br /&gt;
@@ -36,9 +46,18 @@
 &lt;h2 id="phan2"&gt;2. World Wide Web&lt;/h2&gt;
 &lt;p&gt;Nội dung phần 2...&lt;/p&gt;
 &lt;a href="#top"&gt; Về đầu trang&lt;/a&gt;</pre>
+        </div>
       </div>
     </div>
     <a href="../index.html" class="btn-back" style="margin-top:20px;"> Quay lại danh sách</a>
   </div>
+  <script type="module">
+    import { codeToHtml } from 'https://esm.sh/shiki@1';
+    const raw = document.getElementById('code-raw').textContent;
+    const highlighted = await codeToHtml(raw, { lang: 'html', theme: 'github-dark' });
+    document.getElementById('code-highlight').innerHTML = highlighted;
+    const pre = document.getElementById('code-highlight').querySelector('pre');
+    if (pre) pre.style.cssText = 'border-radius:10px;padding:20px;font-size:0.87rem;overflow-x:auto;margin:0;line-height:1.7';
+  </script>
 </body>
 </html>

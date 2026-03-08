@@ -2,7 +2,16 @@
 <html lang="vi">
 <head>
   <meta charset="UTF-8" /><meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>Bài 10  Liên kết cơ bản &lt;a&gt;</title>
+  <meta name="keywords" content="Nền tảng,HTML,CSS,JavaScript,Lập trình,Web,Kiến thức,Đồ án">
+  <meta name="author" content="Dương Nguyễn Phú Cường">
+  <meta name="description" content="Tạo trang tổng hợp liên kết có ích bằng thẻ a href.">
+  <meta property="og:locale" content="vi_VN">
+  <meta property="og:type" content="website">
+  <meta property="og:title" content="Bài 10 – Liên kết cơ bản thẻ a | NenTang.vn">
+  <meta property="og:description" content="Tạo trang tổng hợp liên kết có ích bằng thẻ a href.">
+  <meta property="og:url" content="https://nentang.vn/">
+  <meta property="og:site_name" content="Nền tảng Kiến thức">
+  <title>Bài 10  Liên kết cơ bản &lt;a&gt; | NenTang.vn</title>
   <link rel="stylesheet" href="../../shared.css" />
 </head>
 <body>
@@ -19,8 +28,9 @@
         <h3>Kiến thức cần nhớ</h3><ul><li><code>href</code>  đường dẫn đến trang/URL</li><li><code>href='mailto:email@example.com'</code>  mở ứng dụng email</li><li><code>href='tel:0912345678'</code>  gọi điện trên mobile</li><li><code>href='#'</code>  liên kết trống (không đi đâu)</li></ul>
       </div>
       <div class="ex-work">
-        <h3> Code mẫu:</h3>
-        <pre style="background:#1a202c;color:#e2e8f0;padding:20px;border-radius:8px;font-size:0.88rem;line-height:1.7;overflow-x:auto;">&lt;nav&gt;
+        <h3>💻 Code mẫu</h3>
+        <div id="code-highlight">
+          <pre id="code-raw" style="display:none">&lt;nav&gt;
   &lt;a href="index.html"&gt;Trang Chủ&lt;/a&gt; |
   &lt;a href="about.html"&gt;Giới Thiệu&lt;/a&gt; |
   &lt;a href="contact.html"&gt;Liên Hệ&lt;/a&gt;
@@ -32,9 +42,18 @@
 &lt;!-- Email và Điện thoại --&gt;
 &lt;a href="mailto:hoc@example.com"&gt;Gửi Email Cho Tôi&lt;/a&gt;
 &lt;a href="tel:+84912345678"&gt;Gọi: 0912 345 678&lt;/a&gt;</pre>
+        </div>
       </div>
     </div>
     <a href="../index.html" class="btn-back" style="margin-top:20px;"> Quay lại danh sách</a>
   </div>
+  <script type="module">
+    import { codeToHtml } from 'https://esm.sh/shiki@1';
+    const raw = document.getElementById('code-raw').textContent;
+    const highlighted = await codeToHtml(raw, { lang: 'html', theme: 'github-dark' });
+    document.getElementById('code-highlight').innerHTML = highlighted;
+    const pre = document.getElementById('code-highlight').querySelector('pre');
+    if (pre) pre.style.cssText = 'border-radius:10px;padding:20px;font-size:0.87rem;overflow-x:auto;margin:0;line-height:1.7';
+  </script>
 </body>
 </html>

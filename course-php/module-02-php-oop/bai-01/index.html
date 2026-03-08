@@ -1,0 +1,134 @@
+<!DOCTYPE html>
+<html lang="vi">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <meta name="keywords" content="PHP OOP,PDO,MySQL,NenTang,Lập trình PHP nâng cao">
+  <meta name="author" content="Dương Nguyễn Phú Cường">
+  <meta name="description" content="Tạo class đầu tiên, khai báo thuộc tính và phương thức, tạo đối tượng.">
+  <meta property="og:locale" content="vi_VN">
+  <meta property="og:type" content="website">
+  <meta property="og:title" content="Bài 01 – OOP – Class và Object Cơ Bản | NenTang.vn">
+  <meta property="og:description" content="Tạo class đầu tiên, khai báo thuộc tính và phương thức, tạo đối tượng.">
+  <meta property="og:url" content="https://nentang.vn/">
+  <meta property="og:site_name" content="Nền tảng Kiến thức">
+  <title>Bài 01 – OOP – Class và Object Cơ Bản | NenTang.vn</title>
+  <link rel="stylesheet" href="../../shared.css" />
+</head>
+<body>
+  <div class="page-header module-php-2">
+    <div class="breadcrumb">
+      <a href="../../index.html">PHP Course</a> &rsaquo;
+      <a href="../index.html">Module 2</a> &rsaquo; Bài 01
+    </div>
+    <h1>Bài 01: OOP – Class và Object Cơ Bản</h1>
+    <p>Module 2 – PHP OOP &amp; Nâng Cao</p>
+  </div>
+
+  <div class="exercise-page">
+    <div class="exercise-box">
+      <div class="ex-head">
+        <h1>📝 Yêu cầu bài tập</h1>
+        <p>Tạo class đầu tiên, khai báo thuộc tính và phương thức, tạo đối tượng.</p>
+      </div>
+      <div class="ex-desc">
+        <h3>Yêu cầu</h3>
+        <ul>
+          <li>Tạo class <code>SinhVien</code> với các thuộc tính: tên, tuổi, điểm TB</li>
+          <li>Khai báo phương thức giới thiệu, xếp loại</li>
+          <li>Tạo nhiều đối tượng từ class</li>
+          <li>Truy cập thuộc tính và phương thức qua <code>-></code></li>
+          <li>Hiểu tầm vực: <code>public</code>, <code>private</code>, <code>protected</code></li>
+        </ul>
+        <h3>🧠 Kiến thức cần nhớ</h3>
+        <ul>
+          <li><code>class Foo { }</code> — khai báo lớp; <code>$obj = new Foo();</code> — tạo đối tượng</li>
+          <li><code>public</code>: truy cập từ mọi nơi; <code>private</code>: chỉ trong class; <code>protected</code>: class và con</li>
+          <li><code>$this</code>: truy cập thuộc tính/phương thức của chính đối tượng đó</li>
+          <li><code>$obj->property</code>: truy cập thuộc tính; <code>$obj->method()</code>: gọi phương thức</li>
+          <li>Getter/Setter: hàm truy cập/cập nhật private property</li>
+        </ul>
+      </div>
+      <div class="ex-work">
+        <h3>💻 Code mẫu</h3>
+        <div id="code-highlight">
+          <pre id="code-raw" style="display:none">&lt;?php
+class SinhVien {
+    // Thuộc tính
+    public string  $ho_ten;
+    public int     $tuoi;
+    private float  $diem_tb;
+    protected string $lop;
+
+    // Constructor
+    public function __construct(string $ho_ten, int $tuoi, float $diem_tb, string $lop) {
+        $this-&gt;ho_ten  = $ho_ten;
+        $this-&gt;tuoi    = $tuoi;
+        $this-&gt;diem_tb = $diem_tb;
+        $this-&gt;lop     = $lop;
+    }
+
+    // Getter (truy cập private property)
+    public function getDiemTb(): float { return $this-&gt;diem_tb; }
+
+    // Setter (cập nhật với validate)
+    public function setDiemTb(float $diem): void {
+        if ($diem &lt; 0 || $diem &gt; 10) throw new InvalidArgumentException("Điểm phải từ 0-10");
+        $this-&gt;diem_tb = $diem;
+    }
+
+    // Phương thức xếp loại
+    public function xepLoai(): string {
+        return match(true) {
+            $this-&gt;diem_tb &gt;= 9.0 =&gt; "Xuất sắc",
+            $this-&gt;diem_tb &gt;= 8.0 =&gt; "Giỏi",
+            $this-&gt;diem_tb &gt;= 7.0 =&gt; "Khá",
+            $this-&gt;diem_tb &gt;= 5.0 =&gt; "Trung bình",
+            default               =&gt; "Yếu",
+        };
+    }
+
+    // Phương thức giới thiệu
+    public function gioiThieu(): string {
+        return "Tên: {$this-&gt;ho_ten} | Lớp: {$this-&gt;lop} | Điểm: {$this-&gt;diem_tb} ({$this-&gt;xepLoai()})";
+    }
+
+    // __toString magic method
+    public function __toString(): string { return $this-&gt;gioiThieu(); }
+}
+
+// ── Tạo đối tượng ─────────────────
+$sv1 = new SinhVien("Nguyễn Văn An",  20, 8.5, "CNTT-K22A");
+$sv2 = new SinhVien("Trần Thị Bình",  21, 7.2, "CNTT-K22B");
+$sv3 = new SinhVien("Lê Văn Cường",   19, 9.1, "CNTT-K22A");
+
+echo $sv1-&gt;gioiThieu() . "&lt;br&gt;";
+echo $sv2 . "&lt;br&gt;";   // dùng __toString
+echo "Xếp loại An: " . $sv1-&gt;xepLoai() . "&lt;br&gt;";
+
+// Cập nhật điểm qua setter
+$sv1-&gt;setDiemTb(9.5);
+echo "Điểm mới: " . $sv1-&gt;getDiemTb() . "&lt;br&gt;";
+
+// Mảng đối tượng
+$ds = [$sv1, $sv2, $sv3];
+usort($ds, fn($a, $b) =&gt; $b-&gt;getDiemTb() &lt;=&gt; $a-&gt;getDiemTb());
+echo "&lt;br&gt;Xếp hạng điểm:&lt;br&gt;";
+foreach ($ds as $i =&gt; $sv) {
+    echo ($i+1) . ". {$sv-&gt;ho_ten}: {$sv-&gt;getDiemTb()}&lt;br&gt;";
+}</pre>
+        </div>
+      </div>
+    </div>
+  </div>
+  <a href="../index.html" class="btn-back">&#8592; Quay lại Module 2</a>
+  <script type="module">
+    import { codeToHtml } from 'https://esm.sh/shiki@1';
+    const raw = document.getElementById('code-raw').textContent;
+    const highlighted = await codeToHtml(raw, { lang: 'php', theme: 'github-dark' });
+    document.getElementById('code-highlight').innerHTML = highlighted;
+    const pre = document.getElementById('code-highlight').querySelector('pre');
+    if (pre) pre.style.cssText = 'border-radius:10px;padding:20px;font-size:0.87rem;overflow-x:auto;margin:0;line-height:1.7';
+  </script>
+</body>
+</html>

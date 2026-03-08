@@ -1,0 +1,121 @@
+<!DOCTYPE html>
+<html lang="vi">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <meta name="keywords" content="PHP,Lập trình PHP,Web,NenTang,Bài tập PHP,PHP cơ bản">
+  <meta name="author" content="Dương Nguyễn Phú Cường">
+  <meta name="description" content="Định nghĩa và gọi hàm trong PHP, truyền tham số, trả về giá trị.">
+  <meta property="og:locale" content="vi_VN">
+  <meta property="og:type" content="website">
+  <meta property="og:title" content="Bài 10 – Hàm (Function) Cơ Bản | NenTang.vn">
+  <meta property="og:description" content="Định nghĩa và gọi hàm trong PHP, truyền tham số, trả về giá trị.">
+  <meta property="og:url" content="https://nentang.vn/">
+  <meta property="og:site_name" content="Nền tảng Kiến thức">
+  <title>Bài 10 – Hàm (Function) Cơ Bản | NenTang.vn</title>
+  <link rel="stylesheet" href="../../shared.css" />
+</head>
+<body>
+  <div class="page-header module-php-1">
+    <div class="breadcrumb">
+      <a href="../../index.html">PHP Course</a> &rsaquo;
+      <a href="../index.html">Module 1</a> &rsaquo; Bài 10
+    </div>
+    <h1>Bài 10: Hàm (Function) Cơ Bản</h1>
+    <p>Module 1 – PHP Cơ Bản</p>
+  </div>
+
+  <div class="exercise-page">
+    <div class="exercise-box">
+      <div class="ex-head">
+        <h1>📝 Yêu cầu bài tập</h1>
+        <p>Định nghĩa và gọi hàm trong PHP, truyền tham số, trả về giá trị.</p>
+      </div>
+      <div class="ex-desc">
+        <h3>Yêu cầu</h3>
+        <ul>
+          <li>Viết hàm tính diện tích hình chữ nhật, tam giác, hình tròn</li>
+          <li>Hàm có tham số mặc định (default parameter)</li>
+          <li>Hàm trả về nhiều giá trị qua mảng</li>
+          <li>Hàm đệ quy (recursive) – tính giai thừa, Fibonacci</li>
+          <li>Phạm vi biến (variable scope): local vs global</li>
+        </ul>
+        <h3>🧠 Kiến thức cần nhớ</h3>
+        <ul>
+          <li><code>function ten($tham_so) { return $ket_qua; }</code></li>
+          <li>Tham số mặc định: <code>function chao($ten = 'Bạn')</code></li>
+          <li>PHP truyền tham số theo giá trị; dùng <code>&$ref</code> để truyền tham chiếu</li>
+          <li>Biến trong hàm là local; dùng <code>global $bien</code> để truy cập var ngoài</li>
+          <li>Đệ quy: hàm gọi lại chính nó – cần điều kiện dừng (base case)</li>
+        </ul>
+      </div>
+      <div class="ex-work">
+        <h3>💻 Code mẫu</h3>
+        <div id="code-highlight">
+          <pre id="code-raw" style="display:none">&lt;?php
+// ── Hàm tính diện tích ────────────
+function dien_tich_chu_nhat(float $dai, float $rong): float {
+    return $dai * $rong;
+}
+function dien_tich_tam_giac(float $day, float $cao): float {
+    return 0.5 * $day * $cao;
+}
+function dien_tich_hinh_tron(float $ban_kinh): float {
+    return M_PI * $ban_kinh ** 2;
+}
+echo "Chữ nhật 5×3: "   . dien_tich_chu_nhat(5, 3) . "&lt;br&gt;";
+echo "Tam giác 6,4: "   . dien_tich_tam_giac(6, 4) . "&lt;br&gt;";
+echo "Hình tròn r=7: "  . round(dien_tich_hinh_tron(7), 2) . "&lt;br&gt;";
+
+// ── Tham số mặc định ─────────────
+function xin_chao(string $ten = "Bạn", string $loi = "Xin chào"): string {
+    return "$loi, $ten!";
+}
+echo xin_chao() . "&lt;br&gt;";                  // Xin chào, Bạn!
+echo xin_chao("An") . "&lt;br&gt;";             // Xin chào, An!
+echo xin_chao("Mai", "Chào buổi sáng") . "&lt;br&gt;";
+
+// ── Trả về nhiều giá trị ──────────
+function thong_ke(array $arr): array {
+    return [
+        'min'  =&gt; min($arr),
+        'max'  =&gt; max($arr),
+        'tb'   =&gt; array_sum($arr) / count($arr),
+        'tong' =&gt; array_sum($arr),
+    ];
+}
+$diem = [7, 8.5, 6, 9, 7.5];
+$tk = thong_ke($diem);
+echo "Min: {$tk['min']} | Max: {$tk['max']} | TB: {$tk['tb']}&lt;br&gt;";
+
+// ── Đệ quy: giai thừa ─────────────
+function giai_thua(int $n): int {
+    if ($n &lt;= 1) return 1;           // base case
+    return $n * giai_thua($n - 1);  // recursive
+}
+echo "5! = " . giai_thua(5) . "&lt;br&gt;";   // 120
+echo "10! = " . giai_thua(10) . "&lt;br&gt;"; // 3628800
+
+// ── Fibonacci ────────────────────
+function fib(int $n): int {
+    if ($n &lt;= 1) return $n;
+    return fib($n-1) + fib($n-2);
+}
+echo "Fibonacci 10 số đầu: ";
+for ($i = 0; $i &lt; 10; $i++) echo fib($i) . " ";
+echo "&lt;br&gt;";</pre>
+        </div>
+      </div>
+    </div>
+  </div>
+  <a href="../index.html" class="btn-back">&#8592; Quay lại Module 1</a>
+  <script type="module">
+    import { codeToHtml } from 'https://esm.sh/shiki@1';
+    const raw = document.getElementById('code-raw').textContent;
+    const highlighted = await codeToHtml(raw, { lang: 'php', theme: 'github-dark' });
+    document.getElementById('code-highlight').innerHTML = highlighted;
+    const pre = document.getElementById('code-highlight').querySelector('pre');
+    if (pre) pre.style.cssText = 'border-radius:10px;padding:20px;font-size:0.87rem;overflow-x:auto;margin:0;line-height:1.7';
+  </script>
+</body>
+</html>

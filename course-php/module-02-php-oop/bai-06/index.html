@@ -1,0 +1,145 @@
+<!DOCTYPE html>
+<html lang="vi">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <meta name="keywords" content="PHP OOP,PDO,MySQL,NenTang,Lập trình PHP nâng cao">
+  <meta name="author" content="Dương Nguyễn Phú Cường">
+  <meta name="description" content="Sử dụng Prepared Statements đúng cách để tránh SQL Injection, dùng named parameters.">
+  <meta property="og:locale" content="vi_VN">
+  <meta property="og:type" content="website">
+  <meta property="og:title" content="Bài 06 – PDO – Prepared Statements và Named Parameters | NenTang.vn">
+  <meta property="og:description" content="Sử dụng Prepared Statements đúng cách để tránh SQL Injection, dùng named parameters.">
+  <meta property="og:url" content="https://nentang.vn/">
+  <meta property="og:site_name" content="Nền tảng Kiến thức">
+  <title>Bài 06 – PDO – Prepared Statements và Named Parameters | NenTang.vn</title>
+  <link rel="stylesheet" href="../../shared.css" />
+</head>
+<body>
+  <div class="page-header module-php-2">
+    <div class="breadcrumb">
+      <a href="../../index.html">PHP Course</a> &rsaquo;
+      <a href="../index.html">Module 2</a> &rsaquo; Bài 06
+    </div>
+    <h1>Bài 06: PDO – Prepared Statements và Named Parameters</h1>
+    <p>Module 2 – PHP OOP &amp; Nâng Cao</p>
+  </div>
+
+  <div class="exercise-page">
+    <div class="exercise-box">
+      <div class="ex-head">
+        <h1>📝 Yêu cầu bài tập</h1>
+        <p>Sử dụng Prepared Statements đúng cách để tránh SQL Injection, dùng named parameters.</p>
+      </div>
+      <div class="ex-desc">
+        <h3>Yêu cầu</h3>
+        <ul>
+          <li>So sánh <code>?</code> (positional) và <code>:name</code> (named) parameters</li>
+          <li>Bind parameter với <code>bindParam</code> và <code>bindValue</code></li>
+          <li>Tìm kiếm với LIKE, lọc theo nhiều điều kiện</li>
+          <li>Build dynamic WHERE clause an toàn</li>
+          <li>Hiểu tại sao không được dùng string interpolation trong SQL</li>
+        </ul>
+        <h3>🧠 Kiến thức cần nhớ</h3>
+        <ul>
+          <li><code>$stmt = $pdo->prepare('SELECT * WHERE id = :id')</code></li>
+          <li><code>$stmt->execute([':id' => $id])</code>: bind và execute cùng lúc</li>
+          <li><code>bindParam(':id', $id, PDO::PARAM_INT)</code>: bind tham chiếu (lazy evaluation)</li>
+          <li><code>bindValue(':id', $id, PDO::PARAM_INT)</code>: bind giá trị (eager)</li>
+          <li>SQL Injection xảy ra khi nối chuỗi: <code>'WHERE id = ' . $id</code> — KHÔNG BAO GIỜ làm vậy</li>
+        </ul>
+      </div>
+      <div class="ex-work">
+        <h3>💻 Code mẫu</h3>
+        <div id="code-highlight">
+          <pre id="code-raw" style="display:none">&lt;?php
+// Giả sử đã kết nối $pdo ...
+
+// ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+// 1. Named parameters
+// ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+$stmt = $pdo-&gt;prepare("
+    INSERT INTO san_pham (ten, gia, so_luong)
+    VALUES (:ten, :gia, :so_luong)
+");
+$stmt-&gt;execute([':ten' =&gt; 'Kính râm', ':gia' =&gt; 280_000, ':so_luong' =&gt; 40]);
+echo "ID mới: " . $pdo-&gt;lastInsertId() . "&lt;br&gt;";
+
+// ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+// 2. LIKE search (an toàn)
+// ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+$tu_khoa = "áo";
+$stmt = $pdo-&gt;prepare("SELECT * FROM san_pham WHERE ten LIKE :kw OR mo_ta LIKE :kw ORDER BY ten");
+$stmt-&gt;execute([':kw' =&gt; "%$tu_khoa%"]);  // % nằm trong PHP, không trong SQL
+foreach ($stmt-&gt;fetchAll() as $sp) {
+    echo "→ {$sp['ten']}&lt;br&gt;";
+}
+
+// ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+// 3. Dynamic WHERE clause
+// ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+function tim_san_pham(PDO $pdo, array $bo_loc = []): array {
+    $where  = [];
+    $params = [];
+
+    if (!empty($bo_loc['gia_min'])) {
+        $where[] = 'gia &gt;= :gia_min';
+        $params[':gia_min'] = $bo_loc['gia_min'];
+    }
+    if (!empty($bo_loc['gia_max'])) {
+        $where[] = 'gia &lt;= :gia_max';
+        $params[':gia_max'] = $bo_loc['gia_max'];
+    }
+    if (!empty($bo_loc['tu_khoa'])) {
+        $where[] = 'ten LIKE :kw';
+        $params[':kw'] = '%' . $bo_loc['tu_khoa'] . '%';
+    }
+
+    $sql = "SELECT * FROM san_pham";
+    if ($where) $sql .= " WHERE " . implode(" AND ", $where);
+    $sql .= " ORDER BY gia ASC";
+
+    // Sắp xếp (column name KHÔNG thể parameterize → whitelist)
+    $cho_phep_sort = ['ten', 'gia', 'so_luong', 'created_at'];
+    $col = in_array($bo_loc['sort'] ?? '', $cho_phep_sort) ? $bo_loc['sort'] : 'gia';
+    $dir = ($bo_loc['dir'] ?? 'asc') === 'desc' ? 'DESC' : 'ASC';
+    $sql = "SELECT * FROM san_pham" . ($where ? " WHERE " . implode(" AND ", $where) : "") . " ORDER BY $col $dir";
+
+    $stmt = $pdo-&gt;prepare($sql);
+    $stmt-&gt;execute($params);
+    return $stmt-&gt;fetchAll();
+}
+
+$ket_qua = tim_san_pham($pdo, ['gia_min' =&gt; 100_000, 'gia_max' =&gt; 500_000, 'sort' =&gt; 'gia', 'dir' =&gt; 'asc']);
+echo "&lt;br&gt;Lọc 100k-500k:&lt;br&gt;";
+foreach ($ket_qua as $sp) {
+    echo "→ {$sp['ten']}: " . number_format($sp['gia'],0,',','.') . "đ&lt;br&gt;";
+}
+
+// ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+// ❌ NGUY HIỂM – SQL Injection example (KHÔNG làm!)
+// ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+// $id = $_GET['id'];  // kẻ tấn công nhập: 1 OR 1=1
+// $pdo-&gt;query("SELECT * FROM san_pham WHERE id = $id");  // ☠️ SQL Injection!
+
+// ✅ ĐÚNG: luôn dùng prepared statement
+$id = (int)($_GET['id'] ?? 1);
+$sp = $pdo-&gt;prepare("SELECT * FROM san_pham WHERE id = ?");
+$sp-&gt;execute([$id]);
+$row = $sp-&gt;fetch();
+if ($row) echo "Tìm thấy: {$row['ten']}&lt;br&gt;";</pre>
+        </div>
+      </div>
+    </div>
+  </div>
+  <a href="../index.html" class="btn-back">&#8592; Quay lại Module 2</a>
+  <script type="module">
+    import { codeToHtml } from 'https://esm.sh/shiki@1';
+    const raw = document.getElementById('code-raw').textContent;
+    const highlighted = await codeToHtml(raw, { lang: 'php', theme: 'github-dark' });
+    document.getElementById('code-highlight').innerHTML = highlighted;
+    const pre = document.getElementById('code-highlight').querySelector('pre');
+    if (pre) pre.style.cssText = 'border-radius:10px;padding:20px;font-size:0.87rem;overflow-x:auto;margin:0;line-height:1.7';
+  </script>
+</body>
+</html>

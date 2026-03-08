@@ -1,0 +1,199 @@
+<!DOCTYPE html>
+<html lang="vi">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <meta name="keywords" content="Nền tảng,HTML,CSS,JavaScript,Lập trình,Web,Kiến thức,Đồ án">
+  <meta name="author" content="Dương Nguyễn Phú Cường">
+  <meta name="description" content="Tạo trang CV trực tuyến chuyên nghiệp với đầy đủ thông tin cá nhân, kỹ năng và kinh nghiệm.">
+  <meta property="og:locale" content="vi_VN">
+  <meta property="og:type" content="website">
+  <meta property="og:title" content="Bài 32 – Đồ Án: Trang CV / Hồ Sơ Xin Việc | NenTang.vn">
+  <meta property="og:description" content="Tạo trang CV trực tuyến chuyên nghiệp với đầy đủ thông tin cá nhân, kỹ năng và kinh nghiệm.">
+  <meta property="og:url" content="https://nentang.vn/">
+  <meta property="og:site_name" content="Nền tảng Kiến thức">
+  <title>Bài 32 – Đồ Án: Trang CV / Hồ Sơ Xin Việc | NenTang.vn</title>
+  <link rel="stylesheet" href="../../shared.css" />
+</head>
+<body>
+  <div class="page-header module-1">
+    <div class="breadcrumb">
+      <a href="../../index.html">Trang Chủ</a> &rsaquo;
+      <a href="../index.html">Module 1</a> &rsaquo; Bài 32
+    </div>
+    <h1>Bài 32: Đồ Án: Trang CV / Hồ Sơ Xin Việc</h1>
+    <p>Module 1 – HTML Cơ Bản &nbsp;|&nbsp; 🏆 Bài Đồ Án Tổng Hợp</p>
+  </div>
+
+  <div class="exercise-page">
+    <div class="exercise-box">
+      <div class="ex-head">
+        <h1>🏆 Đồ Án: Đồ Án: Trang CV / Hồ Sơ Xin Việc</h1>
+        <p>Tạo trang CV trực tuyến chuyên nghiệp với đầy đủ thông tin cá nhân, kỹ năng và kinh nghiệm.</p>
+      </div>
+      <div class="ex-desc">
+        <h3>Mô tả dự án</h3>
+        <p>CV trực tuyến (Web Resume) là trang web giới thiệu bản thân chuyên nghiệp. 
+   Khác với bài Portfolio trước, CV tập trung vào cấu trúc dữ liệu: bảng thông tin, 
+   danh sách kỹ năng, timeline kinh nghiệm dùng dl/dt/dd, và form liên hệ tuyển dụng.</p>
+        <h3>📋 Yêu cầu chi tiết</h3>
+        <ul>
+          <li>Tạo section thông tin cá nhân: ảnh đại diện (img), tên, chức danh, liên hệ (email, phone, LinkedIn)</li>
+          <li>Section kỹ năng: dùng 2 danh sách (ul) – Hard Skills và Soft Skills</li>
+          <li>Section kinh nghiệm làm việc: dùng &lt;dl&gt;/&lt;dt&gt;/&lt;dd&gt; hoặc &lt;article&gt; cho từng công việc</li>
+          <li>Section học vấn: tên trường, chuyên ngành, năm tốt nghiệp</li>
+          <li>Section dự án cá nhân: bảng (table) liệt kê tên dự án, công nghệ, link demo</li>
+          <li>Section chứng chỉ: ordered list với năm và tên chứng chỉ</li>
+          <li>Form liên hệ tuyển dụng: họ tên, email, vị trí ứng tuyển (select), tin nhắn (textarea), submit</li>
+          <li>Dùng đúng thẻ semantic cho toàn bộ trang</li>
+        </ul>
+        <h3>🧠 Kiến thức tổng hợp áp dụng</h3>
+        <ul>
+          <li>&lt;address&gt; cho thông tin liên hệ (phone, email, address)</li>
+          <li>&lt;dl&gt;/&lt;dt&gt;/&lt;dd&gt; rất phù hợp để diễn đạt cặp khóa-giá trị</li>
+          <li>&lt;time datetime&gt; cho thời gian làm việc, tốt nghiệp</li>
+          <li>&lt;table&gt; với thead/tbody/tfoot và colspan để tạo bảng dự án</li>
+          <li>&lt;abbr title&gt; để viết tắt tên công nghệ (HTML, CSS, JS...)</li>
+          <li>&lt;blockquote cite&gt; cho câu nhận xét / testimonial</li>
+        </ul>
+      </div>
+      <div class="ex-work">
+        <h3>💻 Code Skeleton – Khung sườn ban đầu để bắt đầu</h3>
+        <p style="color:#718096;font-size:0.88rem;margin-bottom:12px;">
+          📌 Đây là khung HTML cơ bản. Bạn cần tự điền nội dung, thêm CSS inline hoặc thẻ &lt;style&gt; để hoàn thiện theo yêu cầu.
+        </p>
+        <div id="code-highlight">
+          <pre id="code-raw" style="display:none">&lt;!DOCTYPE html&gt;
+&lt;html lang="vi"&gt;
+&lt;head&gt;
+  &lt;meta charset="UTF-8"&gt;
+  &lt;meta name="viewport" content="width=device-width, initial-scale=1.0"&gt;
+  &lt;title&gt;CV - Nguyễn Văn A | Lập Trình Viên Web&lt;/title&gt;
+  &lt;style&gt;
+    body { font-family: 'Segoe UI', sans-serif; margin: 0; color: #333; }
+    .page { max-width: 900px; margin: 30px auto; background: white; padding: 40px; box-shadow: 0 0 20px rgba(0,0,0,.1); }
+    h2 { border-bottom: 2px solid #3498db; padding-bottom: 8px; color: #2c3e50; }
+    /* TODO: Bổ sung thêm CSS */
+  &lt;/style&gt;
+&lt;/head&gt;
+&lt;body&gt;
+&lt;div class="page"&gt;
+
+  &lt;!-- THÔNG TIN CÁ NHÂN --&gt;
+  &lt;header style="display:flex; gap:24px; align-items:center; margin-bottom:32px;"&gt;
+    &lt;img src="https://i.pravatar.cc/120" alt="Ảnh đại diện" width="120" height="120"
+         style="border-radius:50%; border:3px solid #3498db;"&gt;
+    &lt;div&gt;
+      &lt;h1 style="margin:0"&gt;Nguyễn Văn A&lt;/h1&gt;
+      &lt;p style="color:#3498db; font-size:1.1rem; margin:4px 0"&gt;Lập Trình Viên Web Front-End&lt;/p&gt;
+      &lt;address&gt;
+        &amp;#128231; &lt;a href="mailto:a@email.com"&gt;a@email.com&lt;/a&gt; &amp;nbsp;|&amp;nbsp;
+        &amp;#128222; 0912 345 678 &amp;nbsp;|&amp;nbsp;
+        &amp;#127968; Hà Nội, Việt Nam
+      &lt;/address&gt;
+    &lt;/div&gt;
+  &lt;/header&gt;
+
+  &lt;!-- KỸ NĂNG --&gt;
+  &lt;section&gt;
+    &lt;h2&gt;🛠️ Kỹ Năng&lt;/h2&gt;
+    &lt;div style="display:flex; gap:40px;"&gt;
+      &lt;div&gt;
+        &lt;h3&gt;Hard Skills&lt;/h3&gt;
+        &lt;ul&gt;
+          &lt;li&gt;HTML5 / CSS3&lt;/li&gt;
+          &lt;li&gt;JavaScript (ES6+)&lt;/li&gt;
+          &lt;!-- TODO: thêm kỹ năng --&gt;
+        &lt;/ul&gt;
+      &lt;/div&gt;
+      &lt;div&gt;
+        &lt;h3&gt;Soft Skills&lt;/h3&gt;
+        &lt;ul&gt;
+          &lt;li&gt;Làm việc nhóm&lt;/li&gt;
+          &lt;!-- TODO: thêm kỹ năng --&gt;
+        &lt;/ul&gt;
+      &lt;/div&gt;
+    &lt;/div&gt;
+  &lt;/section&gt;
+
+  &lt;!-- KINH NGHIỆM --&gt;
+  &lt;section&gt;
+    &lt;h2&gt;💼 Kinh Nghiệm Làm Việc&lt;/h2&gt;
+    &lt;dl&gt;
+      &lt;dt&gt;&lt;strong&gt;Front-End Developer&lt;/strong&gt; – Công ty ABC
+        &lt;time datetime="2023-06"&gt; (06/2023&lt;/time&gt; – Hiện tại)&lt;/dt&gt;
+      &lt;dd&gt;
+        &lt;ul&gt;
+          &lt;li&gt;Phát triển giao diện web bằng React và Next.js&lt;/li&gt;
+          &lt;!-- TODO: thêm mô tả chi tiết --&gt;
+        &lt;/ul&gt;
+      &lt;/dd&gt;
+      &lt;!-- TODO: Thêm kinh nghiệm trước đó --&gt;
+    &lt;/dl&gt;
+  &lt;/section&gt;
+
+  &lt;!-- HỌC VẤN --&gt;
+  &lt;section&gt;
+    &lt;h2&gt;🎓 Học Vấn&lt;/h2&gt;
+    &lt;!-- TODO: Thêm thông tin học vấn dùng dl hoặc article --&gt;
+  &lt;/section&gt;
+
+  &lt;!-- DỰ ÁN --&gt;
+  &lt;section&gt;
+    &lt;h2&gt;🚀 Dự Án Cá Nhân&lt;/h2&gt;
+    &lt;table border="1" style="width:100%; border-collapse:collapse;"&gt;
+      &lt;thead&gt;
+        &lt;tr style="background:#3498db; color:white;"&gt;
+          &lt;th&gt;Tên Dự Án&lt;/th&gt;&lt;th&gt;Công Nghệ&lt;/th&gt;&lt;th&gt;Link Demo&lt;/th&gt;
+        &lt;/tr&gt;
+      &lt;/thead&gt;
+      &lt;tbody&gt;
+        &lt;tr&gt;
+          &lt;td&gt;Portfolio Website&lt;/td&gt;
+          &lt;td&gt;&lt;abbr title="HyperText Markup Language"&gt;HTML&lt;/abbr&gt;, CSS, JS&lt;/td&gt;
+          &lt;td&gt;&lt;a href="#" target="_blank"&gt;Xem demo&lt;/a&gt;&lt;/td&gt;
+        &lt;/tr&gt;
+        &lt;!-- TODO: Thêm các dự án khác --&gt;
+      &lt;/tbody&gt;
+    &lt;/table&gt;
+  &lt;/section&gt;
+
+  &lt;!-- FORM LIÊN HỆ TUYỂN DỤNG --&gt;
+  &lt;section&gt;
+    &lt;h2&gt;📩 Liên Hệ Tuyển Dụng&lt;/h2&gt;
+    &lt;form&gt;
+      &lt;label&gt;Họ và tên: &lt;input type="text" required placeholder="Tên nhà tuyển dụng"&gt;&lt;/label&gt;&lt;br&gt;&lt;br&gt;
+      &lt;label&gt;Email: &lt;input type="email" required placeholder="email@company.com"&gt;&lt;/label&gt;&lt;br&gt;&lt;br&gt;
+      &lt;label&gt;Vị trí ứng tuyển:
+        &lt;select name="position"&gt;
+          &lt;option value=""&gt;-- Chọn vị trí --&lt;/option&gt;
+          &lt;option&gt;Front-End Developer&lt;/option&gt;
+          &lt;option&gt;Full-Stack Developer&lt;/option&gt;
+          &lt;option&gt;UI/UX Designer&lt;/option&gt;
+        &lt;/select&gt;
+      &lt;/label&gt;&lt;br&gt;&lt;br&gt;
+      &lt;label&gt;Tin nhắn:&lt;br&gt;
+        &lt;textarea rows="4" cols="60" placeholder="Nội dung liên hệ..."&gt;&lt;/textarea&gt;
+      &lt;/label&gt;&lt;br&gt;&lt;br&gt;
+      &lt;button type="submit"&gt;Gửi Liên Hệ&lt;/button&gt;
+    &lt;/form&gt;
+  &lt;/section&gt;
+
+&lt;/div&gt;
+&lt;/body&gt;
+&lt;/html&gt;</pre>
+        </div>
+      </div>
+    </div>
+  </div>
+  <a href="../index.html" class="btn-back" style="margin-top:20px;">&#8592; Quay lại</a>
+  <script type="module">
+    import { codeToHtml } from 'https://esm.sh/shiki@1';
+    const raw = document.getElementById('code-raw').textContent;
+    const highlighted = await codeToHtml(raw, { lang: 'html', theme: 'github-dark' });
+    document.getElementById('code-highlight').innerHTML = highlighted;
+    const pre = document.getElementById('code-highlight').querySelector('pre');
+    if (pre) pre.style.cssText = 'border-radius:10px;padding:20px;font-size:0.87rem;overflow-x:auto;margin:0;line-height:1.7';
+  </script>
+</body>
+</html>

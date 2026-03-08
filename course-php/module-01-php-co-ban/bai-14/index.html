@@ -1,0 +1,128 @@
+<!DOCTYPE html>
+<html lang="vi">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <meta name="keywords" content="PHP,Lập trình PHP,Web,NenTang,Bài tập PHP,PHP cơ bản">
+  <meta name="author" content="Dương Nguyễn Phú Cường">
+  <meta name="description" content="Thu thập và xử lý dữ liệu form bằng POST, bảo mật cơ bản và validation.">
+  <meta property="og:locale" content="vi_VN">
+  <meta property="og:type" content="website">
+  <meta property="og:title" content="Bài 14 – Xử Lý Form HTML – Method POST | NenTang.vn">
+  <meta property="og:description" content="Thu thập và xử lý dữ liệu form bằng POST, bảo mật cơ bản và validation.">
+  <meta property="og:url" content="https://nentang.vn/">
+  <meta property="og:site_name" content="Nền tảng Kiến thức">
+  <title>Bài 14 – Xử Lý Form HTML – Method POST | NenTang.vn</title>
+  <link rel="stylesheet" href="../../shared.css" />
+</head>
+<body>
+  <div class="page-header module-php-1">
+    <div class="breadcrumb">
+      <a href="../../index.html">PHP Course</a> &rsaquo;
+      <a href="../index.html">Module 1</a> &rsaquo; Bài 14
+    </div>
+    <h1>Bài 14: Xử Lý Form HTML – Method POST</h1>
+    <p>Module 1 – PHP Cơ Bản</p>
+  </div>
+
+  <div class="exercise-page">
+    <div class="exercise-box">
+      <div class="ex-head">
+        <h1>📝 Yêu cầu bài tập</h1>
+        <p>Thu thập và xử lý dữ liệu form bằng POST, bảo mật cơ bản và validation.</p>
+      </div>
+      <div class="ex-desc">
+        <h3>Yêu cầu</h3>
+        <ul>
+          <li>Tạo form đăng ký tài khoản với POST</li>
+          <li>Đọc dữ liệu từ <code>$_POST</code></li>
+          <li>Validate: kiểm tra bắt buộc, độ dài, email hợp lệ</li>
+          <li>Hiển thị thông báo lỗi bên cạnh mỗi field</li>
+          <li>Redirect sau submit thành công (PRG pattern)</li>
+        </ul>
+        <h3>🧠 Kiến thức cần nhớ</h3>
+        <ul>
+          <li><code>$_POST</code>: dữ liệu ẩn trong body của request — không hiện trên URL</li>
+          <li>POST an toàn hơn GET cho mật khẩu, thông tin nhạy cảm</li>
+          <li><code>filter_var($email, FILTER_VALIDATE_EMAIL)</code> kiểm tra email hợp lệ</li>
+          <li><code>header('Location: success.php')</code> + <code>exit;</code> → redirect</li>
+          <li>PRG (Post/Redirect/Get) tránh trùng lặp khi F5</li>
+        </ul>
+      </div>
+      <div class="ex-work">
+        <h3>💻 Code mẫu</h3>
+        <div id="code-highlight">
+          <pre id="code-raw" style="display:none">&lt;?php
+$loi = [];
+$du_lieu = [];
+
+if ($_SERVER['REQUEST_METHOD'] === 'POST') {
+    // ── Lấy và làm sạch ──────────
+    $ho_ten  = trim($_POST['ho_ten']  ?? '');
+    $email   = trim($_POST['email']   ?? '');
+    $mat_khau= trim($_POST['mat_khau']?? '');
+    $xac_nhan= trim($_POST['xac_nhan']?? '');
+    
+    // ── Validate ──────────────────
+    if (empty($ho_ten))
+        $loi['ho_ten'] = "Họ tên không được bỏ trống";
+    elseif (mb_strlen($ho_ten) &lt; 3)
+        $loi['ho_ten'] = "Họ tên ít nhất 3 ký tự";
+    
+    if (empty($email))
+        $loi['email'] = "Email không được bỏ trống";
+    elseif (!filter_var($email, FILTER_VALIDATE_EMAIL))
+        $loi['email'] = "Email không hợp lệ";
+    
+    if (empty($mat_khau))
+        $loi['mat_khau'] = "Mật khẩu không được bỏ trống";
+    elseif (strlen($mat_khau) &lt; 8)
+        $loi['mat_khau'] = "Mật khẩu ít nhất 8 ký tự";
+    
+    if ($xac_nhan !== $mat_khau)
+        $loi['xac_nhan'] = "Mật khẩu xác nhận không khớp";
+    
+    // ── Xử lý nếu không lỗi ───────
+    if (empty($loi)) {
+        $mat_khau_hash = password_hash($mat_khau, PASSWORD_DEFAULT);
+        // Lưu vào DB... (xem bài PHP &amp; MySQL)
+        echo "&lt;p style='color:green'&gt;✅ Đăng ký thành công! Email: $email&lt;/p&gt;";
+        // header('Location: login.php'); exit;
+    }
+    $du_lieu = compact('ho_ten', 'email');
+}
+
+function loi(array &amp;$loi, string $key): string {
+    return isset($loi[$key]) ? "&lt;span style='color:red'&gt;{$loi[$key]}&lt;/span&gt;" : "";
+}
+?&gt;
+&lt;form method="POST"&gt;
+  &lt;label&gt;Họ tên: &lt;input type="text" name="ho_ten" value="&lt;?= htmlspecialchars($du_lieu['ho_ten'] ?? '') ?&gt;"&gt;&lt;/label&gt;
+  &lt;?= loi($loi, 'ho_ten') ?&gt;&lt;br&gt;
+  
+  &lt;label&gt;Email: &lt;input type="email" name="email" value="&lt;?= htmlspecialchars($du_lieu['email'] ?? '') ?&gt;"&gt;&lt;/label&gt;
+  &lt;?= loi($loi, 'email') ?&gt;&lt;br&gt;
+  
+  &lt;label&gt;Mật khẩu: &lt;input type="password" name="mat_khau"&gt;&lt;/label&gt;
+  &lt;?= loi($loi, 'mat_khau') ?&gt;&lt;br&gt;
+  
+  &lt;label&gt;Xác nhận: &lt;input type="password" name="xac_nhan"&gt;&lt;/label&gt;
+  &lt;?= loi($loi, 'xac_nhan') ?&gt;&lt;br&gt;
+  
+  &lt;button type="submit"&gt;Đăng ký&lt;/button&gt;
+&lt;/form&gt;</pre>
+        </div>
+      </div>
+    </div>
+  </div>
+  <a href="../index.html" class="btn-back">&#8592; Quay lại Module 1</a>
+  <script type="module">
+    import { codeToHtml } from 'https://esm.sh/shiki@1';
+    const raw = document.getElementById('code-raw').textContent;
+    const highlighted = await codeToHtml(raw, { lang: 'php', theme: 'github-dark' });
+    document.getElementById('code-highlight').innerHTML = highlighted;
+    const pre = document.getElementById('code-highlight').querySelector('pre');
+    if (pre) pre.style.cssText = 'border-radius:10px;padding:20px;font-size:0.87rem;overflow-x:auto;margin:0;line-height:1.7';
+  </script>
+</body>
+</html>

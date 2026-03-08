@@ -1,0 +1,247 @@
+<!DOCTYPE html>
+<html lang="vi">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <meta name="keywords" content="Nền tảng,HTML,CSS,JavaScript,Lập trình,Web,Kiến thức,Đồ án">
+  <meta name="author" content="Dương Nguyễn Phú Cường">
+  <meta name="description" content="Xây dựng trang giới thiệu một khóa học lập trình với chương trình học, giảng viên và form đăng ký.">
+  <meta property="og:locale" content="vi_VN">
+  <meta property="og:type" content="website">
+  <meta property="og:title" content="Bài 34 – Đồ Án: Trang Khóa Học Trực Tuyến | NenTang.vn">
+  <meta property="og:description" content="Xây dựng trang giới thiệu một khóa học lập trình với chương trình học, giảng viên và form đăng ký.">
+  <meta property="og:url" content="https://nentang.vn/">
+  <meta property="og:site_name" content="Nền tảng Kiến thức">
+  <title>Bài 34 – Đồ Án: Trang Khóa Học Trực Tuyến | NenTang.vn</title>
+  <link rel="stylesheet" href="../../shared.css" />
+</head>
+<body>
+  <div class="page-header module-1">
+    <div class="breadcrumb">
+      <a href="../../index.html">Trang Chủ</a> &rsaquo;
+      <a href="../index.html">Module 1</a> &rsaquo; Bài 34
+    </div>
+    <h1>Bài 34: Đồ Án: Trang Khóa Học Trực Tuyến</h1>
+    <p>Module 1 – HTML Cơ Bản &nbsp;|&nbsp; 🏆 Bài Đồ Án Tổng Hợp</p>
+  </div>
+
+  <div class="exercise-page">
+    <div class="exercise-box">
+      <div class="ex-head">
+        <h1>🏆 Đồ Án: Đồ Án: Trang Khóa Học Trực Tuyến</h1>
+        <p>Xây dựng trang giới thiệu một khóa học lập trình với chương trình học, giảng viên và form đăng ký.</p>
+      </div>
+      <div class="ex-desc">
+        <h3>Mô tả dự án</h3>
+        <p>Trang landing page khóa học trực tuyến là dạng trang web rất phổ biến trong 
+   thực tế. Nó kết hợp nhiều dạng nội dung: danh sách bài học, bảng so sánh gói học, 
+   phần câu hỏi thường gặp (FAQ) dùng dl, và form đăng ký học viên đầy đủ validators.</p>
+        <h3>📋 Yêu cầu chi tiết</h3>
+        <ul>
+          <li>Hero section: tiêu đề h1 hấp dẫn, mô tả ngắn, ảnh banner, 2 nút CTA (Đăng Ký Ngay / Xem Demo)</li>
+          <li>Section 'Bạn sẽ học được gì': ul với ít nhất 8 mục lợi ích (dùng emoji ✅ trước mỗi mục)</li>
+          <li>Section chương trình học: ol có thứ tự với các module, mỗi module có ul lồng liệt kê bài học</li>
+          <li>Section giảng viên: ảnh + tên + tiêu đề + mô tả + danh sách thành tích</li>
+          <li>Bảng so sánh 3 gói: Miễn Phí / Cơ Bản / Pro – dùng table với colspan, đánh dấu gói khuyến nghị</li>
+          <li>FAQ section: dùng &lt;details&gt;/&lt;summary&gt; cho 5 câu hỏi thường gặp</li>
+          <li>Form đăng ký học: input text, email, phone, select khóa học, radio chọn hình thức học, checkbox điều khoản</li>
+          <li>Dùng &lt;progress&gt; hoặc &lt;meter&gt; để hiển thị mức độ lấp đầy khóa học</li>
+        </ul>
+        <h3>🧠 Kiến thức tổng hợp áp dụng</h3>
+        <ul>
+          <li>&lt;details&gt;/&lt;summary&gt;: phần tử HTML5 gốc tạo accordion không cần JS</li>
+          <li>&lt;progress value='75' max='100'&gt;: thanh tiến trình native</li>
+          <li>&lt;meter min='0' max='100' value='75'&gt;: đo lường trong phạm vi</li>
+          <li>Table phức tạp: rowspan để gộp các ô trong cột đặc điểm giống nhau</li>
+          <li>Radio group: các input cùng name='type' là một nhóm chọn 1</li>
+          <li>Checkbox với required để bắt buộc đồng ý điều khoản</li>
+          <li>&lt;kbd&gt; cho phím tắt bàn phím trong mô tả tính năng</li>
+        </ul>
+      </div>
+      <div class="ex-work">
+        <h3>💻 Code Skeleton – Khung sườn ban đầu để bắt đầu</h3>
+        <p style="color:#718096;font-size:0.88rem;margin-bottom:12px;">
+          📌 Đây là khung HTML cơ bản. Bạn cần tự điền nội dung, thêm CSS inline hoặc thẻ &lt;style&gt; để hoàn thiện theo yêu cầu.
+        </p>
+        <div id="code-highlight">
+          <pre id="code-raw" style="display:none">&lt;!DOCTYPE html&gt;
+&lt;html lang="vi"&gt;
+&lt;head&gt;
+  &lt;meta charset="UTF-8"&gt;
+  &lt;meta name="viewport" content="width=device-width, initial-scale=1.0"&gt;
+  &lt;title&gt;Khóa Học HTML &amp;amp; CSS – Nền Tảng.vn&lt;/title&gt;
+  &lt;style&gt;
+    body { font-family: 'Segoe UI', sans-serif; margin: 0; color: #333; }
+    .container { max-width: 1000px; margin: 0 auto; padding: 20px; }
+    .hero { background: linear-gradient(135deg, #667eea, #764ba2); color: white; padding: 60px 20px; text-align: center; }
+    .hero h1 { font-size: 2.2rem; margin-bottom: 16px; }
+    .btn { display: inline-block; padding: 12px 28px; border-radius: 6px; text-decoration: none; font-weight: bold; margin: 8px; }
+    .btn-primary { background: #f6ad55; color: #333; }
+    .btn-outline { border: 2px solid white; color: white; }
+    /* Giá gói */
+    .pricing { display: flex; gap: 20px; margin: 20px 0; }
+    .plan { background: white; border: 2px solid #e2e8f0; border-radius: 12px; padding: 24px; flex: 1; text-align: center; }
+    .plan.recommended { border-color: #667eea; position: relative; }
+    /* FAQ */
+    details { border: 1px solid #e2e8f0; border-radius: 8px; margin: 8px 0; }
+    summary { padding: 12px 16px; cursor: pointer; font-weight: bold; }
+    details p { padding: 0 16px 12px; }
+    /* TODO: Thêm CSS của bạn */
+  &lt;/style&gt;
+&lt;/head&gt;
+&lt;body&gt;
+
+  &lt;!-- HERO --&gt;
+  &lt;section class="hero"&gt;
+    &lt;p style="font-size:1rem;opacity:.8;"&gt;&amp;#127891; Khóa Học Trực Tuyến&lt;/p&gt;
+    &lt;h1&gt;Học HTML &amp;amp; CSS Từ A đến Z&lt;br&gt;Làm Chủ Web Trong 30 Ngày&lt;/h1&gt;
+    &lt;p&gt;Hơn &lt;strong&gt;5.000 học viên&lt;/strong&gt; đã tốt nghiệp &amp;nbsp;|&amp;nbsp;
+       &lt;meter min="0" max="100" value="82" title="82% chỗ đã đăng ký"&gt;82%&lt;/meter&gt;
+       &lt;strong&gt;82%&lt;/strong&gt; chỗ đã đăng ký&lt;/p&gt;
+    &lt;a href="#register" class="btn btn-primary"&gt;&amp;#128640; Đăng Ký Ngay&lt;/a&gt;
+    &lt;a href="#" class="btn btn-outline"&gt;&amp;#9654; Xem Demo&lt;/a&gt;
+  &lt;/section&gt;
+
+  &lt;div class="container"&gt;
+
+    &lt;!-- BẠN SẼ HỌC ĐƯỢC GÌ --&gt;
+    &lt;section&gt;
+      &lt;h2&gt;✅ Bạn Sẽ Học Được Gì?&lt;/h2&gt;
+      &lt;ul&gt;
+        &lt;li&gt;✅ Cấu trúc HTML5 semantic chuẩn&lt;/li&gt;
+        &lt;li&gt;✅ CSS3 đầy đủ: Box Model, Flexbox, Grid&lt;/li&gt;
+        &lt;li&gt;✅ Responsive Design – Trang web chạy mọi thiết bị&lt;/li&gt;
+        &lt;li&gt;✅ SEO cơ bản và tối ưu hiệu suất&lt;/li&gt;
+        &lt;!-- TODO: Thêm ít nhất 4 mục nữa --&gt;
+      &lt;/ul&gt;
+    &lt;/section&gt;
+
+    &lt;!-- CHƯƠNG TRÌNH HỌC --&gt;
+    &lt;section&gt;
+      &lt;h2&gt;📚 Chương Trình Học&lt;/h2&gt;
+      &lt;ol&gt;
+        &lt;li&gt;
+          &lt;strong&gt;Module 1: HTML Cơ Bản&lt;/strong&gt; (10 bài)
+          &lt;ul&gt;
+            &lt;li&gt;Bài 1: Cấu trúc trang HTML&lt;/li&gt;
+            &lt;li&gt;Bài 2: Thẻ tiêu đề và đoạn văn&lt;/li&gt;
+            &lt;!-- TODO: Thêm bài học --&gt;
+          &lt;/ul&gt;
+        &lt;/li&gt;
+        &lt;li&gt;
+          &lt;strong&gt;Module 2: CSS Styling&lt;/strong&gt; (12 bài)
+          &lt;ul&gt;
+            &lt;li&gt;Bài 1: Inline, Internal, External CSS&lt;/li&gt;
+            &lt;!-- TODO: Thêm bài học --&gt;
+          &lt;/ul&gt;
+        &lt;/li&gt;
+        &lt;!-- TODO: Thêm module khác --&gt;
+      &lt;/ol&gt;
+    &lt;/section&gt;
+
+    &lt;!-- BẢNG GIÁ --&gt;
+    &lt;section&gt;
+      &lt;h2&gt;💰 Bảng Giá Khóa Học&lt;/h2&gt;
+      &lt;div class="pricing"&gt;
+        &lt;div class="plan"&gt;
+          &lt;h3&gt;Miễn Phí&lt;/h3&gt;
+          &lt;p style="font-size:2rem;font-weight:bold;"&gt;0đ&lt;/p&gt;
+          &lt;ul style="text-align:left;"&gt;
+            &lt;li&gt;10 bài học đầu tiên&lt;/li&gt;
+            &lt;li&gt;Tài liệu PDF&lt;/li&gt;
+            &lt;li style="color:#ccc;"&gt;❌ Chứng chỉ&lt;/li&gt;
+          &lt;/ul&gt;
+          &lt;a href="#" class="btn btn-outline" style="border-color:#667eea;color:#667eea;"&gt;Bắt Đầu Miễn Phí&lt;/a&gt;
+        &lt;/div&gt;
+        &lt;div class="plan recommended"&gt;
+          &lt;p style="position:absolute;top:-12px;left:50%;transform:translateX(-50%);
+             background:#667eea;color:white;padding:2px 12px;border-radius:20px;font-size:.8rem;"&gt;
+             ⭐ Khuyến Nghị
+          &lt;/p&gt;
+          &lt;h3&gt;Cơ Bản&lt;/h3&gt;
+          &lt;p style="font-size:2rem;font-weight:bold;color:#667eea;"&gt;499.000đ&lt;/p&gt;
+          &lt;ul style="text-align:left;"&gt;
+            &lt;li&gt;Toàn bộ 60 bài học&lt;/li&gt;
+            &lt;li&gt;Tài liệu + Source Code&lt;/li&gt;
+            &lt;li&gt;✅ Chứng chỉ hoàn thành&lt;/li&gt;
+            &lt;li&gt;Hỗ trợ 3 tháng&lt;/li&gt;
+          &lt;/ul&gt;
+          &lt;a href="#register" class="btn btn-primary"&gt;Đăng Ký Ngay&lt;/a&gt;
+        &lt;/div&gt;
+        &lt;div class="plan"&gt;
+          &lt;h3&gt;Pro&lt;/h3&gt;
+          &lt;p style="font-size:2rem;font-weight:bold;"&gt;999.000đ&lt;/p&gt;
+          &lt;ul style="text-align:left;"&gt;
+            &lt;li&gt;Tất cả Cơ Bản&lt;/li&gt;
+            &lt;li&gt;✅ 1-1 Mentoring&lt;/li&gt;
+            &lt;li&gt;✅ Review Code&lt;/li&gt;
+            &lt;li&gt;Hỗ trợ 1 năm&lt;/li&gt;
+          &lt;/ul&gt;
+          &lt;a href="#register" class="btn btn-outline" style="border-color:#333;color:#333;"&gt;Chọn Pro&lt;/a&gt;
+        &lt;/div&gt;
+      &lt;/div&gt;
+    &lt;/section&gt;
+
+    &lt;!-- FAQ --&gt;
+    &lt;section&gt;
+      &lt;h2&gt;❓ Câu Hỏi Thường Gặp&lt;/h2&gt;
+      &lt;details&gt;
+        &lt;summary&gt;Khóa học phù hợp với ai?&lt;/summary&gt;
+        &lt;p&gt;Phù hợp với người mới bắt đầu hoàn toàn, không cần kiến thức lập trình trước đó.&lt;/p&gt;
+      &lt;/details&gt;
+      &lt;details&gt;
+        &lt;summary&gt;Học trực tuyến, tôi có thể học lúc nào?&lt;/summary&gt;
+        &lt;p&gt;Học mọi lúc mọi nơi, không có lịch cố định. Video lưu trữ vĩnh viễn.&lt;/p&gt;
+      &lt;/details&gt;
+      &lt;!-- TODO: Thêm 3 câu hỏi nữa --&gt;
+    &lt;/section&gt;
+
+    &lt;!-- FORM ĐĂNG KÝ --&gt;
+    &lt;section id="register"&gt;
+      &lt;h2&gt;📝 Đăng Ký Học Ngay&lt;/h2&gt;
+      &lt;form action="#" method="post"&gt;
+        &lt;label&gt;Họ và tên: &lt;input type="text" name="name" required&gt;&lt;/label&gt;&lt;br&gt;&lt;br&gt;
+        &lt;label&gt;Email: &lt;input type="email" name="email" required&gt;&lt;/label&gt;&lt;br&gt;&lt;br&gt;
+        &lt;label&gt;Số điện thoại: &lt;input type="tel" name="phone"&gt;&lt;/label&gt;&lt;br&gt;&lt;br&gt;
+        &lt;label&gt;Khóa học:
+          &lt;select name="course" required&gt;
+            &lt;option value=""&gt;-- Chọn gói học --&lt;/option&gt;
+            &lt;option value="free"&gt;Miễn Phí&lt;/option&gt;
+            &lt;option value="basic"&gt;Cơ Bản – 499.000đ&lt;/option&gt;
+            &lt;option value="pro"&gt;Pro – 999.000đ&lt;/option&gt;
+          &lt;/select&gt;
+        &lt;/label&gt;&lt;br&gt;&lt;br&gt;
+        &lt;p&gt;Hình thức học:&lt;/p&gt;
+        &lt;label&gt;&lt;input type="radio" name="type" value="online" checked&gt; Trực tuyến (Online)&lt;/label&gt;&lt;br&gt;
+        &lt;label&gt;&lt;input type="radio" name="type" value="offline"&gt; Tại trung tâm (Offline)&lt;/label&gt;&lt;br&gt;&lt;br&gt;
+        &lt;label&gt;
+          &lt;input type="checkbox" name="agree" required&gt;
+          Tôi đồng ý với &lt;a href="#"&gt;Điều Khoản Sử Dụng&lt;/a&gt;
+        &lt;/label&gt;&lt;br&gt;&lt;br&gt;
+        &lt;button type="submit"&gt;&amp;#128640; Đăng Ký Ngay&lt;/button&gt;
+      &lt;/form&gt;
+    &lt;/section&gt;
+
+  &lt;/div&gt;
+
+  &lt;footer style="background:#2d3748;color:#a0aec0;text-align:center;padding:20px;margin-top:40px;"&gt;
+    &lt;p&gt;&amp;copy; 2025 NenTang.vn &amp;mdash; Nền Tảng Kiến Thức Lập Trình&lt;/p&gt;
+  &lt;/footer&gt;
+
+&lt;/body&gt;
+&lt;/html&gt;</pre>
+        </div>
+      </div>
+    </div>
+  </div>
+  <a href="../index.html" class="btn-back" style="margin-top:20px;">&#8592; Quay lại</a>
+  <script type="module">
+    import { codeToHtml } from 'https://esm.sh/shiki@1';
+    const raw = document.getElementById('code-raw').textContent;
+    const highlighted = await codeToHtml(raw, { lang: 'html', theme: 'github-dark' });
+    document.getElementById('code-highlight').innerHTML = highlighted;
+    const pre = document.getElementById('code-highlight').querySelector('pre');
+    if (pre) pre.style.cssText = 'border-radius:10px;padding:20px;font-size:0.87rem;overflow-x:auto;margin:0;line-height:1.7';
+  </script>
+</body>
+</html>

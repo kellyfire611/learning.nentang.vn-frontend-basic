@@ -1,0 +1,112 @@
+<!DOCTYPE html>
+<html lang="vi">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <meta name="keywords" content="PHP,Lập trình PHP,Web,NenTang,Bài tập PHP,PHP cơ bản">
+  <meta name="author" content="Dương Nguyễn Phú Cường">
+  <meta name="description" content="Mã hóa và giải mã JSON để trao đổi dữ liệu giữa PHP và JavaScript hoặc API.">
+  <meta property="og:locale" content="vi_VN">
+  <meta property="og:type" content="website">
+  <meta property="og:title" content="Bài 20 – JSON Trong PHP | NenTang.vn">
+  <meta property="og:description" content="Mã hóa và giải mã JSON để trao đổi dữ liệu giữa PHP và JavaScript hoặc API.">
+  <meta property="og:url" content="https://nentang.vn/">
+  <meta property="og:site_name" content="Nền tảng Kiến thức">
+  <title>Bài 20 – JSON Trong PHP | NenTang.vn</title>
+  <link rel="stylesheet" href="../../shared.css" />
+</head>
+<body>
+  <div class="page-header module-php-1">
+    <div class="breadcrumb">
+      <a href="../../index.html">PHP Course</a> &rsaquo;
+      <a href="../index.html">Module 1</a> &rsaquo; Bài 20
+    </div>
+    <h1>Bài 20: JSON Trong PHP</h1>
+    <p>Module 1 – PHP Cơ Bản</p>
+  </div>
+
+  <div class="exercise-page">
+    <div class="exercise-box">
+      <div class="ex-head">
+        <h1>📝 Yêu cầu bài tập</h1>
+        <p>Mã hóa và giải mã JSON để trao đổi dữ liệu giữa PHP và JavaScript hoặc API.</p>
+      </div>
+      <div class="ex-desc">
+        <h3>Yêu cầu</h3>
+        <ul>
+          <li>Chuyển mảng PHP sang JSON bằng <code>json_encode()</code></li>
+          <li>Chuyển JSON sang mảng/object bằng <code>json_decode()</code></li>
+          <li>Tạo REST API JSON đơn giản</li>
+          <li>Đọc JSON từ API ngoài bằng <code>file_get_contents()</code></li>
+          <li>Xử lý JSON lồng nhau (nested)</li>
+        </ul>
+        <h3>🧠 Kiến thức cần nhớ</h3>
+        <ul>
+          <li><code>json_encode($arr, JSON_UNESCAPED_UNICODE | JSON_PRETTY_PRINT)</code></li>
+          <li><code>json_decode($json, true)</code>: true → mảng; false → object stdClass</li>
+          <li><code>header('Content-Type: application/json')</code>: khai báo API trả về JSON</li>
+          <li><code>json_last_error()</code>: kiểm tra lỗi parse JSON</li>
+          <li>Hằng số hữu ích: <code>JSON_UNESCAPED_UNICODE</code>, <code>JSON_PRETTY_PRINT</code>, <code>JSON_HEX_TAG</code></li>
+        </ul>
+      </div>
+      <div class="ex-work">
+        <h3>💻 Code mẫu</h3>
+        <div id="code-highlight">
+          <pre id="code-raw" style="display:none">&lt;?php
+// ── json_encode ───────────────────
+$san_pham = [
+    ['id' =&gt; 1, 'ten' =&gt; 'Áo thun', 'gia' =&gt; 150_000, 'ton_kho' =&gt; true],
+    ['id' =&gt; 2, 'ten' =&gt; 'Quần jean', 'gia' =&gt; 450_000, 'ton_kho' =&gt; false],
+    ['id' =&gt; 3, 'ten' =&gt; 'Giày thể thao', 'gia' =&gt; 850_000, 'ton_kho' =&gt; true],
+];
+
+$json = json_encode($san_pham, JSON_UNESCAPED_UNICODE | JSON_PRETTY_PRINT);
+echo "&lt;pre&gt;" . $json . "&lt;/pre&gt;";
+
+// ── json_decode ───────────────────
+$json_raw = '[{"id":10,"ten":"iPhone 15","gia":22990000},{"id":11,"ten":"Samsung S24","gia":19990000}]';
+$phones = json_decode($json_raw, true);   // true = assoc array
+foreach ($phones as $p) {
+    echo "{$p['ten']}: " . number_format($p['gia'], 0, ',', '.') . "đ&lt;br&gt;";
+}
+
+// ── API endpoint giả lập ──────────
+if (isset($_GET['api']) &amp;&amp; $_GET['api'] === 'products') {
+    header('Content-Type: application/json; charset=utf-8');
+    echo json_encode([
+        'status'  =&gt; 'success',
+        'total'   =&gt; count($san_pham),
+        'data'    =&gt; $san_pham,
+    ], JSON_UNESCAPED_UNICODE);
+    exit;
+}
+
+// ── JSON lồng nhau ─────────────────
+$don_hang = [
+    'ma_don'     =&gt; 'ORD-2026-001',
+    'ngay'       =&gt; date('Y-m-d'),
+    'khach_hang' =&gt; ['ten' =&gt; 'Nguyễn A', 'email' =&gt; 'a@demo.vn'],
+    'san_pham'   =&gt; $san_pham,
+    'tong_tien'  =&gt; array_sum(array_column($san_pham, 'gia')),
+];
+$json_don_hang = json_encode($don_hang, JSON_UNESCAPED_UNICODE | JSON_PRETTY_PRINT);
+echo "&lt;pre&gt;" . htmlspecialchars($json_don_hang) . "&lt;/pre&gt;";
+
+// Truy cập nested
+$obj = json_decode($json_don_hang);
+echo "Email khách: " . $obj-&gt;khach_hang-&gt;email . "&lt;br&gt;";</pre>
+        </div>
+      </div>
+    </div>
+  </div>
+  <a href="../index.html" class="btn-back">&#8592; Quay lại Module 1</a>
+  <script type="module">
+    import { codeToHtml } from 'https://esm.sh/shiki@1';
+    const raw = document.getElementById('code-raw').textContent;
+    const highlighted = await codeToHtml(raw, { lang: 'php', theme: 'github-dark' });
+    document.getElementById('code-highlight').innerHTML = highlighted;
+    const pre = document.getElementById('code-highlight').querySelector('pre');
+    if (pre) pre.style.cssText = 'border-radius:10px;padding:20px;font-size:0.87rem;overflow-x:auto;margin:0;line-height:1.7';
+  </script>
+</body>
+</html>

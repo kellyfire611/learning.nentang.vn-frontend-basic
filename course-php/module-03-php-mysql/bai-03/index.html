@@ -1,0 +1,142 @@
+<!DOCTYPE html>
+<html lang="vi">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <meta name="description" content="Thực hiện SELECT với WHERE, ORDER BY, LIMIT, và các điều kiện lọc phức tạp.">
+  <meta name="author" content="Dương Nguyễn Phú Cường">
+  <meta property="og:locale" content="vi_VN">
+  <meta property="og:type" content="website">
+  <meta property="og:title" content="Bài 03 – SELECT – Truy Vấn và Lọc Dữ Liệu | NenTang.vn">
+  <meta property="og:url" content="https://nentang.vn/">
+  <meta property="og:site_name" content="Nền tảng Kiến thức">
+  <title>Bài 03 – SELECT – Truy Vấn và Lọc Dữ Liệu | NenTang.vn</title>
+  <link rel="stylesheet" href="../../shared.css" />
+</head>
+<body>
+  <div class="page-header module-php-3">
+    <div class="breadcrumb">
+      <a href="../../index.html">PHP Course</a> &rsaquo;
+      <a href="../index.html">Module 3</a> &rsaquo; Bài 03
+    </div>
+    <h1>Bài 03: SELECT – Truy Vấn và Lọc Dữ Liệu</h1>
+    <p>Module 3 – PHP &amp; MySQL Thực Chiến</p>
+  </div>
+
+  <div class="exercise-page">
+    <div class="exercise-box">
+      <div class="ex-head">
+        <h1>📝 Yêu cầu bài tập</h1>
+        <p>Thực hiện SELECT với WHERE, ORDER BY, LIMIT, và các điều kiện lọc phức tạp.</p>
+      </div>
+      <div class="ex-desc">
+        <h3>Yêu cầu</h3>
+        <ul>
+          <li>SELECT đơn giản và với điều kiện WHERE</li>
+          <li>Lọc theo khoảng giá, từ khóa tìm kiếm</li>
+          <li>ORDER BY nhiều cột, LIMIT và OFFSET cho phân trang</li>
+          <li>Các hàm tổng hợp: COUNT, SUM, AVG, MIN, MAX</li>
+          <li>DISTINCT và GROUP BY</li>
+        </ul>
+        <h3>🧠 Kiến thức cần nhớ</h3>
+        <ul>
+          <li><code>WHERE col BETWEEN 100 AND 500</code>: lọc trong khoảng</li>
+          <li><code>ORDER BY col1 ASC, col2 DESC</code>: sắp xếp nhiều cột</li>
+          <li><code>LIMIT 10 OFFSET 20</code>: lấy 10 hàng bắt đầu từ hàng 21 (trang 3)</li>
+          <li><code>COUNT(*)</code>: đếm tất cả; <code>COUNT(col)</code>: bỏ qua NULL</li>
+          <li><code>GROUP BY col HAVING COUNT(*) > 1</code>: nhóm và lọc nhóm</li>
+        </ul>
+      </div>
+      <div class="ex-work">
+        <h3>💻 Code mẫu</h3>
+        <div id="code-highlight">
+          <pre id="code-raw" style="display:none">&lt;?php
+$pdo = get_pdo();
+
+// ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+// 1. SELECT tất cả sản phẩm hoạt động
+// ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+$ds = $pdo-&gt;query("SELECT ten, gia, so_luong FROM san_pham WHERE active = 1 ORDER BY ten ASC")-&gt;fetchAll();
+echo "Tổng sản phẩm active: " . count($ds) . "&lt;br&gt;";
+
+// ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+// 2. Lọc theo khoảng giá
+// ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+$stmt = $pdo-&gt;prepare("SELECT ten, gia FROM san_pham WHERE gia BETWEEN ? AND ? ORDER BY gia");
+$stmt-&gt;execute([100_000, 500_000]);
+echo "&lt;br&gt;Sản phẩm 100k-500k:&lt;br&gt;";
+foreach ($stmt-&gt;fetchAll() as $sp) {
+    echo "→ {$sp['ten']}: " . number_format($sp['gia'],0,',','.') . "đ&lt;br&gt;";
+}
+
+// ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+// 3. Tìm kiếm full-text đơn giản
+// ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+$kw = 'iphone';
+$tm = $pdo-&gt;prepare("SELECT id, ten, gia FROM san_pham WHERE ten LIKE ? OR mo_ta LIKE ? LIMIT 10");
+$tm-&gt;execute(["%$kw%", "%$kw%"]);
+$ket_qua = $tm-&gt;fetchAll();
+echo "&lt;br&gt;Tìm '$kw': " . count($ket_qua) . " kết quả&lt;br&gt;";
+foreach ($ket_qua as $sp) echo "→ {$sp['ten']}&lt;br&gt;";
+
+// ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+// 4. Phân trang (LIMIT + OFFSET)
+// ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+$trang    = (int)($_GET['trang'] ?? 1);
+$per_page = 3;
+$offset   = ($trang - 1) * $per_page;
+$total    = $pdo-&gt;query("SELECT COUNT(*) FROM san_pham WHERE active = 1")-&gt;fetchColumn();
+$tong_trang = ceil($total / $per_page);
+
+$page_data = $pdo-&gt;prepare("SELECT ten, gia FROM san_pham WHERE active=1 ORDER BY id LIMIT ? OFFSET ?");
+$page_data-&gt;execute([$per_page, $offset]);
+echo "&lt;br&gt;Trang $trang/$tong_trang (tổng $total sản phẩm):&lt;br&gt;";
+foreach ($page_data-&gt;fetchAll() as $sp) echo "• {$sp['ten']}&lt;br&gt;";
+
+// ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+// 5. Aggregate functions
+// ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+$agg = $pdo-&gt;query("
+    SELECT
+        COUNT(*) AS tong_sp,
+        AVG(gia)  AS gia_tb,
+        MIN(gia)  AS gia_thap_nhat,
+        MAX(gia)  AS gia_cao_nhat,
+        SUM(so_luong * gia) AS gia_tri_ton_kho
+    FROM san_pham WHERE active = 1
+")-&gt;fetch();
+echo "&lt;br&gt;Thống kê:&lt;br&gt;";
+echo "Tổng SP: {$agg['tong_sp']}&lt;br&gt;";
+echo "Giá TB: " . number_format($agg['gia_tb'],0,',','.') . "đ&lt;br&gt;";
+echo "Giá trị tồn kho: " . number_format($agg['gia_tri_ton_kho'],0,',','.') . "đ&lt;br&gt;";
+
+// ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+// 6. GROUP BY – sản phẩm theo danh mục
+// ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+$group = $pdo-&gt;query("
+    SELECT dm.ten AS danh_muc, COUNT(sp.id) AS so_san_pham, AVG(sp.gia) AS gia_tb
+    FROM danh_muc dm
+    LEFT JOIN san_pham sp ON sp.danh_muc_id = dm.id AND sp.active = 1
+    GROUP BY dm.id, dm.ten
+    HAVING so_san_pham &gt; 0
+    ORDER BY so_san_pham DESC
+")-&gt;fetchAll();
+echo "&lt;br&gt;Sản phẩm theo danh mục:&lt;br&gt;";
+foreach ($group as $g) {
+    echo "→ {$g['danh_muc']}: {$g['so_san_pham']} SP (TB: " . number_format($g['gia_tb'],0,',','.') . "đ)&lt;br&gt;";
+}</pre>
+        </div>
+      </div>
+    </div>
+  </div>
+  <a href="../index.html" class="btn-back">&#8592; Quay lại Module 3</a>
+  <script type="module">
+    import { codeToHtml } from 'https://esm.sh/shiki@1';
+    const raw = document.getElementById('code-raw').textContent;
+    const highlighted = await codeToHtml(raw, { lang: 'php', theme: 'github-dark' });
+    document.getElementById('code-highlight').innerHTML = highlighted;
+    const pre = document.getElementById('code-highlight').querySelector('pre');
+    if (pre) pre.style.cssText = 'border-radius:10px;padding:20px;font-size:0.87rem;overflow-x:auto;margin:0;line-height:1.7';
+  </script>
+</body>
+</html>

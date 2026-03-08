@@ -1,0 +1,143 @@
+<!DOCTYPE html>
+<html lang="vi">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <meta name="keywords" content="PHP OOP,PDO,MySQL,NenTang,Lập trình PHP nâng cao">
+  <meta name="author" content="Dương Nguyễn Phú Cường">
+  <meta name="description" content="Tích hợp WebSocket real-time vào PHP bằng thư viện Ratchet.">
+  <meta property="og:locale" content="vi_VN">
+  <meta property="og:type" content="website">
+  <meta property="og:title" content="Bài 19 – WebSocket với Ratchet PHP | NenTang.vn">
+  <meta property="og:description" content="Tích hợp WebSocket real-time vào PHP bằng thư viện Ratchet.">
+  <meta property="og:url" content="https://nentang.vn/">
+  <meta property="og:site_name" content="Nền tảng Kiến thức">
+  <title>Bài 19 – WebSocket với Ratchet PHP | NenTang.vn</title>
+  <link rel="stylesheet" href="../../shared.css" />
+</head>
+<body>
+  <div class="page-header module-php-2">
+    <div class="breadcrumb">
+      <a href="../../index.html">PHP Course</a> &rsaquo;
+      <a href="../index.html">Module 2</a> &rsaquo; Bài 19
+    </div>
+    <h1>Bài 19: WebSocket với Ratchet PHP</h1>
+    <p>Module 2 – PHP OOP &amp; Nâng Cao</p>
+  </div>
+
+  <div class="exercise-page">
+    <div class="exercise-box">
+      <div class="ex-head">
+        <h1>📝 Yêu cầu bài tập</h1>
+        <p>Tích hợp WebSocket real-time vào PHP bằng thư viện Ratchet.</p>
+      </div>
+      <div class="ex-desc">
+        <h3>Yêu cầu</h3>
+        <ul>
+          <li>Cài Ratchet qua Composer</li>
+          <li>Tạo WebSocket server lắng nghe kết nối</li>
+          <li>Broadcast message đến tất cả client</li>
+          <li>Chat room đơn giản</li>
+          <li>Client HTML kết nối WebSocket</li>
+        </ul>
+        <h3>🧠 Kiến thức cần nhớ</h3>
+        <ul>
+          <li>WebSocket: kết nối 2 chiều thời gian thực giữa client và server</li>
+          <li>Ratchet: thư viện PHP WebSocket server dựa trên ReactPHP</li>
+          <li>Event-based: onOpen, onMessage, onClose, onError</li>
+          <li><code>SplObjectStorage</code>: lưu danh sách clients đang kết nối</li>
+          <li>Chạy server: <code>php server.php</code> từ CLI</li>
+        </ul>
+      </div>
+      <div class="ex-work">
+        <h3>💻 Code mẫu</h3>
+        <div id="code-highlight">
+          <pre id="code-raw" style="display:none">&lt;?php
+// Cài đặt: composer require cboden/ratchet
+
+// ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+// server.php – WebSocket Server
+// ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+use Ratchet\MessageComponentInterface;
+use Ratchet\ConnectionInterface;
+
+class ChatRoom implements MessageComponentInterface {
+    private SplObjectStorage $clients;
+
+    public function __construct() {
+        $this-&gt;clients = new SplObjectStorage;
+    }
+
+    public function onOpen(ConnectionInterface $conn): void {
+        $this-&gt;clients-&gt;attach($conn);
+        $count = count($this-&gt;clients);
+        echo "🔵 Kết nối mới: #{$conn-&gt;resourceId} | Online: $count\n";
+        $conn-&gt;send(json_encode([
+            'type'   =&gt; 'system',
+            'msg'    =&gt; "Chào mừng! Đang có $count người online",
+            'online' =&gt; $count,
+        ]));
+        $this-&gt;broadcast(['type'=&gt;'join','msg'=&gt;"User #{$conn-&gt;resourceId} tham gia",'online'=&gt;$count], $conn);
+    }
+
+    public function onMessage(ConnectionInterface $from, string $msg): void {
+        $data = json_decode($msg, true) ?: ['type'=&gt;'chat','msg'=&gt;$msg];
+        $data['from'] = "User #{$from-&gt;resourceId}";
+        $data['time'] = date('H:i:s');
+        echo "💬 #{$from-&gt;resourceId}: {$data['msg']}\n";
+        $this-&gt;broadcast($data, null);  // broadcast cho mọi người kể cả người gửi
+    }
+
+    public function onClose(ConnectionInterface $conn): void {
+        $this-&gt;clients-&gt;detach($conn);
+        $count = count($this-&gt;clients);
+        echo "🔴 Ngắt kết nối: #{$conn-&gt;resourceId} | Online: $count\n";
+        $this-&gt;broadcast(['type'=&gt;'leave','msg'=&gt;"User #{$conn-&gt;resourceId} rời phòng",'online'=&gt;$count], null);
+    }
+
+    public function onError(ConnectionInterface $conn, \Exception $e): void {
+        echo "❌ Lỗi: " . $e-&gt;getMessage() . "\n";
+        $conn-&gt;close();
+    }
+
+    private function broadcast(array $data, ?ConnectionInterface $except): void {
+        $json = json_encode($data, JSON_UNESCAPED_UNICODE);
+        foreach ($this-&gt;clients as $client) {
+            if ($client !== $except) $client-&gt;send($json);
+        }
+    }
+}
+
+// Khởi động server (chạy từ CLI)
+// use Ratchet\Server\IoServer;
+// use Ratchet\Http\HttpServer;
+// use Ratchet\WebSocket\WsServer;
+// $server = IoServer::factory(new HttpServer(new WsServer(new ChatRoom())), 8080);
+// echo "WebSocket server chạy tại ws://localhost:8080\n";
+// $server-&gt;run();
+
+// ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+// client.html – Kết nối WebSocket
+// ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+// &lt;script&gt;
+// const ws = new WebSocket('ws://localhost:8080');
+// ws.onopen = () =&gt; ws.send(JSON.stringify({type:'chat',msg:'Xin chào!'}));
+// ws.onmessage = e =&gt; { const d = JSON.parse(e.data); console.log(d.msg); };
+// ws.onclose = () =&gt; console.log('Kết nối đóng');
+// &lt;/script&gt;
+echo "Xem code để biết cách chạy Ratchet WebSocket Server!";</pre>
+        </div>
+      </div>
+    </div>
+  </div>
+  <a href="../index.html" class="btn-back">&#8592; Quay lại Module 2</a>
+  <script type="module">
+    import { codeToHtml } from 'https://esm.sh/shiki@1';
+    const raw = document.getElementById('code-raw').textContent;
+    const highlighted = await codeToHtml(raw, { lang: 'php', theme: 'github-dark' });
+    document.getElementById('code-highlight').innerHTML = highlighted;
+    const pre = document.getElementById('code-highlight').querySelector('pre');
+    if (pre) pre.style.cssText = 'border-radius:10px;padding:20px;font-size:0.87rem;overflow-x:auto;margin:0;line-height:1.7';
+  </script>
+</body>
+</html>

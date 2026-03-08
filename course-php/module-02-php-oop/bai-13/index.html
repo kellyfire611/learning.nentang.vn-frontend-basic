@@ -1,0 +1,152 @@
+<!DOCTYPE html>
+<html lang="vi">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <meta name="keywords" content="PHP OOP,PDO,MySQL,NenTang,Lập trình PHP nâng cao">
+  <meta name="author" content="Dương Nguyễn Phú Cường">
+  <meta name="description" content="Xây dựng hệ thống cache đơn giản bằng file để tăng tốc ứng dụng PHP.">
+  <meta property="og:locale" content="vi_VN">
+  <meta property="og:type" content="website">
+  <meta property="og:title" content="Bài 13 – Simple Caching với File Cache | NenTang.vn">
+  <meta property="og:description" content="Xây dựng hệ thống cache đơn giản bằng file để tăng tốc ứng dụng PHP.">
+  <meta property="og:url" content="https://nentang.vn/">
+  <meta property="og:site_name" content="Nền tảng Kiến thức">
+  <title>Bài 13 – Simple Caching với File Cache | NenTang.vn</title>
+  <link rel="stylesheet" href="../../shared.css" />
+</head>
+<body>
+  <div class="page-header module-php-2">
+    <div class="breadcrumb">
+      <a href="../../index.html">PHP Course</a> &rsaquo;
+      <a href="../index.html">Module 2</a> &rsaquo; Bài 13
+    </div>
+    <h1>Bài 13: Simple Caching với File Cache</h1>
+    <p>Module 2 – PHP OOP &amp; Nâng Cao</p>
+  </div>
+
+  <div class="exercise-page">
+    <div class="exercise-box">
+      <div class="ex-head">
+        <h1>📝 Yêu cầu bài tập</h1>
+        <p>Xây dựng hệ thống cache đơn giản bằng file để tăng tốc ứng dụng PHP.</p>
+      </div>
+      <div class="ex-desc">
+        <h3>Yêu cầu</h3>
+        <ul>
+          <li>Cache kết quả DB query vào file JSON</li>
+          <li>TTL (Time To Live) cho cache</li>
+          <li>Cache invalidation khi data thay đổi</li>
+          <li>Cache với Tag để invalidate nhóm</li>
+          <li>So sánh hiệu năng có/không có cache</li>
+        </ul>
+        <h3>🧠 Kiến thức cần nhớ</h3>
+        <ul>
+          <li>Cache: lưu kết quả tốn kém để dùng lại, giảm tải DB/API</li>
+          <li>TTL: thời gian sống của cache – hết TTL thì tái tạo</li>
+          <li>Cache hit: tìm thấy và dùng cache; Cache miss: tạo mới</li>
+          <li>Invalidation: xóa cache khi dữ liệu gốc thay đổi</li>
+          <li>APCu, Redis, Memcached là cache engines nhanh hơn file cache</li>
+        </ul>
+      </div>
+      <div class="ex-work">
+        <h3>💻 Code mẫu</h3>
+        <div id="code-highlight">
+          <pre id="code-raw" style="display:none">&lt;?php
+class FileCache {
+    private string $dir;
+    private int    $default_ttl;
+
+    public function __construct(string $dir = '/tmp/php_cache', int $ttl = 300) {
+        $this-&gt;dir         = rtrim($dir, '/');
+        $this-&gt;default_ttl = $ttl;
+        if (!is_dir($this-&gt;dir)) mkdir($this-&gt;dir, 0755, true);
+    }
+
+    private function path(string $key): string {
+        return $this-&gt;dir . '/' . md5($key) . '.cache';
+    }
+
+    public function get(string $key): mixed {
+        $file = $this-&gt;path($key);
+        if (!file_exists($file)) return null;
+        $data = json_decode(file_get_contents($file), true);
+        if ($data['exp'] &lt; time()) {
+            unlink($file);
+            return null;  // Cache miss (hết hạn)
+        }
+        return $data['val'];
+    }
+
+    public function set(string $key, mixed $value, ?int $ttl = null): void {
+        file_put_contents($this-&gt;path($key), json_encode([
+            'val' =&gt; $value,
+            'exp' =&gt; time() + ($ttl ?? $this-&gt;default_ttl),
+            'key' =&gt; $key,
+        ], JSON_UNESCAPED_UNICODE));
+    }
+
+    public function delete(string $key): void {
+        $file = $this-&gt;path($key);
+        if (file_exists($file)) unlink($file);
+    }
+
+    public function remember(string $key, callable $callback, ?int $ttl = null): mixed {
+        $val = $this-&gt;get($key);
+        if ($val !== null) {
+            echo "(cache HIT) ";
+            return $val;
+        }
+        echo "(cache MISS) ";
+        $val = $callback();
+        $this-&gt;set($key, $val, $ttl);
+        return $val;
+    }
+
+    public function flush(): int {
+        $count = 0;
+        foreach (glob($this-&gt;dir . '/*.cache') as $f) {
+            unlink($f); $count++;
+        }
+        return $count;
+    }
+}
+
+// ── Sử dụng ──────────────────────
+$cache = new FileCache(__DIR__ . '/cache', 60);
+
+// Hàm giả lập query DB tốn kém
+function lay_du_lieu_tu_db(int $id): array {
+    sleep(0);  // Giả lập delay
+    return ['id' =&gt; $id, 'ten' =&gt; "Sản phẩm #$id", 'gia' =&gt; rand(100, 999) * 1000, 'ts' =&gt; time()];
+}
+
+// Lần 1: cache miss → tính toán
+$t1 = microtime(true);
+$sp  = $cache-&gt;remember("product_1", fn() =&gt; lay_du_lieu_tu_db(1), 30);
+echo number_format((microtime(true)-$t1)*1000, 2) . "ms | {$sp['ten']}&lt;br&gt;";
+
+// Lần 2: cache hit → nhanh hơn
+$t2 = microtime(true);
+$sp2 = $cache-&gt;remember("product_1", fn() =&gt; lay_du_lieu_tu_db(1), 30);
+echo number_format((microtime(true)-$t2)*1000, 2) . "ms | {$sp2['ten']}&lt;br&gt;";
+
+// Xóa cache khi cập nhật
+// $cache-&gt;delete("product_1");
+
+echo "Cache flush: " . $cache-&gt;flush() . " files xóa&lt;br&gt;";</pre>
+        </div>
+      </div>
+    </div>
+  </div>
+  <a href="../index.html" class="btn-back">&#8592; Quay lại Module 2</a>
+  <script type="module">
+    import { codeToHtml } from 'https://esm.sh/shiki@1';
+    const raw = document.getElementById('code-raw').textContent;
+    const highlighted = await codeToHtml(raw, { lang: 'php', theme: 'github-dark' });
+    document.getElementById('code-highlight').innerHTML = highlighted;
+    const pre = document.getElementById('code-highlight').querySelector('pre');
+    if (pre) pre.style.cssText = 'border-radius:10px;padding:20px;font-size:0.87rem;overflow-x:auto;margin:0;line-height:1.7';
+  </script>
+</body>
+</html>

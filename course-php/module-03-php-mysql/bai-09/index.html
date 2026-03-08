@@ -1,0 +1,147 @@
+<!DOCTYPE html>
+<html lang="vi">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <meta name="description" content="Tạo stored procedures, functions và views trong MySQL để tối ưu hóa truy vấn.">
+  <meta name="author" content="Dương Nguyễn Phú Cường">
+  <meta property="og:locale" content="vi_VN">
+  <meta property="og:type" content="website">
+  <meta property="og:title" content="Bài 09 – Stored Procedures và Views | NenTang.vn">
+  <meta property="og:url" content="https://nentang.vn/">
+  <meta property="og:site_name" content="Nền tảng Kiến thức">
+  <title>Bài 09 – Stored Procedures và Views | NenTang.vn</title>
+  <link rel="stylesheet" href="../../shared.css" />
+</head>
+<body>
+  <div class="page-header module-php-3">
+    <div class="breadcrumb">
+      <a href="../../index.html">PHP Course</a> &rsaquo;
+      <a href="../index.html">Module 3</a> &rsaquo; Bài 09
+    </div>
+    <h1>Bài 09: Stored Procedures và Views</h1>
+    <p>Module 3 – PHP &amp; MySQL Thực Chiến</p>
+  </div>
+
+  <div class="exercise-page">
+    <div class="exercise-box">
+      <div class="ex-head">
+        <h1>📝 Yêu cầu bài tập</h1>
+        <p>Tạo stored procedures, functions và views trong MySQL để tối ưu hóa truy vấn.</p>
+      </div>
+      <div class="ex-desc">
+        <h3>Yêu cầu</h3>
+        <ul>
+          <li>Tạo Stored Procedure: báo cáo doanh thu</li>
+          <li>Tạo MySQL Function: tính phí ship</li>
+          <li>Tạo VIEW: sản phẩm kèm danh mục</li>
+          <li>CALL procedure từ PHP PDO</li>
+          <li>OUT parameter trong stored procedure</li>
+        </ul>
+        <h3>🧠 Kiến thức cần nhớ</h3>
+        <ul>
+          <li>Stored Procedure: đoạn SQL lưu ở DB, gọi bằng CALL</li>
+          <li>View: câu query lưu thành tên bảng ảo</li>
+          <li><code>DELIMITER //</code>: đổi delimiter để viết procedure</li>
+          <li>IN/OUT/INOUT parameter: truyền vào, trả về, hay cả 2</li>
+          <li>Views cải thiện readability nhưng có thể ảnh hưởng performance</li>
+        </ul>
+      </div>
+      <div class="ex-work">
+        <h3>💻 Code mẫu</h3>
+        <div id="code-highlight">
+          <pre id="code-raw" style="display:none">&lt;?php
+$pdo = get_pdo();
+
+// ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+// 1. Tạo VIEW
+// ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+$pdo-&gt;exec("
+    CREATE OR REPLACE VIEW v_san_pham_day_du AS
+    SELECT
+        sp.id, sp.ten, sp.slug, sp.gia,
+        COALESCE(sp.gia_km, sp.gia) AS gia_hien_tai,
+        sp.gia_km IS NOT NULL AND sp.gia_km &lt; sp.gia AS dang_khuyen_mai,
+        sp.so_luong, sp.luot_xem,
+        dm.ten AS danh_muc, dm.slug AS dm_slug,
+        ROUND((sp.gia - COALESCE(sp.gia_km, sp.gia)) / sp.gia * 100) AS phan_tram_giam,
+        sp.created_at
+    FROM san_pham sp
+    JOIN danh_muc dm ON dm.id = sp.danh_muc_id
+    WHERE sp.active = 1 AND sp.deleted_at IS NULL
+");
+
+// Dùng như bảng thường
+$ds = $pdo-&gt;query("SELECT ten, gia_hien_tai, danh_muc FROM v_san_pham_day_du ORDER BY gia_hien_tai")-&gt;fetchAll();
+echo "View – tất cả SP:&lt;br&gt;";
+foreach ($ds as $sp) echo "• [{$sp['danh_muc']}] {$sp['ten']}: " . number_format($sp['gia_hien_tai'],0,',','.') . "đ&lt;br&gt;";
+
+// ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+// 2. Stored Procedure – báo cáo theo danh mục
+// ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+$pdo-&gt;exec("DROP PROCEDURE IF EXISTS sp_bao_cao_danh_muc");
+$pdo-&gt;exec("
+    CREATE PROCEDURE sp_bao_cao_danh_muc(IN p_dm_id INT)
+    BEGIN
+        SELECT
+            dm.ten AS danh_muc,
+            COUNT(sp.id) AS so_san_pham,
+            SUM(sp.so_luong) AS tong_ton_kho,
+            MIN(sp.gia) AS gia_thap_nhat,
+            MAX(sp.gia) AS gia_cao_nhat,
+            AVG(sp.gia) AS gia_trung_binh,
+            SUM(sp.gia * sp.so_luong) AS gia_tri_ton_kho
+        FROM danh_muc dm
+        LEFT JOIN san_pham sp ON sp.danh_muc_id = dm.id AND sp.active = 1
+        WHERE (p_dm_id IS NULL OR dm.id = p_dm_id)
+        GROUP BY dm.id, dm.ten;
+    END
+");
+
+// Gọi procedure
+$stmt = $pdo-&gt;prepare("CALL sp_bao_cao_danh_muc(?)");
+$stmt-&gt;execute([null]);  // null = tất cả danh mục
+echo "&lt;br&gt;Báo cáo danh mục:&lt;br&gt;";
+foreach ($stmt-&gt;fetchAll() as $row) {
+    echo "📦 {$row['danh_muc']}: {$row['so_san_pham']} SP | kho: {$row['tong_ton_kho']} | TB: " . number_format($row['gia_trung_binh'],0,',','.') . "đ&lt;br&gt;";
+}
+
+// ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+// 3. Stored Function
+// ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+$pdo-&gt;exec("DROP FUNCTION IF EXISTS fn_tinh_phi_ship");
+$pdo-&gt;exec("
+    CREATE FUNCTION fn_tinh_phi_ship(p_tinh_thanh VARCHAR(50), p_tong_tien DECIMAL(15,2))
+    RETURNS DECIMAL(15,2) DETERMINISTIC
+    BEGIN
+        DECLARE phi DECIMAL(15,2);
+        IF p_tong_tien &gt;= 500000 THEN SET phi = 0;
+        ELSEIF p_tinh_thanh = 'Hà Nội' OR p_tinh_thanh = 'Hồ Chí Minh' THEN SET phi = 20000;
+        ELSE SET phi = 35000;
+        END IF;
+        RETURN phi;
+    END
+");
+
+// Dùng trong query
+$phiShip = $pdo-&gt;prepare("SELECT fn_tinh_phi_ship(?, ?) AS phi_ship");
+$phiShip-&gt;execute(['Đà Nẵng', 300_000]);
+$phi = $phiShip-&gt;fetchColumn();
+echo "&lt;br&gt;Phí ship Đà Nẵng (300k): " . number_format($phi,0,',','.') . "đ&lt;br&gt;";
+$phiShip-&gt;execute(['Hà Nội', 600_000]);
+echo "Phí ship Hà Nội (600k - miễn phí): " . number_format($phiShip-&gt;fetchColumn(),0,',','.') . "đ&lt;br&gt;";</pre>
+        </div>
+      </div>
+    </div>
+  </div>
+  <a href="../index.html" class="btn-back">&#8592; Quay lại Module 3</a>
+  <script type="module">
+    import { codeToHtml } from 'https://esm.sh/shiki@1';
+    const raw = document.getElementById('code-raw').textContent;
+    const highlighted = await codeToHtml(raw, { lang: 'php', theme: 'github-dark' });
+    document.getElementById('code-highlight').innerHTML = highlighted;
+    const pre = document.getElementById('code-highlight').querySelector('pre');
+    if (pre) pre.style.cssText = 'border-radius:10px;padding:20px;font-size:0.87rem;overflow-x:auto;margin:0;line-height:1.7';
+  </script>
+</body>
+</html>

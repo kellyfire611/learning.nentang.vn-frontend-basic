@@ -1,0 +1,175 @@
+<!DOCTYPE html>
+<html lang="vi">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <meta name="keywords" content="PHP OOP,PDO,MySQL,NenTang,Lập trình PHP nâng cao">
+  <meta name="author" content="Dương Nguyễn Phú Cường">
+  <meta name="description" content="Xây dựng middleware pipeline để xử lý authentication, logging, rate limiting.">
+  <meta property="og:locale" content="vi_VN">
+  <meta property="og:type" content="website">
+  <meta property="og:title" content="Bài 17 – Middleware và Request Pipeline | NenTang.vn">
+  <meta property="og:description" content="Xây dựng middleware pipeline để xử lý authentication, logging, rate limiting.">
+  <meta property="og:url" content="https://nentang.vn/">
+  <meta property="og:site_name" content="Nền tảng Kiến thức">
+  <title>Bài 17 – Middleware và Request Pipeline | NenTang.vn</title>
+  <link rel="stylesheet" href="../../shared.css" />
+</head>
+<body>
+  <div class="page-header module-php-2">
+    <div class="breadcrumb">
+      <a href="../../index.html">PHP Course</a> &rsaquo;
+      <a href="../index.html">Module 2</a> &rsaquo; Bài 17
+    </div>
+    <h1>Bài 17: Middleware và Request Pipeline</h1>
+    <p>Module 2 – PHP OOP &amp; Nâng Cao</p>
+  </div>
+
+  <div class="exercise-page">
+    <div class="exercise-box">
+      <div class="ex-head">
+        <h1>📝 Yêu cầu bài tập</h1>
+        <p>Xây dựng middleware pipeline để xử lý authentication, logging, rate limiting.</p>
+      </div>
+      <div class="ex-desc">
+        <h3>Yêu cầu</h3>
+        <ul>
+          <li>Định nghĩa interface Middleware</li>
+          <li>AuthMiddleware kiểm tra token</li>
+          <li>LoggingMiddleware ghi log request</li>
+          <li>RateLimitMiddleware giới hạn requests</li>
+          <li>Chain middleware theo thứ tự</li>
+        </ul>
+        <h3>🧠 Kiến thức cần nhớ</h3>
+        <ul>
+          <li>Middleware: layer trung gian xử lý request trước/sau controller</li>
+          <li>Pipeline pattern: middleware(1) → middleware(2) → ... → controller</li>
+          <li><code>$next($request)</code>: chuyển sang middleware tiếp theo</li>
+          <li>Order matters: Auth trước, rồi mới RateLimit, rồi Log</li>
+          <li>Laravel, Symfony đều dùng middleware pipeline tương tự</li>
+        </ul>
+      </div>
+      <div class="ex-work">
+        <h3>💻 Code mẫu</h3>
+        <div id="code-highlight">
+          <pre id="code-raw" style="display:none">&lt;?php
+// ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+// Request &amp; Response
+// ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+class Request {
+    public function __construct(
+        public readonly string $method,
+        public readonly string $path,
+        public readonly array  $headers = [],
+        public readonly array  $body    = [],
+    ) {}
+    public function header(string $name): ?string {
+        return $this-&gt;headers[strtolower($name)] ?? null;
+    }
+}
+
+class Response {
+    public int    $status = 200;
+    public string $body   = '';
+    public array  $headers = [];
+    public function json(mixed $data, int $status = 200): static {
+        $this-&gt;status = $status;
+        $this-&gt;headers['Content-Type'] = 'application/json';
+        $this-&gt;body = json_encode($data, JSON_UNESCAPED_UNICODE);
+        return $this;
+    }
+}
+
+// ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+// Middleware Interface
+// ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+interface Middleware {
+    public function handle(Request $req, callable $next): Response;
+}
+
+// ── Auth Middleware ────────────────
+class AuthMiddleware implements Middleware {
+    private array $valid_tokens = ['token123' =&gt; ['id'=&gt;1,'role'=&gt;'admin']];
+    public function handle(Request $req, callable $next): Response {
+        $auth = $req-&gt;header('authorization') ?? '';
+        $token = str_replace('Bearer ', '', $auth);
+        if (!isset($this-&gt;valid_tokens[$token])) {
+            return (new Response())-&gt;json(['error' =&gt; 'Unauthorized'], 401);
+        }
+        return $next($req);
+    }
+}
+
+// ── Logging Middleware ─────────────
+class LoggingMiddleware implements Middleware {
+    public function handle(Request $req, callable $next): Response {
+        $start = microtime(true);
+        $response = $next($req);
+        $ms = round((microtime(true) - $start) * 1000, 2);
+        echo "[LOG] {$req-&gt;method} {$req-&gt;path} → {$response-&gt;status} ({$ms}ms)&lt;br&gt;";
+        return $response;
+    }
+}
+
+// ── Rate Limit Middleware ──────────
+class RateLimitMiddleware implements Middleware {
+    private static array $counter = [];
+    public function __construct(private int $maxPerMinute = 60) {}
+    public function handle(Request $req, callable $next): Response {
+        $key = $_SERVER['REMOTE_ADDR'] ?? '127.0.0.1';
+        $minute = date('YmdHi');
+        self::$counter["$key:$minute"] = (self::$counter["$key:$minute"] ?? 0) + 1;
+        if (self::$counter["$key:$minute"] &gt; $this-&gt;maxPerMinute) {
+            return (new Response())-&gt;json(['error' =&gt; 'Too Many Requests'], 429);
+        }
+        return $next($req);
+    }
+}
+
+// ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+// Pipeline
+// ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+class Pipeline {
+    private array $middleware = [];
+    public function pipe(Middleware $mw): static { $this-&gt;middleware[] = $mw; return $this; }
+    public function handle(Request $req, callable $destination): Response {
+        $chain = array_reduce(
+            array_reverse($this-&gt;middleware),
+            fn($next, $mw) =&gt; fn($req) =&gt; $mw-&gt;handle($req, $next),
+            $destination
+        );
+        return $chain($req);
+    }
+}
+
+// ── Test ──────────────────────────
+$pipeline = (new Pipeline())
+    -&gt;pipe(new LoggingMiddleware())
+    -&gt;pipe(new RateLimitMiddleware(100))
+    -&gt;pipe(new AuthMiddleware());
+
+$request = new Request('GET', '/api/products', ['authorization' =&gt; 'Bearer token123']);
+$response = $pipeline-&gt;handle($request, function(Request $req) {
+    return (new Response())-&gt;json(['data' =&gt; ['Sản phẩm A', 'Sản phẩm B'], 'count' =&gt; 2]);
+});
+echo $response-&gt;body . "&lt;br&gt;";
+
+// Request không có token
+$req2 = new Request('GET', '/api/products', []);
+$res2 = $pipeline-&gt;handle($req2, fn($r) =&gt; (new Response())-&gt;json(['data' =&gt; []]));
+echo $res2-&gt;body . "&lt;br&gt;";</pre>
+        </div>
+      </div>
+    </div>
+  </div>
+  <a href="../index.html" class="btn-back">&#8592; Quay lại Module 2</a>
+  <script type="module">
+    import { codeToHtml } from 'https://esm.sh/shiki@1';
+    const raw = document.getElementById('code-raw').textContent;
+    const highlighted = await codeToHtml(raw, { lang: 'php', theme: 'github-dark' });
+    document.getElementById('code-highlight').innerHTML = highlighted;
+    const pre = document.getElementById('code-highlight').querySelector('pre');
+    if (pre) pre.style.cssText = 'border-radius:10px;padding:20px;font-size:0.87rem;overflow-x:auto;margin:0;line-height:1.7';
+  </script>
+</body>
+</html>

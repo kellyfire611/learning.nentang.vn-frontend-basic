@@ -1,0 +1,139 @@
+<!DOCTYPE html>
+<html lang="vi">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <meta name="keywords" content="PHP OOP,PDO,MySQL,NenTang,Lập trình PHP nâng cao">
+  <meta name="author" content="Dương Nguyễn Phú Cường">
+  <meta name="description" content="Sử dụng interface định nghĩa contract và abstract class để chia sẻ implementation.">
+  <meta property="og:locale" content="vi_VN">
+  <meta property="og:type" content="website">
+  <meta property="og:title" content="Bài 03 – OOP – Interface và Abstract Class | NenTang.vn">
+  <meta property="og:description" content="Sử dụng interface định nghĩa contract và abstract class để chia sẻ implementation.">
+  <meta property="og:url" content="https://nentang.vn/">
+  <meta property="og:site_name" content="Nền tảng Kiến thức">
+  <title>Bài 03 – OOP – Interface và Abstract Class | NenTang.vn</title>
+  <link rel="stylesheet" href="../../shared.css" />
+</head>
+<body>
+  <div class="page-header module-php-2">
+    <div class="breadcrumb">
+      <a href="../../index.html">PHP Course</a> &rsaquo;
+      <a href="../index.html">Module 2</a> &rsaquo; Bài 03
+    </div>
+    <h1>Bài 03: OOP – Interface và Abstract Class</h1>
+    <p>Module 2 – PHP OOP &amp; Nâng Cao</p>
+  </div>
+
+  <div class="exercise-page">
+    <div class="exercise-box">
+      <div class="ex-head">
+        <h1>📝 Yêu cầu bài tập</h1>
+        <p>Sử dụng interface định nghĩa contract và abstract class để chia sẻ implementation.</p>
+      </div>
+      <div class="ex-desc">
+        <h3>Yêu cầu</h3>
+        <ul>
+          <li>Tạo interface <code>Printable</code>, <code>Exportable</code></li>
+          <li>Implement nhiều interface trong một class</li>
+          <li>Tạo abstract class với vừa abstract vừa concrete method</li>
+          <li>So sánh interface vs abstract class</li>
+          <li>Dùng interface để đạt Dependency Inversion (DI)</li>
+        </ul>
+        <h3>🧠 Kiến thức cần nhớ</h3>
+        <ul>
+          <li>Interface: chỉ có method signatures (không có body), constants; class implement phải định nghĩa tất cả</li>
+          <li>Abstract class: có thể có thuộc tính, constructor, concrete method lẫn abstract method</li>
+          <li>Một class chỉ extends 1 class, nhưng có thể implements nhiều interface</li>
+          <li><code>interface A extends B { }</code>: interface có thể extends interface khác</li>
+          <li>Interface thường đặt tên dạng: <code>Loggable</code>, <code>Serializable</code>, <code>Countable</code></li>
+        </ul>
+      </div>
+      <div class="ex-work">
+        <h3>💻 Code mẫu</h3>
+        <div id="code-highlight">
+          <pre id="code-raw" style="display:none">&lt;?php
+// ── Interfaces ─────────────────────
+interface Loggable {
+    public function toLog(): string;
+}
+
+interface Exportable {
+    public function toJson(): string;
+    public function toCsv(): string;
+}
+
+// ── Abstract class ────────────────
+abstract class BaseModel implements Loggable {
+    protected static int $count = 0;
+    public function __construct(protected readonly int $id) {
+        self::$count++;
+    }
+    // Concrete method
+    public function toLog(): string {
+        return "[" . static::class . " #{$this-&gt;id}] " . $this-&gt;summary();
+    }
+    // Abstract: con phải implement
+    abstract protected function summary(): string;
+    abstract public function validate(): bool;
+
+    public static function getCount(): int { return self::$count; }
+}
+
+// ── Concrete class ────────────────
+class SanPham extends BaseModel implements Exportable {
+    public function __construct(
+        int    $id,
+        private string $ten,
+        private float  $gia,
+        private int    $ton_kho,
+    ) { parent::__construct($id); }
+
+    protected function summary(): string {
+        return "{$this-&gt;ten} – " . number_format($this-&gt;gia, 0, ',', '.') . "đ (tồn: {$this-&gt;ton_kho})";
+    }
+
+    public function validate(): bool {
+        return !empty($this-&gt;ten) &amp;&amp; $this-&gt;gia &gt; 0 &amp;&amp; $this-&gt;ton_kho &gt;= 0;
+    }
+
+    public function toJson(): string {
+        return json_encode(['id'=&gt;$this-&gt;id,'ten'=&gt;$this-&gt;ten,'gia'=&gt;$this-&gt;gia,'ton_kho'=&gt;$this-&gt;ton_kho], JSON_UNESCAPED_UNICODE);
+    }
+
+    public function toCsv(): string {
+        return "{$this-&gt;id},{$this-&gt;ten},{$this-&gt;gia},{$this-&gt;ton_kho}";
+    }
+}
+
+// ── Sử dụng ──────────────────────
+$sp1 = new SanPham(1, "Áo thun", 150_000, 50);
+$sp2 = new SanPham(2, "Quần jean", 450_000, 20);
+
+echo $sp1-&gt;toLog() . "&lt;br&gt;";
+echo $sp1-&gt;toJson() . "&lt;br&gt;";
+echo "CSV: " . $sp2-&gt;toCsv() . "&lt;br&gt;";
+echo "Hợp lệ: " . ($sp1-&gt;validate() ? "có" : "không") . "&lt;br&gt;";
+echo "Tổng đối tượng: " . BaseModel::getCount() . "&lt;br&gt;";
+
+// Polymorphism: gọi qua interface type
+function in_log(Loggable $obj): void {
+    echo "LOG: " . $obj-&gt;toLog() . "&lt;br&gt;";
+}
+in_log($sp1);
+in_log($sp2);</pre>
+        </div>
+      </div>
+    </div>
+  </div>
+  <a href="../index.html" class="btn-back">&#8592; Quay lại Module 2</a>
+  <script type="module">
+    import { codeToHtml } from 'https://esm.sh/shiki@1';
+    const raw = document.getElementById('code-raw').textContent;
+    const highlighted = await codeToHtml(raw, { lang: 'php', theme: 'github-dark' });
+    document.getElementById('code-highlight').innerHTML = highlighted;
+    const pre = document.getElementById('code-highlight').querySelector('pre');
+    if (pre) pre.style.cssText = 'border-radius:10px;padding:20px;font-size:0.87rem;overflow-x:auto;margin:0;line-height:1.7';
+  </script>
+</body>
+</html>

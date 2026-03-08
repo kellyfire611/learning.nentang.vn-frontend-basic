@@ -1,0 +1,148 @@
+<!DOCTYPE html>
+<html lang="vi">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <meta name="keywords" content="PHP OOP,PDO,MySQL,NenTang,Lập trình PHP nâng cao">
+  <meta name="author" content="Dương Nguyễn Phú Cường">
+  <meta name="description" content="Viết unit test cho code PHP bằng PHPUnit để đảm bảo chất lượng phần mềm.">
+  <meta property="og:locale" content="vi_VN">
+  <meta property="og:type" content="website">
+  <meta property="og:title" content="Bài 16 – Unit Testing với PHPUnit | NenTang.vn">
+  <meta property="og:description" content="Viết unit test cho code PHP bằng PHPUnit để đảm bảo chất lượng phần mềm.">
+  <meta property="og:url" content="https://nentang.vn/">
+  <meta property="og:site_name" content="Nền tảng Kiến thức">
+  <title>Bài 16 – Unit Testing với PHPUnit | NenTang.vn</title>
+  <link rel="stylesheet" href="../../shared.css" />
+</head>
+<body>
+  <div class="page-header module-php-2">
+    <div class="breadcrumb">
+      <a href="../../index.html">PHP Course</a> &rsaquo;
+      <a href="../index.html">Module 2</a> &rsaquo; Bài 16
+    </div>
+    <h1>Bài 16: Unit Testing với PHPUnit</h1>
+    <p>Module 2 – PHP OOP &amp; Nâng Cao</p>
+  </div>
+
+  <div class="exercise-page">
+    <div class="exercise-box">
+      <div class="ex-head">
+        <h1>📝 Yêu cầu bài tập</h1>
+        <p>Viết unit test cho code PHP bằng PHPUnit để đảm bảo chất lượng phần mềm.</p>
+      </div>
+      <div class="ex-desc">
+        <h3>Yêu cầu</h3>
+        <ul>
+          <li>Cài PHPUnit qua Composer</li>
+          <li>Viết test case cho class Calculator</li>
+          <li>Test exception throwing</li>
+          <li>Data Provider để test nhiều cases</li>
+          <li>Mock object (stub/spy)</li>
+        </ul>
+        <h3>🧠 Kiến thức cần nhớ</h3>
+        <ul>
+          <li>PHPUnit: framework test phổ biến nhất trong PHP</li>
+          <li><code>$this->assertEquals($expected, $actual)</code>: assertion cơ bản</li>
+          <li><code>$this->expectException(RuntimeException::class)</code>: test exception</li>
+          <li><code>@dataProvider</code>: cung cấp nhiều bộ dữ liệu test</li>
+          <li>Test coverage: % code được test – mục tiêu > 80%</li>
+        </ul>
+      </div>
+      <div class="ex-work">
+        <h3>💻 Code mẫu</h3>
+        <div id="code-highlight">
+          <pre id="code-raw" style="display:none">&lt;?php
+// ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+// src/Calculator.php
+// ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+class Calculator {
+    public function add(float $a, float $b): float       { return $a + $b; }
+    public function subtract(float $a, float $b): float  { return $a - $b; }
+    public function multiply(float $a, float $b): float  { return $a * $b; }
+    public function divide(float $a, float $b): float {
+        if ($b == 0) throw new DivisionByZeroError("Không chia được cho 0");
+        return $a / $b;
+    }
+    public function factorial(int $n): int {
+        if ($n &lt; 0) throw new InvalidArgumentException("n phải &gt;= 0");
+        return $n &lt;= 1 ? 1 : $n * $this-&gt;factorial($n - 1);
+    }
+}
+
+// ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+// tests/CalculatorTest.php
+// ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+// &lt;?php
+// use PHPUnit\Framework\TestCase;
+// use PHPUnit\Framework\Attributes\DataProvider;
+//
+// class CalculatorTest extends TestCase {
+//     private Calculator $calc;
+//
+//     protected function setUp(): void {
+//         $this-&gt;calc = new Calculator();  // chạy trước mỗi test
+//     }
+//
+//     // ── Basic assertions ─────────
+//     public function testAdd(): void {
+//         $this-&gt;assertEquals(5.0,  $this-&gt;calc-&gt;add(2, 3));
+//         $this-&gt;assertEquals(-1.0, $this-&gt;calc-&gt;add(2, -3));
+//         $this-&gt;assertEquals(0.3,  $this-&gt;calc-&gt;add(0.1, 0.2), delta: 0.0001);
+//     }
+//
+//     public function testDivide(): void {
+//         $this-&gt;assertEquals(2.5, $this-&gt;calc-&gt;divide(5, 2));
+//     }
+//
+//     // ── Test exception ────────────
+//     public function testDivideByZeroThrows(): void {
+//         $this-&gt;expectException(DivisionByZeroError::class);
+//         $this-&gt;calc-&gt;divide(10, 0);
+//     }
+//
+//     // ── Data Provider ─────────────
+//     #[DataProvider('factorialProvider')]
+//     public function testFactorial(int $n, int $expected): void {
+//         $this-&gt;assertEquals($expected, $this-&gt;calc-&gt;factorial($n));
+//     }
+//     public static function factorialProvider(): array {
+//         return [[0,1],[1,1],[5,120],[10,3628800]];
+//     }
+// }
+//
+// ── Chạy test: ───────────────────
+// vendor/bin/phpunit tests/
+// vendor/bin/phpunit --coverage-html coverage/  (cần Xdebug)
+
+// Demo chạy tay (không qua PHPUnit)
+$calc = new Calculator();
+$tests = [
+    ['add', [2,3], 5],
+    ['subtract', [10,4], 6],
+    ['multiply', [3,4], 12],
+    ['divide', [10,4], 2.5],
+    ['factorial', [5], 120],
+];
+$pass = $fail = 0;
+foreach ($tests as [$method, $args, $expected]) {
+    $result = $calc-&gt;$method(...$args);
+    if ($result == $expected) { echo "✅ PASS: $method(" . implode(',',$args) . ") = $result&lt;br&gt;"; $pass++; }
+    else { echo "❌ FAIL: $method(" . implode(',',$args) . ") = $result (expected $expected)&lt;br&gt;"; $fail++; }
+}
+echo "&lt;br&gt;Kết quả: $pass pass, $fail fail";</pre>
+        </div>
+      </div>
+    </div>
+  </div>
+  <a href="../index.html" class="btn-back">&#8592; Quay lại Module 2</a>
+  <script type="module">
+    import { codeToHtml } from 'https://esm.sh/shiki@1';
+    const raw = document.getElementById('code-raw').textContent;
+    const highlighted = await codeToHtml(raw, { lang: 'php', theme: 'github-dark' });
+    document.getElementById('code-highlight').innerHTML = highlighted;
+    const pre = document.getElementById('code-highlight').querySelector('pre');
+    if (pre) pre.style.cssText = 'border-radius:10px;padding:20px;font-size:0.87rem;overflow-x:auto;margin:0;line-height:1.7';
+  </script>
+</body>
+</html>

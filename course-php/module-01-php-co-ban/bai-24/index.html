@@ -1,0 +1,132 @@
+<!DOCTYPE html>
+<html lang="vi">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <meta name="keywords" content="PHP,Lập trình PHP,Web,NenTang,Bài tập PHP,PHP cơ bản">
+  <meta name="author" content="Dương Nguyễn Phú Cường">
+  <meta name="description" content="Tổ chức code PHP theo namespace và tự động nạp class với autoloading.">
+  <meta property="og:locale" content="vi_VN">
+  <meta property="og:type" content="website">
+  <meta property="og:title" content="Bài 24 – Namespace và Autoloading | NenTang.vn">
+  <meta property="og:description" content="Tổ chức code PHP theo namespace và tự động nạp class với autoloading.">
+  <meta property="og:url" content="https://nentang.vn/">
+  <meta property="og:site_name" content="Nền tảng Kiến thức">
+  <title>Bài 24 – Namespace và Autoloading | NenTang.vn</title>
+  <link rel="stylesheet" href="../../shared.css" />
+</head>
+<body>
+  <div class="page-header module-php-1">
+    <div class="breadcrumb">
+      <a href="../../index.html">PHP Course</a> &rsaquo;
+      <a href="../index.html">Module 1</a> &rsaquo; Bài 24
+    </div>
+    <h1>Bài 24: Namespace và Autoloading</h1>
+    <p>Module 1 – PHP Cơ Bản</p>
+  </div>
+
+  <div class="exercise-page">
+    <div class="exercise-box">
+      <div class="ex-head">
+        <h1>📝 Yêu cầu bài tập</h1>
+        <p>Tổ chức code PHP theo namespace và tự động nạp class với autoloading.</p>
+      </div>
+      <div class="ex-desc">
+        <h3>Yêu cầu</h3>
+        <ul>
+          <li>Khai báo namespace trong class</li>
+          <li>Dùng <code>use</code> để import class từ namespace khác</li>
+          <li>Tạo autoloader đơn giản với <code>spl_autoload_register</code></li>
+          <li>Hiểu chuẩn PSR-4 autoloading</li>
+          <li>Tạo cấu trúc dự án với multiple namespace</li>
+        </ul>
+        <h3>🧠 Kiến thức cần nhớ</h3>
+        <ul>
+          <li><code>namespace App\Models;</code>: khai báo ở đầu file (sau <?php)</li>
+          <li><code>use App\Models\User;</code>: import để dùng không cần ghi đầy đủ</li>
+          <li>PSR-4: namespace ánh xạ 1-1 với cấu trúc thư mục</li>
+          <li><code>spl_autoload_register(fn($class) => require str_replace('\\','/',$class).'.php')</code></li>
+          <li>Composer autoload: khai báo trong <code>composer.json</code> → chạy <code>composer dump-autoload</code></li>
+        </ul>
+      </div>
+      <div class="ex-work">
+        <h3>💻 Code mẫu</h3>
+        <div id="code-highlight">
+          <pre id="code-raw" style="display:none">&lt;?php
+// ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+// File: src/Models/User.php
+// ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+// namespace App\Models;
+// class User {
+//     public function __construct(
+//         public readonly string $name,
+//         public readonly string $email,
+//         public readonly int    $age
+//     ) {}
+//     public function isAdult(): bool { return $this-&gt;age &gt;= 18; }
+//     public function toArray(): array {
+//         return ['name'=&gt;$this-&gt;name,'email'=&gt;$this-&gt;email,'age'=&gt;$this-&gt;age];
+//     }
+// }
+
+// ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+// File: src/Services/UserService.php
+// ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+// namespace App\Services;
+// use App\Models\User;
+// class UserService {
+//     private array $users = [];
+//     public function create(string $name, string $email, int $age): User {
+//         $user = new User($name, $email, $age);
+//         $this-&gt;users[] = $user;
+//         return $user;
+//     }
+//     public function getAll(): array { return $this-&gt;users; }
+//     public function getAdults(): array {
+//         return array_filter($this-&gt;users, fn(User $u) =&gt; $u-&gt;isAdult());
+//     }
+// }
+
+// ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+// File: index.php (entry point)
+// ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+// Autoloader đơn giản (PSR-4)
+spl_autoload_register(function(string $class): void {
+    $file = __DIR__ . '/src/' . str_replace(['App\\', '\\'], ['', '/'], $class) . '.php';
+    if (file_exists($file)) require_once $file;
+});
+
+// Dùng class qua namespace
+// use App\Services\UserService;
+// $svc = new UserService();
+// $svc-&gt;create('Nguyễn An', 'an@demo.vn', 22);
+// $svc-&gt;create('Trần B', 'b@demo.vn', 16);
+// foreach ($svc-&gt;getAdults() as $u) {
+//     echo "{$u-&gt;name} ({$u-&gt;age} tuổi)&lt;br&gt;";
+// }
+
+// ── composer.json ─────────────────
+// {
+//   "autoload": {
+//     "psr-4": { "App\\": "src/" }
+//   }
+// }
+// Sau đó chạy: composer dump-autoload
+// Và trong code: require 'vendor/autoload.php';
+
+echo "Namespace giúp tránh đụng tên class và tổ chức code sạch hơn!";</pre>
+        </div>
+      </div>
+    </div>
+  </div>
+  <a href="../index.html" class="btn-back">&#8592; Quay lại Module 1</a>
+  <script type="module">
+    import { codeToHtml } from 'https://esm.sh/shiki@1';
+    const raw = document.getElementById('code-raw').textContent;
+    const highlighted = await codeToHtml(raw, { lang: 'php', theme: 'github-dark' });
+    document.getElementById('code-highlight').innerHTML = highlighted;
+    const pre = document.getElementById('code-highlight').querySelector('pre');
+    if (pre) pre.style.cssText = 'border-radius:10px;padding:20px;font-size:0.87rem;overflow-x:auto;margin:0;line-height:1.7';
+  </script>
+</body>
+</html>

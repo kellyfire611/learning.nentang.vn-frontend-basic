@@ -1,0 +1,95 @@
+<!DOCTYPE html>
+<html lang="vi">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <meta name="keywords" content="PHP,Lập trình PHP,Web,NenTang,Bài tập PHP,PHP cơ bản">
+  <meta name="author" content="Dương Nguyễn Phú Cường">
+  <meta name="description" content="Viết chương trình PHP đầu tiên sử dụng echo và print để xuất nội dung.">
+  <meta property="og:locale" content="vi_VN">
+  <meta property="og:type" content="website">
+  <meta property="og:title" content="Bài 01 – Cú Pháp PHP Cơ Bản – echo, print | NenTang.vn">
+  <meta property="og:description" content="Viết chương trình PHP đầu tiên sử dụng echo và print để xuất nội dung.">
+  <meta property="og:url" content="https://nentang.vn/">
+  <meta property="og:site_name" content="Nền tảng Kiến thức">
+  <title>Bài 01 – Cú Pháp PHP Cơ Bản – echo, print | NenTang.vn</title>
+  <link rel="stylesheet" href="../../shared.css" />
+</head>
+<body>
+  <div class="page-header module-php-1">
+    <div class="breadcrumb">
+      <a href="../../index.html">PHP Course</a> &rsaquo;
+      <a href="../index.html">Module 1</a> &rsaquo; Bài 01
+    </div>
+    <h1>Bài 01: Cú Pháp PHP Cơ Bản – echo, print</h1>
+    <p>Module 1 – PHP Cơ Bản</p>
+  </div>
+
+  <div class="exercise-page">
+    <div class="exercise-box">
+      <div class="ex-head">
+        <h1>📝 Yêu cầu bài tập</h1>
+        <p>Viết chương trình PHP đầu tiên sử dụng echo và print để xuất nội dung.</p>
+      </div>
+      <div class="ex-desc">
+        <h3>Yêu cầu</h3>
+        <ul>
+          <li>Tạo file <code>index.php</code> với cấu trúc chuẩn <code>&lt;?php ... ?&gt;</code></li>
+          <li>Dùng <code>echo</code> để in một câu chào mừng bằng tiếng Việt</li>
+          <li>Dùng <code>print</code> để in một câu khác</li>
+          <li>In ra các thẻ HTML (<code>h1</code>, <code>p</code>) bằng echo</li>
+          <li>Dùng echo để in nhiều giá trị cách nhau bởi dấu phẩy</li>
+        </ul>
+        <h3>🧠 Kiến thức cần nhớ</h3>
+        <ul>
+          <li><code>echo</code>: xuất một hoặc nhiều chuỗi, không trả về giá trị</li>
+          <li><code>print</code>: xuất một chuỗi, trả về 1 (có thể dùng trong biểu thức)</li>
+          <li>PHP code nằm trong cặp thẻ <code>&lt;?php ... ?&gt;</code> hoặc <code>&lt;?= ... ?&gt;</code></li>
+          <li>Dấu chấm phẩy <code>;</code> kết thúc mỗi câu lệnh</li>
+          <li><code>echo 'a', 'b';</code> in 'ab' — nhưng <code>print</code> chỉ nhận 1 tham số</li>
+        </ul>
+      </div>
+      <div class="ex-work">
+        <h3>💻 Code mẫu</h3>
+        <div id="code-highlight">
+          <pre id="code-raw" style="display:none">&lt;?php
+// 1. echo cơ bản
+echo "Xin chào! Đây là trang PHP đầu tiên của tôi.";
+echo "&lt;br&gt;";
+
+// 2. echo nhiều giá trị (dùng dấu phẩy)
+echo "Tên: ", "Nguyễn Văn A", " – Tuổi: ", 22;
+echo "&lt;br&gt;";
+
+// 3. print (trả về 1)
+$ket_qua = print("PHP rất thú vị!&lt;br&gt;");
+echo "Giá trị trả về của print: " . $ket_qua . "&lt;br&gt;";
+
+// 4. In thẻ HTML bằng echo
+echo "&lt;h2&gt;Danh sách môn học&lt;/h2&gt;";
+echo "&lt;ul&gt;";
+echo "  &lt;li&gt;HTML / CSS&lt;/li&gt;";
+echo "  &lt;li&gt;JavaScript&lt;/li&gt;";
+echo "  &lt;li&gt;PHP&lt;/li&gt;";
+echo "&lt;/ul&gt;";
+
+// 5. Cú pháp echo ngắn (short tag)
+?&gt;
+&lt;h3&gt;Thông tin:&lt;/h3&gt;
+&lt;p&gt;Phiên bản PHP: &lt;?= PHP_VERSION ?&gt;&lt;/p&gt;
+&lt;p&gt;Hệ điều hành: &lt;?= PHP_OS ?&gt;&lt;/p&gt;</pre>
+        </div>
+      </div>
+    </div>
+  </div>
+  <a href="../index.html" class="btn-back">&#8592; Quay lại Module 1</a>
+  <script type="module">
+    import { codeToHtml } from 'https://esm.sh/shiki@1';
+    const raw = document.getElementById('code-raw').textContent;
+    const highlighted = await codeToHtml(raw, { lang: 'php', theme: 'github-dark' });
+    document.getElementById('code-highlight').innerHTML = highlighted;
+    const pre = document.getElementById('code-highlight').querySelector('pre');
+    if (pre) pre.style.cssText = 'border-radius:10px;padding:20px;font-size:0.87rem;overflow-x:auto;margin:0;line-height:1.7';
+  </script>
+</body>
+</html>

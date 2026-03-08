@@ -1,0 +1,143 @@
+<!DOCTYPE html>
+<html lang="vi">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <meta name="keywords" content="PHP OOP,PDO,MySQL,NenTang,Lập trình PHP nâng cao">
+  <meta name="author" content="Dương Nguyễn Phú Cường">
+  <meta name="description" content="Xây dựng API RESTful đơn giản trả về JSON – không dùng framework.">
+  <meta property="og:locale" content="vi_VN">
+  <meta property="og:type" content="website">
+  <meta property="og:title" content="Bài 09 – RESTful API Cơ Bản với PHP | NenTang.vn">
+  <meta property="og:description" content="Xây dựng API RESTful đơn giản trả về JSON – không dùng framework.">
+  <meta property="og:url" content="https://nentang.vn/">
+  <meta property="og:site_name" content="Nền tảng Kiến thức">
+  <title>Bài 09 – RESTful API Cơ Bản với PHP | NenTang.vn</title>
+  <link rel="stylesheet" href="../../shared.css" />
+</head>
+<body>
+  <div class="page-header module-php-2">
+    <div class="breadcrumb">
+      <a href="../../index.html">PHP Course</a> &rsaquo;
+      <a href="../index.html">Module 2</a> &rsaquo; Bài 09
+    </div>
+    <h1>Bài 09: RESTful API Cơ Bản với PHP</h1>
+    <p>Module 2 – PHP OOP &amp; Nâng Cao</p>
+  </div>
+
+  <div class="exercise-page">
+    <div class="exercise-box">
+      <div class="ex-head">
+        <h1>📝 Yêu cầu bài tập</h1>
+        <p>Xây dựng API RESTful đơn giản trả về JSON – không dùng framework.</p>
+      </div>
+      <div class="ex-desc">
+        <h3>Yêu cầu</h3>
+        <ul>
+          <li>Định tuyến request theo HTTP method và URL path</li>
+          <li>Trả về JSON response chuẩn</li>
+          <li>Implement CRUD endpoint: GET, POST, PUT, DELETE</li>
+          <li>Xử lý request body (JSON payload)</li>
+          <li>HTTP status codes phù hợp</li>
+        </ul>
+        <h3>🧠 Kiến thức cần nhớ</h3>
+        <ul>
+          <li><code>$_SERVER['REQUEST_METHOD']</code>: GET/POST/PUT/DELETE</li>
+          <li><code>$_SERVER['PATH_INFO']</code> hoặc parse <code>REQUEST_URI</code>: lấy path</li>
+          <li><code>file_get_contents('php://input')</code>: đọc JSON body từ PUT/PATCH/DELETE</li>
+          <li><code>http_response_code(404)</code>: đặt HTTP status code</li>
+          <li>CORS: <code>header('Access-Control-Allow-Origin: *')</code></li>
+        </ul>
+      </div>
+      <div class="ex-work">
+        <h3>💻 Code mẫu</h3>
+        <div id="code-highlight">
+          <pre id="code-raw" style="display:none">&lt;?php
+// ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+// api.php – RESTful API đơn giản
+// Endpoint: /api.php/products[/:id]
+// ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+header('Content-Type: application/json; charset=utf-8');
+header('Access-Control-Allow-Origin: *');
+header('Access-Control-Allow-Methods: GET, POST, PUT, DELETE, OPTIONS');
+header('Access-Control-Allow-Headers: Content-Type');
+
+if ($_SERVER['REQUEST_METHOD'] === 'OPTIONS') {
+    http_response_code(204); exit;
+}
+
+function json_response(mixed $data, int $code = 200): never {
+    http_response_code($code);
+    echo json_encode($data, JSON_UNESCAPED_UNICODE | JSON_PRETTY_PRINT);
+    exit;
+}
+
+// ── Data Store (thay bằng DB) ─────
+$products = [
+    1 =&gt; ['id'=&gt;1,'name'=&gt;'Áo thun','price'=&gt;150000,'stock'=&gt;50],
+    2 =&gt; ['id'=&gt;2,'name'=&gt;'Quần jean','price'=&gt;450000,'stock'=&gt;20],
+    3 =&gt; ['id'=&gt;3,'name'=&gt;'Giày','price'=&gt;850000,'stock'=&gt;10],
+];
+
+// ── Parse path ────────────────────
+$path = trim(parse_url($_SERVER['REQUEST_URI'], PHP_URL_PATH), '/');
+$parts = explode('/', $path);
+$resource = $parts[1] ?? '';    // 'products'
+$id       = isset($parts[2]) ? (int)$parts[2] : null;
+$method   = $_SERVER['REQUEST_METHOD'];
+
+if ($resource !== 'products') {
+    json_response(['error' =&gt; 'Endpoint không tồn tại'], 404);
+}
+
+// ── GET /products hoặc GET /products/:id ──
+if ($method === 'GET') {
+    if ($id !== null) {
+        if (!isset($products[$id])) json_response(['error' =&gt; 'Không tìm thấy'], 404);
+        json_response(['data' =&gt; $products[$id]]);
+    }
+    json_response(['data' =&gt; array_values($products), 'total' =&gt; count($products)]);
+}
+
+// ── POST /products ─────────────────
+if ($method === 'POST') {
+    $body = json_decode(file_get_contents('php://input'), true) ?? [];
+    if (empty($body['name'])) json_response(['error' =&gt; 'name bắt buộc'], 400);
+    $new_id = max(array_keys($products)) + 1;
+    $products[$new_id] = ['id' =&gt; $new_id, 'name' =&gt; $body['name'],
+                           'price' =&gt; (float)($body['price'] ?? 0), 'stock' =&gt; (int)($body['stock'] ?? 0)];
+    json_response(['message' =&gt; 'Tạo thành công', 'data' =&gt; $products[$new_id]], 201);
+}
+
+// ── PUT /products/:id ─────────────
+if ($method === 'PUT') {
+    if (!$id || !isset($products[$id])) json_response(['error' =&gt; 'Không tìm thấy'], 404);
+    $body = json_decode(file_get_contents('php://input'), true) ?? [];
+    $products[$id] = array_merge($products[$id], $body);
+    json_response(['message' =&gt; 'Cập nhật thành công', 'data' =&gt; $products[$id]]);
+}
+
+// ── DELETE /products/:id ──────────
+if ($method === 'DELETE') {
+    if (!$id || !isset($products[$id])) json_response(['error' =&gt; 'Không tìm thấy'], 404);
+    $deleted = $products[$id];
+    unset($products[$id]);
+    json_response(['message' =&gt; 'Đã xóa', 'data' =&gt; $deleted]);
+}
+
+json_response(['error' =&gt; 'Method không được hỗ trợ'], 405);</pre>
+        </div>
+      </div>
+    </div>
+  </div>
+  <a href="../index.html" class="btn-back">&#8592; Quay lại Module 2</a>
+  <script type="module">
+    import { codeToHtml } from 'https://esm.sh/shiki@1';
+    const raw = document.getElementById('code-raw').textContent;
+    const highlighted = await codeToHtml(raw, { lang: 'php', theme: 'github-dark' });
+    document.getElementById('code-highlight').innerHTML = highlighted;
+    const pre = document.getElementById('code-highlight').querySelector('pre');
+    if (pre) pre.style.cssText = 'border-radius:10px;padding:20px;font-size:0.87rem;overflow-x:auto;margin:0;line-height:1.7';
+  </script>
+</body>
+</html>

@@ -1,0 +1,120 @@
+<!DOCTYPE html>
+<html lang="vi">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <meta name="keywords" content="PHP,Lập trình PHP,Web,NenTang,Bài tập PHP,PHP cơ bản">
+  <meta name="author" content="Dương Nguyễn Phú Cường">
+  <meta name="description" content="Thu thập dữ liệu người dùng qua form HTML sử dụng phương thức GET.">
+  <meta property="og:locale" content="vi_VN">
+  <meta property="og:type" content="website">
+  <meta property="og:title" content="Bài 13 – Xử Lý Form HTML – Method GET | NenTang.vn">
+  <meta property="og:description" content="Thu thập dữ liệu người dùng qua form HTML sử dụng phương thức GET.">
+  <meta property="og:url" content="https://nentang.vn/">
+  <meta property="og:site_name" content="Nền tảng Kiến thức">
+  <title>Bài 13 – Xử Lý Form HTML – Method GET | NenTang.vn</title>
+  <link rel="stylesheet" href="../../shared.css" />
+</head>
+<body>
+  <div class="page-header module-php-1">
+    <div class="breadcrumb">
+      <a href="../../index.html">PHP Course</a> &rsaquo;
+      <a href="../index.html">Module 1</a> &rsaquo; Bài 13
+    </div>
+    <h1>Bài 13: Xử Lý Form HTML – Method GET</h1>
+    <p>Module 1 – PHP Cơ Bản</p>
+  </div>
+
+  <div class="exercise-page">
+    <div class="exercise-box">
+      <div class="ex-head">
+        <h1>📝 Yêu cầu bài tập</h1>
+        <p>Thu thập dữ liệu người dùng qua form HTML sử dụng phương thức GET.</p>
+      </div>
+      <div class="ex-desc">
+        <h3>Yêu cầu</h3>
+        <ul>
+          <li>Tạo form HTML với <code>method="GET"</code></li>
+          <li>Đọc dữ liệu từ <code>$_GET</code> trong PHP</li>
+          <li>Kiểm tra form đã submit chưa bằng <code>isset($_GET['submit'])</code></li>
+          <li>Hiển thị lại dữ liệu đã nhập trên cùng trang (sticky form)</li>
+          <li>Hiểu URL query string khi dùng GET</li>
+        </ul>
+        <h3>🧠 Kiến thức cần nhớ</h3>
+        <ul>
+          <li><code>$_GET</code>: superglobal array chứa dữ liệu gửi qua URL (query string)</li>
+          <li>GET: dữ liệu hiện trên URL → thích hợp tìm kiếm, lọc – KHÔNG dùng cho mật khẩu</li>
+          <li><code>htmlspecialchars($val)</code>: xuất giá trị an toàn, tránh XSS</li>
+          <li><code>isset($arr['key'])</code>: kiểm tra key tồn tại trong array</li>
+          <li>Giới hạn GET: URL tối đa ~2000 ký tự</li>
+        </ul>
+      </div>
+      <div class="ex-work">
+        <h3>💻 Code mẫu</h3>
+        <div id="code-highlight">
+          <pre id="code-raw" style="display:none">&lt;?php
+// Khởi tạo biến tìm kiếm
+$tu_khoa = "";
+$ket_qua = [];
+
+if (isset($_GET['tim_kiem'])) {
+    // Lấy và làm sạch dữ liệu
+    $tu_khoa = trim(htmlspecialchars($_GET['tu_khoa'] ?? ""));
+    
+    // Dữ liệu mẫu (thực tế lấy từ DB)
+    $san_pham = [
+        ["ten" =&gt; "Áo thun nam", "gia" =&gt; 150_000],
+        ["ten" =&gt; "Quần jeans",  "gia" =&gt; 450_000],
+        ["ten" =&gt; "Áo khoác",   "gia" =&gt; 800_000],
+        ["ten" =&gt; "Giày thể thao","gia"=&gt; 950_000],
+        ["ten" =&gt; "Mũ lưỡi trai","gia"=&gt; 120_000],
+    ];
+    
+    // Tìm kiếm đơn giản
+    if ($tu_khoa !== "") {
+        foreach ($san_pham as $sp) {
+            if (stripos($sp["ten"], $tu_khoa) !== false) {
+                $ket_qua[] = $sp;
+            }
+        }
+    } else {
+        $ket_qua = $san_pham;
+    }
+}
+?&gt;
+&lt;!DOCTYPE html&gt;
+&lt;html lang="vi"&gt;
+&lt;head&gt;&lt;meta charset="UTF-8"&gt;&lt;title&gt;Tìm kiếm sản phẩm&lt;/title&gt;&lt;/head&gt;
+&lt;body&gt;
+&lt;h2&gt;🔍 Tìm kiếm sản phẩm&lt;/h2&gt;
+
+&lt;form method="GET" action=""&gt;
+  &lt;input type="text" name="tu_khoa" placeholder="Nhập tên sản phẩm..."
+         value="&lt;?= htmlspecialchars($tu_khoa) ?&gt;" /&gt;
+  &lt;button type="submit" name="tim_kiem"&gt;Tìm&lt;/button&gt;
+&lt;/form&gt;
+
+&lt;?php if (isset($_GET['tim_kiem'])): ?&gt;
+  &lt;p&gt;Tìm thấy &lt;?= count($ket_qua) ?&gt; kết quả cho "&lt;?= $tu_khoa ?&gt;"&lt;/p&gt;
+  &lt;ul&gt;
+  &lt;?php foreach ($ket_qua as $sp): ?&gt;
+    &lt;li&gt;&lt;?= $sp['ten'] ?&gt; – &lt;?= number_format($sp['gia'], 0, ',', '.') ?&gt;đ&lt;/li&gt;
+  &lt;?php endforeach; ?&gt;
+  &lt;/ul&gt;
+&lt;?php endif; ?&gt;
+&lt;/body&gt;&lt;/html&gt;</pre>
+        </div>
+      </div>
+    </div>
+  </div>
+  <a href="../index.html" class="btn-back">&#8592; Quay lại Module 1</a>
+  <script type="module">
+    import { codeToHtml } from 'https://esm.sh/shiki@1';
+    const raw = document.getElementById('code-raw').textContent;
+    const highlighted = await codeToHtml(raw, { lang: 'php', theme: 'github-dark' });
+    document.getElementById('code-highlight').innerHTML = highlighted;
+    const pre = document.getElementById('code-highlight').querySelector('pre');
+    if (pre) pre.style.cssText = 'border-radius:10px;padding:20px;font-size:0.87rem;overflow-x:auto;margin:0;line-height:1.7';
+  </script>
+</body>
+</html>

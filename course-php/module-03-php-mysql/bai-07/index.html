@@ -1,0 +1,146 @@
+<!DOCTYPE html>
+<html lang="vi">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <meta name="description" content="Xây dựng class Paginator tái sử dụng cho mọi truy vấn với đầy đủ thông tin trang.">
+  <meta name="author" content="Dương Nguyễn Phú Cường">
+  <meta property="og:locale" content="vi_VN">
+  <meta property="og:type" content="website">
+  <meta property="og:title" content="Bài 07 – Phân Trang Chuẩn Và Đầy Đủ | NenTang.vn">
+  <meta property="og:url" content="https://nentang.vn/">
+  <meta property="og:site_name" content="Nền tảng Kiến thức">
+  <title>Bài 07 – Phân Trang Chuẩn Và Đầy Đủ | NenTang.vn</title>
+  <link rel="stylesheet" href="../../shared.css" />
+</head>
+<body>
+  <div class="page-header module-php-3">
+    <div class="breadcrumb">
+      <a href="../../index.html">PHP Course</a> &rsaquo;
+      <a href="../index.html">Module 3</a> &rsaquo; Bài 07
+    </div>
+    <h1>Bài 07: Phân Trang Chuẩn Và Đầy Đủ</h1>
+    <p>Module 3 – PHP &amp; MySQL Thực Chiến</p>
+  </div>
+
+  <div class="exercise-page">
+    <div class="exercise-box">
+      <div class="ex-head">
+        <h1>📝 Yêu cầu bài tập</h1>
+        <p>Xây dựng class Paginator tái sử dụng cho mọi truy vấn với đầy đủ thông tin trang.</p>
+      </div>
+      <div class="ex-desc">
+        <h3>Yêu cầu</h3>
+        <ul>
+          <li>Tạo class <code>Paginator</code> nhận PDO query</li>
+          <li>Tính tổng, trang hiện tại, first/last/prev/next</li>
+          <li>Render HTML pagination links</li>
+          <li>Tích hợp với search params trong URL</li>
+          <li>Cursor-based pagination (nâng cao)</li>
+        </ul>
+        <h3>🧠 Kiến thức cần nhớ</h3>
+        <ul>
+          <li>Offset pagination: đơn giản nhưng chậm với dữ liệu lớn (<code>LIMIT 10 OFFSET 10000</code>)</li>
+          <li>Cursor pagination: dùng <code>WHERE id > last_id</code> – nhanh hơn</li>
+          <li>Page info: trang hiện tại, tổng trang, tổng bản ghi, from, to</li>
+          <li>URL query string: <code>?trang=2&q=keyword&sort=gia</code></li>
+          <li>Window function trong MySQL 8: <code>ROW_NUMBER() OVER(ORDER BY id)</code></li>
+        </ul>
+      </div>
+      <div class="ex-work">
+        <h3>💻 Code mẫu</h3>
+        <div id="code-highlight">
+          <pre id="code-raw" style="display:none">&lt;?php
+$pdo = get_pdo();
+
+class Paginator {
+    public readonly int   $total;
+    public readonly int   $tong_trang;
+    public readonly int   $tu;    // bản ghi bắt đầu
+    public readonly int   $den;   // bản ghi kết thúc
+    public readonly array $items;
+
+    public function __construct(
+        private PDO    $pdo,
+        private string $count_sql,
+        private string $data_sql,
+        private array  $params     = [],
+        public  int    $trang      = 1,
+        public  int    $per_page   = 10,
+    ) {
+        // Đếm tổng
+        $cs = $pdo-&gt;prepare($count_sql);
+        $cs-&gt;execute($params);
+        $this-&gt;total = (int)$cs-&gt;fetchColumn();
+        $this-&gt;tong_trang = max(1, (int)ceil($this-&gt;total / $per_page));
+        $this-&gt;trang = max(1, min($trang, $this-&gt;tong_trang));
+
+        // Lấy dữ liệu trang
+        $offset = ($this-&gt;trang - 1) * $per_page;
+        $ds = $pdo-&gt;prepare($data_sql . " LIMIT :limit OFFSET :offset");
+        $ds-&gt;execute(array_merge($params, [':limit' =&gt; $per_page, ':offset' =&gt; $offset]));
+        $this-&gt;items = $ds-&gt;fetchAll();
+
+        $this-&gt;tu  = $this-&gt;total === 0 ? 0 : $offset + 1;
+        $this-&gt;den = min($offset + $per_page, $this-&gt;total);
+    }
+
+    public function hasPrev(): bool { return $this-&gt;trang &gt; 1; }
+    public function hasNext(): bool { return $this-&gt;trang &lt; $this-&gt;tong_trang; }
+
+    public function links(string $base_url = '?', array $extra_params = []): string {
+        if ($this-&gt;tong_trang &lt;= 1) return '';
+        $params_str = http_build_query(array_filter($extra_params));
+        if ($params_str) $params_str = '&amp;' . $params_str;
+        $html = '&lt;nav class="pagination"&gt;';
+
+        if ($this-&gt;hasPrev()) {
+            $html .= "&lt;a href='{$base_url}trang=" . ($this-&gt;trang-1) . $params_str . "'&gt;← Trước&lt;/a&gt; ";
+        }
+        // Trang đầu nếu không hiển thị
+        if ($this-&gt;trang &gt; 3) $html .= "&lt;a href='{$base_url}trang=1$params_str'&gt;1&lt;/a&gt; ... ";
+        // Các trang xung quanh
+        for ($p = max(1, $this-&gt;trang-2); $p &lt;= min($this-&gt;tong_trang, $this-&gt;trang+2); $p++) {
+            $active = $p === $this-&gt;trang ? ' class="active"' : '';
+            $html .= "&lt;a href='{$base_url}trang=$p$params_str'$active&gt;$p&lt;/a&gt; ";
+        }
+        // Trang cuối
+        if ($this-&gt;trang &lt; $this-&gt;tong_trang - 2) $html .= "... &lt;a href='{$base_url}trang={$this-&gt;tong_trang}$params_str'&gt;{$this-&gt;tong_trang}&lt;/a&gt; ";
+        if ($this-&gt;hasNext()) {
+            $html .= "&lt;a href='{$base_url}trang=" . ($this-&gt;trang+1) . $params_str . "'&gt;Sau →&lt;/a&gt;";
+        }
+        return $html . '&lt;/nav&gt;';
+    }
+
+    public function info(): string {
+        return "Hiển thị {$this-&gt;tu}–{$this-&gt;den} trong {$this-&gt;total} kết quả";
+    }
+}
+
+// ── Sử dụng Paginator ─────────────
+$trang = (int)($_GET['trang'] ?? 1);
+$pager = new Paginator(
+    $pdo,
+    "SELECT COUNT(*) FROM san_pham sp JOIN danh_muc dm ON dm.id = sp.danh_muc_id WHERE sp.active = 1",
+    "SELECT sp.ten, sp.gia, dm.ten AS dm FROM san_pham sp JOIN danh_muc dm ON dm.id = sp.danh_muc_id WHERE sp.active = 1 ORDER BY sp.id",
+    trang: $trang, per_page: 3
+);
+
+echo $pager-&gt;info() . "&lt;br&gt;";
+foreach ($pager-&gt;items as $sp) echo "• [{$sp['dm']}] {$sp['ten']}: " . number_format($sp['gia'],0,',','.') . "đ&lt;br&gt;";
+echo $pager-&gt;links();</pre>
+        </div>
+      </div>
+    </div>
+  </div>
+  <a href="../index.html" class="btn-back">&#8592; Quay lại Module 3</a>
+  <script type="module">
+    import { codeToHtml } from 'https://esm.sh/shiki@1';
+    const raw = document.getElementById('code-raw').textContent;
+    const highlighted = await codeToHtml(raw, { lang: 'php', theme: 'github-dark' });
+    document.getElementById('code-highlight').innerHTML = highlighted;
+    const pre = document.getElementById('code-highlight').querySelector('pre');
+    if (pre) pre.style.cssText = 'border-radius:10px;padding:20px;font-size:0.87rem;overflow-x:auto;margin:0;line-height:1.7';
+  </script>
+</body>
+</html>

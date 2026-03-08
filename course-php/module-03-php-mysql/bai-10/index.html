@@ -1,0 +1,143 @@
+<!DOCTYPE html>
+<html lang="vi">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <meta name="description" content="Viết các truy vấn thống kê phức tạp: doanh thu theo thời gian, top sản phẩm, biểu đồ.">
+  <meta name="author" content="Dương Nguyễn Phú Cường">
+  <meta property="og:locale" content="vi_VN">
+  <meta property="og:type" content="website">
+  <meta property="og:title" content="Bài 10 – Báo Cáo và Thống Kê Nâng Cao | NenTang.vn">
+  <meta property="og:url" content="https://nentang.vn/">
+  <meta property="og:site_name" content="Nền tảng Kiến thức">
+  <title>Bài 10 – Báo Cáo và Thống Kê Nâng Cao | NenTang.vn</title>
+  <link rel="stylesheet" href="../../shared.css" />
+</head>
+<body>
+  <div class="page-header module-php-3">
+    <div class="breadcrumb">
+      <a href="../../index.html">PHP Course</a> &rsaquo;
+      <a href="../index.html">Module 3</a> &rsaquo; Bài 10
+    </div>
+    <h1>Bài 10: Báo Cáo và Thống Kê Nâng Cao</h1>
+    <p>Module 3 – PHP &amp; MySQL Thực Chiến</p>
+  </div>
+
+  <div class="exercise-page">
+    <div class="exercise-box">
+      <div class="ex-head">
+        <h1>📝 Yêu cầu bài tập</h1>
+        <p>Viết các truy vấn thống kê phức tạp: doanh thu theo thời gian, top sản phẩm, biểu đồ.</p>
+      </div>
+      <div class="ex-desc">
+        <h3>Yêu cầu</h3>
+        <ul>
+          <li>Doanh thu theo ngày/tháng/năm</li>
+          <li>Top 10 sản phẩm bán chạy nhất</li>
+          <li>Phân tích hành vi khách hàng</li>
+          <li>Window functions: RANK, ROW_NUMBER, LAG</li>
+          <li>Xuất dữ liệu ra CSV</li>
+        </ul>
+        <h3>🧠 Kiến thức cần nhớ</h3>
+        <ul>
+          <li><code>DATE_FORMAT(col, '%Y-%m')</code>: nhóm theo tháng</li>
+          <li><code>YEAR(col)</code>, <code>MONTH(col)</code>, <code>DAY(col)</code>: tách thành phần ngày</li>
+          <li>Window function: <code>RANK() OVER(PARTITION BY dm_id ORDER BY ban_chay DESC)</code></li>
+          <li><code>LAG(col, 1) OVER(ORDER BY thang)</code>: giá trị kỳ trước để tính % tăng trưởng</li>
+          <li>Xuất CSV: dùng <code>fputcsv()</code> với <code>php://output</code></li>
+        </ul>
+      </div>
+      <div class="ex-work">
+        <h3>💻 Code mẫu</h3>
+        <div id="code-highlight">
+          <pre id="code-raw" style="display:none">&lt;?php
+$pdo = get_pdo();
+// Tạo bảng đơn hàng mẫu
+$pdo-&gt;exec("
+    CREATE TABLE IF NOT EXISTS doanh_thu_thang (
+        thang DATE PRIMARY KEY,
+        so_don INT DEFAULT 0,
+        doanh_thu DECIMAL(15,2) DEFAULT 0
+    );
+    INSERT IGNORE INTO doanh_thu_thang VALUES
+    ('2024-01-01', 45, 32500000),('2024-02-01', 38, 28000000),
+    ('2024-03-01', 62, 48500000),('2024-04-01', 55, 41000000),
+    ('2024-05-01', 70, 56000000),('2024-06-01', 68, 53500000),
+    ('2024-07-01', 82, 65000000),('2024-08-01', 90, 71000000),
+    ('2024-09-01', 75, 59000000),('2024-10-01', 95, 76500000),
+    ('2024-11-01',120, 98000000),('2024-12-01',145,115000000);
+");
+
+// ── 1. Doanh thu từng tháng + % tăng trưởng ──
+$ds = $pdo-&gt;query("
+    SELECT
+        DATE_FORMAT(thang, '%m/%Y') AS thang_hien,
+        so_don, doanh_thu,
+        LAG(doanh_thu) OVER(ORDER BY thang) AS dt_thang_truoc
+    FROM doanh_thu_thang
+    ORDER BY thang
+")-&gt;fetchAll();
+echo "Báo cáo doanh thu 2024:&lt;br&gt;";
+foreach ($ds as $row) {
+    $tang_truong = '';
+    if ($row['dt_thang_truoc']) {
+        $pct = round(($row['doanh_thu'] - $row['dt_thang_truoc']) / $row['dt_thang_truoc'] * 100, 1);
+        $tang_truong = ($pct &gt;= 0 ? " ↑$pct%" : " ↓$pct%");
+    }
+    $dt = number_format($row['doanh_thu'],0,',','.');
+    echo "Tháng {$row['thang_hien']}: {$dt}đ ({$row['so_don']} đơn)$tang_truong&lt;br&gt;";
+}
+
+// ── 2. Tổng kết năm ──────────────
+$nam = $pdo-&gt;query("
+    SELECT
+        SUM(doanh_thu) AS tong_dt,
+        SUM(so_don)    AS tong_don,
+        AVG(doanh_thu) AS dt_tb_thang,
+        MAX(doanh_thu) AS thang_cao_nhat,
+        MIN(doanh_thu) AS thang_thap_nhat
+    FROM doanh_thu_thang
+")-&gt;fetch();
+echo "&lt;br&gt;Tổng 2024: " . number_format($nam['tong_dt'],0,',','.') . "đ | " . $nam['tong_don'] . " đơn&lt;br&gt;";
+echo "Bình quân: " . number_format($nam['dt_tb_thang'],0,',','.') . "đ/tháng&lt;br&gt;";
+
+// ── 3. Top sản phẩm theo lượt xem ──
+$top_sp = $pdo-&gt;query("
+    SELECT ten, gia, luot_xem, so_luong,
+           RANK() OVER(ORDER BY luot_xem DESC) AS xep_hang
+    FROM san_pham WHERE active = 1
+    LIMIT 5
+")-&gt;fetchAll();
+echo "&lt;br&gt;Top 5 XEM NHIỀU NHẤT:&lt;br&gt;";
+foreach ($top_sp as $sp) {
+    echo "#{$sp['xep_hang']} {$sp['ten']}: {$sp['luot_xem']} lượt xem&lt;br&gt;";
+}
+
+// ── 4. Xuất CSV ───────────────────
+function export_csv_doanh_thu(PDO $pdo): string {
+    $rows = $pdo-&gt;query("SELECT DATE_FORMAT(thang,'%m/%Y'), so_don, doanh_thu FROM doanh_thu_thang ORDER BY thang")-&gt;fetchAll(PDO::FETCH_NUM);
+    ob_start();
+    $f = fopen('php://output', 'w');
+    fprintf($f, chr(0xEF).chr(0xBB).chr(0xBF)); // UTF-8 BOM cho Excel
+    fputcsv($f, ['Tháng','Số đơn','Doanh thu']);
+    foreach ($rows as $row) fputcsv($f, $row);
+    fclose($f);
+    return ob_get_clean();
+}
+$csv = export_csv_doanh_thu($pdo);
+echo "&lt;br&gt;CSV preview:&lt;br&gt;&lt;pre&gt;" . htmlspecialchars(substr($csv,3,200)) . "&lt;/pre&gt;";</pre>
+        </div>
+      </div>
+    </div>
+  </div>
+  <a href="../index.html" class="btn-back">&#8592; Quay lại Module 3</a>
+  <script type="module">
+    import { codeToHtml } from 'https://esm.sh/shiki@1';
+    const raw = document.getElementById('code-raw').textContent;
+    const highlighted = await codeToHtml(raw, { lang: 'php', theme: 'github-dark' });
+    document.getElementById('code-highlight').innerHTML = highlighted;
+    const pre = document.getElementById('code-highlight').querySelector('pre');
+    if (pre) pre.style.cssText = 'border-radius:10px;padding:20px;font-size:0.87rem;overflow-x:auto;margin:0;line-height:1.7';
+  </script>
+</body>
+</html>

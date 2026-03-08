@@ -1,0 +1,120 @@
+<!DOCTYPE html>
+<html lang="vi">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <meta name="description" content="Thêm dữ liệu mẫu vào database bằng INSERT đơn lẻ và bulk insert.">
+  <meta name="author" content="Dương Nguyễn Phú Cường">
+  <meta property="og:locale" content="vi_VN">
+  <meta property="og:type" content="website">
+  <meta property="og:title" content="Bài 02 – INSERT – Thêm Dữ Liệu Hàng Loạt | NenTang.vn">
+  <meta property="og:url" content="https://nentang.vn/">
+  <meta property="og:site_name" content="Nền tảng Kiến thức">
+  <title>Bài 02 – INSERT – Thêm Dữ Liệu Hàng Loạt | NenTang.vn</title>
+  <link rel="stylesheet" href="../../shared.css" />
+</head>
+<body>
+  <div class="page-header module-php-3">
+    <div class="breadcrumb">
+      <a href="../../index.html">PHP Course</a> &rsaquo;
+      <a href="../index.html">Module 3</a> &rsaquo; Bài 02
+    </div>
+    <h1>Bài 02: INSERT – Thêm Dữ Liệu Hàng Loạt</h1>
+    <p>Module 3 – PHP &amp; MySQL Thực Chiến</p>
+  </div>
+
+  <div class="exercise-page">
+    <div class="exercise-box">
+      <div class="ex-head">
+        <h1>📝 Yêu cầu bài tập</h1>
+        <p>Thêm dữ liệu mẫu vào database bằng INSERT đơn lẻ và bulk insert.</p>
+      </div>
+      <div class="ex-desc">
+        <h3>Yêu cầu</h3>
+        <ul>
+          <li>INSERT một bản ghi với prepared statement</li>
+          <li>Bulk INSERT nhiều records trong 1 query</li>
+          <li><code>ON DUPLICATE KEY UPDATE</code> – upsert</li>
+          <li>Transaction để INSERT an toàn</li>
+          <li>Dùng <code>lastInsertId()</code> lấy ID vừa tạo</li>
+        </ul>
+        <h3>🧠 Kiến thức cần nhớ</h3>
+        <ul>
+          <li>Bulk INSERT: <code>INSERT INTO t VALUES (?,?,?),(?,?,?)</code> – nhanh hơn nhiều vòng lặp</li>
+          <li><code>ON DUPLICATE KEY UPDATE</code>: nếu duplicate key thì UPDATE thay vì báo lỗi</li>
+          <li><code>INSERT IGNORE INTO</code>: bỏ qua nếu duplicate</li>
+          <li>Prepared statement với batch: bind array, execute nhiều lần</li>
+          <li>LAST_INSERT_ID(): hàm MySQL lấy ID cuối insert</li>
+        </ul>
+      </div>
+      <div class="ex-work">
+        <h3>💻 Code mẫu</h3>
+        <div id="code-highlight">
+          <pre id="code-raw" style="display:none">&lt;?php
+$pdo = get_pdo();
+
+// ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+// 1. INSERT đơn lẻ
+// ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+$stmt = $pdo-&gt;prepare("INSERT INTO danh_muc (ten, slug, mo_ta, thu_tu) VALUES (:ten, :slug, :mo_ta, :thu_tu)");
+$danh_muc_data = [
+    ['ten'=&gt;'Thời trang nam',  'slug'=&gt;'thoi-trang-nam',  'mo_ta'=&gt;'Quần áo, giày dép nam', 'thu_tu'=&gt;1],
+    ['ten'=&gt;'Thời trang nữ',   'slug'=&gt;'thoi-trang-nu',   'mo_ta'=&gt;'Quần áo, giày dép nữ', 'thu_tu'=&gt;2],
+    ['ten'=&gt;'Điện tử',         'slug'=&gt;'dien-tu',          'mo_ta'=&gt;'Điện thoại, laptop...',  'thu_tu'=&gt;3],
+    ['ten'=&gt;'Thực phẩm',       'slug'=&gt;'thuc-pham',        'mo_ta'=&gt;'Đồ ăn, thức uống',       'thu_tu'=&gt;4],
+];
+foreach ($danh_muc_data as $dm) {
+    $stmt-&gt;execute($dm);
+    echo "Thêm danh mục #{$pdo-&gt;lastInsertId()}: {$dm['ten']}&lt;br&gt;";
+}
+
+// ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+// 2. Bulk INSERT (nhanh hơn)
+// ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+$san_pham = [
+    [1, 'Áo thun Polo',      'ao-thun-polo',  150_000, 135_000, 50],
+    [1, 'Quần Jogger',       'quan-jogger',   350_000, null,    30],
+    [3, 'iPhone 15 Pro',     'iphone-15-pro', 29_990_000, 27_990_000, 10],
+    [3, 'Samsung Galaxy S24','samsung-s24',   22_000_000, null, 15],
+    [4, 'Cafe Arabica 500g', 'cafe-arabica',  180_000, 150_000, 100],
+    [4, 'Trà Olong túi lọc', 'tra-olong',     45_000,  null,    200],
+    [2, 'Đầm Maxi Hoa',      'dam-maxi-hoa',  280_000, 220_000,  40],
+    [2, 'Túi xách da',       'tui-xach-da',   450_000, null,     25],
+];
+
+// Build multi-row placeholders
+$rows  = implode(',', array_fill(0, count($san_pham), '(?,?,?,?,?,?)'));
+$vals  = array_merge(...array_map(fn($sp) =&gt; $sp, $san_pham));
+$pdo-&gt;prepare("INSERT INTO san_pham (danh_muc_id, ten, slug, gia, gia_km, so_luong) VALUES $rows")-&gt;execute($vals);
+echo "Bulk insert: " . count($san_pham) . " sản phẩm&lt;br&gt;";
+
+// ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+// 3. UPSERT – ON DUPLICATE KEY UPDATE
+// ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+$upsert = $pdo-&gt;prepare("
+    INSERT INTO danh_muc (ten, slug, thu_tu)
+    VALUES (:ten, :slug, :thu_tu)
+    ON DUPLICATE KEY UPDATE ten = VALUES(ten), thu_tu = VALUES(thu_tu)
+");
+$upsert-&gt;execute(['ten'=&gt;'Thời trang nam (cập nhật)', 'slug'=&gt;'thoi-trang-nam', 'thu_tu'=&gt;10]);
+echo "Upsert: " . $upsert-&gt;rowCount() . " hàng bị ảnh hưởng&lt;br&gt;";
+
+// Kiểm tra
+$total_sp = $pdo-&gt;query("SELECT COUNT(*) FROM san_pham")-&gt;fetchColumn();
+$total_dm = $pdo-&gt;query("SELECT COUNT(*) FROM danh_muc")-&gt;fetchColumn();
+echo "Tổng: $total_dm danh mục, $total_sp sản phẩm&lt;br&gt;";</pre>
+        </div>
+      </div>
+    </div>
+  </div>
+  <a href="../index.html" class="btn-back">&#8592; Quay lại Module 3</a>
+  <script type="module">
+    import { codeToHtml } from 'https://esm.sh/shiki@1';
+    const raw = document.getElementById('code-raw').textContent;
+    const highlighted = await codeToHtml(raw, { lang: 'php', theme: 'github-dark' });
+    document.getElementById('code-highlight').innerHTML = highlighted;
+    const pre = document.getElementById('code-highlight').querySelector('pre');
+    if (pre) pre.style.cssText = 'border-radius:10px;padding:20px;font-size:0.87rem;overflow-x:auto;margin:0;line-height:1.7';
+  </script>
+</body>
+</html>

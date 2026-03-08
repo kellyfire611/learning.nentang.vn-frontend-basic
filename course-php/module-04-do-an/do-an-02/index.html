@@ -1,0 +1,239 @@
+<!DOCTYPE html>
+<html lang="vi">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <meta name="description" content="Xây dựng blog cá nhân hoàn chỉnh với bài viết, danh mục, tags, bình luận và rich-text editor.">
+  <meta name="author" content="Dương Nguyễn Phú Cường">
+  <meta property="og:locale" content="vi_VN">
+  <meta property="og:type" content="website">
+  <meta property="og:title" content="Đồ Án 2: Blog Cá Nhân Với CRUD Đầy Đủ | NenTang.vn">
+  <meta property="og:url" content="https://nentang.vn/">
+  <meta property="og:site_name" content="Nền tảng Kiến thức">
+  <title>Đồ Án 2: Blog Cá Nhân Với CRUD Đầy Đủ | NenTang.vn</title>
+  <link rel="stylesheet" href="../../shared.css" />
+</head>
+<body>
+  <div class="page-header module-php-p">
+    <div class="breadcrumb">
+      <a href="../../index.html">PHP Course</a> &rsaquo;
+      <a href="../index.html">Đồ Án</a> &rsaquo; Dự Án 2
+    </div>
+    <h1>🏗️ Đồ Án 2: Blog Cá Nhân Với CRUD Đầy Đủ</h1>
+    <p>Module 4 – Đồ Án Tổng Hợp PHP</p>
+  </div>
+
+  <div class="exercise-page">
+    <div class="exercise-box">
+      <div class="ex-head">
+        <h1>📋 Mô Tả Dự Án</h1>
+        <p>Xây dựng blog cá nhân hoàn chỉnh với bài viết, danh mục, tags, bình luận và rich-text editor.</p>
+      </div>
+      <div class="ex-desc">
+        <h3>✅ Tính năng cần xây dựng</h3>
+        <ul>
+          <li>CRUD bài viết: tạo, sửa, xóa, ẩn/hiện</li>
+          <li>Danh mục phân cấp cha-con</li>
+          <li>Tags nhiều-nhiều (many-to-many)</li>
+          <li>Bình luận lồng nhau (nested comments) 2 cấp</li>
+          <li>Tìm kiếm bài viết, lọc theo danh mục/tag</li>
+          <li>Tích hợp CKEditor (rich text) và slug tự động</li>
+        </ul>
+        <h3>🧠 Kiến thức áp dụng</h3>
+        <ul>
+          <li>Slug: URL-friendly version của tiêu đề (<code>'tieu-de-bai-viet'</code>)</li>
+          <li>Many-to-many: bảng pivot <code>bai_viet_tags(bai_viet_id, tag_id)</code></li>
+          <li>Nested comments: <code>parent_id</code> NULL = comment gốc, có value = reply</li>
+          <li>Rich text: CKEditor lưu HTML, cần sanitize khi hiển thị</li>
+          <li>Cache bài viết hot: lưu vào file cache 5 phút giảm tải DB</li>
+        </ul>
+      </div>
+      <div class="ex-work">
+        <h3>💻 Code mẫu / Kiến trúc tham khảo</h3>
+        <div id="code-highlight">
+          <pre id="code-raw" style="display:none">&lt;?php
+// ════════════════════════════════════
+// ĐỒ ÁN 2: BLOG CÁ NHÂN
+// ════════════════════════════════════
+
+/* Schema:
+CREATE TABLE bai_viet (
+    id          INT AUTO_INCREMENT PRIMARY KEY,
+    tieu_de     VARCHAR(300) NOT NULL,
+    slug        VARCHAR(300) UNIQUE NOT NULL,
+    noi_dung    LONGTEXT,
+    tom_tat     TEXT,
+    anh_dai_dien VARCHAR(255),
+    danh_muc_id  INT,
+    user_id      INT,
+    trang_thai   ENUM('draft','published','archived') DEFAULT 'draft',
+    luot_xem     INT DEFAULT 0,
+    created_at   TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
+    updated_at   TIMESTAMP DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,
+    published_at TIMESTAMP NULL
+);
+CREATE TABLE tags (
+    id   INT AUTO_INCREMENT PRIMARY KEY,
+    ten  VARCHAR(100) UNIQUE NOT NULL,
+    slug VARCHAR(100) UNIQUE NOT NULL
+);
+CREATE TABLE bai_viet_tags (
+    bai_viet_id INT, tag_id INT,
+    PRIMARY KEY (bai_viet_id, tag_id)
+);
+CREATE TABLE binh_luan (
+    id          INT AUTO_INCREMENT PRIMARY KEY,
+    bai_viet_id INT NOT NULL,
+    parent_id   INT DEFAULT NULL,  -- NULL = comment gốc
+    ho_ten      VARCHAR(100),
+    email       VARCHAR(150),
+    noi_dung    TEXT NOT NULL,
+    trang_thai  ENUM('pending','approved','spam') DEFAULT 'pending',
+    created_at  TIMESTAMP DEFAULT CURRENT_TIMESTAMP
+);
+*/
+
+// ── Blog Repository ───────────────
+class BlogRepository {
+    public function __construct(private PDO $pdo) {}
+
+    public function createPost(array $data): int {
+        $slug = $this-&gt;uniqueSlug($data['tieu_de']);
+        $stmt = $this-&gt;pdo-&gt;prepare("
+            INSERT INTO bai_viet (tieu_de, slug, noi_dung, tom_tat, danh_muc_id, user_id, trang_thai, published_at)
+            VALUES (:tieu_de, :slug, :noi_dung, :tom_tat, :dm_id, :user_id, :trang_thai, :pub_at)
+        ");
+        $stmt-&gt;execute([
+            ':tieu_de'   =&gt; $data['tieu_de'],
+            ':slug'      =&gt; $slug,
+            ':noi_dung'  =&gt; $data['noi_dung'],
+            ':tom_tat'   =&gt; $data['tom_tat'] ?? substr(strip_tags($data['noi_dung']), 0, 200),
+            ':dm_id'     =&gt; $data['danh_muc_id'] ?? null,
+            ':user_id'   =&gt; $data['user_id'],
+            ':trang_thai'=&gt; $data['trang_thai'] ?? 'draft',
+            ':pub_at'    =&gt; $data['trang_thai'] === 'published' ? date('Y-m-d H:i:s') : null,
+        ]);
+        $id = (int)$this-&gt;pdo-&gt;lastInsertId();
+        // Gắn tags
+        if (!empty($data['tags'])) $this-&gt;syncTags($id, $data['tags']);
+        return $id;
+    }
+
+    private function syncTags(int $bai_viet_id, array $tag_ids): void {
+        $this-&gt;pdo-&gt;prepare("DELETE FROM bai_viet_tags WHERE bai_viet_id = ?")-&gt;execute([$bai_viet_id]);
+        $stmt = $this-&gt;pdo-&gt;prepare("INSERT IGNORE INTO bai_viet_tags (bai_viet_id, tag_id) VALUES (?,?)");
+        foreach ($tag_ids as $tag_id) $stmt-&gt;execute([$bai_viet_id, $tag_id]);
+    }
+
+    public function getPostWithTags(string $slug): ?array {
+        $post = $this-&gt;pdo-&gt;prepare("
+            SELECT bv.*, u.ho_ten AS tac_gia, dm.ten AS danh_muc
+            FROM bai_viet bv
+            LEFT JOIN users u  ON u.id  = bv.user_id
+            LEFT JOIN danh_muc dm ON dm.id = bv.danh_muc_id
+            WHERE bv.slug = ? AND bv.trang_thai = 'published'
+        ");
+        $post-&gt;execute([$slug]);
+        $row = $post-&gt;fetch();
+        if (!$row) return null;
+
+        // Lấy tags
+        $tags = $this-&gt;pdo-&gt;prepare("
+            SELECT t.ten, t.slug FROM tags t
+            JOIN bai_viet_tags bt ON bt.tag_id = t.id WHERE bt.bai_viet_id = ?
+        ");
+        $tags-&gt;execute([$row['id']]);
+        $row['tags'] = $tags-&gt;fetchAll();
+
+        // Tăng lượt xem
+        $this-&gt;pdo-&gt;prepare("UPDATE bai_viet SET luot_xem = luot_xem + 1 WHERE id=?")-&gt;execute([$row['id']]);
+        return $row;
+    }
+
+    public function getComments(int $bai_viet_id): array {
+        $stmt = $this-&gt;pdo-&gt;prepare("
+            SELECT * FROM binh_luan
+            WHERE bai_viet_id = ? AND trang_thai = 'approved'
+            ORDER BY parent_id IS NOT NULL, parent_id, created_at
+        ");
+        $stmt-&gt;execute([$bai_viet_id]);
+        $rows = $stmt-&gt;fetchAll();
+
+        // Build nested tree
+        $comments = []; $replies = [];
+        foreach ($rows as $c) {
+            if ($c['parent_id'] === null) $comments[$c['id']] = $c + ['replies' =&gt; []];
+            else $replies[] = $c;
+        }
+        foreach ($replies as $r) {
+            if (isset($comments[$r['parent_id']])) {
+                $comments[$r['parent_id']]['replies'][] = $r;
+            }
+        }
+        return array_values($comments);
+    }
+
+    public function addComment(array $data): int {
+        $stmt = $this-&gt;pdo-&gt;prepare("
+            INSERT INTO binh_luan (bai_viet_id, parent_id, ho_ten, email, noi_dung)
+            VALUES (?, ?, ?, ?, ?)
+        ");
+        $stmt-&gt;execute([
+            $data['bai_viet_id'], $data['parent_id'] ?? null,
+            htmlspecialchars($data['ho_ten']),
+            filter_var($data['email'], FILTER_VALIDATE_EMAIL) ?: null,
+            htmlspecialchars($data['noi_dung']),
+        ]);
+        return (int)$this-&gt;pdo-&gt;lastInsertId();
+    }
+
+    private function uniqueSlug(string $title): string {
+        $slug = $base = strtolower(trim(preg_replace('/[^a-z0-9]+/','-',
+            iconv('UTF-8','ASCII//TRANSLIT//IGNORE',$title)),'-'));
+        $i = 0;
+        while (true) {
+            $check = $this-&gt;pdo-&gt;prepare("SELECT id FROM bai_viet WHERE slug=?");
+            $check-&gt;execute([$slug]);
+            if (!$check-&gt;fetch()) break;
+            $slug = $base . '-' . ++$i;
+        }
+        return $slug;
+    }
+}
+
+// ── Demo output ───────────────────
+echo "=== Blog System Demo ===&lt;br&gt;";
+echo "Features:&lt;br&gt;";
+echo "✅ CRUD bài viết (draft → published → archived)&lt;br&gt;";
+echo "✅ Tags nhiều-nhiều với sync&lt;br&gt;";
+echo "✅ Bình luận lồng nhau 2 cấp&lt;br&gt;";
+echo "✅ Slugs không trùng tự động&lt;br&gt;";
+echo "✅ JOIN tác giả + danh mục trong 1 query&lt;br&gt;";
+echo "&lt;br&gt;Routes cần thiết:&lt;br&gt;";
+$routes = [
+    'GET  /blog'            =&gt; 'Trang chủ blog – danh sách bài viết phân trang',
+    'GET  /blog/{slug}'     =&gt; 'Chi tiết bài viết + bình luận',
+    'POST /blog/{id}/comment' =&gt; 'Gửi bình luận',
+    'GET  /admin/posts'     =&gt; 'Admin – danh sách (auth required)',
+    'GET  /admin/posts/new' =&gt; 'Form tạo bài mới',
+    'POST /admin/posts'     =&gt; 'Lưu bài mới',
+    'GET  /admin/posts/{id}/edit' =&gt; 'Form sửa',
+    'PUT  /admin/posts/{id}'     =&gt; 'Lưu cập nhật',
+    'DELETE /admin/posts/{id}'   =&gt; 'Xóa bài',
+];
+foreach ($routes as $route =&gt; $desc) echo "• &lt;code&gt;$route&lt;/code&gt;: $desc&lt;br&gt;";</pre>
+        </div>
+      </div>
+    </div>
+  </div>
+  <a href="../index.html" class="btn-back">&#8592; Quay lại Đồ Án</a>
+  <script type="module">
+    import { codeToHtml } from 'https://esm.sh/shiki@1';
+    const raw = document.getElementById('code-raw').textContent;
+    const highlighted = await codeToHtml(raw, { lang: 'php', theme: 'github-dark' });
+    document.getElementById('code-highlight').innerHTML = highlighted;
+    const pre = document.getElementById('code-highlight').querySelector('pre');
+    if (pre) pre.style.cssText = 'border-radius:10px;padding:20px;font-size:0.87rem;overflow-x:auto;margin:0;line-height:1.7';
+  </script>
+</body>
+</html>

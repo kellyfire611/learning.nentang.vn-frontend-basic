@@ -1,0 +1,285 @@
+<!DOCTYPE html>
+<html lang="vi">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <meta name="description" content="Xây dựng hệ thống xác thực người dùng hoàn chỉnh với đăng ký, đăng nhập, quên mật khẩu và phân quyền role.">
+  <meta name="author" content="Dương Nguyễn Phú Cường">
+  <meta property="og:locale" content="vi_VN">
+  <meta property="og:type" content="website">
+  <meta property="og:title" content="Đồ Án 1: Hệ Thống Đăng Nhập & Đăng Ký | NenTang.vn">
+  <meta property="og:url" content="https://nentang.vn/">
+  <meta property="og:site_name" content="Nền tảng Kiến thức">
+  <title>Đồ Án 1: Hệ Thống Đăng Nhập & Đăng Ký | NenTang.vn</title>
+  <link rel="stylesheet" href="../../shared.css" />
+</head>
+<body>
+  <div class="page-header module-php-p">
+    <div class="breadcrumb">
+      <a href="../../index.html">PHP Course</a> &rsaquo;
+      <a href="../index.html">Đồ Án</a> &rsaquo; Dự Án 1
+    </div>
+    <h1>🏗️ Đồ Án 1: Hệ Thống Đăng Nhập & Đăng Ký</h1>
+    <p>Module 4 – Đồ Án Tổng Hợp PHP</p>
+  </div>
+
+  <div class="exercise-page">
+    <div class="exercise-box">
+      <div class="ex-head">
+        <h1>📋 Mô Tả Dự Án</h1>
+        <p>Xây dựng hệ thống xác thực người dùng hoàn chỉnh với đăng ký, đăng nhập, quên mật khẩu và phân quyền role.</p>
+      </div>
+      <div class="ex-desc">
+        <h3>✅ Tính năng cần xây dựng</h3>
+        <ul>
+          <li>Đăng ký: validate email/password, hash bcrypt, gửi email xác thực</li>
+          <li>Đăng nhập: session + JWT option, remember me 30 ngày</li>
+          <li>Quên mật khẩu: gửi email reset link có thời hạn 1 giờ</li>
+          <li>Phân quyền: admin/user/moderator với middleware kiểm tra</li>
+          <li>Profile: cập nhật thông tin, đổi mật khẩu, upload avatar</li>
+          <li>Security: rate limiting login, CSRF, session fixation, brute force protection</li>
+        </ul>
+        <h3>🧠 Kiến thức áp dụng</h3>
+        <ul>
+          <li>Luôn hash password bằng <code>password_hash(PASSWORD_DEFAULT)</code></li>
+          <li>Reset token: <code>bin2hex(random_bytes(32))</code>, lưu DB cùng thời gian hết hạn</li>
+          <li>Session fixation: <code>session_regenerate_id(true)</code> sau khi login</li>
+          <li>Ghi log: mọi lần login thành công/thất bại cần ghi log với IP, timestamp</li>
+          <li>2FA (nâng cao): Google Authenticator với TOTP algorithm</li>
+        </ul>
+      </div>
+      <div class="ex-work">
+        <h3>💻 Code mẫu / Kiến trúc tham khảo</h3>
+        <div id="code-highlight">
+          <pre id="code-raw" style="display:none">&lt;?php
+// ════════════════════════════════════
+// ĐỒ ÁN 1: HỆ THỐNG AUTH HOÀN CHỈNH
+// ════════════════════════════════════
+
+// ── Database Schema ───────────────
+/*
+CREATE TABLE users (
+    id             INT AUTO_INCREMENT PRIMARY KEY,
+    ho_ten         VARCHAR(100) NOT NULL,
+    email          VARCHAR(150) UNIQUE NOT NULL,
+    mat_khau       VARCHAR(255) NOT NULL,
+    role           ENUM('user','moderator','admin') DEFAULT 'user',
+    avatar         VARCHAR(255) DEFAULT NULL,
+    email_verified TINYINT(1) DEFAULT 0,
+    verify_token   VARCHAR(64) DEFAULT NULL,
+    reset_token    VARCHAR(64) DEFAULT NULL,
+    reset_expires  DATETIME DEFAULT NULL,
+    remember_token VARCHAR(64) DEFAULT NULL,
+    login_attempts INT DEFAULT 0,
+    locked_until   DATETIME DEFAULT NULL,
+    last_login     DATETIME DEFAULT NULL,
+    created_at     TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
+    updated_at     TIMESTAMP DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP
+);
+
+CREATE TABLE login_logs (
+    id         INT AUTO_INCREMENT PRIMARY KEY,
+    user_id    INT NULL,
+    email      VARCHAR(150),
+    ip_address VARCHAR(45),
+    user_agent TEXT,
+    status     ENUM('success','failed','locked') DEFAULT 'failed',
+    created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP
+);
+*/
+
+class AuthSystem {
+    private const MAX_ATTEMPTS   = 5;
+    private const LOCK_DURATION  = 15 * 60; // 15 phút
+    private const RESET_TTL      = 3600;    // 1 giờ
+    private const REMEMBER_TTL   = 30 * 24 * 3600;
+
+    public function __construct(private PDO $pdo, private ?Mailer $mailer = null) {}
+
+    // ─── Đăng ký ─────────────────
+    public function register(array $data): array {
+        // Validation
+        $errors = [];
+        $data['ho_ten'] = trim($data['ho_ten'] ?? '');
+        $data['email']  = strtolower(trim($data['email'] ?? ''));
+        $data['mat_khau'] = $data['mat_khau'] ?? '';
+
+        if (strlen($data['ho_ten']) &lt; 2)   $errors['ho_ten']   = "Họ tên ít nhất 2 ký tự";
+        if (!filter_var($data['email'], FILTER_VALIDATE_EMAIL))
+                                            $errors['email']    = "Email không hợp lệ";
+        if (strlen($data['mat_khau']) &lt; 8)  $errors['mat_khau'] = "Mật khẩu ít nhất 8 ký tự";
+        if (!preg_match('/[A-Z]/', $data['mat_khau']))
+                                            $errors['mat_khau'] = ($errors['mat_khau'] ?? '') . " (cần chữ hoa)";
+        if (!preg_match('/[0-9]/', $data['mat_khau']))
+                                            $errors['mat_khau'] = ($errors['mat_khau'] ?? '') . " (cần số)";
+        if ($errors) throw new ValidationException($errors);
+
+        // Email đã tồn tại?
+        $chk = $this-&gt;pdo-&gt;prepare("SELECT id FROM users WHERE email = ?");
+        $chk-&gt;execute([$data['email']]);
+        if ($chk-&gt;fetch()) throw new DuplicateEmailException("Email đã được đăng ký");
+
+        // Insert
+        $verify_token = bin2hex(random_bytes(32));
+        $stmt = $this-&gt;pdo-&gt;prepare("
+            INSERT INTO users (ho_ten, email, mat_khau, verify_token)
+            VALUES (?, ?, ?, ?)
+        ");
+        $stmt-&gt;execute([$data['ho_ten'], $data['email'],
+                        password_hash($data['mat_khau'], PASSWORD_DEFAULT),
+                        $verify_token]);
+        $user_id = (int)$this-&gt;pdo-&gt;lastInsertId();
+
+        // Gửi email xác thực
+        $this-&gt;mailer?-&gt;sendVerification($data['email'], $data['ho_ten'], $verify_token);
+
+        return $this-&gt;findById($user_id);
+    }
+
+    // ─── Đăng nhập ───────────────
+    public function login(string $email, string $mat_khau, bool $remember = false): array {
+        $email = strtolower(trim($email));
+        $ip    = $_SERVER['REMOTE_ADDR'] ?? '0.0.0.0';
+
+        $stmt = $this-&gt;pdo-&gt;prepare("SELECT * FROM users WHERE email = ?");
+        $stmt-&gt;execute([$email]);
+        $user = $stmt-&gt;fetch();
+
+        // Kiểm tra khóa tài khoản
+        if ($user &amp;&amp; $user['locked_until'] &amp;&amp; strtotime($user['locked_until']) &gt; time()) {
+            $con_lai = ceil((strtotime($user['locked_until']) - time()) / 60);
+            $this-&gt;logLogin(null, $email, $ip, 'locked');
+            throw new AccountLockedException("Tài khoản bị khóa, thử lại sau $con_lai phút");
+        }
+
+        // Verify password
+        if (!$user || !password_verify($mat_khau, $user['mat_khau'])) {
+            if ($user) {
+                $attempts = $user['login_attempts'] + 1;
+                $locked   = $attempts &gt;= self::MAX_ATTEMPTS
+                    ? date('Y-m-d H:i:s', time() + self::LOCK_DURATION)
+                    : null;
+                $this-&gt;pdo-&gt;prepare("UPDATE users SET login_attempts=?, locked_until=? WHERE id=?")
+                     -&gt;execute([$attempts, $locked, $user['id']]);
+                $con_lai_lan = self::MAX_ATTEMPTS - $attempts;
+                if ($con_lai_lan &gt; 0) throw new AuthException("Sai thông tin. Còn $con_lai_lan lần thử");
+            }
+            $this-&gt;logLogin(null, $email, $ip, 'failed');
+            throw new AuthException("Email hoặc mật khẩu không đúng");
+        }
+
+        // Reset attempts, cập nhật last login
+        $this-&gt;pdo-&gt;prepare("UPDATE users SET login_attempts=0, locked_until=NULL, last_login=NOW() WHERE id=?")
+             -&gt;execute([$user['id']]);
+        $this-&gt;logLogin($user['id'], $email, $ip, 'success');
+
+        // Session
+        session_regenerate_id(true);
+        $_SESSION['user_id'] = $user['id'];
+        $_SESSION['role']    = $user['role'];
+
+        // Remember me
+        if ($remember) {
+            $token = bin2hex(random_bytes(32));
+            $this-&gt;pdo-&gt;prepare("UPDATE users SET remember_token=? WHERE id=?")-&gt;execute([$token, $user['id']]);
+            setcookie('remember', $token, time() + self::REMEMBER_TTL, '/', '', true, true);
+        }
+
+        return $user;
+    }
+
+    // ─── Quên mật khẩu ───────────
+    public function forgotPassword(string $email): void {
+        $stmt = $this-&gt;pdo-&gt;prepare("SELECT id, ho_ten FROM users WHERE email = ?");
+        $stmt-&gt;execute([$email]);
+        $user = $stmt-&gt;fetch();
+        if (!$user) return; // Không tiết lộ email có tồn tại không
+
+        $token   = bin2hex(random_bytes(32));
+        $expires = date('Y-m-d H:i:s', time() + self::RESET_TTL);
+        $this-&gt;pdo-&gt;prepare("UPDATE users SET reset_token=?, reset_expires=? WHERE id=?")
+             -&gt;execute([$token, $expires, $user['id']]);
+        $this-&gt;mailer?-&gt;sendResetPassword($email, $user['ho_ten'], $token);
+    }
+
+    // ─── Reset mật khẩu ──────────
+    public function resetPassword(string $token, string $new_pass): void {
+        $stmt = $this-&gt;pdo-&gt;prepare("SELECT id FROM users WHERE reset_token=? AND reset_expires &gt; NOW()");
+        $stmt-&gt;execute([$token]);
+        $user = $stmt-&gt;fetch();
+        if (!$user) throw new AuthException("Token không hợp lệ hoặc đã hết hạn");
+        if (strlen($new_pass) &lt; 8) throw new AuthException("Mật khẩu ít nhất 8 ký tự");
+
+        $this-&gt;pdo-&gt;prepare("UPDATE users SET mat_khau=?, reset_token=NULL, reset_expires=NULL WHERE id=?")
+             -&gt;execute([password_hash($new_pass, PASSWORD_DEFAULT), $user['id']]);
+    }
+
+    // ─── Kiểm tra remember token ─
+    public function checkRemember(): ?array {
+        $token = $_COOKIE['remember'] ?? null;
+        if (!$token) return null;
+        $stmt = $this-&gt;pdo-&gt;prepare("SELECT * FROM users WHERE remember_token = ?");
+        $stmt-&gt;execute([$token]);
+        $user = $stmt-&gt;fetch();
+        if ($user) {
+            session_regenerate_id(true);
+            $_SESSION['user_id'] = $user['id'];
+            $_SESSION['role']    = $user['role'];
+        }
+        return $user ?: null;
+    }
+
+    private function findById(int $id): array {
+        $stmt = $this-&gt;pdo-&gt;prepare("SELECT id, ho_ten, email, role, created_at FROM users WHERE id=?");
+        $stmt-&gt;execute([$id]);
+        return $stmt-&gt;fetch() ?: throw new NotFoundException("User không tồn tại");
+    }
+
+    private function logLogin(?int $user_id, string $email, string $ip, string $status): void {
+        $stmt = $this-&gt;pdo-&gt;prepare(
+            "INSERT INTO login_logs (user_id, email, ip_address, user_agent, status) VALUES (?,?,?,?,?)"
+        );
+        $stmt-&gt;execute([$user_id, $email, $ip, $_SERVER['HTTP_USER_AGENT'] ?? '', $status]);
+    }
+}
+
+// ─── Middleware phân quyền ────────
+function require_role(string ...$roles): void {
+    if (!isset($_SESSION['user_id'])) {
+        header('Location: /login?redirect=' . urlencode($_SERVER['REQUEST_URI']));
+        exit;
+    }
+    if (!in_array($_SESSION['role'] ?? 'user', $roles)) {
+        http_response_code(403);
+        die("Bạn không có quyền truy cập trang này");
+    }
+}
+
+// Sử dụng middleware:
+// require_role('admin');              // Chỉ admin
+// require_role('admin', 'moderator'); // Admin hoặc moderator
+
+// ─── Demo ─────────────────────────
+echo "=== Auth System Demo ===&lt;br&gt;";
+echo "✅ Class AuthSystem đã sẵn sàng&lt;br&gt;";
+echo "• register(data): đăng ký + gửi email xác thực&lt;br&gt;";
+echo "• login(email, pass, remember): đăng nhập + session&lt;br&gt;";
+echo "• forgotPassword(email): gửi link reset&lt;br&gt;";
+echo "• resetPassword(token, pass): đổi mật khẩu&lt;br&gt;";
+echo "• checkRemember(): auto-login từ cookie&lt;br&gt;";
+echo "• Brute force: khóa sau " . AuthSystem::MAX_ATTEMPTS . " lần thất bại&lt;br&gt;";</pre>
+        </div>
+      </div>
+    </div>
+  </div>
+  <a href="../index.html" class="btn-back">&#8592; Quay lại Đồ Án</a>
+  <script type="module">
+    import { codeToHtml } from 'https://esm.sh/shiki@1';
+    const raw = document.getElementById('code-raw').textContent;
+    const highlighted = await codeToHtml(raw, { lang: 'php', theme: 'github-dark' });
+    document.getElementById('code-highlight').innerHTML = highlighted;
+    const pre = document.getElementById('code-highlight').querySelector('pre');
+    if (pre) pre.style.cssText = 'border-radius:10px;padding:20px;font-size:0.87rem;overflow-x:auto;margin:0;line-height:1.7';
+  </script>
+</body>
+</html>

@@ -1,0 +1,107 @@
+<!DOCTYPE html>
+<html lang="vi">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <meta name="keywords" content="PHP,Lập trình PHP,Web,NenTang,Bài tập PHP,PHP cơ bản">
+  <meta name="author" content="Dương Nguyễn Phú Cường">
+  <meta name="description" content="Sử dụng switch/case để phân nhánh nhiều trường hợp, so sánh với match của PHP 8.">
+  <meta property="og:locale" content="vi_VN">
+  <meta property="og:type" content="website">
+  <meta property="og:title" content="Bài 07 – Switch / Case và Match | NenTang.vn">
+  <meta property="og:description" content="Sử dụng switch/case để phân nhánh nhiều trường hợp, so sánh với match của PHP 8.">
+  <meta property="og:url" content="https://nentang.vn/">
+  <meta property="og:site_name" content="Nền tảng Kiến thức">
+  <title>Bài 07 – Switch / Case và Match | NenTang.vn</title>
+  <link rel="stylesheet" href="../../shared.css" />
+</head>
+<body>
+  <div class="page-header module-php-1">
+    <div class="breadcrumb">
+      <a href="../../index.html">PHP Course</a> &rsaquo;
+      <a href="../index.html">Module 1</a> &rsaquo; Bài 07
+    </div>
+    <h1>Bài 07: Switch / Case và Match</h1>
+    <p>Module 1 – PHP Cơ Bản</p>
+  </div>
+
+  <div class="exercise-page">
+    <div class="exercise-box">
+      <div class="ex-head">
+        <h1>📝 Yêu cầu bài tập</h1>
+        <p>Sử dụng switch/case để phân nhánh nhiều trường hợp, so sánh với match của PHP 8.</p>
+      </div>
+      <div class="ex-desc">
+        <h3>Yêu cầu</h3>
+        <ul>
+          <li>Viết switch phân loại theo ngày trong tuần</li>
+          <li>Dùng <code>break</code> và fall-through (không có break)</li>
+          <li>Dùng <code>default</code> khi không khớp case nào</li>
+          <li>Viết lại bằng <code>match</code> (PHP 8) để so sánh</li>
+          <li>Switch với nhiều case có cùng xử lý</li>
+        </ul>
+        <h3>🧠 Kiến thức cần nhớ</h3>
+        <ul>
+          <li><code>switch($x)</code> so sánh lỏng (==) không strict như match</li>
+          <li>Thiếu <code>break</code> → fall-through: tiếp tục chạy case tiếp theo</li>
+          <li><code>match($x)</code>: strict (===), phải xử lý mọi case, trả về giá trị</li>
+          <li>match ném <code>UnhandledMatchError</code> nếu không có default phù hợp</li>
+        </ul>
+      </div>
+      <div class="ex-work">
+        <h3>💻 Code mẫu</h3>
+        <div id="code-highlight">
+          <pre id="code-raw" style="display:none">&lt;?php
+// ── Switch theo ngày ──────────────
+$thu = date('N');   // 1=Thứ Hai ... 7=Chủ Nhật
+
+switch ($thu) {
+    case 1: echo "Thứ Hai – Đầu tuần, hăng say!&lt;br&gt;"; break;
+    case 2: echo "Thứ Ba&lt;br&gt;"; break;
+    case 3: echo "Thứ Tư – Giữa tuần&lt;br&gt;"; break;
+    case 4: echo "Thứ Năm&lt;br&gt;"; break;
+    case 5: echo "Thứ Sáu – Sắp cuối tuần 🎉&lt;br&gt;"; break;
+    case 6:
+    case 7: echo "Cuối tuần – Nghỉ ngơi! 😴&lt;br&gt;"; break;
+    default: echo "Không xác định&lt;br&gt;";
+}
+
+// ── Fall-through cố ý ─────────────
+$quy = 2;
+echo "Quý $quy gồm các tháng: ";
+switch ($quy) {
+    case 1: echo "1 "; // fall-through
+    case 2: echo "2 ";
+    case 3: echo "3 "; break;
+    case 2: echo "4 "; break;  // PHP chỉ khớp case đầu tiên
+}
+echo "&lt;br&gt;";
+
+// ── match (PHP 8) ─────────────────
+$ma_loi = 404;
+$thong_bao = match($ma_loi) {
+    200      =&gt; "OK – Thành công",
+    301, 302 =&gt; "Chuyển hướng",
+    400      =&gt; "Yêu cầu sai",
+    401      =&gt; "Chưa xác thực",
+    403      =&gt; "Bị cấm",
+    404      =&gt; "Không tìm thấy",
+    500      =&gt; "Lỗi máy chủ",
+    default  =&gt; "Mã lỗi không xác định",
+};
+echo "HTTP $ma_loi: $thong_bao&lt;br&gt;";</pre>
+        </div>
+      </div>
+    </div>
+  </div>
+  <a href="../index.html" class="btn-back">&#8592; Quay lại Module 1</a>
+  <script type="module">
+    import { codeToHtml } from 'https://esm.sh/shiki@1';
+    const raw = document.getElementById('code-raw').textContent;
+    const highlighted = await codeToHtml(raw, { lang: 'php', theme: 'github-dark' });
+    document.getElementById('code-highlight').innerHTML = highlighted;
+    const pre = document.getElementById('code-highlight').querySelector('pre');
+    if (pre) pre.style.cssText = 'border-radius:10px;padding:20px;font-size:0.87rem;overflow-x:auto;margin:0;line-height:1.7';
+  </script>
+</body>
+</html>

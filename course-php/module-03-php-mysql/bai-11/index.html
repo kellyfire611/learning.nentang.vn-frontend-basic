@@ -1,0 +1,168 @@
+<!DOCTYPE html>
+<html lang="vi">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <meta name="description" content="Xây dựng hệ thống upload ảnh sản phẩm an toàn với validation và resize.">
+  <meta name="author" content="Dương Nguyễn Phú Cường">
+  <meta property="og:locale" content="vi_VN">
+  <meta property="og:type" content="website">
+  <meta property="og:title" content="Bài 11 – File Upload và Quản Lý Media | NenTang.vn">
+  <meta property="og:url" content="https://nentang.vn/">
+  <meta property="og:site_name" content="Nền tảng Kiến thức">
+  <title>Bài 11 – File Upload và Quản Lý Media | NenTang.vn</title>
+  <link rel="stylesheet" href="../../shared.css" />
+</head>
+<body>
+  <div class="page-header module-php-3">
+    <div class="breadcrumb">
+      <a href="../../index.html">PHP Course</a> &rsaquo;
+      <a href="../index.html">Module 3</a> &rsaquo; Bài 11
+    </div>
+    <h1>Bài 11: File Upload và Quản Lý Media</h1>
+    <p>Module 3 – PHP &amp; MySQL Thực Chiến</p>
+  </div>
+
+  <div class="exercise-page">
+    <div class="exercise-box">
+      <div class="ex-head">
+        <h1>📝 Yêu cầu bài tập</h1>
+        <p>Xây dựng hệ thống upload ảnh sản phẩm an toàn với validation và resize.</p>
+      </div>
+      <div class="ex-desc">
+        <h3>Yêu cầu</h3>
+        <ul>
+          <li>Validate file: loại, kích thước, extension</li>
+          <li>Đổi tên file an toàn (UUID)</li>
+          <li>Resize ảnh và tạo thumbnail</li>
+          <li>Lưu thông tin file vào DB</li>
+          <li>Xóa file khi xóa sản phẩm</li>
+        </ul>
+        <h3>🧠 Kiến thức cần nhớ</h3>
+        <ul>
+          <li>Validate MIME type bằng <code>finfo_file()</code> – không tin <code>$_FILES['type']</code></li>
+          <li>Đổi tên file thành UUID để tránh trùng và ẩn tên gốc</li>
+          <li>Lưu ảnh gốc + thumbnail riêng thư mục</li>
+          <li><code>move_uploaded_file()</code>: di chuyển file từ tmpdir</li>
+          <li>Giới hạn extension: chỉ cho phép jpg, png, webp, gif</li>
+        </ul>
+      </div>
+      <div class="ex-work">
+        <h3>💻 Code mẫu</h3>
+        <div id="code-highlight">
+          <pre id="code-raw" style="display:none">&lt;?php
+$pdo = get_pdo();
+
+class MediaUploader {
+    private const ALLOWED_TYPES = ['image/jpeg', 'image/png', 'image/webp', 'image/gif'];
+    private const MAX_SIZE      = 5 * 1024 * 1024; // 5 MB
+    private const ALLOWED_EXT   = ['jpg','jpeg','png','webp','gif'];
+
+    public function __construct(private string $upload_dir = 'uploads/') {
+        foreach (['original','thumbnails'] as $sub) {
+            $path = $upload_dir . $sub;
+            if (!is_dir($path)) mkdir($path, 0755, true);
+        }
+    }
+
+    public function upload(array $file, int $product_id): array {
+        // 1. Kiểm tra lỗi upload
+        if ($file['error'] !== UPLOAD_ERR_OK) throw new RuntimeException("Upload lỗi code: {$file['error']}");
+        if ($file['size'] &gt; self::MAX_SIZE) throw new InvalidArgumentException("File quá lớn (tối đa 5MB)");
+
+        // 2. Validate MIME bằng finfo (an toàn hơn $_FILES['type'])
+        $finfo = finfo_open(FILEINFO_MIME_TYPE);
+        $mime  = finfo_file($finfo, $file['tmp_name']);
+        finfo_close($finfo);
+        if (!in_array($mime, self::ALLOWED_TYPES)) {
+            throw new InvalidArgumentException("Loại file không hỗ trợ: $mime");
+        }
+
+        // 3. Kiểm tra extension
+        $ext = strtolower(pathinfo($file['name'], PATHINFO_EXTENSION));
+        if (!in_array($ext, self::ALLOWED_EXT)) {
+            throw new InvalidArgumentException("Extension không hợp lệ: $ext");
+        }
+
+        // 4. Tên file an toàn (UUID)
+        $uuid     = sprintf('%04x%04x-%04x-%04x-%04x-%12s',
+            mt_rand(0,0xffff), mt_rand(0,0xffff), mt_rand(0,0xffff),
+            mt_rand(0,0x0fff)|0x4000, mt_rand(0,0x3fff)|0x8000, bin2hex(random_bytes(6)));
+        $filename = $uuid . '.' . $ext;
+        $dest     = $this-&gt;upload_dir . 'original/' . $filename;
+
+        // 5. Move file
+        if (!move_uploaded_file($file['tmp_name'], $dest)) {
+            throw new RuntimeException("Không thể lưu file");
+        }
+
+        // 6. Tạo thumbnail
+        $thumb_path = $this-&gt;upload_dir . 'thumbnails/' . $filename;
+        $this-&gt;createThumbnail($dest, $thumb_path, 400, 400);
+
+        return [
+            'filename'   =&gt; $filename,
+            'path'       =&gt; $dest,
+            'thumb'      =&gt; $thumb_path,
+            'size'       =&gt; filesize($dest),
+            'mime'       =&gt; $mime,
+        ];
+    }
+
+    private function createThumbnail(string $src, string $dest, int $maxW, int $maxH): void {
+        [$w, $h, $type] = getimagesize($src);
+        $ratio = min($maxW/$w, $maxH/$h);
+        $nw = (int)($w*$ratio); $nh = (int)($h*$ratio);
+        $orig  = match($type) {
+            IMAGETYPE_JPEG =&gt; imagecreatefromjpeg($src),
+            IMAGETYPE_PNG  =&gt; imagecreatefrompng($src),
+            IMAGETYPE_WEBP =&gt; imagecreatefromwebp($src),
+            default        =&gt; imagecreatefromjpeg($src),
+        };
+        $thumb = imagecreatetruecolor($nw, $nh);
+        imagecopyresampled($thumb, $orig, 0,0,0,0,$nw,$nh,$w,$h);
+        match($type) {
+            IMAGETYPE_PNG  =&gt; imagepng($thumb, $dest, 8),
+            IMAGETYPE_WEBP =&gt; imagewebp($thumb, $dest, 80),
+            default        =&gt; imagejpeg($thumb, $dest, 85),
+        };
+        imagedestroy($orig); imagedestroy($thumb);
+    }
+}
+
+// Giả lập upload (thay bằng $_FILES['anh'] trong thực tế)
+$fake_file = [
+    'name'     =&gt; 'product_photo.jpg',
+    'type'     =&gt; 'image/jpeg',
+    'tmp_name' =&gt; tempnam(sys_get_temp_dir(), 'upload'),
+    'error'    =&gt; UPLOAD_ERR_OK,
+    'size'     =&gt; 1_200_000,
+];
+// Tạo ảnh giả 1×1 pixel JPEG cho demo
+imagejpeg(imagecreatetruecolor(800,600), $fake_file['tmp_name'], 90);
+
+$uploader = new MediaUploader(__DIR__ . '/uploads/');
+try {
+    $result = $uploader-&gt;upload($fake_file, 1);
+    echo "✅ Upload thành công:&lt;br&gt;";
+    echo "File: {$result['filename']}&lt;br&gt;";
+    echo "Size: " . number_format($result['size']) . " bytes&lt;br&gt;";
+    echo "MIME: {$result['mime']}&lt;br&gt;";
+} catch (Exception $e) {
+    echo "❌ {$e-&gt;getMessage()}&lt;br&gt;";
+}</pre>
+        </div>
+      </div>
+    </div>
+  </div>
+  <a href="../index.html" class="btn-back">&#8592; Quay lại Module 3</a>
+  <script type="module">
+    import { codeToHtml } from 'https://esm.sh/shiki@1';
+    const raw = document.getElementById('code-raw').textContent;
+    const highlighted = await codeToHtml(raw, { lang: 'php', theme: 'github-dark' });
+    document.getElementById('code-highlight').innerHTML = highlighted;
+    const pre = document.getElementById('code-highlight').querySelector('pre');
+    if (pre) pre.style.cssText = 'border-radius:10px;padding:20px;font-size:0.87rem;overflow-x:auto;margin:0;line-height:1.7';
+  </script>
+</body>
+</html>

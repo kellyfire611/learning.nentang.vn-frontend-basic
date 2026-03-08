@@ -1,0 +1,112 @@
+<!DOCTYPE html>
+<html lang="vi">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <meta name="keywords" content="PHP,Lập trình PHP,Web,NenTang,Bài tập PHP,PHP cơ bản">
+  <meta name="author" content="Dương Nguyễn Phú Cường">
+  <meta name="description" content="Thành thạo các hàm xử lý mảng mạnh mẽ của PHP để xử lý dữ liệu hiệu quả.">
+  <meta property="og:locale" content="vi_VN">
+  <meta property="og:type" content="website">
+  <meta property="og:title" content="Bài 22 – Hàm Mảng Nâng Cao | NenTang.vn">
+  <meta property="og:description" content="Thành thạo các hàm xử lý mảng mạnh mẽ của PHP để xử lý dữ liệu hiệu quả.">
+  <meta property="og:url" content="https://nentang.vn/">
+  <meta property="og:site_name" content="Nền tảng Kiến thức">
+  <title>Bài 22 – Hàm Mảng Nâng Cao | NenTang.vn</title>
+  <link rel="stylesheet" href="../../shared.css" />
+</head>
+<body>
+  <div class="page-header module-php-1">
+    <div class="breadcrumb">
+      <a href="../../index.html">PHP Course</a> &rsaquo;
+      <a href="../index.html">Module 1</a> &rsaquo; Bài 22
+    </div>
+    <h1>Bài 22: Hàm Mảng Nâng Cao</h1>
+    <p>Module 1 – PHP Cơ Bản</p>
+  </div>
+
+  <div class="exercise-page">
+    <div class="exercise-box">
+      <div class="ex-head">
+        <h1>📝 Yêu cầu bài tập</h1>
+        <p>Thành thạo các hàm xử lý mảng mạnh mẽ của PHP để xử lý dữ liệu hiệu quả.</p>
+      </div>
+      <div class="ex-desc">
+        <h3>Yêu cầu</h3>
+        <ul>
+          <li><code>array_map</code>, <code>array_filter</code>, <code>array_reduce</code></li>
+          <li><code>array_unique</code>, <code>array_flip</code>, <code>array_combine</code></li>
+          <li><code>array_slice</code>, <code>array_splice</code>, <code>array_chunk</code></li>
+          <li><code>array_column</code>, <code>usort</code>, <code>array_multisort</code></li>
+          <li>Spread operator và unpacking mảng</li>
+        </ul>
+        <h3>🧠 Kiến thức cần nhớ</h3>
+        <ul>
+          <li><code>array_column($arr, 'key')</code>: lấy một cột từ mảng 2 chiều</li>
+          <li><code>array_chunk($arr, $n)</code>: chia mảng thành các chunk n phần tử</li>
+          <li><code>array_unique($arr)</code>: xóa phần tử trùng lặp</li>
+          <li><code>array_flip($arr)</code>: đổi key ↔ value</li>
+          <li><code>array_combine($keys, $values)</code>: tạo mảng từ 2 mảng key và value</li>
+        </ul>
+      </div>
+      <div class="ex-work">
+        <h3>💻 Code mẫu</h3>
+        <div id="code-highlight">
+          <pre id="code-raw" style="display:none">&lt;?php
+$sinh_vien = [
+    ['ten' =&gt; 'An',   'diem' =&gt; 8.5, 'lop' =&gt; 'A', 'tuoi' =&gt; 20],
+    ['ten' =&gt; 'Bình', 'diem' =&gt; 7.0, 'lop' =&gt; 'B', 'tuoi' =&gt; 21],
+    ['ten' =&gt; 'Cúc',  'diem' =&gt; 9.2, 'lop' =&gt; 'A', 'tuoi' =&gt; 19],
+    ['ten' =&gt; 'Dũng', 'diem' =&gt; 5.5, 'lop' =&gt; 'C', 'tuoi' =&gt; 22],
+    ['ten' =&gt; 'Ema',  'diem' =&gt; 8.0, 'lop' =&gt; 'B', 'tuoi' =&gt; 20],
+];
+
+// ── array_column ──────────────────
+$ten_sv = array_column($sinh_vien, 'ten');    // ['An','Bình','Cúc','Dũng','Ema']
+$diem   = array_column($sinh_vien, 'diem');   // [8.5,7.0,9.2,5.5,8.0]
+echo "Trung bình: " . round(array_sum($diem)/count($diem), 2) . "&lt;br&gt;";
+
+// ── array_filter ──────────────────
+$sv_gioi = array_filter($sinh_vien, fn($sv) =&gt; $sv['diem'] &gt;= 8.0);
+echo "Sinh viên giỏi: " . implode(', ', array_column($sv_gioi, 'ten')) . "&lt;br&gt;";
+
+// ── usort (sắp xếp tùy chỉnh) ─────
+usort($sinh_vien, fn($a, $b) =&gt; $b['diem'] &lt;=&gt; $a['diem']);  // giảm dần theo điểm
+echo "Top 1: {$sinh_vien[0]['ten']} ({$sinh_vien[0]['diem']})&lt;br&gt;";
+
+// ── array_chunk (phân trang) ───────
+$trang_size = 2;
+$pages = array_chunk($sinh_vien, $trang_size);
+echo "Số trang: " . count($pages) . "&lt;br&gt;";
+echo "Trang 1: " . implode(', ', array_column($pages[0], 'ten')) . "&lt;br&gt;";
+
+// ── array_combine ──────────────────
+$ky_hieu  = ['A', 'B', 'C'];
+$mon_hoc  = ['Toán', 'Văn', 'Anh'];
+$lu_chon  = array_combine($ky_hieu, $mon_hoc);
+echo $lu_chon['B'] . "&lt;br&gt;";   // Văn
+
+// ── array_unique ──────────────────
+$lop_list = array_column($sinh_vien, 'lop');
+$lop_uniq = array_unique($lop_list);
+sort($lop_uniq);
+echo "Các lớp: " . implode(', ', $lop_uniq) . "&lt;br&gt;";
+
+// ── array_map ─────────────────────
+$nhan_10  = array_map(fn($sv) =&gt; [...$sv, 'diem_x10' =&gt; $sv['diem']*10], $sinh_vien);
+echo "Điểm×10: " . implode(', ', array_column($nhan_10, 'diem_x10')) . "&lt;br&gt;";</pre>
+        </div>
+      </div>
+    </div>
+  </div>
+  <a href="../index.html" class="btn-back">&#8592; Quay lại Module 1</a>
+  <script type="module">
+    import { codeToHtml } from 'https://esm.sh/shiki@1';
+    const raw = document.getElementById('code-raw').textContent;
+    const highlighted = await codeToHtml(raw, { lang: 'php', theme: 'github-dark' });
+    document.getElementById('code-highlight').innerHTML = highlighted;
+    const pre = document.getElementById('code-highlight').querySelector('pre');
+    if (pre) pre.style.cssText = 'border-radius:10px;padding:20px;font-size:0.87rem;overflow-x:auto;margin:0;line-height:1.7';
+  </script>
+</body>
+</html>

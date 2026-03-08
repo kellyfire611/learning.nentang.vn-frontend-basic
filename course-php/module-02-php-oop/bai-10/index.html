@@ -1,0 +1,152 @@
+<!DOCTYPE html>
+<html lang="vi">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <meta name="keywords" content="PHP OOP,PDO,MySQL,NenTang,Lập trình PHP nâng cao">
+  <meta name="author" content="Dương Nguyễn Phú Cường">
+  <meta name="description" content="Xây dựng hệ thống xác thực bằng JSON Web Token (JWT) không dùng thư viện ngoài.">
+  <meta property="og:locale" content="vi_VN">
+  <meta property="og:type" content="website">
+  <meta property="og:title" content="Bài 10 – Authentication – Đăng Nhập JWT | NenTang.vn">
+  <meta property="og:description" content="Xây dựng hệ thống xác thực bằng JSON Web Token (JWT) không dùng thư viện ngoài.">
+  <meta property="og:url" content="https://nentang.vn/">
+  <meta property="og:site_name" content="Nền tảng Kiến thức">
+  <title>Bài 10 – Authentication – Đăng Nhập JWT | NenTang.vn</title>
+  <link rel="stylesheet" href="../../shared.css" />
+</head>
+<body>
+  <div class="page-header module-php-2">
+    <div class="breadcrumb">
+      <a href="../../index.html">PHP Course</a> &rsaquo;
+      <a href="../index.html">Module 2</a> &rsaquo; Bài 10
+    </div>
+    <h1>Bài 10: Authentication – Đăng Nhập JWT</h1>
+    <p>Module 2 – PHP OOP &amp; Nâng Cao</p>
+  </div>
+
+  <div class="exercise-page">
+    <div class="exercise-box">
+      <div class="ex-head">
+        <h1>📝 Yêu cầu bài tập</h1>
+        <p>Xây dựng hệ thống xác thực bằng JSON Web Token (JWT) không dùng thư viện ngoài.</p>
+      </div>
+      <div class="ex-desc">
+        <h3>Yêu cầu</h3>
+        <ul>
+          <li>Hiểu cấu trúc JWT: Header.Payload.Signature</li>
+          <li>Tạo JWT từ tay bằng base64url và HMAC-SHA256</li>
+          <li>Verify JWT trong mỗi request</li>
+          <li>Middleware kiểm tra token</li>
+          <li>Refresh token flow</li>
+        </ul>
+        <h3>🧠 Kiến thức cần nhớ</h3>
+        <ul>
+          <li>JWT = Base64URL(header) + '.' + Base64URL(payload) + '.' + HMAC-SHA256(header+payload, secret)</li>
+          <li>JWT stateless: server không cần lưu session, chỉ cần secret key</li>
+          <li><code>exp</code> claim: thời gian hết hạn tính bằng Unix timestamp</li>
+          <li>Authorization header: <code>Bearer eyJ...</code></li>
+          <li>Không lưu sensitive data trong payload – JWT chỉ signed, không encrypted</li>
+        </ul>
+      </div>
+      <div class="ex-work">
+        <h3>💻 Code mẫu</h3>
+        <div id="code-highlight">
+          <pre id="code-raw" style="display:none">&lt;?php
+// ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+// JWT Utilities (không dùng thư viện)
+// ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+class JWT {
+    private static string $secret = 'my_super_secret_key_change_in_prod';
+
+    private static function base64url_encode(string $data): string {
+        return rtrim(strtr(base64_encode($data), '+/', '-_'), '=');
+    }
+    private static function base64url_decode(string $data): string {
+        return base64_decode(strtr($data, '-_', '+/') . str_repeat('=', (4 - strlen($data) % 4) % 4));
+    }
+
+    public static function create(array $payload, int $ttl = 3600): string {
+        $header  = self::base64url_encode(json_encode(['alg'=&gt;'HS256','typ'=&gt;'JWT']));
+        $payload['iat'] = time();
+        $payload['exp'] = time() + $ttl;
+        $payload_enc = self::base64url_encode(json_encode($payload));
+        $sig = self::base64url_encode(hash_hmac('sha256', "$header.$payload_enc", self::$secret, true));
+        return "$header.$payload_enc.$sig";
+    }
+
+    public static function verify(string $token): array {
+        $parts = explode('.', $token);
+        if (count($parts) !== 3) throw new RuntimeException("JWT không hợp lệ");
+        [$header, $payload, $sig] = $parts;
+        $expected = self::base64url_encode(hash_hmac('sha256', "$header.$payload", self::$secret, true));
+        if (!hash_equals($expected, $sig)) throw new RuntimeException("Chữ ký không hợp lệ");
+        $data = json_decode(self::base64url_decode($payload), true);
+        if (($data['exp'] ?? 0) &lt; time()) throw new RuntimeException("Token hết hạn");
+        return $data;
+    }
+}
+
+// ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+// Login endpoint giả lập
+// ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+$USERS = [
+    ['id'=&gt;1,'email'=&gt;'admin@app.vn','password'=&gt;password_hash('admin123',PASSWORD_DEFAULT),'role'=&gt;'admin'],
+    ['id'=&gt;2,'email'=&gt;'user@app.vn', 'password'=&gt;password_hash('user1234',PASSWORD_DEFAULT),'role'=&gt;'user'],
+];
+
+// Test luồng login
+$email    = 'admin@app.vn';
+$mat_khau = 'admin123';
+
+$user = null;
+foreach ($USERS as $u) {
+    if ($u['email'] === $email &amp;&amp; password_verify($mat_khau, $u['password'])) {
+        $user = $u; break;
+    }
+}
+
+if (!$user) { echo "Đăng nhập thất bại!&lt;br&gt;"; exit; }
+
+$token = JWT::create(['uid' =&gt; $user['id'], 'email' =&gt; $user['email'], 'role' =&gt; $user['role']]);
+echo "Token: " . substr($token, 0, 50) . "...&lt;br&gt;";
+
+// ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+// Middleware kiểm tra token
+// ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+function requireAuth(string $token): array {
+    try {
+        return JWT::verify($token);
+    } catch (RuntimeException $e) {
+        http_response_code(401);
+        echo json_encode(['error' =&gt; $e-&gt;getMessage()]);
+        exit;
+    }
+}
+
+// Giả lập request có Authorization header
+$payload = requireAuth($token);
+echo "User: {$payload['email']} (role: {$payload['role']})&lt;br&gt;";
+echo "Hết hạn lúc: " . date('H:i:s', $payload['exp']) . "&lt;br&gt;";
+
+// Token giả
+try {
+    JWT::verify("invalid.token.here");
+} catch (RuntimeException $e) {
+    echo "Lỗi: " . $e-&gt;getMessage() . "&lt;br&gt;";
+}</pre>
+        </div>
+      </div>
+    </div>
+  </div>
+  <a href="../index.html" class="btn-back">&#8592; Quay lại Module 2</a>
+  <script type="module">
+    import { codeToHtml } from 'https://esm.sh/shiki@1';
+    const raw = document.getElementById('code-raw').textContent;
+    const highlighted = await codeToHtml(raw, { lang: 'php', theme: 'github-dark' });
+    document.getElementById('code-highlight').innerHTML = highlighted;
+    const pre = document.getElementById('code-highlight').querySelector('pre');
+    if (pre) pre.style.cssText = 'border-radius:10px;padding:20px;font-size:0.87rem;overflow-x:auto;margin:0;line-height:1.7';
+  </script>
+</body>
+</html>

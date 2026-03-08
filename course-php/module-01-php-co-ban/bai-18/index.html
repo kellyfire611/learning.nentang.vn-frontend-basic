@@ -1,0 +1,108 @@
+<!DOCTYPE html>
+<html lang="vi">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <meta name="keywords" content="PHP,Lập trình PHP,Web,NenTang,Bài tập PHP,PHP cơ bản">
+  <meta name="author" content="Dương Nguyễn Phú Cường">
+  <meta name="description" content="Sử dụng các hàm date/time của PHP để xử lý và định dạng ngày tháng.">
+  <meta property="og:locale" content="vi_VN">
+  <meta property="og:type" content="website">
+  <meta property="og:title" content="Bài 18 – Làm Việc Với Ngày Tháng (Date/Time) | NenTang.vn">
+  <meta property="og:description" content="Sử dụng các hàm date/time của PHP để xử lý và định dạng ngày tháng.">
+  <meta property="og:url" content="https://nentang.vn/">
+  <meta property="og:site_name" content="Nền tảng Kiến thức">
+  <title>Bài 18 – Làm Việc Với Ngày Tháng (Date/Time) | NenTang.vn</title>
+  <link rel="stylesheet" href="../../shared.css" />
+</head>
+<body>
+  <div class="page-header module-php-1">
+    <div class="breadcrumb">
+      <a href="../../index.html">PHP Course</a> &rsaquo;
+      <a href="../index.html">Module 1</a> &rsaquo; Bài 18
+    </div>
+    <h1>Bài 18: Làm Việc Với Ngày Tháng (Date/Time)</h1>
+    <p>Module 1 – PHP Cơ Bản</p>
+  </div>
+
+  <div class="exercise-page">
+    <div class="exercise-box">
+      <div class="ex-head">
+        <h1>📝 Yêu cầu bài tập</h1>
+        <p>Sử dụng các hàm date/time của PHP để xử lý và định dạng ngày tháng.</p>
+      </div>
+      <div class="ex-desc">
+        <h3>Yêu cầu</h3>
+        <ul>
+          <li>Lấy ngày giờ hiện tại và định dạng theo ý muốn</li>
+          <li>Tính khoảng cách giữa 2 ngày</li>
+          <li>Tạo đối tượng <code>DateTime</code> và <code>DateInterval</code></li>
+          <li>Tính tuổi từ ngày sinh</li>
+          <li>Đếm ngược đến sự kiện (event countdown)</li>
+        </ul>
+        <h3>🧠 Kiến thức cần nhớ</h3>
+        <ul>
+          <li><code>date('Y-m-d H:i:s')</code>: định dạng theo pattern (Y=năm, m=tháng, d=ngày...)</li>
+          <li><code>time()</code>: Unix timestamp (giây từ 1/1/1970)</li>
+          <li><code>strtotime('2025-12-31')</code>: chuyển chuỗi ngày sang timestamp</li>
+          <li><code>new DateTime('2000-05-15')</code>: đối tượng DateTime linh hoạt hơn</li>
+          <li><code>$dt1->diff($dt2)</code>: trả về DateInterval với days, months, years...</li>
+        </ul>
+      </div>
+      <div class="ex-work">
+        <h3>💻 Code mẫu</h3>
+        <div id="code-highlight">
+          <pre id="code-raw" style="display:none">&lt;?php
+// ── Ngày giờ hiện tại ─────────────
+echo date('d/m/Y H:i:s') . "&lt;br&gt;";            // 08/03/2026 14:30:00
+echo date('l, d F Y') . "&lt;br&gt;";               // Sunday, 08 March 2026
+echo "Thứ " . (date('N') + 1) . "&lt;br&gt;";       // Thứ trong tuần (2-8, +1 cho VN)
+
+// ── TimeZone Việt Nam ─────────────
+date_default_timezone_set('Asia/Ho_Chi_Minh');
+echo date('H:i:s T') . "&lt;br&gt;";                // giờ Việt Nam
+
+// ── Tính tuổi ────────────────────
+$ngay_sinh = new DateTime('2000-05-15');
+$hom_nay   = new DateTime();
+$khoang_cach = $hom_nay-&gt;diff($ngay_sinh);
+echo "Tuổi: {$khoang_cach-&gt;y} tuổi {$khoang_cach-&gt;m} tháng&lt;br&gt;";
+
+// ── Thêm/bớt khoảng thời gian ─────
+$tet_2025 = new DateTime('2025-01-29');
+$tet_2025-&gt;modify('+7 days');           // sau Tết 7 ngày
+echo "Hết Tết: " . $tet_2025-&gt;format('d/m/Y') . "&lt;br&gt;";
+
+// ── Đếm ngược đến sự kiện ─────────
+$su_kien = new DateTime('2026-06-01 00:00:00');
+$con_lai  = (new DateTime())-&gt;diff($su_kien);
+if ($su_kien &gt; new DateTime()) {
+    echo "Còn {$con_lai-&gt;days} ngày đến kỳ thi tốt nghiệp 🎓&lt;br&gt;";
+} else {
+    echo "Kỳ thi đã qua!&lt;br&gt;";
+}
+
+// ── So sánh ngày ─────────────────
+$han_nop = strtotime('2026-03-31');
+$hom_nay_ts = time();
+$con_bao_nhieu = ($han_nop - $hom_nay_ts) / 86400;
+echo "Hạn nộp bài còn: " . (int)$con_bao_nhieu . " ngày&lt;br&gt;";
+
+// ── Định dạng timestamp ───────────
+$ts = mktime(8, 30, 0, 12, 25, 2025);   // giờ tùy chỉnh
+echo date('d/m/Y H:i', $ts) . "&lt;br&gt;";   // 25/12/2025 08:30</pre>
+        </div>
+      </div>
+    </div>
+  </div>
+  <a href="../index.html" class="btn-back">&#8592; Quay lại Module 1</a>
+  <script type="module">
+    import { codeToHtml } from 'https://esm.sh/shiki@1';
+    const raw = document.getElementById('code-raw').textContent;
+    const highlighted = await codeToHtml(raw, { lang: 'php', theme: 'github-dark' });
+    document.getElementById('code-highlight').innerHTML = highlighted;
+    const pre = document.getElementById('code-highlight').querySelector('pre');
+    if (pre) pre.style.cssText = 'border-radius:10px;padding:20px;font-size:0.87rem;overflow-x:auto;margin:0;line-height:1.7';
+  </script>
+</body>
+</html>

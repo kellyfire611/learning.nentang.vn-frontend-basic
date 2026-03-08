@@ -1,0 +1,154 @@
+<!DOCTYPE html>
+<html lang="vi">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <meta name="keywords" content="PHP OOP,PDO,MySQL,NenTang,Lập trình PHP nâng cao">
+  <meta name="author" content="Dương Nguyễn Phú Cường">
+  <meta name="description" content="Sử dụng transaction để đảm bảo toàn vẹn dữ liệu và truy vấn bảng có quan hệ.">
+  <meta property="og:locale" content="vi_VN">
+  <meta property="og:type" content="website">
+  <meta property="og:title" content="Bài 07 – PDO – Transaction và Quan Hệ Bảng | NenTang.vn">
+  <meta property="og:description" content="Sử dụng transaction để đảm bảo toàn vẹn dữ liệu và truy vấn bảng có quan hệ.">
+  <meta property="og:url" content="https://nentang.vn/">
+  <meta property="og:site_name" content="Nền tảng Kiến thức">
+  <title>Bài 07 – PDO – Transaction và Quan Hệ Bảng | NenTang.vn</title>
+  <link rel="stylesheet" href="../../shared.css" />
+</head>
+<body>
+  <div class="page-header module-php-2">
+    <div class="breadcrumb">
+      <a href="../../index.html">PHP Course</a> &rsaquo;
+      <a href="../index.html">Module 2</a> &rsaquo; Bài 07
+    </div>
+    <h1>Bài 07: PDO – Transaction và Quan Hệ Bảng</h1>
+    <p>Module 2 – PHP OOP &amp; Nâng Cao</p>
+  </div>
+
+  <div class="exercise-page">
+    <div class="exercise-box">
+      <div class="ex-head">
+        <h1>📝 Yêu cầu bài tập</h1>
+        <p>Sử dụng transaction để đảm bảo toàn vẹn dữ liệu và truy vấn bảng có quan hệ.</p>
+      </div>
+      <div class="ex-desc">
+        <h3>Yêu cầu</h3>
+        <ul>
+          <li>Dùng <code>beginTransaction</code>, <code>commit</code>, <code>rollBack</code></li>
+          <li>Tạo ORDER với nhiều ORDER_ITEMS trong 1 transaction</li>
+          <li>JOIN: INNER JOIN, LEFT JOIN để lấy dữ liệu từ nhiều bảng</li>
+          <li>Truy vấn tổng hợp: GROUP BY, HAVING, COUNT, SUM</li>
+          <li>Sub-query đơn giản</li>
+        </ul>
+        <h3>🧠 Kiến thức cần nhớ</h3>
+        <ul>
+          <li>Transaction: nhóm nhiều câu SQL thành 1 đơn vị – thành công hết hoặc rollback hết</li>
+          <li><code>INNER JOIN</code>: chỉ lấy hàng có dữ liệu khớp ở cả 2 bảng</li>
+          <li><code>LEFT JOIN</code>: lấy tất cả hàng bảng trái, NULL nếu không khớp bảng phải</li>
+          <li><code>GROUP BY col HAVING aggregate_condition</code></li>
+          <li>Foreign key: đảm bảo tính nhất quán quan hệ</li>
+        </ul>
+      </div>
+      <div class="ex-work">
+        <h3>💻 Code mẫu</h3>
+        <div id="code-highlight">
+          <pre id="code-raw" style="display:none">&lt;?php
+// Tạo schema
+$pdo-&gt;exec("
+    CREATE TABLE IF NOT EXISTS don_hang (
+        id INT AUTO_INCREMENT PRIMARY KEY,
+        ma_don VARCHAR(20) UNIQUE,
+        ten_khach VARCHAR(100),
+        tong_tien DECIMAL(15,2) DEFAULT 0,
+        created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP
+    );
+    CREATE TABLE IF NOT EXISTS chi_tiet_don (
+        id INT AUTO_INCREMENT PRIMARY KEY,
+        don_hang_id INT,
+        san_pham_id INT,
+        so_luong INT,
+        don_gia DECIMAL(15,2),
+        FOREIGN KEY (don_hang_id) REFERENCES don_hang(id) ON DELETE CASCADE
+    );
+");
+
+// ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+// Transaction: tạo đơn hàng
+// ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+function tao_don_hang_tx(PDO $pdo, string $ten_khach, array $items): int {
+    $pdo-&gt;beginTransaction();
+    try {
+        // 1. Tạo đơn hàng
+        $ma_don = 'ORD-' . date('YmdHis') . '-' . rand(100,999);
+        $stmt = $pdo-&gt;prepare("INSERT INTO don_hang (ma_don, ten_khach) VALUES (?, ?)");
+        $stmt-&gt;execute([$ma_don, $ten_khach]);
+        $don_id   = (int)$pdo-&gt;lastInsertId();
+        $tong_tien = 0;
+
+        // 2. Thêm chi tiết
+        $ins = $pdo-&gt;prepare("INSERT INTO chi_tiet_don (don_hang_id, san_pham_id, so_luong, don_gia) VALUES (?,?,?,?)");
+        foreach ($items as $item) {
+            // Kiểm tra tồn kho
+            $sp = $pdo-&gt;prepare("SELECT gia, so_luong FROM san_pham WHERE id = ?");
+            $sp-&gt;execute([$item['sp_id']]);
+            $row = $sp-&gt;fetch();
+            if (!$row || $row['so_luong'] &lt; $item['sl']) {
+                throw new RuntimeException("Sản phẩm #{$item['sp_id']} không đủ hàng");
+            }
+            $ins-&gt;execute([$don_id, $item['sp_id'], $item['sl'], $row['gia']]);
+            $tong_tien += $row['gia'] * $item['sl'];
+            // Trừ tồn kho
+            $pdo-&gt;prepare("UPDATE san_pham SET so_luong = so_luong - ? WHERE id = ?")
+                -&gt;execute([$item['sl'], $item['sp_id']]);
+        }
+        // 3. Cập nhật tổng tiền
+        $pdo-&gt;prepare("UPDATE don_hang SET tong_tien = ? WHERE id = ?")-&gt;execute([$tong_tien, $don_id]);
+        $pdo-&gt;commit();
+        echo "✅ Tạo đơn $ma_don thành công – tổng: " . number_format($tong_tien,0,',','.') . "đ&lt;br&gt;";
+        return $don_id;
+    } catch (Exception $e) {
+        $pdo-&gt;rollBack();
+        echo "❌ Rollback: " . $e-&gt;getMessage() . "&lt;br&gt;";
+        return 0;
+    }
+}
+
+$don_id = tao_don_hang_tx($pdo, "Nguyễn Văn A", [['sp_id'=&gt;1,'sl'=&gt;2],['sp_id'=&gt;2,'sl'=&gt;1]]);
+
+// ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+// JOIN: lấy chi tiết đơn hàng
+// ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+if ($don_id) {
+    $stmt = $pdo-&gt;prepare("
+        SELECT d.ma_don, d.ten_khach, d.tong_tien,
+               ct.so_luong, ct.don_gia,
+               sp.ten AS ten_sp
+        FROM don_hang d
+        JOIN chi_tiet_don ct ON ct.don_hang_id = d.id
+        JOIN san_pham sp     ON sp.id = ct.san_pham_id
+        WHERE d.id = ?
+    ");
+    $stmt-&gt;execute([$don_id]);
+    foreach ($stmt-&gt;fetchAll() as $row) {
+        echo "→ {$row['ten_sp']} × {$row['so_luong']} = " . number_format($row['don_gia']*$row['so_luong'],0,',','.') . "đ&lt;br&gt;";
+    }
+}
+
+// GROUP BY
+$thong_ke = $pdo-&gt;query("SELECT sp_id, SUM(so_luong) as tong_ban FROM chi_tiet_don GROUP BY sp_id ORDER BY tong_ban DESC")-&gt;fetchAll();
+foreach ($thong_ke as $t) echo "SP #{$t['sp_id']}: bán {$t['tong_ban']}&lt;br&gt;";</pre>
+        </div>
+      </div>
+    </div>
+  </div>
+  <a href="../index.html" class="btn-back">&#8592; Quay lại Module 2</a>
+  <script type="module">
+    import { codeToHtml } from 'https://esm.sh/shiki@1';
+    const raw = document.getElementById('code-raw').textContent;
+    const highlighted = await codeToHtml(raw, { lang: 'php', theme: 'github-dark' });
+    document.getElementById('code-highlight').innerHTML = highlighted;
+    const pre = document.getElementById('code-highlight').querySelector('pre');
+    if (pre) pre.style.cssText = 'border-radius:10px;padding:20px;font-size:0.87rem;overflow-x:auto;margin:0;line-height:1.7';
+  </script>
+</body>
+</html>

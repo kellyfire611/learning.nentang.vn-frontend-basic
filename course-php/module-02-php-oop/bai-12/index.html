@@ -1,0 +1,160 @@
+<!DOCTYPE html>
+<html lang="vi">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <meta name="keywords" content="PHP OOP,PDO,MySQL,NenTang,Lập trình PHP nâng cao">
+  <meta name="author" content="Dương Nguyễn Phú Cường">
+  <meta name="description" content="Sử dụng GD extension để resize ảnh, thêm watermark và tạo thumbnail.">
+  <meta property="og:locale" content="vi_VN">
+  <meta property="og:type" content="website">
+  <meta property="og:title" content="Bài 12 – Xử Lý Ảnh với GD Library | NenTang.vn">
+  <meta property="og:description" content="Sử dụng GD extension để resize ảnh, thêm watermark và tạo thumbnail.">
+  <meta property="og:url" content="https://nentang.vn/">
+  <meta property="og:site_name" content="Nền tảng Kiến thức">
+  <title>Bài 12 – Xử Lý Ảnh với GD Library | NenTang.vn</title>
+  <link rel="stylesheet" href="../../shared.css" />
+</head>
+<body>
+  <div class="page-header module-php-2">
+    <div class="breadcrumb">
+      <a href="../../index.html">PHP Course</a> &rsaquo;
+      <a href="../index.html">Module 2</a> &rsaquo; Bài 12
+    </div>
+    <h1>Bài 12: Xử Lý Ảnh với GD Library</h1>
+    <p>Module 2 – PHP OOP &amp; Nâng Cao</p>
+  </div>
+
+  <div class="exercise-page">
+    <div class="exercise-box">
+      <div class="ex-head">
+        <h1>📝 Yêu cầu bài tập</h1>
+        <p>Sử dụng GD extension để resize ảnh, thêm watermark và tạo thumbnail.</p>
+      </div>
+      <div class="ex-desc">
+        <h3>Yêu cầu</h3>
+        <ul>
+          <li>Resize ảnh giữ tỷ lệ</li>
+          <li>Crop ảnh (cắt hình vuông để làm avatar)</li>
+          <li>Thêm watermark text</li>
+          <li>Tạo thumbnail gallery</li>
+          <li>Convert định dạng ảnh</li>
+        </ul>
+        <h3>🧠 Kiến thức cần nhớ</h3>
+        <ul>
+          <li>GD library: extension PHP xử lý ảnh (imagecreatefromjpeg, imagepng...)</li>
+          <li><code>imagecopyresampled()</code>: resize ảnh chất lượng cao</li>
+          <li><code>imagettftext()</code>: viết text lên ảnh bằng font TTF</li>
+          <li><code>imagejpeg($img, $path, 85)</code>: lưu JPEG với chất lượng 85%</li>
+          <li><code>imagedestroy($img)</code>: giải phóng bộ nhớ sau khi xử lý</li>
+        </ul>
+      </div>
+      <div class="ex-work">
+        <h3>💻 Code mẫu</h3>
+        <div id="code-highlight">
+          <pre id="code-raw" style="display:none">&lt;?php
+// ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+// Resize ảnh giữ tỷ lệ
+// ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+function resize_image(string $src, string $dest, int $max_width, int $max_height, int $quality = 85): bool {
+    $info = getimagesize($src);
+    if (!$info) return false;
+
+    [$orig_w, $orig_h, $type] = $info;
+    $ratio = min($max_width / $orig_w, $max_height / $orig_h);
+    $new_w = (int)($orig_w * $ratio);
+    $new_h = (int)($orig_h * $ratio);
+
+    // Load ảnh gốc
+    $orig_img = match($type) {
+        IMAGETYPE_JPEG =&gt; imagecreatefromjpeg($src),
+        IMAGETYPE_PNG  =&gt; imagecreatefrompng($src),
+        IMAGETYPE_GIF  =&gt; imagecreatefromgif($src),
+        IMAGETYPE_WEBP =&gt; imagecreatefromwebp($src),
+        default        =&gt; false,
+    };
+    if (!$orig_img) return false;
+
+    // Tạo canvas mới
+    $new_img = imagecreatetruecolor($new_w, $new_h);
+
+    // Giữ transparency cho PNG/GIF
+    if ($type === IMAGETYPE_PNG || $type === IMAGETYPE_GIF) {
+        imagealphablending($new_img, false);
+        imagesavealpha($new_img, true);
+        $transparent = imagecolorallocatealpha($new_img, 0, 0, 0, 127);
+        imagefilledrectangle($new_img, 0, 0, $new_w, $new_h, $transparent);
+    }
+
+    imagecopyresampled($new_img, $orig_img, 0, 0, 0, 0, $new_w, $new_h, $orig_w, $orig_h);
+
+    // Lưu
+    $ok = match($type) {
+        IMAGETYPE_JPEG =&gt; imagejpeg($new_img, $dest, $quality),
+        IMAGETYPE_PNG  =&gt; imagepng($new_img, $dest, (int)((100-$quality)/10)),
+        IMAGETYPE_WEBP =&gt; imagewebp($new_img, $dest, $quality),
+        default        =&gt; false,
+    };
+    imagedestroy($orig_img);
+    imagedestroy($new_img);
+    return (bool)$ok;
+}
+
+// ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+// Crop hình vuông (avatar)
+// ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+function crop_square(string $src, string $dest, int $size): bool {
+    $info = getimagesize($src);
+    [$w, $h, $type] = $info;
+    $min = min($w, $h);
+    $x   = intdiv($w - $min, 2);   // căn giữa ngang
+    $y   = intdiv($h - $min, 2);   // căn giữa dọc
+    $orig = imagecreatefromjpeg($src);
+    $crop = imagecreatetruecolor($size, $size);
+    imagecopyresampled($crop, $orig, 0, 0, $x, $y, $size, $size, $min, $min);
+    $ok = imagejpeg($crop, $dest, 90);
+    imagedestroy($orig); imagedestroy($crop);
+    return (bool)$ok;
+}
+
+// ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+// Watermark text
+// ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+function add_watermark(string $src, string $dest, string $text): bool {
+    $img  = imagecreatefromjpeg($src);
+    $w    = imagesx($img);
+    $h    = imagesy($img);
+    $font = __DIR__ . '/fonts/roboto.ttf';  // cần file font TTF
+    $size = max(12, (int)($w * 0.03));
+    // Màu trắng 50% trong suốt
+    $color = imagecolorallocatealpha($img, 255, 255, 255, 64);
+    imagettftext($img, $size, 0, (int)($w*0.6), (int)($h*0.95), $color, $font, $text);
+    $ok = imagejpeg($img, $dest, 90);
+    imagedestroy($img);
+    return (bool)$ok;
+}
+
+// Sử dụng
+if (file_exists('photo.jpg')) {
+    resize_image('photo.jpg', 'thumb_800.jpg', 800, 600);
+    crop_square('photo.jpg', 'avatar_200.jpg', 200);
+    add_watermark('photo.jpg', 'watermarked.jpg', '© NenTang.vn');
+    echo "✅ Xử lý ảnh thành công";
+} else {
+    echo "Cần tạo file photo.jpg trước";
+}</pre>
+        </div>
+      </div>
+    </div>
+  </div>
+  <a href="../index.html" class="btn-back">&#8592; Quay lại Module 2</a>
+  <script type="module">
+    import { codeToHtml } from 'https://esm.sh/shiki@1';
+    const raw = document.getElementById('code-raw').textContent;
+    const highlighted = await codeToHtml(raw, { lang: 'php', theme: 'github-dark' });
+    document.getElementById('code-highlight').innerHTML = highlighted;
+    const pre = document.getElementById('code-highlight').querySelector('pre');
+    if (pre) pre.style.cssText = 'border-radius:10px;padding:20px;font-size:0.87rem;overflow-x:auto;margin:0;line-height:1.7';
+  </script>
+</body>
+</html>

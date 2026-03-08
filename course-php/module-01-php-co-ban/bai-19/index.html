@@ -1,0 +1,113 @@
+<!DOCTYPE html>
+<html lang="vi">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <meta name="keywords" content="PHP,Lập trình PHP,Web,NenTang,Bài tập PHP,PHP cơ bản">
+  <meta name="author" content="Dương Nguyễn Phú Cường">
+  <meta name="description" content="Thao tác với hệ thống file: đọc, ghi, thêm nội dung và quản lý file/thư mục.">
+  <meta property="og:locale" content="vi_VN">
+  <meta property="og:type" content="website">
+  <meta property="og:title" content="Bài 19 – Đọc/Ghi File (File I/O) | NenTang.vn">
+  <meta property="og:description" content="Thao tác với hệ thống file: đọc, ghi, thêm nội dung và quản lý file/thư mục.">
+  <meta property="og:url" content="https://nentang.vn/">
+  <meta property="og:site_name" content="Nền tảng Kiến thức">
+  <title>Bài 19 – Đọc/Ghi File (File I/O) | NenTang.vn</title>
+  <link rel="stylesheet" href="../../shared.css" />
+</head>
+<body>
+  <div class="page-header module-php-1">
+    <div class="breadcrumb">
+      <a href="../../index.html">PHP Course</a> &rsaquo;
+      <a href="../index.html">Module 1</a> &rsaquo; Bài 19
+    </div>
+    <h1>Bài 19: Đọc/Ghi File (File I/O)</h1>
+    <p>Module 1 – PHP Cơ Bản</p>
+  </div>
+
+  <div class="exercise-page">
+    <div class="exercise-box">
+      <div class="ex-head">
+        <h1>📝 Yêu cầu bài tập</h1>
+        <p>Thao tác với hệ thống file: đọc, ghi, thêm nội dung và quản lý file/thư mục.</p>
+      </div>
+      <div class="ex-desc">
+        <h3>Yêu cầu</h3>
+        <ul>
+          <li>Ghi nội dung vào file với <code>file_put_contents()</code></li>
+          <li>Đọc file với <code>file_get_contents()</code> và <code>file()</code></li>
+          <li>Thêm nội dung vào cuối file (append)</li>
+          <li>Kiểm tra file tồn tại, kích thước, loại file</li>
+          <li>Tạo, xóa, liệt kê thư mục</li>
+        </ul>
+        <h3>🧠 Kiến thức cần nhớ</h3>
+        <ul>
+          <li><code>file_put_contents($path, $data)</code>: ghi (ghi đè); <code>FILE_APPEND</code>: thêm cuối</li>
+          <li><code>file_get_contents($path)</code>: đọc toàn bộ thành chuỗi</li>
+          <li><code>file($path)</code>: đọc thành mảng từng dòng</li>
+          <li><code>file_exists()</code>, <code>is_file()</code>, <code>is_dir()</code>, <code>filesize()</code></li>
+          <li><code>mkdir($path, 0755, true)</code>: tạo thư mục (recursive); <code>rmdir()</code>: xóa rỗng</li>
+        </ul>
+      </div>
+      <div class="ex-work">
+        <h3>💻 Code mẫu</h3>
+        <div id="code-highlight">
+          <pre id="code-raw" style="display:none">&lt;?php
+$file_nhat_ky = __DIR__ . '/nhat_ky.txt';
+$file_json    = __DIR__ . '/du_lieu.json';
+
+// ── Ghi file ─────────────────────
+$noi_dung = "=== Nhật ký ngày " . date('d/m/Y') . " ===\n";
+$noi_dung .= "Đã hoàn thành bài tập PHP File I/O\n";
+$noi_dung .= "Thời gian: " . date('H:i:s') . "\n\n";
+
+file_put_contents($file_nhat_ky, $noi_dung);                    // ghi đè
+file_put_contents($file_nhat_ky, "Dòng mới thêm\n", FILE_APPEND); // thêm cuối
+
+echo "✅ Đã ghi file&lt;br&gt;";
+
+// ── Đọc file ─────────────────────
+if (file_exists($file_nhat_ky)) {
+    $noi_dung_doc = file_get_contents($file_nhat_ky);
+    echo "&lt;pre&gt;" . htmlspecialchars($noi_dung_doc) . "&lt;/pre&gt;";
+    
+    $cac_dong = file($file_nhat_ky, FILE_IGNORE_NEW_LINES | FILE_SKIP_EMPTY_LINES);
+    echo count($cac_dong) . " dòng&lt;br&gt;";
+}
+
+// ── JSON file ─────────────────────
+$du_lieu = [
+    ['id' =&gt; 1, 'ten' =&gt; 'Sản phẩm A', 'gia' =&gt; 150000],
+    ['id' =&gt; 2, 'ten' =&gt; 'Sản phẩm B', 'gia' =&gt; 300000],
+];
+file_put_contents($file_json, json_encode($du_lieu, JSON_UNESCAPED_UNICODE | JSON_PRETTY_PRINT));
+
+$doc_json = json_decode(file_get_contents($file_json), true);
+foreach ($doc_json as $sp) {
+    echo "{$sp['ten']}: " . number_format($sp['gia'], 0, ',', '.') . "đ&lt;br&gt;";
+}
+
+// ── Thông tin file ────────────────
+echo "&lt;hr&gt;";
+echo "Kích thước: " . filesize($file_nhat_ky) . " bytes&lt;br&gt;";
+echo "Lần sửa cuối: " . date('d/m/Y H:i', filemtime($file_nhat_ky)) . "&lt;br&gt;";
+
+// ── Liệt kê file trong thư mục ───
+$files = glob(__DIR__ . '/*.txt');
+echo "File .txt: " . count($files) . "&lt;br&gt;";
+foreach ($files as $f) echo basename($f) . "&lt;br&gt;";</pre>
+        </div>
+      </div>
+    </div>
+  </div>
+  <a href="../index.html" class="btn-back">&#8592; Quay lại Module 1</a>
+  <script type="module">
+    import { codeToHtml } from 'https://esm.sh/shiki@1';
+    const raw = document.getElementById('code-raw').textContent;
+    const highlighted = await codeToHtml(raw, { lang: 'php', theme: 'github-dark' });
+    document.getElementById('code-highlight').innerHTML = highlighted;
+    const pre = document.getElementById('code-highlight').querySelector('pre');
+    if (pre) pre.style.cssText = 'border-radius:10px;padding:20px;font-size:0.87rem;overflow-x:auto;margin:0;line-height:1.7';
+  </script>
+</body>
+</html>

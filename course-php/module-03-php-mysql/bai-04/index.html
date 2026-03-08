@@ -1,0 +1,144 @@
+<!DOCTYPE html>
+<html lang="vi">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <meta name="description" content="Thành thạo các loại JOIN: INNER, LEFT, RIGHT và truy vấn dữ liệu từ nhiều bảng.">
+  <meta name="author" content="Dương Nguyễn Phú Cường">
+  <meta property="og:locale" content="vi_VN">
+  <meta property="og:type" content="website">
+  <meta property="og:title" content="Bài 04 – JOIN – Kết Hợp Nhiều Bảng | NenTang.vn">
+  <meta property="og:url" content="https://nentang.vn/">
+  <meta property="og:site_name" content="Nền tảng Kiến thức">
+  <title>Bài 04 – JOIN – Kết Hợp Nhiều Bảng | NenTang.vn</title>
+  <link rel="stylesheet" href="../../shared.css" />
+</head>
+<body>
+  <div class="page-header module-php-3">
+    <div class="breadcrumb">
+      <a href="../../index.html">PHP Course</a> &rsaquo;
+      <a href="../index.html">Module 3</a> &rsaquo; Bài 04
+    </div>
+    <h1>Bài 04: JOIN – Kết Hợp Nhiều Bảng</h1>
+    <p>Module 3 – PHP &amp; MySQL Thực Chiến</p>
+  </div>
+
+  <div class="exercise-page">
+    <div class="exercise-box">
+      <div class="ex-head">
+        <h1>📝 Yêu cầu bài tập</h1>
+        <p>Thành thạo các loại JOIN: INNER, LEFT, RIGHT và truy vấn dữ liệu từ nhiều bảng.</p>
+      </div>
+      <div class="ex-desc">
+        <h3>Yêu cầu</h3>
+        <ul>
+          <li>INNER JOIN: lấy sản phẩm kèm danh mục</li>
+          <li>LEFT JOIN: danh mục kể cả không có sản phẩm</li>
+          <li>Multi-table JOIN: đơn hàng + chi tiết + sản phẩm + khách hàng</li>
+          <li>Self JOIN: tìm danh mục cha-con</li>
+          <li>Subquery trong WHERE, FROM, SELECT</li>
+        </ul>
+        <h3>🧠 Kiến thức cần nhớ</h3>
+        <ul>
+          <li><code>INNER JOIN</code>: chỉ hàng khớp cả 2 bảng</li>
+          <li><code>LEFT JOIN</code>: toàn bộ bảng trái, NULL ở cột phải nếu không khớp</li>
+          <li><code>RIGHT JOIN</code>: toàn bộ bảng phải (ít dùng – đổi thứ tự bảng dùng LEFT JOIN)</li>
+          <li>Alias table: <code>FROM san_pham sp JOIN danh_muc dm ON sp.danh_muc_id = dm.id</code></li>
+          <li>Correlated subquery: subquery tham chiếu table bên ngoài</li>
+        </ul>
+      </div>
+      <div class="ex-work">
+        <h3>💻 Code mẫu</h3>
+        <div id="code-highlight">
+          <pre id="code-raw" style="display:none">&lt;?php
+$pdo = get_pdo();
+
+// ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+// 1. INNER JOIN – sản phẩm + danh mục
+// ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+$ds = $pdo-&gt;query("
+    SELECT sp.id, sp.ten AS san_pham, sp.gia,
+           dm.ten AS danh_muc, dm.slug AS dm_slug
+    FROM san_pham sp
+    INNER JOIN danh_muc dm ON dm.id = sp.danh_muc_id
+    WHERE sp.active = 1
+    ORDER BY dm.thu_tu, sp.ten
+")-&gt;fetchAll();
+foreach ($ds as $row) {
+    echo "[{$row['danh_muc']}] {$row['san_pham']}: " . number_format($row['gia'],0,',','.') . "đ&lt;br&gt;";
+}
+
+// ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+// 2. LEFT JOIN – danh mục + số sản phẩm (kể cả 0)
+// ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+$dm_stats = $pdo-&gt;query("
+    SELECT dm.ten, dm.slug,
+           COUNT(sp.id) AS so_sp,
+           COALESCE(SUM(sp.gia * sp.so_luong), 0) AS gia_tri
+    FROM danh_muc dm
+    LEFT JOIN san_pham sp ON sp.danh_muc_id = dm.id AND sp.active = 1
+    GROUP BY dm.id, dm.ten, dm.slug
+    ORDER BY so_sp DESC
+")-&gt;fetchAll();
+echo "&lt;br&gt;Danh mục (kể cả rỗng):&lt;br&gt;";
+foreach ($dm_stats as $dm) {
+    echo "• {$dm['ten']}: {$dm['so_sp']} SP | " . number_format($dm['gia_tri'],0,',','.') . "đ&lt;br&gt;";
+}
+
+// ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+// 3. Subquery – sản phẩm có giá &gt; TB
+// ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+$above_avg = $pdo-&gt;query("
+    SELECT ten, gia
+    FROM san_pham
+    WHERE gia &gt; (SELECT AVG(gia) FROM san_pham WHERE active = 1)
+      AND active = 1
+    ORDER BY gia DESC
+")-&gt;fetchAll();
+$avg = $pdo-&gt;query("SELECT AVG(gia) FROM san_pham WHERE active=1")-&gt;fetchColumn();
+echo "&lt;br&gt;Sản phẩm trên TB (" . number_format($avg,0,',','.') . "đ):&lt;br&gt;";
+foreach ($above_avg as $sp) {
+    echo "• {$sp['ten']}: " . number_format($sp['gia'],0,',','.') . "đ&lt;br&gt;";
+}
+
+// ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+// 4. EXISTS subquery
+// ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+// Danh mục có ít nhất 1 sản phẩm
+$has_sp = $pdo-&gt;query("
+    SELECT ten FROM danh_muc dm
+    WHERE EXISTS (
+        SELECT 1 FROM san_pham sp WHERE sp.danh_muc_id = dm.id AND sp.active = 1
+    )
+")-&gt;fetchAll(PDO::FETCH_COLUMN);
+echo "&lt;br&gt;Danh mục có hàng: " . implode(', ', $has_sp) . "&lt;br&gt;";
+
+// ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+// 5. Sản phẩm đang khuyến mãi + % giảm giá
+// ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+$km = $pdo-&gt;query("
+    SELECT ten, gia, gia_km,
+           ROUND((gia - gia_km) / gia * 100) AS phan_tram_giam
+    FROM san_pham
+    WHERE gia_km IS NOT NULL AND gia_km &lt; gia AND active = 1
+    ORDER BY phan_tram_giam DESC
+")-&gt;fetchAll();
+echo "&lt;br&gt;KM hôm nay:&lt;br&gt;";
+foreach ($km as $sp) {
+    echo "🔥 {$sp['ten']}: " . number_format($sp['gia_km'],0,',','.') . "đ (-{$sp['phan_tram_giam']}%)&lt;br&gt;";
+}</pre>
+        </div>
+      </div>
+    </div>
+  </div>
+  <a href="../index.html" class="btn-back">&#8592; Quay lại Module 3</a>
+  <script type="module">
+    import { codeToHtml } from 'https://esm.sh/shiki@1';
+    const raw = document.getElementById('code-raw').textContent;
+    const highlighted = await codeToHtml(raw, { lang: 'php', theme: 'github-dark' });
+    document.getElementById('code-highlight').innerHTML = highlighted;
+    const pre = document.getElementById('code-highlight').querySelector('pre');
+    if (pre) pre.style.cssText = 'border-radius:10px;padding:20px;font-size:0.87rem;overflow-x:auto;margin:0;line-height:1.7';
+  </script>
+</body>
+</html>

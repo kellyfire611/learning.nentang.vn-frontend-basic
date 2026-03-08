@@ -1,0 +1,170 @@
+<!DOCTYPE html>
+<html lang="vi">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <meta name="keywords" content="PHP OOP,PDO,MySQL,NenTang,Lập trình PHP nâng cao">
+  <meta name="author" content="Dương Nguyễn Phú Cường">
+  <meta name="description" content="Áp dụng design pattern: Repository tách biệt data access, Service chứa business logic.">
+  <meta property="og:locale" content="vi_VN">
+  <meta property="og:type" content="website">
+  <meta property="og:title" content="Bài 08 – Repository Pattern và Service Layer | NenTang.vn">
+  <meta property="og:description" content="Áp dụng design pattern: Repository tách biệt data access, Service chứa business logic.">
+  <meta property="og:url" content="https://nentang.vn/">
+  <meta property="og:site_name" content="Nền tảng Kiến thức">
+  <title>Bài 08 – Repository Pattern và Service Layer | NenTang.vn</title>
+  <link rel="stylesheet" href="../../shared.css" />
+</head>
+<body>
+  <div class="page-header module-php-2">
+    <div class="breadcrumb">
+      <a href="../../index.html">PHP Course</a> &rsaquo;
+      <a href="../index.html">Module 2</a> &rsaquo; Bài 08
+    </div>
+    <h1>Bài 08: Repository Pattern và Service Layer</h1>
+    <p>Module 2 – PHP OOP &amp; Nâng Cao</p>
+  </div>
+
+  <div class="exercise-page">
+    <div class="exercise-box">
+      <div class="ex-head">
+        <h1>📝 Yêu cầu bài tập</h1>
+        <p>Áp dụng design pattern: Repository tách biệt data access, Service chứa business logic.</p>
+      </div>
+      <div class="ex-desc">
+        <h3>Yêu cầu</h3>
+        <ul>
+          <li>Tạo <code>interface ProductRepository</code></li>
+          <li>Implement <code>MysqlProductRepository</code></li>
+          <li>Tạo <code>ProductService</code> dùng Repository qua Dependency Injection</li>
+          <li>Viết <code>InMemoryProductRepository</code> cho testing</li>
+          <li>Hiểu tại sao cần tách biệt concerns</li>
+        </ul>
+        <h3>🧠 Kiến thức cần nhớ</h3>
+        <ul>
+          <li>Repository: lớp trung gian giữa domain và data storage</li>
+          <li>Service: chứa business rules, dùng Repository để CRUD</li>
+          <li>Dependency Injection: truyền phụ thuộc qua constructor thay vì new bên trong</li>
+          <li>Interface-based DI: thay đổi implementation mà không cần sửa Service</li>
+          <li>Single Responsibility: mỗi class chỉ làm 1 việc</li>
+        </ul>
+      </div>
+      <div class="ex-work">
+        <h3>💻 Code mẫu</h3>
+        <div id="code-highlight">
+          <pre id="code-raw" style="display:none">&lt;?php
+// ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+// Model / Entity
+// ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+class Product {
+    public function __construct(
+        public int    $id,
+        public string $name,
+        public float  $price,
+        public int    $stock,
+    ) {}
+    public function isInStock(): bool { return $this-&gt;stock &gt; 0; }
+    public function toArray(): array  { return get_object_vars($this); }
+}
+
+// ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+// Repository Interface
+// ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+interface ProductRepository {
+    public function findAll(): array;
+    public function findById(int $id): ?Product;
+    public function create(Product $p): Product;
+    public function update(Product $p): bool;
+    public function delete(int $id): bool;
+    public function search(string $kw): array;
+}
+
+// ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+// InMemory implementation (cho test)
+// ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+class InMemoryProductRepository implements ProductRepository {
+    private array $store = [];
+    private int   $nextId = 1;
+
+    public function findAll(): array { return array_values($this-&gt;store); }
+    public function findById(int $id): ?Product { return $this-&gt;store[$id] ?? null; }
+    public function create(Product $p): Product {
+        $p-&gt;id = $this-&gt;nextId++;
+        $this-&gt;store[$p-&gt;id] = $p;
+        return $p;
+    }
+    public function update(Product $p): bool {
+        if (!isset($this-&gt;store[$p-&gt;id])) return false;
+        $this-&gt;store[$p-&gt;id] = $p;
+        return true;
+    }
+    public function delete(int $id): bool {
+        if (!isset($this-&gt;store[$id])) return false;
+        unset($this-&gt;store[$id]);
+        return true;
+    }
+    public function search(string $kw): array {
+        return array_filter($this-&gt;store, fn($p) =&gt; stripos($p-&gt;name, $kw) !== false);
+    }
+}
+
+// ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+// Service Layer (Business Logic)
+// ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+class ProductService {
+    public function __construct(private ProductRepository $repo) {}
+
+    public function add(string $name, float $price, int $stock): Product {
+        if (empty($name))    throw new InvalidArgumentException("Tên sản phẩm bắt buộc");
+        if ($price &lt; 0)      throw new InvalidArgumentException("Giá không âm");
+        if ($stock &lt; 0)      throw new InvalidArgumentException("Tồn kho không âm");
+        return $this-&gt;repo-&gt;create(new Product(0, $name, $price, $stock));
+    }
+
+    public function purchase(int $id, int $qty): Product {
+        $p = $this-&gt;repo-&gt;findById($id) ?? throw new RuntimeException("Sản phẩm #$id không tồn tại");
+        if ($p-&gt;stock &lt; $qty) throw new RuntimeException("Không đủ hàng, còn {$p-&gt;stock}");
+        $p-&gt;stock -= $qty;
+        $this-&gt;repo-&gt;update($p);
+        return $p;
+    }
+
+    public function getInStock(): array {
+        return array_filter($this-&gt;repo-&gt;findAll(), fn($p) =&gt; $p-&gt;isInStock());
+    }
+}
+
+// ── Test ──────────────────────────
+$repo = new InMemoryProductRepository();   // Thay bằng MysqlProductRepository dễ dàng!
+$svc  = new ProductService($repo);
+
+$sp1  = $svc-&gt;add("Áo thun", 150_000, 10);
+$sp2  = $svc-&gt;add("Quần jean", 450_000, 5);
+echo "Tạo: {$sp1-&gt;name} (ID: {$sp1-&gt;id})&lt;br&gt;";
+
+try {
+    $svc-&gt;purchase($sp1-&gt;id, 3);
+    echo "Mua 3 áo thun, còn: {$sp1-&gt;stock}&lt;br&gt;";
+    $svc-&gt;purchase($sp2-&gt;id, 10); // vượt tồn kho
+} catch (RuntimeException $e) {
+    echo "Lỗi: {$e-&gt;getMessage()}&lt;br&gt;";
+}
+
+foreach ($svc-&gt;getInStock() as $p) {
+    echo "{$p-&gt;name}: còn {$p-&gt;stock}&lt;br&gt;";
+}</pre>
+        </div>
+      </div>
+    </div>
+  </div>
+  <a href="../index.html" class="btn-back">&#8592; Quay lại Module 2</a>
+  <script type="module">
+    import { codeToHtml } from 'https://esm.sh/shiki@1';
+    const raw = document.getElementById('code-raw').textContent;
+    const highlighted = await codeToHtml(raw, { lang: 'php', theme: 'github-dark' });
+    document.getElementById('code-highlight').innerHTML = highlighted;
+    const pre = document.getElementById('code-highlight').querySelector('pre');
+    if (pre) pre.style.cssText = 'border-radius:10px;padding:20px;font-size:0.87rem;overflow-x:auto;margin:0;line-height:1.7';
+  </script>
+</body>
+</html>

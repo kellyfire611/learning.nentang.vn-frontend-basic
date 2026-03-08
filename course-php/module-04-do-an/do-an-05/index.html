@@ -1,0 +1,216 @@
+<!DOCTYPE html>
+<html lang="vi">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <meta name="description" content="Xây dựng CRUD quản lý sinh viên, khóa học, đăng ký và bảng điểm hoàn chỉnh.">
+  <meta name="author" content="Dương Nguyễn Phú Cường">
+  <meta property="og:locale" content="vi_VN">
+  <meta property="og:type" content="website">
+  <meta property="og:title" content="Đồ Án 5: Hệ Thống Quản Lý Sinh Viên | NenTang.vn">
+  <meta property="og:url" content="https://nentang.vn/">
+  <meta property="og:site_name" content="Nền tảng Kiến thức">
+  <title>Đồ Án 5: Hệ Thống Quản Lý Sinh Viên | NenTang.vn</title>
+  <link rel="stylesheet" href="../../shared.css" />
+</head>
+<body>
+  <div class="page-header module-php-p">
+    <div class="breadcrumb">
+      <a href="../../index.html">PHP Course</a> &rsaquo;
+      <a href="../index.html">Đồ Án</a> &rsaquo; Dự Án 5
+    </div>
+    <h1>🏗️ Đồ Án 5: Hệ Thống Quản Lý Sinh Viên</h1>
+    <p>Module 4 – Đồ Án Tổng Hợp PHP</p>
+  </div>
+
+  <div class="exercise-page">
+    <div class="exercise-box">
+      <div class="ex-head">
+        <h1>📋 Mô Tả Dự Án</h1>
+        <p>Xây dựng CRUD quản lý sinh viên, khóa học, đăng ký và bảng điểm hoàn chỉnh.</p>
+      </div>
+      <div class="ex-desc">
+        <h3>✅ Tính năng cần xây dựng</h3>
+        <ul>
+          <li>CRUD sinh viên: tìm kiếm, lọc, phân trang</li>
+          <li>Quản lý khóa học và đăng ký</li>
+          <li>Bảng điểm: nhập điểm, xếp loại, tính GPA</li>
+          <li>Import/Export Excel (CSV)</li>
+          <li>Dashboard thống kê: tỷ lệ đậu, phân bố điểm</li>
+          <li>Báo cáo PDF (sử dụng HTML to PDF)</li>
+        </ul>
+        <h3>🧠 Kiến thức áp dụng</h3>
+        <ul>
+          <li>Quan hệ many-to-many: <code>sinh_vien ↔ khoa_hoc</code> qua <code>dang_ky</code></li>
+          <li>GPA tính theo tín chỉ: <code>Σ(điểm × tín_chỉ) / Σtín_chỉ</code></li>
+          <li>CSV import: đọc từng dòng, validate, insert batch</li>
+          <li><code>header('Content-Type: text/csv')</code>: xuất CSV download</li>
+          <li>Histogram điểm: GROUP BY khoảng điểm bằng CASE WHEN</li>
+        </ul>
+      </div>
+      <div class="ex-work">
+        <h3>💻 Code mẫu / Kiến trúc tham khảo</h3>
+        <div id="code-highlight">
+          <pre id="code-raw" style="display:none">&lt;?php
+// ════════════════════════════════════
+// ĐỒ ÁN 5: QUẢN LÝ SINH VIÊN
+// ════════════════════════════════════
+
+/* Schema:
+CREATE TABLE sinh_vien (
+    id          INT AUTO_INCREMENT PRIMARY KEY,
+    ma_sv       VARCHAR(10) UNIQUE NOT NULL,
+    ho_ten      VARCHAR(150) NOT NULL,
+    ngay_sinh   DATE,
+    email       VARCHAR(150) UNIQUE,
+    dien_thoai  VARCHAR(20),
+    lop         VARCHAR(50),
+    khoa        VARCHAR(100),
+    nam_nhap    YEAR,
+    ảnh         VARCHAR(255),
+    created_at  TIMESTAMP DEFAULT CURRENT_TIMESTAMP
+);
+CREATE TABLE khoa_hoc (
+    id          INT AUTO_INCREMENT PRIMARY KEY,
+    ma_kh       VARCHAR(10) UNIQUE NOT NULL,
+    ten         VARCHAR(200) NOT NULL,
+    tin_chi     INT DEFAULT 3,
+    mo_ta       TEXT,
+    giang_vien  VARCHAR(100)
+);
+CREATE TABLE dang_ky (
+    id          INT AUTO_INCREMENT PRIMARY KEY,
+    sinh_vien_id INT NOT NULL,
+    khoa_hoc_id  INT NOT NULL,
+    hoc_ky       VARCHAR(10),
+    diem_qua_mon DECIMAL(4,2),
+    diem_giua_ky DECIMAL(4,2),
+    diem_cuoi_ky DECIMAL(4,2),
+    diem_tong_ket DECIMAL(4,2) GENERATED ALWAYS AS
+        (ROUND(diem_qua_mon*0.1 + diem_giua_ky*0.3 + diem_cuoi_ky*0.6, 2)) STORED,
+    trang_thai  ENUM('dang_hoc','hoan_thanh','truot','bo_hoc') DEFAULT 'dang_hoc',
+    UNIQUE KEY uq_sv_kh_ky (sinh_vien_id, khoa_hoc_id, hoc_ky)
+);
+*/
+
+class StudentManager {
+    public function __construct(private PDO $pdo) {}
+
+    // ─── Thêm sinh viên ──────────
+    public function addStudent(array $data): array {
+        $ma_sv = $this-&gt;nextMaSV();
+        $stmt  = $this-&gt;pdo-&gt;prepare("
+            INSERT INTO sinh_vien (ma_sv, ho_ten, ngay_sinh, email, dien_thoai, lop, khoa, nam_nhap)
+            VALUES (:ma,:ho_ten,:ngay,:email,:sdt,:lop,:khoa,:nam)
+        ");
+        $stmt-&gt;execute([
+            ':ma'     =&gt; $ma_sv,
+            ':ho_ten' =&gt; $data['ho_ten'],
+            ':ngay'   =&gt; $data['ngay_sinh'] ?? null,
+            ':email'  =&gt; $data['email'] ?? null,
+            ':sdt'    =&gt; $data['dien_thoai'] ?? null,
+            ':lop'    =&gt; $data['lop'],
+            ':khoa'   =&gt; $data['khoa'],
+            ':nam'    =&gt; $data['nam_nhap'] ?? date('Y'),
+        ]);
+        return $this-&gt;findStudent((int)$this-&gt;pdo-&gt;lastInsertId());
+    }
+
+    private function nextMaSV(): string {
+        $nam  = date('Y');
+        $last = $this-&gt;pdo-&gt;query("SELECT MAX(CAST(SUBSTR(ma_sv,5) AS UNSIGNED)) FROM sinh_vien WHERE ma_sv LIKE 'SV{$nam}%'")-&gt;fetchColumn();
+        return sprintf('SV%s%04d', $nam, ($last ?? 0) + 1);
+    }
+
+    // ─── Bang điểm &amp; GPA ─────────
+    public function getBangDiem(int $sv_id): array {
+        $stmt = $this-&gt;pdo-&gt;prepare("
+            SELECT kh.ten AS khoa_hoc, kh.tin_chi, dk.hoc_ky,
+                   dk.diem_qua_mon, dk.diem_giua_ky, dk.diem_cuoi_ky,
+                   dk.diem_tong_ket, dk.trang_thai,
+                   CASE
+                       WHEN dk.diem_tong_ket &gt;= 9.0 THEN 'A+'
+                       WHEN dk.diem_tong_ket &gt;= 8.5 THEN 'A'
+                       WHEN dk.diem_tong_ket &gt;= 8.0 THEN 'B+'
+                       WHEN dk.diem_tong_ket &gt;= 7.0 THEN 'B'
+                       WHEN dk.diem_tong_ket &gt;= 6.5 THEN 'C+'
+                       WHEN dk.diem_tong_ket &gt;= 5.5 THEN 'C'
+                       WHEN dk.diem_tong_ket &gt;= 5.0 THEN 'D+'
+                       WHEN dk.diem_tong_ket &gt;= 4.0 THEN 'D'
+                       ELSE 'F'
+                   END AS xep_loai
+            FROM dang_ky dk
+            JOIN khoa_hoc kh ON kh.id = dk.khoa_hoc_id
+            WHERE dk.sinh_vien_id = ? AND dk.trang_thai = 'hoan_thanh'
+            ORDER BY dk.hoc_ky, kh.ten
+        ");
+        $stmt-&gt;execute([$sv_id]);
+        $bang_diem = $stmt-&gt;fetchAll();
+
+        // Tính GPA
+        $tong_diem_tc = array_sum(array_map(fn($r) =&gt; $r['diem_tong_ket'] * $r['tin_chi'], $bang_diem));
+        $tong_tc      = array_sum(array_map(fn($r) =&gt; $r['tin_chi'], $bang_diem));
+        $gpa          = $tong_tc &gt; 0 ? round($tong_diem_tc / $tong_tc, 2) : 0;
+
+        return ['bang_diem' =&gt; $bang_diem, 'tong_tc' =&gt; $tong_tc, 'gpa' =&gt; $gpa,
+                'xep_loai' =&gt; $gpa &gt;= 8.5 ? 'Giỏi' : ($gpa &gt;= 7.0 ? 'Khá' : ($gpa &gt;= 5.0 ? 'TB' : 'Yếu'))];
+    }
+
+    // ─── Import CSV ───────────────
+    public function importCsv(string $file_path): array {
+        $handle  = fopen($file_path, 'r');
+        fgetcsv($handle); // skip header
+        $success = $failed = 0; $errors = [];
+        while (($row = fgetcsv($handle)) !== false) {
+            try {
+                if (count($row) &lt; 5) throw new InvalidArgumentException("Thiếu cột");
+                $this-&gt;addStudent(['ho_ten'=&gt;$row[0],'ngay_sinh'=&gt;$row[1],'email'=&gt;$row[2],'lop'=&gt;$row[3],'khoa'=&gt;$row[4]]);
+                $success++;
+            } catch (Exception $e) { $failed++; $errors[] = "Dòng " . ($success+$failed) . ": " . $e-&gt;getMessage(); }
+        }
+        fclose($handle);
+        return compact('success', 'failed', 'errors');
+    }
+
+    // ─── Export CSV ───────────────
+    public function exportCsv(): void {
+        header('Content-Type: text/csv; charset=utf-8');
+        header('Content-Disposition: attachment; filename="sinh_vien_' . date('Ymd') . '.csv"');
+        $f = fopen('php://output', 'w');
+        fprintf($f, chr(0xEF).chr(0xBB).chr(0xBF));
+        fputcsv($f, ['Mã SV','Họ tên','Ngày sinh','Email','Lớp','Khoa','Năm nhập']);
+        $rows = $this-&gt;pdo-&gt;query("SELECT ma_sv,ho_ten,ngay_sinh,email,lop,khoa,nam_nhap FROM sinh_vien ORDER BY ma_sv")-&gt;fetchAll(PDO::FETCH_NUM);
+        foreach ($rows as $row) fputcsv($f, $row);
+        fclose($f);
+    }
+
+    private function findStudent(int $id): array {
+        $s = $this-&gt;pdo-&gt;prepare("SELECT * FROM sinh_vien WHERE id=?");
+        $s-&gt;execute([$id]); return $s-&gt;fetch();
+    }
+}
+
+// ── Demo ──────────────────────────
+echo "=== Student Management Demo ===&lt;br&gt;";
+$mgr = new StudentManager(get_pdo());
+echo "Features:&lt;br&gt;";
+echo "✅ Auto mã SV theo năm: SV20240001&lt;br&gt;";
+echo "✅ GPA tính theo tín chỉ có trọng số&lt;br&gt;";
+echo "✅ Generated column diem_tong_ket trong MySQL&lt;br&gt;";
+echo "✅ Import/Export CSV với BOM UTF-8&lt;br&gt;";
+echo "✅ Xếp loại chữ: A+/A/B+.../F&lt;br&gt;";</pre>
+        </div>
+      </div>
+    </div>
+  </div>
+  <a href="../index.html" class="btn-back">&#8592; Quay lại Đồ Án</a>
+  <script type="module">
+    import { codeToHtml } from 'https://esm.sh/shiki@1';
+    const raw = document.getElementById('code-raw').textContent;
+    const highlighted = await codeToHtml(raw, { lang: 'php', theme: 'github-dark' });
+    document.getElementById('code-highlight').innerHTML = highlighted;
+    const pre = document.getElementById('code-highlight').querySelector('pre');
+    if (pre) pre.style.cssText = 'border-radius:10px;padding:20px;font-size:0.87rem;overflow-x:auto;margin:0;line-height:1.7';
+  </script>
+</body>
+</html>

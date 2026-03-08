@@ -1,0 +1,102 @@
+<!DOCTYPE html>
+<html lang="vi">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <meta name="keywords" content="PHP,Lập trình PHP,Web,NenTang,Bài tập PHP,PHP cơ bản">
+  <meta name="author" content="Dương Nguyễn Phú Cường">
+  <meta name="description" content="Khai báo và sử dụng biến PHP với các kiểu dữ liệu: string, int, float, bool, null.">
+  <meta property="og:locale" content="vi_VN">
+  <meta property="og:type" content="website">
+  <meta property="og:title" content="Bài 02 – Biến và Kiểu Dữ Liệu Trong PHP | NenTang.vn">
+  <meta property="og:description" content="Khai báo và sử dụng biến PHP với các kiểu dữ liệu: string, int, float, bool, null.">
+  <meta property="og:url" content="https://nentang.vn/">
+  <meta property="og:site_name" content="Nền tảng Kiến thức">
+  <title>Bài 02 – Biến và Kiểu Dữ Liệu Trong PHP | NenTang.vn</title>
+  <link rel="stylesheet" href="../../shared.css" />
+</head>
+<body>
+  <div class="page-header module-php-1">
+    <div class="breadcrumb">
+      <a href="../../index.html">PHP Course</a> &rsaquo;
+      <a href="../index.html">Module 1</a> &rsaquo; Bài 02
+    </div>
+    <h1>Bài 02: Biến và Kiểu Dữ Liệu Trong PHP</h1>
+    <p>Module 1 – PHP Cơ Bản</p>
+  </div>
+
+  <div class="exercise-page">
+    <div class="exercise-box">
+      <div class="ex-head">
+        <h1>📝 Yêu cầu bài tập</h1>
+        <p>Khai báo và sử dụng biến PHP với các kiểu dữ liệu: string, int, float, bool, null.</p>
+      </div>
+      <div class="ex-desc">
+        <h3>Yêu cầu</h3>
+        <ul>
+          <li>Khai báo biến tên, tuổi, chiều cao, là sinh viên (bool)</li>
+          <li>In kiểu dữ liệu của mỗi biến bằng <code>gettype()</code></li>
+          <li>Dùng <code>var_dump()</code> để xem chi tiết biến</li>
+          <li>Chuyển đổi kiểu dữ liệu (type casting): int → float → string</li>
+          <li>Dùng <code>isset()</code>, <code>empty()</code>, <code>is_null()</code></li>
+        </ul>
+        <h3>🧠 Kiến thức cần nhớ</h3>
+        <ul>
+          <li>Biến PHP bắt đầu bằng <code>$</code>: <code>$ten</code>, <code>$tuoi</code></li>
+          <li>8 kiểu dữ liệu: int, float, string, bool, array, object, NULL, resource</li>
+          <li><code>var_dump($x)</code> — hiện type + value (rất hữu ích để debug)</li>
+          <li><code>gettype($x)</code> — trả về chuỗi tên kiểu ("integer", "string"...)</li>
+          <li>PHP là ngôn ngữ loosely typed — biến tự thay đổi kiểu dữ liệu</li>
+        </ul>
+      </div>
+      <div class="ex-work">
+        <h3>💻 Code mẫu</h3>
+        <div id="code-highlight">
+          <pre id="code-raw" style="display:none">&lt;?php
+// ── Khai báo biến ──────────────────
+$ten      = "Nguyễn Thị Bình";    // string
+$tuoi     = 21;                    // integer
+$diem_tb  = 8.75;                  // float
+$la_sv    = true;                  // boolean
+$que_quan = null;                  // NULL
+
+// ── In kiểu dữ liệu ────────────────
+echo gettype($ten)     . "&lt;br&gt;";   // string
+echo gettype($tuoi)    . "&lt;br&gt;";   // integer
+echo gettype($diem_tb) . "&lt;br&gt;";   // double
+echo gettype($la_sv)   . "&lt;br&gt;";   // boolean
+
+// ── var_dump chi tiết ──────────────
+var_dump($ten);       // string(18) "Nguyễn Thị Bình"
+var_dump($tuoi);      // int(21)
+var_dump($diem_tb);   // float(8.75)
+var_dump($la_sv);     // bool(true)
+var_dump($que_quan);  // NULL
+
+// ── Type casting (ép kiểu) ─────────
+$so_nguyen = (int) 3.9;       // → 3 (cắt phần thập phân)
+$so_thuc   = (float) "4.5px"; // → 4.5 (lấy đến ký tự phi số đầu tiên)
+$chuoi     = (string) 100;    // → "100"
+$bool      = (bool) 0;        // → false (0, "", "0", [] là false)
+echo $so_nguyen . " | " . $so_thuc . " | " . $chuoi . "&lt;br&gt;";
+
+// ── Kiểm tra biến ─────────────────
+$bien_chua_dat;
+echo isset($ten)         ? "ten: đã set&lt;br&gt;"    : "ten: chưa set&lt;br&gt;";
+echo isset($bien_chua_dat) ? "đã set&lt;br&gt;"       : "chưa set&lt;br&gt;";
+echo empty($que_quan)    ? "que_quan: rỗng&lt;br&gt;" : "có giá trị&lt;br&gt;";</pre>
+        </div>
+      </div>
+    </div>
+  </div>
+  <a href="../index.html" class="btn-back">&#8592; Quay lại Module 1</a>
+  <script type="module">
+    import { codeToHtml } from 'https://esm.sh/shiki@1';
+    const raw = document.getElementById('code-raw').textContent;
+    const highlighted = await codeToHtml(raw, { lang: 'php', theme: 'github-dark' });
+    document.getElementById('code-highlight').innerHTML = highlighted;
+    const pre = document.getElementById('code-highlight').querySelector('pre');
+    if (pre) pre.style.cssText = 'border-radius:10px;padding:20px;font-size:0.87rem;overflow-x:auto;margin:0;line-height:1.7';
+  </script>
+</body>
+</html>

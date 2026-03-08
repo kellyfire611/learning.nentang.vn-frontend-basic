@@ -1,0 +1,106 @@
+<!DOCTYPE html>
+<html lang="vi">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <meta name="keywords" content="PHP,Lập trình PHP,Web,NenTang,Bài tập PHP,PHP cơ bản">
+  <meta name="author" content="Dương Nguyễn Phú Cường">
+  <meta name="description" content="Sử dụng biểu thức chính quy (regex) trong PHP để tìm kiếm và xử lý chuỗi phức tạp.">
+  <meta property="og:locale" content="vi_VN">
+  <meta property="og:type" content="website">
+  <meta property="og:title" content="Bài 23 – Regular Expressions (Regex) | NenTang.vn">
+  <meta property="og:description" content="Sử dụng biểu thức chính quy (regex) trong PHP để tìm kiếm và xử lý chuỗi phức tạp.">
+  <meta property="og:url" content="https://nentang.vn/">
+  <meta property="og:site_name" content="Nền tảng Kiến thức">
+  <title>Bài 23 – Regular Expressions (Regex) | NenTang.vn</title>
+  <link rel="stylesheet" href="../../shared.css" />
+</head>
+<body>
+  <div class="page-header module-php-1">
+    <div class="breadcrumb">
+      <a href="../../index.html">PHP Course</a> &rsaquo;
+      <a href="../index.html">Module 1</a> &rsaquo; Bài 23
+    </div>
+    <h1>Bài 23: Regular Expressions (Regex)</h1>
+    <p>Module 1 – PHP Cơ Bản</p>
+  </div>
+
+  <div class="exercise-page">
+    <div class="exercise-box">
+      <div class="ex-head">
+        <h1>📝 Yêu cầu bài tập</h1>
+        <p>Sử dụng biểu thức chính quy (regex) trong PHP để tìm kiếm và xử lý chuỗi phức tạp.</p>
+      </div>
+      <div class="ex-desc">
+        <h3>Yêu cầu</h3>
+        <ul>
+          <li>Dùng <code>preg_match()</code> để kiểm tra pattern</li>
+          <li>Dùng <code>preg_match_all()</code> tìm tất cả khớp</li>
+          <li>Dùng <code>preg_replace()</code> để thay thế theo pattern</li>
+          <li>Validate số điện thoại VN, mã bưu điện, CCCD</li>
+          <li>Tách và phân tích chuỗi phức tạp</li>
+        </ul>
+        <h3>🧠 Kiến thức cần nhớ</h3>
+        <ul>
+          <li><code>preg_match('/pattern/', $str)</code>: trả về 1 nếu khớp, 0 nếu không</li>
+          <li><code>preg_match('/pattern/', $str, $matches)</code>: lưu kết quả vào $matches</li>
+          <li><code>preg_replace('/p/', 'replace', $str)</code>: thay thế theo regex</li>
+          <li>Modifier: <code>i</code>=case-insensitive, <code>m</code>=multiline, <code>u</code>=UTF-8</li>
+          <li>Groups <code>(...)</code> bắt giá trị; <code>(?:...)</code> non-capturing group</li>
+        </ul>
+      </div>
+      <div class="ex-work">
+        <h3>💻 Code mẫu</h3>
+        <div id="code-highlight">
+          <pre id="code-raw" style="display:none">&lt;?php
+// ── Validate email ────────────────
+$emails = ['user@example.com', 'invalid-email', 'test.user+tag@sub.domain.vn', '@nodomain'];
+foreach ($emails as $e) {
+    $ok = preg_match('/^[a-zA-Z0-9._%+\-]+@[a-zA-Z0-9.\-]+\.[a-zA-Z]{2,}$/', $e);
+    echo "$e: " . ($ok ? "✅ hợp lệ" : "❌ không hợp lệ") . "&lt;br&gt;";
+}
+
+// ── Số điện thoại Việt Nam ────────
+$so_dt = ['0912345678', '0385 123 456', '+84987654321', '09123', '01234567890'];
+$pattern_dt = '/^(\+84|0)(3[2-9]|5[6-9]|7[0-9]|8[0-9]|9[0-9])\d{7}$/';
+foreach ($so_dt as $s) {
+    $sach = preg_replace('/[\s\-.]/', '', $s);  // xóa khoảng trắng và dấu
+    echo "$s → " . (preg_match($pattern_dt, $sach) ? "✅" : "❌") . "&lt;br&gt;";
+}
+
+// ── Trích xuất thông tin ──────────
+$van_ban = "Liên hệ: 0901234567 hoặc 0987654321 hoặc email@test.vn";
+preg_match_all('/(0[3-9]\d{8})/', $van_ban, $so_dts);
+echo "Số điện thoại tìm thấy: " . implode(', ', $so_dts[1]) . "&lt;br&gt;";
+
+// ── Tách URL ──────────────────────
+$url = 'https://shop.example.vn/san-pham/ao-thun?color=do&amp;size=L#reviews';
+$pattern_url = '/^(https?):\/\/([^\/]+)(\/[^?#]*)?(\?[^#]*)?(#.*)?$/';
+if (preg_match($pattern_url, $url, $m)) {
+    echo "Protocol: {$m[1]}&lt;br&gt;";
+    echo "Domain: {$m[2]}&lt;br&gt;";
+    echo "Path: {$m[3]}&lt;br&gt;";
+    echo "Query: {$m[4]}&lt;br&gt;";
+}
+
+// ── preg_replace nâng cao ─────────
+$text = "Giá: 1500000 đồng, giảm 200000 đồng";
+$result = preg_replace_callback('/\d+/', function($m) {
+    return number_format($m[0], 0, ',', '.');
+}, $text);
+echo $result . "&lt;br&gt;";   // Giá: 1.500.000 đồng, giảm 200.000 đồng</pre>
+        </div>
+      </div>
+    </div>
+  </div>
+  <a href="../index.html" class="btn-back">&#8592; Quay lại Module 1</a>
+  <script type="module">
+    import { codeToHtml } from 'https://esm.sh/shiki@1';
+    const raw = document.getElementById('code-raw').textContent;
+    const highlighted = await codeToHtml(raw, { lang: 'php', theme: 'github-dark' });
+    document.getElementById('code-highlight').innerHTML = highlighted;
+    const pre = document.getElementById('code-highlight').querySelector('pre');
+    if (pre) pre.style.cssText = 'border-radius:10px;padding:20px;font-size:0.87rem;overflow-x:auto;margin:0;line-height:1.7';
+  </script>
+</body>
+</html>

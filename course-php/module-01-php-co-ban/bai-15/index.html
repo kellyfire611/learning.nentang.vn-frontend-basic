@@ -1,0 +1,119 @@
+<!DOCTYPE html>
+<html lang="vi">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <meta name="keywords" content="PHP,Lập trình PHP,Web,NenTang,Bài tập PHP,PHP cơ bản">
+  <meta name="author" content="Dương Nguyễn Phú Cường">
+  <meta name="description" content="Sử dụng session PHP để lưu thông tin người dùng giữa các trang.">
+  <meta property="og:locale" content="vi_VN">
+  <meta property="og:type" content="website">
+  <meta property="og:title" content="Bài 15 – Session – Lưu Trạng Thái Người Dùng | NenTang.vn">
+  <meta property="og:description" content="Sử dụng session PHP để lưu thông tin người dùng giữa các trang.">
+  <meta property="og:url" content="https://nentang.vn/">
+  <meta property="og:site_name" content="Nền tảng Kiến thức">
+  <title>Bài 15 – Session – Lưu Trạng Thái Người Dùng | NenTang.vn</title>
+  <link rel="stylesheet" href="../../shared.css" />
+</head>
+<body>
+  <div class="page-header module-php-1">
+    <div class="breadcrumb">
+      <a href="../../index.html">PHP Course</a> &rsaquo;
+      <a href="../index.html">Module 1</a> &rsaquo; Bài 15
+    </div>
+    <h1>Bài 15: Session – Lưu Trạng Thái Người Dùng</h1>
+    <p>Module 1 – PHP Cơ Bản</p>
+  </div>
+
+  <div class="exercise-page">
+    <div class="exercise-box">
+      <div class="ex-head">
+        <h1>📝 Yêu cầu bài tập</h1>
+        <p>Sử dụng session PHP để lưu thông tin người dùng giữa các trang.</p>
+      </div>
+      <div class="ex-desc">
+        <h3>Yêu cầu</h3>
+        <ul>
+          <li>Khởi động session với <code>session_start()</code></li>
+          <li>Lưu, đọc, xóa dữ liệu trong <code>$_SESSION</code></li>
+          <li>Xây dựng hệ thống đăng nhập đơn giản (không cần DB)</li>
+          <li>Kiểm tra xem người dùng đã đăng nhập chưa</li>
+          <li>Hủy session (đăng xuất) bằng <code>session_destroy()</code></li>
+        </ul>
+        <h3>🧠 Kiến thức cần nhớ</h3>
+        <ul>
+          <li><code>session_start()</code>: phải gọi trước khi output bất kỳ thứ gì</li>
+          <li><code>$_SESSION['key'] = $val</code>: lưu; <code>unset($_SESSION['key'])</code>: xóa key</li>
+          <li><code>session_destroy()</code>: hủy toàn bộ session data</li>
+          <li>Session ID lưu trong cookie <code>PHPSESSID</code> phía client</li>
+          <li>Session data lưu trên server (mặc định là file trong /tmp)</li>
+        </ul>
+      </div>
+      <div class="ex-work">
+        <h3>💻 Code mẫu</h3>
+        <div id="code-highlight">
+          <pre id="code-raw" style="display:none">&lt;?php
+session_start();
+
+// ── Đăng nhập ────────────────────
+if ($_SERVER['REQUEST_METHOD'] === 'POST' &amp;&amp; isset($_POST['dang_nhap'])) {
+    $email = trim($_POST['email'] ?? '');
+    $matkhau = $_POST['mat_khau'] ?? '';
+    
+    // Tài khoản cứng (thực tế kiểm tra DB)
+    $tai_khoan = [
+        'admin@demo.vn' =&gt; ['mat_khau' =&gt; 'admin123', 'ten' =&gt; 'Quản trị viên', 'vai_tro' =&gt; 'admin'],
+        'user@demo.vn'  =&gt; ['mat_khau' =&gt; 'user1234', 'ten' =&gt; 'Người dùng',   'vai_tro' =&gt; 'user'],
+    ];
+    
+    if (isset($tai_khoan[$email]) &amp;&amp; $tai_khoan[$email]['mat_khau'] === $matkhau) {
+        $_SESSION['da_dang_nhap'] = true;
+        $_SESSION['email']        = $email;
+        $_SESSION['ten']          = $tai_khoan[$email]['ten'];
+        $_SESSION['vai_tro']      = $tai_khoan[$email]['vai_tro'];
+        $_SESSION['dang_nhap_luc']= date('Y-m-d H:i:s');
+    } else {
+        $thong_bao_loi = "Email hoặc mật khẩu không đúng!";
+    }
+}
+
+// ── Đăng xuất ────────────────────
+if (isset($_GET['dang_xuat'])) {
+    session_unset();
+    session_destroy();
+    header('Location: ' . $_SERVER['PHP_SELF']);
+    exit;
+}
+?&gt;
+&lt;?php if ($_SESSION['da_dang_nhap'] ?? false): ?&gt;
+  &lt;h2&gt;Xin chào, &lt;?= htmlspecialchars($_SESSION['ten']) ?&gt;! 👋&lt;/h2&gt;
+  &lt;p&gt;Email: &lt;?= $_SESSION['email'] ?&gt;&lt;/p&gt;
+  &lt;p&gt;Vai trò: &lt;?= $_SESSION['vai_tro'] ?&gt;&lt;/p&gt;
+  &lt;p&gt;Đăng nhập lúc: &lt;?= $_SESSION['dang_nhap_luc'] ?&gt;&lt;/p&gt;
+  &lt;p&gt;Session ID: &lt;?= session_id() ?&gt;&lt;/p&gt;
+  &lt;a href="?dang_xuat=1"&gt;🚪 Đăng xuất&lt;/a&gt;
+&lt;?php else: ?&gt;
+  &lt;?php if (isset($thong_bao_loi)): ?&gt;
+    &lt;p style="color:red"&gt;&lt;?= $thong_bao_loi ?&gt;&lt;/p&gt;
+  &lt;?php endif; ?&gt;
+  &lt;form method="POST"&gt;
+    &lt;input type="email" name="email" placeholder="admin@demo.vn" required&gt;&lt;br&gt;
+    &lt;input type="password" name="mat_khau" placeholder="Mật khẩu" required&gt;&lt;br&gt;
+    &lt;button type="submit" name="dang_nhap"&gt;Đăng nhập&lt;/button&gt;
+  &lt;/form&gt;
+&lt;?php endif; ?&gt;</pre>
+        </div>
+      </div>
+    </div>
+  </div>
+  <a href="../index.html" class="btn-back">&#8592; Quay lại Module 1</a>
+  <script type="module">
+    import { codeToHtml } from 'https://esm.sh/shiki@1';
+    const raw = document.getElementById('code-raw').textContent;
+    const highlighted = await codeToHtml(raw, { lang: 'php', theme: 'github-dark' });
+    document.getElementById('code-highlight').innerHTML = highlighted;
+    const pre = document.getElementById('code-highlight').querySelector('pre');
+    if (pre) pre.style.cssText = 'border-radius:10px;padding:20px;font-size:0.87rem;overflow-x:auto;margin:0;line-height:1.7';
+  </script>
+</body>
+</html>

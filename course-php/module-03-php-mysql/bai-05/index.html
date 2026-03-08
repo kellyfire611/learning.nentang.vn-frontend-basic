@@ -1,0 +1,136 @@
+<!DOCTYPE html>
+<html lang="vi">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <meta name="description" content="Thực hiện UPDATE và DELETE đúng cách: cập nhật có điều kiện, soft delete.">
+  <meta name="author" content="Dương Nguyễn Phú Cường">
+  <meta property="og:locale" content="vi_VN">
+  <meta property="og:type" content="website">
+  <meta property="og:title" content="Bài 05 – UPDATE và DELETE An Toàn | NenTang.vn">
+  <meta property="og:url" content="https://nentang.vn/">
+  <meta property="og:site_name" content="Nền tảng Kiến thức">
+  <title>Bài 05 – UPDATE và DELETE An Toàn | NenTang.vn</title>
+  <link rel="stylesheet" href="../../shared.css" />
+</head>
+<body>
+  <div class="page-header module-php-3">
+    <div class="breadcrumb">
+      <a href="../../index.html">PHP Course</a> &rsaquo;
+      <a href="../index.html">Module 3</a> &rsaquo; Bài 05
+    </div>
+    <h1>Bài 05: UPDATE và DELETE An Toàn</h1>
+    <p>Module 3 – PHP &amp; MySQL Thực Chiến</p>
+  </div>
+
+  <div class="exercise-page">
+    <div class="exercise-box">
+      <div class="ex-head">
+        <h1>📝 Yêu cầu bài tập</h1>
+        <p>Thực hiện UPDATE và DELETE đúng cách: cập nhật có điều kiện, soft delete.</p>
+      </div>
+      <div class="ex-desc">
+        <h3>Yêu cầu</h3>
+        <ul>
+          <li>UPDATE một trường, nhiều trường</li>
+          <li>UPDATE với JOIN từ bảng khác</li>
+          <li>Soft delete bằng cột <code>deleted_at</code></li>
+          <li>Hard delete với CASCADE</li>
+          <li>ROW_COUNT() kiểm tra số hàng bị ảnh hưởng</li>
+        </ul>
+        <h3>🧠 Kiến thức cần nhớ</h3>
+        <ul>
+          <li>Luôn kiểm tra <code>rowCount()</code> sau UPDATE/DELETE để biết có thành công không</li>
+          <li>Soft delete: thêm cột <code>deleted_at TIMESTAMP NULL</code>, không xóa vật lý</li>
+          <li><code>UPDATE t1 JOIN t2 ON ... SET t1.col = t2.col</code>: UPDATE với JOIN</li>
+          <li><code>DELETE FROM t WHERE id = ?</code> – LUÔN có WHERE trừ khi muốn xóa tất cả</li>
+          <li><code>TRUNCATE TABLE t</code>: xóa tất cả, reset AUTO_INCREMENT (không có WHERE)</li>
+        </ul>
+      </div>
+      <div class="ex-work">
+        <h3>💻 Code mẫu</h3>
+        <div id="code-highlight">
+          <pre id="code-raw" style="display:none">&lt;?php
+$pdo = get_pdo();
+
+// ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+// 1. UPDATE một trường
+// ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+$stmt = $pdo-&gt;prepare("UPDATE san_pham SET luot_xem = luot_xem + 1 WHERE id = ?");
+$stmt-&gt;execute([1]);
+echo "Tăng lượt xem: " . $stmt-&gt;rowCount() . " hàng&lt;br&gt;";
+
+// ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+// 2. UPDATE nhiều trường
+// ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+$upd = $pdo-&gt;prepare("UPDATE san_pham SET gia = ?, gia_km = ?, so_luong = ? WHERE id = ?");
+$upd-&gt;execute([180_000, 150_000, 45, 1]);
+echo "UPDATE: " . $upd-&gt;rowCount() . " hàng&lt;br&gt;";
+
+// ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+// 3. UPDATE với CASE (batch update)
+// ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+// Cập nhật giá nhiều sản phẩm cùng lúc
+$gia_moi = [1 =&gt; 199_000, 2 =&gt; 389_000, 3 =&gt; 28_990_000];
+$ids     = array_keys($gia_moi);
+$cases   = implode(' ', array_map(fn($id) =&gt; "WHEN id = $id THEN " . $gia_moi[$id], $ids));
+$in_ids  = implode(',', $ids);
+$pdo-&gt;exec("UPDATE san_pham SET gia = CASE $cases END, updated_at = NOW() WHERE id IN ($in_ids)");
+echo "Batch update 3 giá sản phẩm&lt;br&gt;";
+
+// ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+// 4. Soft Delete
+// ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+// Thêm cột deleted_at nếu chưa có
+try { $pdo-&gt;exec("ALTER TABLE san_pham ADD COLUMN deleted_at TIMESTAMP NULL DEFAULT NULL"); } catch(PDOException) {}
+
+$soft_del = $pdo-&gt;prepare("UPDATE san_pham SET deleted_at = NOW(), active = 0 WHERE id = ? AND deleted_at IS NULL");
+$soft_del-&gt;execute([8]);
+echo "Soft delete: " . $soft_del-&gt;rowCount() . " hàng&lt;br&gt;";
+
+// Chỉ lấy chưa xóa
+$active = $pdo-&gt;query("SELECT ten FROM san_pham WHERE deleted_at IS NULL LIMIT 5")-&gt;fetchAll(PDO::FETCH_COLUMN);
+echo "Còn active: " . implode(', ', $active) . "&lt;br&gt;";
+
+// Restore
+$restore = $pdo-&gt;prepare("UPDATE san_pham SET deleted_at = NULL, active = 1 WHERE id = ?");
+$restore-&gt;execute([8]);
+echo "Restore: " . $restore-&gt;rowCount() . " hàng&lt;br&gt;";
+
+// ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+// 5. Hard DELETE (thật sự xóa)
+// ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+// Xóa sản phẩm hết hàng và đã bị soft delete &gt; 30 ngày
+$del = $pdo-&gt;exec("
+    DELETE FROM san_pham
+    WHERE deleted_at IS NOT NULL
+      AND deleted_at &lt; DATE_SUB(NOW(), INTERVAL 30 DAY)
+      AND so_luong = 0
+");
+echo "Hard delete: $del hàng cũ&lt;br&gt;";
+
+// ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+// 6. Kiểm tra rowCount
+// ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+$s = $pdo-&gt;prepare("UPDATE san_pham SET ten = ? WHERE id = ?");
+$s-&gt;execute(['Áo thun Polo (mới)', 1]);
+if ($s-&gt;rowCount() === 0) {
+    echo "Không tìm thấy sản phẩm hoặc giá trị không đổi&lt;br&gt;";
+} else {
+    echo "Cập nhật thành công: " . $s-&gt;rowCount() . " hàng&lt;br&gt;";
+}</pre>
+        </div>
+      </div>
+    </div>
+  </div>
+  <a href="../index.html" class="btn-back">&#8592; Quay lại Module 3</a>
+  <script type="module">
+    import { codeToHtml } from 'https://esm.sh/shiki@1';
+    const raw = document.getElementById('code-raw').textContent;
+    const highlighted = await codeToHtml(raw, { lang: 'php', theme: 'github-dark' });
+    document.getElementById('code-highlight').innerHTML = highlighted;
+    const pre = document.getElementById('code-highlight').querySelector('pre');
+    if (pre) pre.style.cssText = 'border-radius:10px;padding:20px;font-size:0.87rem;overflow-x:auto;margin:0;line-height:1.7';
+  </script>
+</body>
+</html>

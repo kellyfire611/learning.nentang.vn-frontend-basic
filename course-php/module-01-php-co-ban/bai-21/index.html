@@ -1,0 +1,122 @@
+<!DOCTYPE html>
+<html lang="vi">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <meta name="keywords" content="PHP,Lập trình PHP,Web,NenTang,Bài tập PHP,PHP cơ bản">
+  <meta name="author" content="Dương Nguyễn Phú Cường">
+  <meta name="description" content="Bắt và xử lý lỗi trong PHP bằng try/catch/finally và custom exception.">
+  <meta property="og:locale" content="vi_VN">
+  <meta property="og:type" content="website">
+  <meta property="og:title" content="Bài 21 – Xử Lý Lỗi và Exception | NenTang.vn">
+  <meta property="og:description" content="Bắt và xử lý lỗi trong PHP bằng try/catch/finally và custom exception.">
+  <meta property="og:url" content="https://nentang.vn/">
+  <meta property="og:site_name" content="Nền tảng Kiến thức">
+  <title>Bài 21 – Xử Lý Lỗi và Exception | NenTang.vn</title>
+  <link rel="stylesheet" href="../../shared.css" />
+</head>
+<body>
+  <div class="page-header module-php-1">
+    <div class="breadcrumb">
+      <a href="../../index.html">PHP Course</a> &rsaquo;
+      <a href="../index.html">Module 1</a> &rsaquo; Bài 21
+    </div>
+    <h1>Bài 21: Xử Lý Lỗi và Exception</h1>
+    <p>Module 1 – PHP Cơ Bản</p>
+  </div>
+
+  <div class="exercise-page">
+    <div class="exercise-box">
+      <div class="ex-head">
+        <h1>📝 Yêu cầu bài tập</h1>
+        <p>Bắt và xử lý lỗi trong PHP bằng try/catch/finally và custom exception.</p>
+      </div>
+      <div class="ex-desc">
+        <h3>Yêu cầu</h3>
+        <ul>
+          <li>Dùng <code>try { } catch (Exception $e) { }</code></li>
+          <li>Tạo custom Exception class</li>
+          <li>Dùng <code>finally</code></li>
+          <li>Chuyển lỗi PHP thành Exception qua <code>set_error_handler</code></li>
+          <li>Logging lỗi vào file</li>
+        </ul>
+        <h3>🧠 Kiến thức cần nhớ</h3>
+        <ul>
+          <li><code>throw new Exception('msg')</code>: ném ngoại lệ</li>
+          <li><code>$e->getMessage()</code>, <code>$e->getCode()</code>, <code>$e->getFile()</code>, <code>$e->getLine()</code></li>
+          <li><code>finally { }</code>: luôn chạy dù có exception hay không (ví dụ: đóng DB)</li>
+          <li>Custom exception: <code>class ValidationException extends Exception { }</code></li>
+          <li><code>error_log($msg, 3, 'errors.log')</code>: ghi log lỗi</li>
+        </ul>
+      </div>
+      <div class="ex-work">
+        <h3>💻 Code mẫu</h3>
+        <div id="code-highlight">
+          <pre id="code-raw" style="display:none">&lt;?php
+// ── Custom Exception ──────────────
+class ValidationException extends RuntimeException {
+    private array $errors;
+    public function __construct(array $errors, string $msg = "Validation thất bại") {
+        parent::__construct($msg, 422);
+        $this-&gt;errors = $errors;
+    }
+    public function getErrors(): array { return $this-&gt;errors; }
+}
+
+class NotFoundException extends RuntimeException {
+    public function __construct(string $resource) {
+        parent::__construct("Không tìm thấy: $resource", 404);
+    }
+}
+
+// ── Hàm có thể throw exception ────
+function lay_san_pham(int $id): array {
+    $db = [1 =&gt; ['ten' =&gt; 'Áo thun', 'gia' =&gt; 150000], 2 =&gt; ['ten' =&gt; 'Quần jean', 'gia' =&gt; 450000]];
+    if (!isset($db[$id])) throw new NotFoundException("Sản phẩm #$id");
+    return $db[$id];
+}
+
+function tao_don_hang(array $data): array {
+    $loi = [];
+    if (empty($data['ten_khach'])) $loi[] = "Tên khách hàng bắt buộc";
+    if (empty($data['email']) || !filter_var($data['email'], FILTER_VALIDATE_EMAIL))
+        $loi[] = "Email không hợp lệ";
+    if (($data['so_luong'] ?? 0) &lt;= 0) $loi[] = "Số lượng phải &gt; 0";
+    if (!empty($loi)) throw new ValidationException($loi);
+    return ['ma_don' =&gt; 'ORD-' . uniqid(), 'trang_thai' =&gt; 'created'];
+}
+
+// ── Bắt exception ─────────────────
+try {
+    $sp = lay_san_pham(99);   // không tồn tại
+} catch (NotFoundException $e) {
+    echo "Lỗi {$e-&gt;getCode()}: {$e-&gt;getMessage()}&lt;br&gt;";
+} finally {
+    echo "Luôn chạy (dọn dẹp tài nguyên)&lt;br&gt;";
+}
+
+try {
+    $don = tao_don_hang(['ten_khach' =&gt; '', 'email' =&gt; 'sai', 'so_luong' =&gt; -1]);
+} catch (ValidationException $e) {
+    echo "&lt;strong&gt;{$e-&gt;getMessage()}&lt;/strong&gt;&lt;ul&gt;";
+    foreach ($e-&gt;getErrors() as $err) echo "&lt;li&gt;$err&lt;/li&gt;";
+    echo "&lt;/ul&gt;";
+} catch (Exception $e) {
+    echo "Lỗi khác: " . $e-&gt;getMessage();
+    error_log($e-&gt;getMessage() . " tại " . $e-&gt;getFile() . ":" . $e-&gt;getLine());
+}</pre>
+        </div>
+      </div>
+    </div>
+  </div>
+  <a href="../index.html" class="btn-back">&#8592; Quay lại Module 1</a>
+  <script type="module">
+    import { codeToHtml } from 'https://esm.sh/shiki@1';
+    const raw = document.getElementById('code-raw').textContent;
+    const highlighted = await codeToHtml(raw, { lang: 'php', theme: 'github-dark' });
+    document.getElementById('code-highlight').innerHTML = highlighted;
+    const pre = document.getElementById('code-highlight').querySelector('pre');
+    if (pre) pre.style.cssText = 'border-radius:10px;padding:20px;font-size:0.87rem;overflow-x:auto;margin:0;line-height:1.7';
+  </script>
+</body>
+</html>

@@ -1,0 +1,178 @@
+<!DOCTYPE html>
+<html lang="vi">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <meta name="keywords" content="PHP OOP,PDO,MySQL,NenTang,Lập trình PHP nâng cao">
+  <meta name="author" content="Dương Nguyễn Phú Cường">
+  <meta name="description" content="Xây dựng ứng dụng PHP theo MVC pattern để tách biệt logic khỏi giao diện.">
+  <meta property="og:locale" content="vi_VN">
+  <meta property="og:type" content="website">
+  <meta property="og:title" content="Bài 14 – MVC Pattern – Model View Controller | NenTang.vn">
+  <meta property="og:description" content="Xây dựng ứng dụng PHP theo MVC pattern để tách biệt logic khỏi giao diện.">
+  <meta property="og:url" content="https://nentang.vn/">
+  <meta property="og:site_name" content="Nền tảng Kiến thức">
+  <title>Bài 14 – MVC Pattern – Model View Controller | NenTang.vn</title>
+  <link rel="stylesheet" href="../../shared.css" />
+</head>
+<body>
+  <div class="page-header module-php-2">
+    <div class="breadcrumb">
+      <a href="../../index.html">PHP Course</a> &rsaquo;
+      <a href="../index.html">Module 2</a> &rsaquo; Bài 14
+    </div>
+    <h1>Bài 14: MVC Pattern – Model View Controller</h1>
+    <p>Module 2 – PHP OOP &amp; Nâng Cao</p>
+  </div>
+
+  <div class="exercise-page">
+    <div class="exercise-box">
+      <div class="ex-head">
+        <h1>📝 Yêu cầu bài tập</h1>
+        <p>Xây dựng ứng dụng PHP theo MVC pattern để tách biệt logic khỏi giao diện.</p>
+      </div>
+      <div class="ex-desc">
+        <h3>Yêu cầu</h3>
+        <ul>
+          <li>Tạo Router đơn giản</li>
+          <li>Tạo BaseController với render/redirect</li>
+          <li>Model kết nối DB qua PDO</li>
+          <li>View template PHP thuần</li>
+          <li>Full CRUD với MVC</li>
+        </ul>
+        <h3>🧠 Kiến thức cần nhớ</h3>
+        <ul>
+          <li>MVC: Model (data) – View (UI) – Controller (xử lý request)</li>
+          <li>Router: map URL path → Controller action</li>
+          <li><code>ob_start() / ob_get_clean()</code>: buffer output để render view</li>
+          <li>Controller không chứa HTML; View không chứa business logic</li>
+          <li>Model không biết về Controller hay View</li>
+        </ul>
+      </div>
+      <div class="ex-work">
+        <h3>💻 Code mẫu</h3>
+        <div id="code-highlight">
+          <pre id="code-raw" style="display:none">&lt;?php
+// ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+// Router
+// ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+class Router {
+    private array $routes = [];
+    public function get(string $path, callable $handler): void  { $this-&gt;routes['GET'][$path]    = $handler; }
+    public function post(string $path, callable $handler): void  { $this-&gt;routes['POST'][$path]   = $handler; }
+    public function delete(string $path, callable $handler): void{ $this-&gt;routes['DELETE'][$path] = $handler; }
+
+    public function dispatch(): void {
+        $method = $_SERVER['REQUEST_METHOD'];
+        $path   = parse_url($_SERVER['REQUEST_URI'], PHP_URL_PATH);
+        $path   = '/' . trim($path, '/');
+        
+        // Match dynamic route (vd: /products/42)
+        foreach ($this-&gt;routes[$method] ?? [] as $route =&gt; $handler) {
+            $pattern = preg_replace('/{[^}]+}/', '([^/]+)', $route);
+            if (preg_match("#^$pattern$#", $path, $m)) {
+                array_shift($m);
+                call_user_func_array($handler, $m);
+                return;
+            }
+        }
+        http_response_code(404);
+        echo "404 – Không tìm thấy trang";
+    }
+}
+
+// ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+// BaseController
+// ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+abstract class BaseController {
+    protected function view(string $tpl, array $data = []): void {
+        extract($data);  // $data['ten'] → $ten
+        $tpl_file = __DIR__ . "/views/{$tpl}.php";
+        if (!file_exists($tpl_file)) throw new RuntimeException("View không tồn tại: $tpl");
+        include $tpl_file;
+    }
+    protected function json(mixed $data, int $code = 200): never {
+        http_response_code($code);
+        header('Content-Type: application/json');
+        echo json_encode($data, JSON_UNESCAPED_UNICODE);
+        exit;
+    }
+    protected function redirect(string $url): never {
+        header("Location: $url"); exit;
+    }
+}
+
+// ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+// Model
+// ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+class ProductModel {
+    public function __construct(private PDO $pdo) {}
+    public function all(): array { return $this-&gt;pdo-&gt;query("SELECT * FROM san_pham ORDER BY id DESC")-&gt;fetchAll(); }
+    public function find(int $id): ?array {
+        $s = $this-&gt;pdo-&gt;prepare("SELECT * FROM san_pham WHERE id = ?");
+        $s-&gt;execute([$id]); return $s-&gt;fetch() ?: null;
+    }
+    public function create(array $d): int {
+        $s = $this-&gt;pdo-&gt;prepare("INSERT INTO san_pham (ten, gia, so_luong) VALUES (:ten, :gia, :sl)");
+        $s-&gt;execute([':ten'=&gt;$d['ten'],':gia'=&gt;$d['gia'],':sl'=&gt;$d['so_luong']]);
+        return (int)$this-&gt;pdo-&gt;lastInsertId();
+    }
+    public function delete(int $id): bool {
+        $s = $this-&gt;pdo-&gt;prepare("DELETE FROM san_pham WHERE id = ?");
+        $s-&gt;execute([$id]); return $s-&gt;rowCount() &gt; 0;
+    }
+}
+
+// ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+// Controller
+// ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+class ProductController extends BaseController {
+    private ProductModel $model;
+    public function __construct(PDO $pdo) { $this-&gt;model = new ProductModel($pdo); }
+
+    public function index(): void {
+        $products = $this-&gt;model-&gt;all();
+        $this-&gt;view('products/index', compact('products'));
+    }
+    public function show(string $id): void {
+        $product = $this-&gt;model-&gt;find((int)$id);
+        if (!$product) { http_response_code(404); echo "404"; return; }
+        $this-&gt;view('products/show', compact('product'));
+    }
+    public function store(): void {
+        $id = $this-&gt;model-&gt;create($_POST);
+        $this-&gt;redirect('/products');
+    }
+    public function destroy(string $id): void {
+        $this-&gt;model-&gt;delete((int)$id);
+        $this-&gt;json(['success' =&gt; true]);
+    }
+}
+
+// ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+// Bootstrap (index.php)
+// ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+// $pdo = new PDO('mysql:host=localhost;dbname=test;charset=utf8mb4', 'root', '');
+// $ctrl = new ProductController($pdo);
+// $router = new Router();
+// $router-&gt;get('/products',          [$ctrl, 'index']);
+// $router-&gt;get('/products/{id}',     [$ctrl, 'show']);
+// $router-&gt;post('/products',         [$ctrl, 'store']);
+// $router-&gt;delete('/products/{id}',  [$ctrl, 'destroy']);
+// $router-&gt;dispatch();
+echo "MVC pattern: Router → Controller → Model → View&lt;br&gt;";</pre>
+        </div>
+      </div>
+    </div>
+  </div>
+  <a href="../index.html" class="btn-back">&#8592; Quay lại Module 2</a>
+  <script type="module">
+    import { codeToHtml } from 'https://esm.sh/shiki@1';
+    const raw = document.getElementById('code-raw').textContent;
+    const highlighted = await codeToHtml(raw, { lang: 'php', theme: 'github-dark' });
+    document.getElementById('code-highlight').innerHTML = highlighted;
+    const pre = document.getElementById('code-highlight').querySelector('pre');
+    if (pre) pre.style.cssText = 'border-radius:10px;padding:20px;font-size:0.87rem;overflow-x:auto;margin:0;line-height:1.7';
+  </script>
+</body>
+</html>

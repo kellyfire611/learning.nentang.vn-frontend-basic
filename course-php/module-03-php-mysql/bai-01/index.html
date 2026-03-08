@@ -1,0 +1,148 @@
+<!DOCTYPE html>
+<html lang="vi">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <meta name="description" content="Thiết kế schema database chuẩn và kết nối với PHP PDO.">
+  <meta name="author" content="Dương Nguyễn Phú Cường">
+  <meta property="og:locale" content="vi_VN">
+  <meta property="og:type" content="website">
+  <meta property="og:title" content="Bài 01 – Thiết Kế Database và Kết Nối PDO | NenTang.vn">
+  <meta property="og:url" content="https://nentang.vn/">
+  <meta property="og:site_name" content="Nền tảng Kiến thức">
+  <title>Bài 01 – Thiết Kế Database và Kết Nối PDO | NenTang.vn</title>
+  <link rel="stylesheet" href="../../shared.css" />
+</head>
+<body>
+  <div class="page-header module-php-3">
+    <div class="breadcrumb">
+      <a href="../../index.html">PHP Course</a> &rsaquo;
+      <a href="../index.html">Module 3</a> &rsaquo; Bài 01
+    </div>
+    <h1>Bài 01: Thiết Kế Database và Kết Nối PDO</h1>
+    <p>Module 3 – PHP &amp; MySQL Thực Chiến</p>
+  </div>
+
+  <div class="exercise-page">
+    <div class="exercise-box">
+      <div class="ex-head">
+        <h1>📝 Yêu cầu bài tập</h1>
+        <p>Thiết kế schema database chuẩn và kết nối với PHP PDO.</p>
+      </div>
+      <div class="ex-desc">
+        <h3>Yêu cầu</h3>
+        <ul>
+          <li>Thiết kế ERD cho hệ thống bán hàng đơn giản</li>
+          <li>Tạo database và tables với SQL</li>
+          <li>Kết nối PDO an toàn với config riêng</li>
+          <li>Định nghĩa constants DB trong file cấu hình</li>
+          <li>Test kết nối và hiển thị version MySQL</li>
+        </ul>
+        <h3>🧠 Kiến thức cần nhớ</h3>
+        <ul>
+          <li><code>CREATE DATABASE IF NOT EXISTS</code> rồi <code>USE dbname</code></li>
+          <li>ERD: Entity Relationship Diagram – vẽ sơ đồ bảng và quan hệ</li>
+          <li>Tách config DB ra file riêng (<code>config/database.php</code>)</li>
+          <li><code>PDO::ATTR_EMULATE_PREPARES => false</code>: dùng native prepared statements</li>
+          <li>Charset UTF8MB4: hỗ trợ tiếng Việt và emoji đầy đủ</li>
+        </ul>
+      </div>
+      <div class="ex-work">
+        <h3>💻 Code mẫu</h3>
+        <div id="code-highlight">
+          <pre id="code-raw" style="display:none">&lt;?php
+// config/database.php
+define('DB_HOST', 'localhost');
+define('DB_NAME', 'shop_db');
+define('DB_USER', 'root');
+define('DB_PASS', '');
+define('DB_CHARSET', 'utf8mb4');
+
+function get_pdo(): PDO {
+    static $pdo = null;
+    if ($pdo !== null) return $pdo;  // Singleton connection
+    $dsn = sprintf('mysql:host=%s;dbname=%s;charset=%s', DB_HOST, DB_NAME, DB_CHARSET);
+    $pdo = new PDO($dsn, DB_USER, DB_PASS, [
+        PDO::ATTR_ERRMODE            =&gt; PDO::ERRMODE_EXCEPTION,
+        PDO::ATTR_DEFAULT_FETCH_MODE =&gt; PDO::FETCH_ASSOC,
+        PDO::ATTR_EMULATE_PREPARES   =&gt; false,
+    ]);
+    return $pdo;
+}
+
+// ── Tạo schema ────────────────────
+$sql_schema = "
+CREATE DATABASE IF NOT EXISTS shop_db CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci;
+USE shop_db;
+
+CREATE TABLE IF NOT EXISTS danh_muc (
+    id          INT AUTO_INCREMENT PRIMARY KEY,
+    ten         VARCHAR(100) NOT NULL,
+    slug        VARCHAR(100) UNIQUE,
+    mo_ta       TEXT,
+    thu_tu      INT DEFAULT 0,
+    active      TINYINT(1) DEFAULT 1,
+    created_at  TIMESTAMP DEFAULT CURRENT_TIMESTAMP
+);
+
+CREATE TABLE IF NOT EXISTS san_pham (
+    id          INT AUTO_INCREMENT PRIMARY KEY,
+    danh_muc_id INT,
+    ten         VARCHAR(200) NOT NULL,
+    slug        VARCHAR(200) UNIQUE,
+    gia         DECIMAL(15,2) NOT NULL DEFAULT 0,
+    gia_km      DECIMAL(15,2) DEFAULT NULL,
+    anh         VARCHAR(255),
+    mo_ta       TEXT,
+    so_luong    INT DEFAULT 0,
+    luot_xem    INT DEFAULT 0,
+    active      TINYINT(1) DEFAULT 1,
+    created_at  TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
+    updated_at  TIMESTAMP DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,
+    FOREIGN KEY (danh_muc_id) REFERENCES danh_muc(id) ON DELETE SET NULL
+);
+
+CREATE TABLE IF NOT EXISTS khach_hang (
+    id          INT AUTO_INCREMENT PRIMARY KEY,
+    ho_ten      VARCHAR(100) NOT NULL,
+    email       VARCHAR(150) UNIQUE NOT NULL,
+    dien_thoai  VARCHAR(20),
+    dia_chi     TEXT,
+    mat_khau    VARCHAR(255),
+    role        ENUM('user','admin') DEFAULT 'user',
+    created_at  TIMESTAMP DEFAULT CURRENT_TIMESTAMP
+);
+";
+
+// Chạy schema
+try {
+    $pdo = new PDO('mysql:host=' . DB_HOST, DB_USER, DB_PASS);
+    foreach (explode(';', $sql_schema) as $stmt) {
+        $stmt = trim($stmt);
+        if ($stmt) $pdo-&gt;exec($stmt);
+    }
+    echo "✅ Schema tạo thành công!&lt;br&gt;";
+} catch (PDOException $e) {
+    echo "❌ Lỗi: " . $e-&gt;getMessage() . "&lt;br&gt;";
+}
+
+// Kiểm tra kết nối
+$pdo2 = get_pdo();
+$ver   = $pdo2-&gt;query("SELECT VERSION() as ver")-&gt;fetchColumn();
+$db    = $pdo2-&gt;query("SELECT DATABASE() as db")-&gt;fetchColumn();
+echo "MySQL: $ver | Database: $db&lt;br&gt;";</pre>
+        </div>
+      </div>
+    </div>
+  </div>
+  <a href="../index.html" class="btn-back">&#8592; Quay lại Module 3</a>
+  <script type="module">
+    import { codeToHtml } from 'https://esm.sh/shiki@1';
+    const raw = document.getElementById('code-raw').textContent;
+    const highlighted = await codeToHtml(raw, { lang: 'php', theme: 'github-dark' });
+    document.getElementById('code-highlight').innerHTML = highlighted;
+    const pre = document.getElementById('code-highlight').querySelector('pre');
+    if (pre) pre.style.cssText = 'border-radius:10px;padding:20px;font-size:0.87rem;overflow-x:auto;margin:0;line-height:1.7';
+  </script>
+</body>
+</html>

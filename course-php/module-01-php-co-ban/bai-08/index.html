@@ -1,0 +1,110 @@
+<!DOCTYPE html>
+<html lang="vi">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <meta name="keywords" content="PHP,Lập trình PHP,Web,NenTang,Bài tập PHP,PHP cơ bản">
+  <meta name="author" content="Dương Nguyễn Phú Cường">
+  <meta name="description" content="Sử dụng vòng lặp for và while để thực hiện lặp có kiểm soát số lần.">
+  <meta property="og:locale" content="vi_VN">
+  <meta property="og:type" content="website">
+  <meta property="og:title" content="Bài 08 – Vòng Lặp for và while | NenTang.vn">
+  <meta property="og:description" content="Sử dụng vòng lặp for và while để thực hiện lặp có kiểm soát số lần.">
+  <meta property="og:url" content="https://nentang.vn/">
+  <meta property="og:site_name" content="Nền tảng Kiến thức">
+  <title>Bài 08 – Vòng Lặp for và while | NenTang.vn</title>
+  <link rel="stylesheet" href="../../shared.css" />
+</head>
+<body>
+  <div class="page-header module-php-1">
+    <div class="breadcrumb">
+      <a href="../../index.html">PHP Course</a> &rsaquo;
+      <a href="../index.html">Module 1</a> &rsaquo; Bài 08
+    </div>
+    <h1>Bài 08: Vòng Lặp for và while</h1>
+    <p>Module 1 – PHP Cơ Bản</p>
+  </div>
+
+  <div class="exercise-page">
+    <div class="exercise-box">
+      <div class="ex-head">
+        <h1>📝 Yêu cầu bài tập</h1>
+        <p>Sử dụng vòng lặp for và while để thực hiện lặp có kiểm soát số lần.</p>
+      </div>
+      <div class="ex-desc">
+        <h3>Yêu cầu</h3>
+        <ul>
+          <li>Vòng lặp <code>for</code> in bảng cửu chương số 7</li>
+          <li>Vòng lặp <code>while</code> tính tổng 1+2+...+100</li>
+          <li>Vòng lặp <code>do...while</code> ít nhất chạy 1 lần</li>
+          <li>Dùng <code>break</code> và <code>continue</code></li>
+          <li>Vòng lặp lồng nhau tạo tam giác sao</li>
+        </ul>
+        <h3>🧠 Kiến thức cần nhớ</h3>
+        <ul>
+          <li><code>for ($i=0; $i<10; $i++)</code> — chạy khi điều kiện đúng</li>
+          <li><code>while ($dk) { ... }</code> — kiểm tra trước khi chạy</li>
+          <li><code>do { ... } while ($dk);</code> — chạy ít nhất 1 lần rồi mới kiểm tra</li>
+          <li><code>break</code>: thoát vòng lặp; <code>break 2</code>: thoát 2 lớp lồng nhau</li>
+          <li><code>continue</code>: bỏ qua lần lặp hiện tại</li>
+        </ul>
+      </div>
+      <div class="ex-work">
+        <h3>💻 Code mẫu</h3>
+        <div id="code-highlight">
+          <pre id="code-raw" style="display:none">&lt;?php
+// ── Bảng cửu chương 7 ─────────────
+echo "&lt;h3&gt;Bảng cửu chương 7&lt;/h3&gt;";
+for ($i = 1; $i &lt;= 10; $i++) {
+    echo "7 × $i = " . (7 * $i) . "&lt;br&gt;";
+}
+
+// ── Tổng 1 đến 100 (while) ────────
+$tong = 0; $i = 1;
+while ($i &lt;= 100) {
+    $tong += $i;
+    $i++;
+}
+echo "&lt;br&gt;Tổng 1→100 = $tong&lt;br&gt;";   // 5050
+
+// ── do...while ────────────────────
+$n = 1;
+do {
+    echo "do-while lần: $n&lt;br&gt;";
+    $n++;
+} while ($n &lt;= 3);
+
+// ── break và continue ─────────────
+echo "&lt;br&gt;Số lẻ từ 1-20: ";
+for ($i = 1; $i &lt;= 20; $i++) {
+    if ($i % 2 === 0) continue;   // bỏ qua số chẵn
+    echo "$i ";
+    if ($i &gt;= 15) break;           // dừng ở 15
+}
+echo "&lt;br&gt;";
+
+// ── Tam giác sao ─────────────────
+echo "&lt;pre&gt;";
+for ($dong = 1; $dong &lt;= 6; $dong++) {
+    for ($sao = 1; $sao &lt;= $dong; $sao++) {
+        echo "* ";
+    }
+    echo "
+";
+}
+echo "&lt;/pre&gt;";</pre>
+        </div>
+      </div>
+    </div>
+  </div>
+  <a href="../index.html" class="btn-back">&#8592; Quay lại Module 1</a>
+  <script type="module">
+    import { codeToHtml } from 'https://esm.sh/shiki@1';
+    const raw = document.getElementById('code-raw').textContent;
+    const highlighted = await codeToHtml(raw, { lang: 'php', theme: 'github-dark' });
+    document.getElementById('code-highlight').innerHTML = highlighted;
+    const pre = document.getElementById('code-highlight').querySelector('pre');
+    if (pre) pre.style.cssText = 'border-radius:10px;padding:20px;font-size:0.87rem;overflow-x:auto;margin:0;line-height:1.7';
+  </script>
+</body>
+</html>

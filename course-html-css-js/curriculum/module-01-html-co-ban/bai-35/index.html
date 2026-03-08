@@ -1,0 +1,368 @@
+<!DOCTYPE html>
+<html lang="vi">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <meta name="keywords" content="Nền tảng,HTML,CSS,JavaScript,Lập trình,Web,Kiến thức,Đồ án">
+  <meta name="author" content="Dương Nguyễn Phú Cường">
+  <meta name="description" content="Dự án cuối cùng: tạo hoàn chỉnh một trang bán hàng online từ header đến footer dùng thuần HTML.">
+  <meta property="og:locale" content="vi_VN">
+  <meta property="og:type" content="website">
+  <meta property="og:title" content="Bài 35 – Đồ Án Tổng Hợp: Trang Web Bán Sản Phẩm | NenTang.vn">
+  <meta property="og:description" content="Dự án cuối cùng: tạo hoàn chỉnh một trang bán hàng online từ header đến footer dùng thuần HTML.">
+  <meta property="og:url" content="https://nentang.vn/">
+  <meta property="og:site_name" content="Nền tảng Kiến thức">
+  <title>Bài 35 – Đồ Án Tổng Hợp: Trang Web Bán Sản Phẩm | NenTang.vn</title>
+  <link rel="stylesheet" href="../../shared.css" />
+</head>
+<body>
+  <div class="page-header module-1">
+    <div class="breadcrumb">
+      <a href="../../index.html">Trang Chủ</a> &rsaquo;
+      <a href="../index.html">Module 1</a> &rsaquo; Bài 35
+    </div>
+    <h1>Bài 35: Đồ Án Tổng Hợp: Trang Web Bán Sản Phẩm</h1>
+    <p>Module 1 – HTML Cơ Bản &nbsp;|&nbsp; 🏆 Bài Đồ Án Tổng Hợp</p>
+  </div>
+
+  <div class="exercise-page">
+    <div class="exercise-box">
+      <div class="ex-head">
+        <h1>🏆 Đồ Án: Đồ Án Tổng Hợp: Trang Web Bán Sản Phẩm</h1>
+        <p>Dự án cuối cùng: tạo hoàn chỉnh một trang bán hàng online từ header đến footer dùng thuần HTML.</p>
+      </div>
+      <div class="ex-desc">
+        <h3>Mô tả dự án</h3>
+        <p>Đây là bài tập tổng hợp NÂNG CAO nhất của Module 1 – kết hợp TẤT CẢ kiến thức HTML đã học 
+   để xây dựng một trang bán sản phẩm thực tế hoàn chỉnh. Trang sẽ bao gồm: header với 
+   navigation và giỏ hàng, banner quảng cáo, lưới sản phẩm, bảng so sánh chi tiết, 
+   phần đánh giá, và form thanh toán đầy đủ.</p>
+        <h3>📋 Yêu cầu chi tiết</h3>
+        <ul>
+          <li>Header sticky: logo, nav (Trang Chủ, Sản Phẩm, Khuyến Mãi), thanh tìm kiếm (input+button), icon giỏ hàng với badge số lượng</li>
+          <li>Banner quảng cáo: img toàn chiều rộng với chú thích nổi bật dùng figure/figcaption</li>
+          <li>Breadcrumb điều hướng: Trang Chủ › Điện Tử › Điện Thoại (dùng nav với aria-label='breadcrumb')</li>
+          <li>Lưới sản phẩm: ít nhất 6 sản phẩm, mỗi sản phẩm có ảnh, badge (Mới / Sale), tên, giá cũ, giá mới, rating (★★★★☆), nút Thêm vào Giỏ</li>
+          <li>Bảng so sánh chi tiết 3 sản phẩm: dùng table có thead/tbody, rowspan, đánh dấu cột nổi bật</li>
+          <li>Section đánh giá: 3 review với tên người dùng, rating sao, ngày đăng, nội dung (dùng blockquote + cite)</li>
+          <li>Form thanh toán đầy đủ với fieldset: thông tin giao hàng, chọn phương thức thanh toán (radio), nhập mã giảm giá</li>
+          <li>Footer 4 cột: Về Chúng Tôi, Sản Phẩm (ul links), Hỗ Trợ (ul links), Liên Hệ (address + mạng xã hội)</li>
+        </ul>
+        <h3>🧠 Kiến thức tổng hợp áp dụng</h3>
+        <ul>
+          <li>Tổng hợp: header/nav/main/section/article/aside/footer + breadcrumb nav</li>
+          <li>table nâng cao: caption, thead, tbody, tfoot, colspan, rowspan</li>
+          <li>Form phức tạp: fieldset/legend, mixed input types, radio payment methods</li>
+          <li>Hình ảnh: img với srcset cho responsive images, figure/figcaption</li>
+          <li>Semantic markup cho e-commerce: aria-label, aria-current, data-* attributes</li>
+          <li>&lt;del&gt; cho giá cũ gạch ngang, &lt;ins&gt; cho giá mới highlight</li>
+          <li>Rating sao: dùng ký tự entity &#9733;&#9733;&#9733;&#9733;&#9734; (★★★★☆)</li>
+        </ul>
+      </div>
+      <div class="ex-work">
+        <h3>💻 Code Skeleton – Khung sườn ban đầu để bắt đầu</h3>
+        <p style="color:#718096;font-size:0.88rem;margin-bottom:12px;">
+          📌 Đây là khung HTML cơ bản. Bạn cần tự điền nội dung, thêm CSS inline hoặc thẻ &lt;style&gt; để hoàn thiện theo yêu cầu.
+        </p>
+        <div id="code-highlight">
+          <pre id="code-raw" style="display:none">&lt;!DOCTYPE html&gt;
+&lt;html lang="vi"&gt;
+&lt;head&gt;
+  &lt;meta charset="UTF-8"&gt;
+  &lt;meta name="viewport" content="width=device-width, initial-scale=1.0"&gt;
+  &lt;title&gt;ShopTech – Mua Sắm Điện Tử Online&lt;/title&gt;
+  &lt;style&gt;
+    * { box-sizing: border-box; }
+    body { font-family: 'Segoe UI', sans-serif; margin: 0; background: #f8f9fa; color: #333; }
+    .container { max-width: 1200px; margin: 0 auto; padding: 0 20px; }
+
+    /* HEADER */
+    header { background: #1a202c; color: white; position: sticky; top: 0; z-index: 100; }
+    .header-inner { display: flex; align-items: center; gap: 20px; padding: 12px 0; }
+    .logo { font-size: 1.4rem; font-weight: bold; color: #f6ad55; text-decoration: none; }
+    nav a { color: #e2e8f0; text-decoration: none; margin: 0 10px; }
+    .search-bar { flex: 1; display: flex; }
+    .search-bar input { flex: 1; padding: 8px 12px; border: none; border-radius: 4px 0 0 4px; }
+    .search-bar button { padding: 8px 16px; background: #f6ad55; border: none; border-radius: 0 4px 4px 0; cursor: pointer; }
+    .cart-icon { position: relative; color: white; text-decoration: none; font-size: 1.3rem; }
+    .cart-badge { position: absolute; top: -8px; right: -8px; background: #e53e3e; color: white;
+                  border-radius: 50%; width: 18px; height: 18px; font-size: .7rem; display: flex;
+                  align-items: center; justify-content: center; }
+
+    /* PRODUCT GRID */
+    .product-grid { display: flex; flex-wrap: wrap; gap: 20px; }
+    .product-card { background: white; border-radius: 10px; overflow: hidden; width: calc(33.33% - 14px);
+                    box-shadow: 0 2px 8px rgba(0,0,0,.08); }
+    .product-card img { width: 100%; height: 180px; object-fit: cover; }
+    .card-body { padding: 14px; }
+    .badge { display: inline-block; padding: 2px 8px; border-radius: 20px; font-size: .75rem; margin-bottom: 8px; }
+    .badge-new  { background: #48bb78; color: white; }
+    .badge-sale { background: #e53e3e; color: white; }
+    .price del  { color: #a0aec0; }
+    .price ins  { color: #e53e3e; font-weight: bold; font-size: 1.1rem; text-decoration: none; }
+    .rating     { color: #f6ad55; }
+    .btn-cart   { background: #3182ce; color: white; border: none; padding: 8px 16px; border-radius: 6px; cursor: pointer; width: 100%; margin-top: 10px; }
+
+    /* COMPARISON TABLE */
+    .compare-table { width: 100%; border-collapse: collapse; background: white; border-radius: 10px; overflow: hidden; }
+    .compare-table th, .compare-table td { border: 1px solid #e2e8f0; padding: 12px; text-align: center; }
+    .compare-table thead tr { background: #2d3748; color: white; }
+    .compare-table .highlight { background: #ebf8ff; font-weight: bold; }
+
+    /* REVIEWS */
+    blockquote { border-left: 4px solid #3182ce; margin: 16px 0; padding: 12px 20px; background: white; border-radius: 0 8px 8px 0; }
+
+    /* FOOTER */
+    footer { background: #1a202c; color: #a0aec0; padding: 40px 0 20px; margin-top: 60px; }
+    .footer-grid { display: flex; gap: 40px; }
+    .footer-col { flex: 1; }
+    .footer-col h4 { color: white; margin-bottom: 12px; }
+    .footer-col ul { list-style: none; padding: 0; }
+    .footer-col ul li { margin-bottom: 6px; }
+    .footer-col a { color: #a0aec0; text-decoration: none; }
+
+    /* TODO: Responsive, form, và các style khác */
+  &lt;/style&gt;
+&lt;/head&gt;
+&lt;body&gt;
+
+  &lt;!-- ═══ HEADER ═══ --&gt;
+  &lt;header&gt;
+    &lt;div class="container header-inner"&gt;
+      &lt;a href="#" class="logo"&gt;&amp;#9889; ShopTech&lt;/a&gt;
+      &lt;nav&gt;
+        &lt;a href="#"&gt;Trang Chủ&lt;/a&gt;
+        &lt;a href="#products"&gt;Sản Phẩm&lt;/a&gt;
+        &lt;a href="#"&gt;Khuyến Mãi&lt;/a&gt;
+      &lt;/nav&gt;
+      &lt;div class="search-bar"&gt;
+        &lt;input type="search" placeholder="Tìm kiếm sản phẩm..."&gt;
+        &lt;button&gt;&amp;#128269;&lt;/button&gt;
+      &lt;/div&gt;
+      &lt;a href="#" class="cart-icon"&gt;
+        &amp;#128722;
+        &lt;span class="cart-badge"&gt;3&lt;/span&gt;
+      &lt;/a&gt;
+    &lt;/div&gt;
+  &lt;/header&gt;
+
+  &lt;div class="container"&gt;
+
+    &lt;!-- BANNER --&gt;
+    &lt;figure style="margin: 24px 0;"&gt;
+      &lt;img src="https://picsum.photos/1200/300?random=99" alt="Sale tháng 3" style="width:100%;border-radius:12px;"&gt;
+      &lt;figcaption style="text-align:center;color:#718096;margin-top:8px;"&gt;
+        &amp;#127881; Sale tháng 3 – Giảm đến 50% tất cả sản phẩm điện tử
+      &lt;/figcaption&gt;
+    &lt;/figure&gt;
+
+    &lt;!-- BREADCRUMB --&gt;
+    &lt;nav aria-label="Điều hướng breadcrumb" style="margin-bottom:24px;"&gt;
+      &lt;a href="#"&gt;Trang Chủ&lt;/a&gt; ›
+      &lt;a href="#"&gt;Điện Tử&lt;/a&gt; ›
+      &lt;span aria-current="page"&gt;Điện Thoại&lt;/span&gt;
+    &lt;/nav&gt;
+
+    &lt;!-- LƯỚI SẢN PHẨM --&gt;
+    &lt;section id="products"&gt;
+      &lt;h2&gt;&amp;#128241; Điện Thoại Nổi Bật&lt;/h2&gt;
+      &lt;div class="product-grid"&gt;
+
+        &lt;!-- Sản phẩm 1 --&gt;
+        &lt;article class="product-card"&gt;
+          &lt;img src="https://picsum.photos/300/180?random=1" alt="iPhone 15 Pro"&gt;
+          &lt;div class="card-body"&gt;
+            &lt;span class="badge badge-new"&gt;Mới&lt;/span&gt;
+            &lt;h3 style="margin:0 0 8px;"&gt;iPhone 15 Pro&lt;/h3&gt;
+            &lt;div class="price"&gt;
+              &lt;del&gt;29.990.000đ&lt;/del&gt;
+              &lt;ins&gt;27.490.000đ&lt;/ins&gt;
+            &lt;/div&gt;
+            &lt;div class="rating"&gt;&amp;#9733;&amp;#9733;&amp;#9733;&amp;#9733;&amp;#9734; (128)&lt;/div&gt;
+            &lt;button class="btn-cart"&gt;&amp;#43; Thêm vào Giỏ&lt;/button&gt;
+          &lt;/div&gt;
+        &lt;/article&gt;
+
+        &lt;!-- Sản phẩm 2 --&gt;
+        &lt;article class="product-card"&gt;
+          &lt;img src="https://picsum.photos/300/180?random=2" alt="Samsung S24"&gt;
+          &lt;div class="card-body"&gt;
+            &lt;span class="badge badge-sale"&gt;-20%&lt;/span&gt;
+            &lt;h3 style="margin:0 0 8px;"&gt;Samsung Galaxy S24&lt;/h3&gt;
+            &lt;div class="price"&gt;
+              &lt;del&gt;24.990.000đ&lt;/del&gt;
+              &lt;ins&gt;19.990.000đ&lt;/ins&gt;
+            &lt;/div&gt;
+            &lt;div class="rating"&gt;&amp;#9733;&amp;#9733;&amp;#9733;&amp;#9733;&amp;#9733; (256)&lt;/div&gt;
+            &lt;button class="btn-cart"&gt;&amp;#43; Thêm vào Giỏ&lt;/button&gt;
+          &lt;/div&gt;
+        &lt;/article&gt;
+
+        &lt;!-- TODO: Thêm 4 sản phẩm nữa theo cấu trúc tương tự --&gt;
+
+      &lt;/div&gt;
+    &lt;/section&gt;
+
+    &lt;!-- BẢNG SO SÁNH --&gt;
+    &lt;section style="margin-top:40px;"&gt;
+      &lt;h2&gt;&amp;#128202; So Sánh Chi Tiết&lt;/h2&gt;
+      &lt;table class="compare-table"&gt;
+        &lt;caption style="padding:12px;font-weight:bold;font-size:1.1rem;"&gt;So sánh 3 dòng điện thoại cao cấp&lt;/caption&gt;
+        &lt;thead&gt;
+          &lt;tr&gt;
+            &lt;th&gt;Thông Số&lt;/th&gt;
+            &lt;th&gt;iPhone 15 Pro&lt;/th&gt;
+            &lt;th class="highlight"&gt;Samsung S24 ⭐&lt;/th&gt;
+            &lt;th&gt;Pixel 8 Pro&lt;/th&gt;
+          &lt;/tr&gt;
+        &lt;/thead&gt;
+        &lt;tbody&gt;
+          &lt;tr&gt;
+            &lt;td&gt;&lt;strong&gt;Giá&lt;/strong&gt;&lt;/td&gt;
+            &lt;td&gt;27.490.000đ&lt;/td&gt;
+            &lt;td class="highlight"&gt;19.990.000đ&lt;/td&gt;
+            &lt;td&gt;22.990.000đ&lt;/td&gt;
+          &lt;/tr&gt;
+          &lt;tr&gt;
+            &lt;td&gt;&lt;strong&gt;RAM&lt;/strong&gt;&lt;/td&gt;
+            &lt;td&gt;8 GB&lt;/td&gt;
+            &lt;td class="highlight"&gt;12 GB&lt;/td&gt;
+            &lt;td&gt;12 GB&lt;/td&gt;
+          &lt;/tr&gt;
+          &lt;tr&gt;
+            &lt;td&gt;&lt;strong&gt;Camera&lt;/strong&gt;&lt;/td&gt;
+            &lt;td&gt;48MP + 12MP + 12MP&lt;/td&gt;
+            &lt;td class="highlight"&gt;50MP + 10MP + 12MP&lt;/td&gt;
+            &lt;td&gt;50MP + 48MP + 48MP&lt;/td&gt;
+          &lt;/tr&gt;
+          &lt;tr&gt;
+            &lt;td&gt;&lt;strong&gt;Pin&lt;/strong&gt;&lt;/td&gt;
+            &lt;td&gt;3.274 mAh&lt;/td&gt;
+            &lt;td class="highlight"&gt;4.000 mAh&lt;/td&gt;
+            &lt;td&gt;5.050 mAh&lt;/td&gt;
+          &lt;/tr&gt;
+          &lt;!-- TODO: Thêm các thông số khác --&gt;
+        &lt;/tbody&gt;
+        &lt;tfoot&gt;
+          &lt;tr&gt;
+            &lt;td colspan="4" style="font-style:italic;text-align:center;color:#718096;"&gt;
+              Thông số có thể thay đổi theo phiên bản. Cập nhật: 03/2025.
+            &lt;/td&gt;
+          &lt;/tr&gt;
+        &lt;/tfoot&gt;
+      &lt;/table&gt;
+    &lt;/section&gt;
+
+    &lt;!-- ĐÁNH GIÁ KHÁCH HÀNG --&gt;
+    &lt;section style="margin-top:40px;"&gt;
+      &lt;h2&gt;&amp;#9733; Đánh Giá Từ Khách Hàng&lt;/h2&gt;
+      &lt;blockquote&gt;
+        &lt;p&gt;&lt;span style="color:#f6ad55;"&gt;&amp;#9733;&amp;#9733;&amp;#9733;&amp;#9733;&amp;#9733;&lt;/span&gt;
+           "Mua Samsung S24 ở đây, giao hàng nhanh, máy zin 100%, rất hài lòng!"&lt;/p&gt;
+        &lt;footer&gt;— &lt;cite&gt;Nguyễn Minh Tuấn&lt;/cite&gt;,
+          &lt;time datetime="2025-02-15"&gt;15/02/2025&lt;/time&gt;
+        &lt;/footer&gt;
+      &lt;/blockquote&gt;
+      &lt;!-- TODO: Thêm 2 review nữa --&gt;
+    &lt;/section&gt;
+
+    &lt;!-- FORM THANH TOÁN --&gt;
+    &lt;section style="margin-top:40px;"&gt;
+      &lt;h2&gt;&amp;#128179; Thanh Toán&lt;/h2&gt;
+      &lt;form action="#" method="post"&gt;
+
+        &lt;fieldset&gt;
+          &lt;legend&gt;Thông Tin Giao Hàng&lt;/legend&gt;
+          &lt;label&gt;Họ và tên: &lt;input type="text" required placeholder="Nguyễn Văn A"&gt;&lt;/label&gt;&lt;br&gt;&lt;br&gt;
+          &lt;label&gt;Email: &lt;input type="email" required&gt;&lt;/label&gt;&lt;br&gt;&lt;br&gt;
+          &lt;label&gt;Điện thoại: &lt;input type="tel" required&gt;&lt;/label&gt;&lt;br&gt;&lt;br&gt;
+          &lt;label&gt;Địa chỉ giao hàng:&lt;br&gt;
+            &lt;textarea rows="3" style="width:100%;max-width:500px;" placeholder="Số nhà, đường, phường/xã, quận/huyện, tỉnh/thành"&gt;&lt;/textarea&gt;
+          &lt;/label&gt;
+        &lt;/fieldset&gt;
+
+        &lt;br&gt;
+        &lt;fieldset&gt;
+          &lt;legend&gt;Phương Thức Thanh Toán&lt;/legend&gt;
+          &lt;label&gt;&lt;input type="radio" name="payment" value="cod" checked&gt; &amp;#128230; Thanh toán khi nhận hàng (COD)&lt;/label&gt;&lt;br&gt;
+          &lt;label&gt;&lt;input type="radio" name="payment" value="bank"&gt; &amp;#127968; Chuyển khoản ngân hàng&lt;/label&gt;&lt;br&gt;
+          &lt;label&gt;&lt;input type="radio" name="payment" value="momo"&gt; &amp;#128136; Ví MoMo&lt;/label&gt;
+        &lt;/fieldset&gt;
+
+        &lt;br&gt;
+        &lt;fieldset&gt;
+          &lt;legend&gt;Mã Giảm Giá&lt;/legend&gt;
+          &lt;input type="text" name="coupon" placeholder="Nhập mã giảm giá..."&gt;
+          &lt;button type="button"&gt;Áp Dụng&lt;/button&gt;
+        &lt;/fieldset&gt;
+
+        &lt;br&gt;
+        &lt;label&gt;
+          &lt;input type="checkbox" name="agree" required&gt;
+          Tôi đồng ý với &lt;a href="#"&gt;Điều Khoản&lt;/a&gt; và &lt;a href="#"&gt;Chính Sách Bảo Mật&lt;/a&gt;
+        &lt;/label&gt;
+        &lt;br&gt;&lt;br&gt;
+        &lt;button type="submit" style="background:#e53e3e;color:white;padding:12px 32px;border:none;border-radius:8px;font-size:1rem;cursor:pointer;"&gt;
+          &amp;#128230; Đặt Hàng Ngay
+        &lt;/button&gt;
+
+      &lt;/form&gt;
+    &lt;/section&gt;
+
+  &lt;/div&gt;&lt;!-- /.container --&gt;
+
+  &lt;!-- ═══ FOOTER ═══ --&gt;
+  &lt;footer&gt;
+    &lt;div class="container"&gt;
+      &lt;div class="footer-grid"&gt;
+        &lt;div class="footer-col"&gt;
+          &lt;h4&gt;&amp;#9889; ShopTech&lt;/h4&gt;
+          &lt;p&gt;Chuyên cung cấp thiết bị điện tử chính hãng, bảo hành toàn quốc.&lt;/p&gt;
+        &lt;/div&gt;
+        &lt;div class="footer-col"&gt;
+          &lt;h4&gt;Sản Phẩm&lt;/h4&gt;
+          &lt;ul&gt;
+            &lt;li&gt;&lt;a href="#"&gt;Điện Thoại&lt;/a&gt;&lt;/li&gt;
+            &lt;li&gt;&lt;a href="#"&gt;Laptop&lt;/a&gt;&lt;/li&gt;
+            &lt;li&gt;&lt;a href="#"&gt;Phụ Kiện&lt;/a&gt;&lt;/li&gt;
+          &lt;/ul&gt;
+        &lt;/div&gt;
+        &lt;div class="footer-col"&gt;
+          &lt;h4&gt;Hỗ Trợ&lt;/h4&gt;
+          &lt;ul&gt;
+            &lt;li&gt;&lt;a href="#"&gt;FAQ&lt;/a&gt;&lt;/li&gt;
+            &lt;li&gt;&lt;a href="#"&gt;Chính Sách Đổi Trả&lt;/a&gt;&lt;/li&gt;
+            &lt;li&gt;&lt;a href="#"&gt;Bảo Hành&lt;/a&gt;&lt;/li&gt;
+          &lt;/ul&gt;
+        &lt;/div&gt;
+        &lt;div class="footer-col"&gt;
+          &lt;h4&gt;Liên Hệ&lt;/h4&gt;
+          &lt;address&gt;
+            &amp;#128231; &lt;a href="mailto:shop@shoptech.vn" style="color:#a0aec0;"&gt;shop@shoptech.vn&lt;/a&gt;&lt;br&gt;
+            &amp;#128222; 1800 1234 (Miễn phí)&lt;br&gt;
+            &amp;#127968; 456 Nguyễn Huệ, Q.1, TP.HCM
+          &lt;/address&gt;
+        &lt;/div&gt;
+      &lt;/div&gt;
+      &lt;hr style="border-color:#4a5568;margin:24px 0;"&gt;
+      &lt;p style="text-align:center;"&gt;&amp;copy; 2025 ShopTech Vietnam. All rights reserved.&lt;/p&gt;
+    &lt;/div&gt;
+  &lt;/footer&gt;
+
+&lt;/body&gt;
+&lt;/html&gt;</pre>
+        </div>
+      </div>
+    </div>
+  </div>
+  <a href="../index.html" class="btn-back" style="margin-top:20px;">&#8592; Quay lại</a>
+  <script type="module">
+    import { codeToHtml } from 'https://esm.sh/shiki@1';
+    const raw = document.getElementById('code-raw').textContent;
+    const highlighted = await codeToHtml(raw, { lang: 'html', theme: 'github-dark' });
+    document.getElementById('code-highlight').innerHTML = highlighted;
+    const pre = document.getElementById('code-highlight').querySelector('pre');
+    if (pre) pre.style.cssText = 'border-radius:10px;padding:20px;font-size:0.87rem;overflow-x:auto;margin:0;line-height:1.7';
+  </script>
+</body>
+</html>

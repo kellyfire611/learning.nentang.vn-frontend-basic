@@ -1,0 +1,168 @@
+<!DOCTYPE html>
+<html lang="vi">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <meta name="description" content="Kết hợp tất cả kiến thức để xây dựng hệ thống quản lý sản phẩm đầy đủ.">
+  <meta name="author" content="Dương Nguyễn Phú Cường">
+  <meta property="og:locale" content="vi_VN">
+  <meta property="og:type" content="website">
+  <meta property="og:title" content="Bài 15 – Project Mini – Hệ Thống Quản Lý Sản Phẩm Hoàn Chỉnh | NenTang.vn">
+  <meta property="og:url" content="https://nentang.vn/">
+  <meta property="og:site_name" content="Nền tảng Kiến thức">
+  <title>Bài 15 – Project Mini – Hệ Thống Quản Lý Sản Phẩm Hoàn Chỉnh | NenTang.vn</title>
+  <link rel="stylesheet" href="../../shared.css" />
+</head>
+<body>
+  <div class="page-header module-php-3">
+    <div class="breadcrumb">
+      <a href="../../index.html">PHP Course</a> &rsaquo;
+      <a href="../index.html">Module 3</a> &rsaquo; Bài 15
+    </div>
+    <h1>Bài 15: Project Mini – Hệ Thống Quản Lý Sản Phẩm Hoàn Chỉnh</h1>
+    <p>Module 3 – PHP &amp; MySQL Thực Chiến</p>
+  </div>
+
+  <div class="exercise-page">
+    <div class="exercise-box">
+      <div class="ex-head">
+        <h1>📝 Yêu cầu bài tập</h1>
+        <p>Kết hợp tất cả kiến thức để xây dựng hệ thống quản lý sản phẩm đầy đủ.</p>
+      </div>
+      <div class="ex-desc">
+        <h3>Yêu cầu</h3>
+        <ul>
+          <li>Kiến trúc MVC đầy đủ: Router, Controller, Model, View</li>
+          <li>CRUD sản phẩm với upload ảnh</li>
+          <li>Tìm kiếm + lọc + phân trang</li>
+          <li>Authentication bảo vệ admin</li>
+          <li>Dashboard thống kê</li>
+        </ul>
+        <h3>🧠 Kiến thức cần nhớ</h3>
+        <ul>
+          <li>Đây là bài tổng hợp – áp dụng tất cả kiến thức Module 3</li>
+          <li>Cấu trúc thư mục: config/, src/{Controller,Model,View}, public/</li>
+          <li>htaccess rewrite: mọi request → index.php để router xử lý</li>
+          <li>Security checklist: PDO prepared stmt, password_hash, CSRF token, input validation</li>
+          <li>Deploy: cấu hình .env cho production, tắt error display</li>
+        </ul>
+      </div>
+      <div class="ex-work">
+        <h3>💻 Code mẫu</h3>
+        <div id="code-highlight">
+          <pre id="code-raw" style="display:none">&lt;?php
+// ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+// Cấu trúc project hoàn chỉnh
+// ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+// shop/
+// ├── config/
+// │   ├── database.php    (PDO connection)
+// │   └── app.php         (constants, helpers)
+// ├── src/
+// │   ├── Model/
+// │   │   ├── BaseModel.php
+// │   │   ├── Product.php
+// │   │   ├── Category.php
+// │   │   └── User.php
+// │   ├── Controller/
+// │   │   ├── BaseController.php
+// │   │   ├── ProductController.php
+// │   │   ├── AuthController.php
+// │   │   └── DashboardController.php
+// │   ├── View/
+// │   │   ├── layouts/main.php
+// │   │   ├── products/index.php
+// │   │   ├── products/form.php
+// │   │   └── auth/login.php
+// │   ├── Middleware/
+// │   │   ├── AuthMiddleware.php
+// │   │   └── CsrfMiddleware.php
+// │   └── Router.php
+// ├── public/
+// │   ├── index.php       (entry point)
+// │   ├── .htaccess
+// │   └── uploads/
+// └── composer.json
+
+// ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+// public/.htaccess
+// ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+// Options -Indexes
+// RewriteEngine On
+// RewriteCond %{REQUEST_FILENAME} !-f
+// RewriteCond %{REQUEST_FILENAME} !-d
+// RewriteRule ^ index.php [L]
+
+// ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+// CSRF Protection
+// ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+function csrf_token(): string {
+    if (empty($_SESSION['csrf_token'])) {
+        $_SESSION['csrf_token'] = bin2hex(random_bytes(32));
+    }
+    return $_SESSION['csrf_token'];
+}
+function csrf_verify(): void {
+    if (($_POST['_token'] ?? '') !== ($_SESSION['csrf_token'] ?? '')) {
+        http_response_code(419); die("CSRF token mismatch");
+    }
+}
+// Trong form HTML: &lt;input type="hidden" name="_token" value="&lt;?= csrf_token() ?&gt;"&gt;
+
+// ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+// Dashboard Controller
+// ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+function dashboard_stats(PDO $pdo): array {
+    return [
+        'tong_sp'    =&gt; $pdo-&gt;query("SELECT COUNT(*) FROM san_pham WHERE active=1")-&gt;fetchColumn(),
+        'tong_dm'    =&gt; $pdo-&gt;query("SELECT COUNT(*) FROM danh_muc WHERE active=1")-&gt;fetchColumn(),
+        'sp_het_hang'=&gt; $pdo-&gt;query("SELECT COUNT(*) FROM san_pham WHERE so_luong=0 AND active=1")-&gt;fetchColumn(),
+        'sp_khuyen_mai' =&gt; $pdo-&gt;query("SELECT COUNT(*) FROM san_pham WHERE gia_km IS NOT NULL AND active=1")-&gt;fetchColumn(),
+        'gia_tri_kho'=&gt; $pdo-&gt;query("SELECT COALESCE(SUM(gia*so_luong),0) FROM san_pham WHERE active=1")-&gt;fetchColumn(),
+        'top_san_pham'=&gt; $pdo-&gt;query("SELECT ten, luot_xem FROM san_pham WHERE active=1 ORDER BY luot_xem DESC LIMIT 5")-&gt;fetchAll(),
+    ];
+}
+
+$pdo = get_pdo();
+$stats = dashboard_stats($pdo);
+
+echo "=== DASHBOARD ===&lt;br&gt;";
+echo "Tổng SP: {$stats['tong_sp']} | Danh mục: {$stats['tong_dm']}&lt;br&gt;";
+echo "Hết hàng: {$stats['sp_het_hang']} | KM: {$stats['sp_khuyen_mai']}&lt;br&gt;";
+echo "Giá trị kho: " . number_format($stats['gia_tri_kho'],0,',','.') . "đ&lt;br&gt;";
+echo "&lt;br&gt;Top sản phẩm:&lt;br&gt;";
+foreach ($stats['top_san_pham'] as $sp) echo "• {$sp['ten']}: {$sp['luot_xem']} lượt&lt;br&gt;";
+
+// ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+// Security Checklist
+// ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+echo "&lt;br&gt;=== Security Checklist ===&lt;br&gt;";
+$checks = [
+    'PDO Prepared Statements' =&gt; true,
+    'password_hash() + verify()' =&gt; true,
+    'CSRF Token trong form'    =&gt; true,
+    'Input validation (filter_var)' =&gt; true,
+    'File type validation (finfo)' =&gt; true,
+    'SQL Column whitelist'     =&gt; true,
+    'Session regenerate on login' =&gt; true,
+    'Error display off (production)' =&gt; ini_get('display_errors') === '0',
+    'HTTPS redirect (.htaccess)' =&gt; true,
+];
+foreach ($checks as $item =&gt; $ok) {
+    echo ($ok ? '✅' : '⚠️ ') . " $item&lt;br&gt;";
+}</pre>
+        </div>
+      </div>
+    </div>
+  </div>
+  <a href="../index.html" class="btn-back">&#8592; Quay lại Module 3</a>
+  <script type="module">
+    import { codeToHtml } from 'https://esm.sh/shiki@1';
+    const raw = document.getElementById('code-raw').textContent;
+    const highlighted = await codeToHtml(raw, { lang: 'php', theme: 'github-dark' });
+    document.getElementById('code-highlight').innerHTML = highlighted;
+    const pre = document.getElementById('code-highlight').querySelector('pre');
+    if (pre) pre.style.cssText = 'border-radius:10px;padding:20px;font-size:0.87rem;overflow-x:auto;margin:0;line-height:1.7';
+  </script>
+</body>
+</html>

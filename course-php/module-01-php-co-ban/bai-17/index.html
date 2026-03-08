@@ -1,0 +1,122 @@
+<!DOCTYPE html>
+<html lang="vi">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <meta name="keywords" content="PHP,Lập trình PHP,Web,NenTang,Bài tập PHP,PHP cơ bản">
+  <meta name="author" content="Dương Nguyễn Phú Cường">
+  <meta name="description" content="Cho phép người dùng upload hình ảnh hoặc tài liệu lên server với PHP.">
+  <meta property="og:locale" content="vi_VN">
+  <meta property="og:type" content="website">
+  <meta property="og:title" content="Bài 17 – Xử Lý Upload File | NenTang.vn">
+  <meta property="og:description" content="Cho phép người dùng upload hình ảnh hoặc tài liệu lên server với PHP.">
+  <meta property="og:url" content="https://nentang.vn/">
+  <meta property="og:site_name" content="Nền tảng Kiến thức">
+  <title>Bài 17 – Xử Lý Upload File | NenTang.vn</title>
+  <link rel="stylesheet" href="../../shared.css" />
+</head>
+<body>
+  <div class="page-header module-php-1">
+    <div class="breadcrumb">
+      <a href="../../index.html">PHP Course</a> &rsaquo;
+      <a href="../index.html">Module 1</a> &rsaquo; Bài 17
+    </div>
+    <h1>Bài 17: Xử Lý Upload File</h1>
+    <p>Module 1 – PHP Cơ Bản</p>
+  </div>
+
+  <div class="exercise-page">
+    <div class="exercise-box">
+      <div class="ex-head">
+        <h1>📝 Yêu cầu bài tập</h1>
+        <p>Cho phép người dùng upload hình ảnh hoặc tài liệu lên server với PHP.</p>
+      </div>
+      <div class="ex-desc">
+        <h3>Yêu cầu</h3>
+        <ul>
+          <li>Tạo form upload với <code>enctype="multipart/form-data"</code></li>
+          <li>Đọc thông tin file từ <code>$_FILES</code></li>
+          <li>Validate: kiểm tra loại file, kích thước tối đa</li>
+          <li>Di chuyển file vào thư mục lưu trữ với <code>move_uploaded_file()</code></li>
+          <li>Upload nhiều file cùng lúc</li>
+        </ul>
+        <h3>🧠 Kiến thức cần nhớ</h3>
+        <ul>
+          <li><code>$_FILES['input_name']</code>: array gồm name, type, size, tmp_name, error</li>
+          <li><code>move_uploaded_file($tmp, $dest)</code>: di chuyển file tạm lên vị trí cuối</li>
+          <li>Đặt tên file ngẫu nhiên để tránh ghi đè: <code>uniqid() . ext</code></li>
+          <li>Kiểm tra MIME type thực tế bằng <code>finfo_file()</code> thay vì tin $_FILES['type']</li>
+          <li>php.ini: <code>upload_max_filesize</code> và <code>post_max_size</code></li>
+        </ul>
+      </div>
+      <div class="ex-work">
+        <h3>💻 Code mẫu</h3>
+        <div id="code-highlight">
+          <pre id="code-raw" style="display:none">&lt;?php
+$thong_bao = [];
+
+if ($_SERVER['REQUEST_METHOD'] === 'POST') {
+    $thu_muc  = __DIR__ . '/uploads/';
+    $cho_phep = ['image/jpeg', 'image/png', 'image/gif', 'image/webp'];
+    $kich_thuoc_max = 2 * 1024 * 1024;   // 2MB
+
+    if (!is_dir($thu_muc)) mkdir($thu_muc, 0755, true);
+
+    $files = $_FILES['hinh_anh'];
+    
+    // Chuẩn hóa thành mảng (hỗ trợ upload nhiều file)
+    if (!is_array($files['name'])) {
+        foreach ($files as $key =&gt; $val) $files[$key] = [$val];
+    }
+
+    $so_file = count($files['name']);
+    for ($i = 0; $i &lt; $so_file; $i++) {
+        if ($files['error'][$i] !== UPLOAD_ERR_OK) {
+            $thong_bao[] = "❌ File {$files['name'][$i]}: lỗi upload";
+            continue;
+        }
+        // Kiểm tra kích thước
+        if ($files['size'][$i] &gt; $kich_thuoc_max) {
+            $thong_bao[] = "❌ {$files['name'][$i]}: vượt quá 2MB";
+            continue;
+        }
+        // Kiểm tra MIME type thực tế
+        $finfo = new finfo(FILEINFO_MIME_TYPE);
+        $mime  = $finfo-&gt;file($files['tmp_name'][$i]);
+        if (!in_array($mime, $cho_phep)) {
+            $thong_bao[] = "❌ {$files['name'][$i]}: chỉ chấp nhận ảnh JPG/PNG/GIF/WEBP";
+            continue;
+        }
+        // Tạo tên file an toàn
+        $ext        = pathinfo($files['name'][$i], PATHINFO_EXTENSION);
+        $ten_moi    = uniqid('img_') . '.' . $ext;
+        $duong_dan  = $thu_muc . $ten_moi;
+        if (move_uploaded_file($files['tmp_name'][$i], $duong_dan)) {
+            $thong_bao[] = "✅ Upload thành công: $ten_moi (" . round($files['size'][$i]/1024) . " KB)";
+        }
+    }
+}
+?&gt;
+&lt;form method="POST" enctype="multipart/form-data"&gt;
+  &lt;label&gt;Chọn ảnh (tối đa 2MB, JPG/PNG/GIF):&lt;/label&gt;&lt;br&gt;
+  &lt;input type="file" name="hinh_anh[]" multiple accept="image/*" /&gt;&lt;br&gt;&lt;br&gt;
+  &lt;button type="submit"&gt;📤 Upload&lt;/button&gt;
+&lt;/form&gt;
+&lt;?php foreach ($thong_bao as $tb): ?&gt;
+  &lt;p&gt;&lt;?= $tb ?&gt;&lt;/p&gt;
+&lt;?php endforeach; ?&gt;</pre>
+        </div>
+      </div>
+    </div>
+  </div>
+  <a href="../index.html" class="btn-back">&#8592; Quay lại Module 1</a>
+  <script type="module">
+    import { codeToHtml } from 'https://esm.sh/shiki@1';
+    const raw = document.getElementById('code-raw').textContent;
+    const highlighted = await codeToHtml(raw, { lang: 'php', theme: 'github-dark' });
+    document.getElementById('code-highlight').innerHTML = highlighted;
+    const pre = document.getElementById('code-highlight').querySelector('pre');
+    if (pre) pre.style.cssText = 'border-radius:10px;padding:20px;font-size:0.87rem;overflow-x:auto;margin:0;line-height:1.7';
+  </script>
+</body>
+</html>

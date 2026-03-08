@@ -1,0 +1,162 @@
+<!DOCTYPE html>
+<html lang="vi">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <meta name="keywords" content="PHP OOP,PDO,MySQL,NenTang,Lập trình PHP nâng cao">
+  <meta name="author" content="Dương Nguyễn Phú Cường">
+  <meta name="description" content="Xây dựng hệ thống hàng đợi (queue) đơn giản để xử lý tác vụ nặng ở background.">
+  <meta property="og:locale" content="vi_VN">
+  <meta property="og:type" content="website">
+  <meta property="og:title" content="Bài 18 – Queue và Background Jobs | NenTang.vn">
+  <meta property="og:description" content="Xây dựng hệ thống hàng đợi (queue) đơn giản để xử lý tác vụ nặng ở background.">
+  <meta property="og:url" content="https://nentang.vn/">
+  <meta property="og:site_name" content="Nền tảng Kiến thức">
+  <title>Bài 18 – Queue và Background Jobs | NenTang.vn</title>
+  <link rel="stylesheet" href="../../shared.css" />
+</head>
+<body>
+  <div class="page-header module-php-2">
+    <div class="breadcrumb">
+      <a href="../../index.html">PHP Course</a> &rsaquo;
+      <a href="../index.html">Module 2</a> &rsaquo; Bài 18
+    </div>
+    <h1>Bài 18: Queue và Background Jobs</h1>
+    <p>Module 2 – PHP OOP &amp; Nâng Cao</p>
+  </div>
+
+  <div class="exercise-page">
+    <div class="exercise-box">
+      <div class="ex-head">
+        <h1>📝 Yêu cầu bài tập</h1>
+        <p>Xây dựng hệ thống hàng đợi (queue) đơn giản để xử lý tác vụ nặng ở background.</p>
+      </div>
+      <div class="ex-desc">
+        <h3>Yêu cầu</h3>
+        <ul>
+          <li>Tạo Job interface và Queue class</li>
+          <li>SendEmailJob, ResizeImageJob</li>
+          <li>Lưu queue vào file/DB</li>
+          <li>Worker script xử lý queue</li>
+          <li>Retry khi job thất bại</li>
+        </ul>
+        <h3>🧠 Kiến thức cần nhớ</h3>
+        <ul>
+          <li>Queue: xử lý tác vụ nặng (email, resizing) không đồng bộ để response nhanh hơn</li>
+          <li>Job: một đơn vị công việc cần thực hiện</li>
+          <li>Worker: process chạy ngầm lấy job từ queue và thực thi</li>
+          <li>Retry: chạy lại job thất bại N lần trước khi báo lỗi</li>
+          <li>Redis Queue, Database Queue là phổ biến nhất trong production</li>
+        </ul>
+      </div>
+      <div class="ex-work">
+        <h3>💻 Code mẫu</h3>
+        <div id="code-highlight">
+          <pre id="code-raw" style="display:none">&lt;?php
+// ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+// Job Interface
+// ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+interface Job {
+    public function handle(): bool;
+    public function getMaxRetries(): int;
+    public function getName(): string;
+}
+
+// ── Concrete Jobs ─────────────────
+class SendEmailJob implements Job {
+    public function __construct(
+        private string $to,
+        private string $subject,
+        private string $body,
+    ) {}
+    public function handle(): bool {
+        // Giả lập gửi email
+        echo "📧 Gửi email đến {$this-&gt;to}: {$this-&gt;subject}&lt;br&gt;";
+        return rand(0,9) &gt; 1;  // 90% thành công
+    }
+    public function getMaxRetries(): int { return 3; }
+    public function getName(): string { return "SendEmailJob"; }
+}
+
+class ResizeImageJob implements Job {
+    public function __construct(private string $path, private int $width) {}
+    public function handle(): bool {
+        echo "🖼️  Resize {$this-&gt;path} → {$this-&gt;width}px&lt;br&gt;";
+        return true;
+    }
+    public function getMaxRetries(): int { return 1; }
+    public function getName(): string { return "ResizeImageJob"; }
+}
+
+// ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+// File-based Queue
+// ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+class FileQueue {
+    private string $file;
+    public function __construct(string $file = '/tmp/php_queue.json') {
+        $this-&gt;file = $file;
+        if (!file_exists($file)) file_put_contents($file, '[]');
+    }
+    private function load(): array { return json_decode(file_get_contents($this-&gt;file), true) ?: []; }
+    private function save(array $data): void { file_put_contents($this-&gt;file, json_encode($data, JSON_PRETTY_PRINT)); }
+
+    public function push(Job $job): void {
+        $queue = $this-&gt;load();
+        $queue[] = ['job' =&gt; serialize($job), 'retries' =&gt; 0, 'queued_at' =&gt; time()];
+        $this-&gt;save($queue);
+        echo "✅ Job '{$job-&gt;getName()}' thêm vào queue&lt;br&gt;";
+    }
+
+    public function process(int $limit = 5): void {
+        $queue   = $this-&gt;load();
+        $failed  = [];
+        $done    = 0;
+        foreach ($queue as $item) {
+            if ($done &gt;= $limit) { $failed[] = $item; continue; }
+            $job = unserialize($item['job']);
+            echo "▶️  Xử lý: {$job-&gt;getName()} (lần {$item['retries']})&lt;br&gt;";
+            if ($job-&gt;handle()) {
+                $done++;
+            } else {
+                $item['retries']++;
+                if ($item['retries'] &lt; $job-&gt;getMaxRetries()) {
+                    $failed[] = $item;
+                    echo "⚠️  Thất bại, sẽ retry (lần {$item['retries']})&lt;br&gt;";
+                } else {
+                    echo "❌ Job '{$job-&gt;getName()}' thất bại hoàn toàn&lt;br&gt;";
+                }
+            }
+        }
+        $this-&gt;save($failed);
+        echo "Queue còn: " . count($failed) . " jobs&lt;br&gt;";
+    }
+    public function count(): int { return count($this-&gt;load()); }
+}
+
+// ── Sử dụng ──────────────────────
+$queue = new FileQueue('/tmp/demo_queue.json');
+
+// Dispatch jobs (thêm vào queue nhanh → response ngay)
+$queue-&gt;push(new SendEmailJob('user@demo.vn', 'Chào mừng!', 'Nội dung email'));
+$queue-&gt;push(new ResizeImageJob('/uploads/photo.jpg', 800));
+$queue-&gt;push(new SendEmailJob('admin@demo.vn', 'Đơn hàng mới', 'Chi tiết...'));
+echo "Queue size: " . $queue-&gt;count() . "&lt;br&gt;&lt;br&gt;";
+
+// Worker chạy (thường chạy ở CLI: php worker.php)
+echo "=== Worker chạy ===&lt;br&gt;";
+$queue-&gt;process(10);</pre>
+        </div>
+      </div>
+    </div>
+  </div>
+  <a href="../index.html" class="btn-back">&#8592; Quay lại Module 2</a>
+  <script type="module">
+    import { codeToHtml } from 'https://esm.sh/shiki@1';
+    const raw = document.getElementById('code-raw').textContent;
+    const highlighted = await codeToHtml(raw, { lang: 'php', theme: 'github-dark' });
+    document.getElementById('code-highlight').innerHTML = highlighted;
+    const pre = document.getElementById('code-highlight').querySelector('pre');
+    if (pre) pre.style.cssText = 'border-radius:10px;padding:20px;font-size:0.87rem;overflow-x:auto;margin:0;line-height:1.7';
+  </script>
+</body>
+</html>

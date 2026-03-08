@@ -1,0 +1,108 @@
+<!DOCTYPE html>
+<html lang="vi">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <meta name="keywords" content="PHP,Lập trình PHP,Web,NenTang,Bài tập PHP,PHP cơ bản">
+  <meta name="author" content="Dương Nguyễn Phú Cường">
+  <meta name="description" content="Sử dụng hàm ẩn danh (anonymous), closure và arrow function trong PHP.">
+  <meta property="og:locale" content="vi_VN">
+  <meta property="og:type" content="website">
+  <meta property="og:title" content="Bài 11 – Hàm Arrow, Closure và Callback | NenTang.vn">
+  <meta property="og:description" content="Sử dụng hàm ẩn danh (anonymous), closure và arrow function trong PHP.">
+  <meta property="og:url" content="https://nentang.vn/">
+  <meta property="og:site_name" content="Nền tảng Kiến thức">
+  <title>Bài 11 – Hàm Arrow, Closure và Callback | NenTang.vn</title>
+  <link rel="stylesheet" href="../../shared.css" />
+</head>
+<body>
+  <div class="page-header module-php-1">
+    <div class="breadcrumb">
+      <a href="../../index.html">PHP Course</a> &rsaquo;
+      <a href="../index.html">Module 1</a> &rsaquo; Bài 11
+    </div>
+    <h1>Bài 11: Hàm Arrow, Closure và Callback</h1>
+    <p>Module 1 – PHP Cơ Bản</p>
+  </div>
+
+  <div class="exercise-page">
+    <div class="exercise-box">
+      <div class="ex-head">
+        <h1>📝 Yêu cầu bài tập</h1>
+        <p>Sử dụng hàm ẩn danh (anonymous), closure và arrow function trong PHP.</p>
+      </div>
+      <div class="ex-desc">
+        <h3>Yêu cầu</h3>
+        <ul>
+          <li>Gán hàm ẩn danh vào biến và gọi</li>
+          <li>Dùng closure với <code>use</code> để bắt biến ngoài</li>
+          <li>Arrow function <code>fn(...) =></code> (PHP 7.4+)</li>
+          <li>Truyền hàm vào hàm khác (callback): <code>array_map</code>, <code>array_filter</code>, <code>usort</code></li>
+          <li>Hàm <code>array_reduce</code> với callback</li>
+        </ul>
+        <h3>🧠 Kiến thức cần nhớ</h3>
+        <ul>
+          <li>Anonymous function: <code>$f = function($x) { return $x*2; };</code></li>
+          <li><code>use ($bien)</code>: đưa biến ngoài vào closure; <code>use (&$bien)</code>: tham chiếu</li>
+          <li>Arrow: <code>$f = fn($x) => $x * 2;</code> tự động capture biến ngoài</li>
+          <li><code>array_map($cb, $arr)</code>: áp callback lên từng phần tử, trả array mới</li>
+          <li><code>array_filter($arr, $cb)</code>: lọc phần tử thỏa điều kiện</li>
+        </ul>
+      </div>
+      <div class="ex-work">
+        <h3>💻 Code mẫu</h3>
+        <div id="code-highlight">
+          <pre id="code-raw" style="display:none">&lt;?php
+// ── Hàm ẩn danh ───────────────────
+$boi_doi = function(int $x): int {
+    return $x * 2;
+};
+echo $boi_doi(7) . "&lt;br&gt;";   // 14
+
+// ── Closure với use ───────────────
+$he_so = 3;
+$nhan_he_so = function(int $x) use ($he_so): int {
+    return $x * $he_so;
+};
+echo $nhan_he_so(5) . "&lt;br&gt;";   // 15
+
+// ── Arrow function (PHP 7.4+) ──────
+$binh_phuong = fn($x) =&gt; $x ** 2;
+echo $binh_phuong(9) . "&lt;br&gt;";  // 81
+
+// ── array_map ─────────────────────
+$diem  = [5.0, 7.5, 8.0, 6.0];
+$nhan3 = array_map(fn($d) =&gt; round($d * 1.1, 1), $diem);
+echo implode(", ", $nhan3) . "&lt;br&gt;";
+
+// ── array_filter ──────────────────
+$diem_gioi = array_filter($diem, fn($d) =&gt; $d &gt;= 7.5);
+echo "Điểm giỏi: " . implode(", ", $diem_gioi) . "&lt;br&gt;";
+
+// ── usort (sắp xếp tùy chỉnh) ─────
+$sv = [
+    ["ten" =&gt; "An",  "diem" =&gt; 8.0],
+    ["ten" =&gt; "Bình","diem" =&gt; 9.2],
+    ["ten" =&gt; "Cúc", "diem" =&gt; 7.5],
+];
+usort($sv, fn($a, $b) =&gt; $b["diem"] &lt;=&gt; $a["diem"]);  // giảm dần
+foreach ($sv as $s) echo "{$s['ten']}: {$s['diem']}&lt;br&gt;";
+
+// ── array_reduce ──────────────────
+$tong = array_reduce($diem, fn($carry, $item) =&gt; $carry + $item, 0);
+echo "Tổng: $tong | TB: " . ($tong / count($diem)) . "&lt;br&gt;";</pre>
+        </div>
+      </div>
+    </div>
+  </div>
+  <a href="../index.html" class="btn-back">&#8592; Quay lại Module 1</a>
+  <script type="module">
+    import { codeToHtml } from 'https://esm.sh/shiki@1';
+    const raw = document.getElementById('code-raw').textContent;
+    const highlighted = await codeToHtml(raw, { lang: 'php', theme: 'github-dark' });
+    document.getElementById('code-highlight').innerHTML = highlighted;
+    const pre = document.getElementById('code-highlight').querySelector('pre');
+    if (pre) pre.style.cssText = 'border-radius:10px;padding:20px;font-size:0.87rem;overflow-x:auto;margin:0;line-height:1.7';
+  </script>
+</body>
+</html>

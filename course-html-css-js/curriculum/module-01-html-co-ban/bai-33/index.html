@@ -1,0 +1,216 @@
+<!DOCTYPE html>
+<html lang="vi">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <meta name="keywords" content="Nền tảng,HTML,CSS,JavaScript,Lập trình,Web,Kiến thức,Đồ án">
+  <meta name="author" content="Dương Nguyễn Phú Cường">
+  <meta name="description" content="Xây dựng trang thực đơn nhà hàng có phân loại món ăn, giá cả và form đặt bàn.">
+  <meta property="og:locale" content="vi_VN">
+  <meta property="og:type" content="website">
+  <meta property="og:title" content="Bài 33 – Đồ Án: Trang Menu Nhà Hàng | NenTang.vn">
+  <meta property="og:description" content="Xây dựng trang thực đơn nhà hàng có phân loại món ăn, giá cả và form đặt bàn.">
+  <meta property="og:url" content="https://nentang.vn/">
+  <meta property="og:site_name" content="Nền tảng Kiến thức">
+  <title>Bài 33 – Đồ Án: Trang Menu Nhà Hàng | NenTang.vn</title>
+  <link rel="stylesheet" href="../../shared.css" />
+</head>
+<body>
+  <div class="page-header module-1">
+    <div class="breadcrumb">
+      <a href="../../index.html">Trang Chủ</a> &rsaquo;
+      <a href="../index.html">Module 1</a> &rsaquo; Bài 33
+    </div>
+    <h1>Bài 33: Đồ Án: Trang Menu Nhà Hàng</h1>
+    <p>Module 1 – HTML Cơ Bản &nbsp;|&nbsp; 🏆 Bài Đồ Án Tổng Hợp</p>
+  </div>
+
+  <div class="exercise-page">
+    <div class="exercise-box">
+      <div class="ex-head">
+        <h1>🏆 Đồ Án: Đồ Án: Trang Menu Nhà Hàng</h1>
+        <p>Xây dựng trang thực đơn nhà hàng có phân loại món ăn, giá cả và form đặt bàn.</p>
+      </div>
+      <div class="ex-desc">
+        <h3>Mô tả dự án</h3>
+        <p>Trang menu nhà hàng kết hợp nhiều loại nội dung phong phú: hình ảnh món ăn, 
+   bảng thực đơn với giá, danh sách phân loại, và form đặt bàn trực tuyến. 
+   Đây là loại trang thực tế rất phổ biến trong các dự án web thực tế.</p>
+        <h3>📋 Yêu cầu chi tiết</h3>
+        <ul>
+          <li>Header với tên nhà hàng, logo (emoji hoặc img), và nav (Thực Đơn, Về Chúng Tôi, Đặt Bàn)</li>
+          <li>Section thực đơn dùng bảng: cột Món Ăn, Mô Tả, Giá. Dùng &lt;caption&gt; đặt tiêu đề bảng</li>
+          <li>Phân loại bảng bằng &lt;thead&gt;/&lt;tbody&gt;, dùng colspan cho hàng nhóm (Khai Vị, Món Chính, Tráng Miệng)</li>
+          <li>Mỗi món ăn có hình ảnh nhỏ (img trong td), tên, mô tả, và giá định dạng (120.000đ)</li>
+          <li>Section giới thiệu nhà hàng dùng blockquote cho câu review của khách hàng</li>
+          <li>Form đặt bàn: input họ tên, email, số điện thoại, ngày (date input), giờ (time input), số khách (number), yêu cầu thêm (textarea)</li>
+          <li>Dùng fieldset và legend để nhóm các trường của form</li>
+          <li>Footer với địa chỉ, giờ mở cửa dùng thẻ &lt;address&gt; và &lt;time&gt;</li>
+        </ul>
+        <h3>🧠 Kiến thức tổng hợp áp dụng</h3>
+        <ul>
+          <li>&lt;table&gt; phức tạp: caption, thead, tbody, tfoot, colspan để nhóm hàng</li>
+          <li>&lt;blockquote cite='URL'&gt; cho review/trích dẫn</li>
+          <li>&lt;fieldset&gt; và &lt;legend&gt; để nhóm form controls</li>
+          <li>Input type='date', type='time', type='number', type='tel' trong HTML5</li>
+          <li>&lt;figure&gt;/&lt;figcaption&gt; bọc hình ảnh trong table cell</li>
+          <li>Currency formatting: dùng &amp;nbsp; cho dấu phân cách hàng nghìn nếu cần</li>
+        </ul>
+      </div>
+      <div class="ex-work">
+        <h3>💻 Code Skeleton – Khung sườn ban đầu để bắt đầu</h3>
+        <p style="color:#718096;font-size:0.88rem;margin-bottom:12px;">
+          📌 Đây là khung HTML cơ bản. Bạn cần tự điền nội dung, thêm CSS inline hoặc thẻ &lt;style&gt; để hoàn thiện theo yêu cầu.
+        </p>
+        <div id="code-highlight">
+          <pre id="code-raw" style="display:none">&lt;!DOCTYPE html&gt;
+&lt;html lang="vi"&gt;
+&lt;head&gt;
+  &lt;meta charset="UTF-8"&gt;
+  &lt;meta name="viewport" content="width=device-width, initial-scale=1.0"&gt;
+  &lt;title&gt;&amp;#127829; Nhà Hàng Bếp Việt – Thực Đơn&lt;/title&gt;
+  &lt;style&gt;
+    body { font-family: Georgia, serif; margin: 0; background: #fdf6ec; }
+    header { background: #8b1a1a; color: #ffd700; text-align: center; padding: 20px; }
+    nav a { color: #ffd700; margin: 0 16px; text-decoration: none; font-weight: bold; }
+    .container { max-width: 960px; margin: 0 auto; padding: 20px; }
+    table { width: 100%; border-collapse: collapse; background: white; box-shadow: 0 2px 8px rgba(0,0,0,.1); }
+    th, td { border: 1px solid #ddd; padding: 10px 14px; }
+    caption { font-size: 1.3rem; font-weight: bold; padding: 12px; background: #8b1a1a; color: white; }
+    .group-row { background: #f4e4c1; font-weight: bold; font-style: italic; }
+    .price { color: #c0392b; font-weight: bold; white-space: nowrap; }
+    /* TODO: Thêm CSS cho form, blockquote, footer */
+  &lt;/style&gt;
+&lt;/head&gt;
+&lt;body&gt;
+
+  &lt;!-- HEADER --&gt;
+  &lt;header&gt;
+    &lt;h1&gt;&amp;#127829; Bếp Việt&lt;/h1&gt;
+    &lt;p&gt;Ẩm thực truyền thống – Hương vị quê hương&lt;/p&gt;
+    &lt;nav&gt;
+      &lt;a href="#menu"&gt;Thực Đơn&lt;/a&gt;
+      &lt;a href="#about"&gt;Về Chúng Tôi&lt;/a&gt;
+      &lt;a href="#booking"&gt;Đặt Bàn&lt;/a&gt;
+    &lt;/nav&gt;
+  &lt;/header&gt;
+
+  &lt;div class="container"&gt;
+
+    &lt;!-- THỰC ĐƠN --&gt;
+    &lt;section id="menu"&gt;
+      &lt;table&gt;
+        &lt;caption&gt;&amp;#127829; THỰC ĐƠN BẾP VIỆT 2025&lt;/caption&gt;
+        &lt;thead&gt;
+          &lt;tr&gt;
+            &lt;th&gt;Hình&lt;/th&gt;
+            &lt;th&gt;Tên Món&lt;/th&gt;
+            &lt;th&gt;Mô Tả&lt;/th&gt;
+            &lt;th&gt;Giá&lt;/th&gt;
+          &lt;/tr&gt;
+        &lt;/thead&gt;
+        &lt;tbody&gt;
+          &lt;!-- Nhóm Khai Vị --&gt;
+          &lt;tr class="group-row"&gt;
+            &lt;td colspan="4"&gt;🥗 Khai Vị&lt;/td&gt;
+          &lt;/tr&gt;
+          &lt;tr&gt;
+            &lt;td&gt;&lt;img src="https://picsum.photos/60/60?random=1" alt="Gỏi cuốn"&gt;&lt;/td&gt;
+            &lt;td&gt;Gỏi Cuốn Tôm Thịt&lt;/td&gt;
+            &lt;td&gt;Gỏi cuốn tươi kèm tương hoisin&lt;/td&gt;
+            &lt;td class="price"&gt;45.000đ&lt;/td&gt;
+          &lt;/tr&gt;
+          &lt;!-- TODO: Thêm khai vị khác --&gt;
+
+          &lt;!-- Nhóm Món Chính --&gt;
+          &lt;tr class="group-row"&gt;
+            &lt;td colspan="4"&gt;🍜 Món Chính&lt;/td&gt;
+          &lt;/tr&gt;
+          &lt;tr&gt;
+            &lt;td&gt;&lt;img src="https://picsum.photos/60/60?random=2" alt="Phở bò"&gt;&lt;/td&gt;
+            &lt;td&gt;Phở Bò Tái Nạm&lt;/td&gt;
+            &lt;td&gt;Phở bò hầm xương 8 tiếng, rau sống đầy đủ&lt;/td&gt;
+            &lt;td class="price"&gt;75.000đ&lt;/td&gt;
+          &lt;/tr&gt;
+          &lt;!-- TODO: Thêm món chính khác --&gt;
+
+          &lt;!-- Nhóm Tráng Miệng --&gt;
+          &lt;tr class="group-row"&gt;
+            &lt;td colspan="4"&gt;🍮 Tráng Miệng&lt;/td&gt;
+          &lt;/tr&gt;
+          &lt;!-- TODO: Thêm tráng miệng --&gt;
+        &lt;/tbody&gt;
+        &lt;tfoot&gt;
+          &lt;tr&gt;
+            &lt;td colspan="4" style="text-align:center; font-style:italic;"&gt;
+              Giá đã bao gồm VAT. Phụ thu 5% ngoài giờ hành chính.
+            &lt;/td&gt;
+          &lt;/tr&gt;
+        &lt;/tfoot&gt;
+      &lt;/table&gt;
+    &lt;/section&gt;
+
+    &lt;!-- REVIEW KHÁCH HÀNG --&gt;
+    &lt;section id="about"&gt;
+      &lt;h2&gt;💬 Khách Hàng Nói Gì?&lt;/h2&gt;
+      &lt;blockquote cite="https://google.com/maps"&gt;
+        &lt;p&gt;"Phở ở đây tuyệt vời! Nước dùng đậm đà, thịt mềm. Sẽ quay lại lần nữa."&lt;/p&gt;
+        &lt;footer&gt;— Nguyễn Văn A, &lt;cite&gt;Google Maps&lt;/cite&gt;&lt;/footer&gt;
+      &lt;/blockquote&gt;
+      &lt;!-- TODO: Thêm review khác --&gt;
+    &lt;/section&gt;
+
+    &lt;!-- FORM ĐẶT BÀN --&gt;
+    &lt;section id="booking"&gt;
+      &lt;h2&gt;📅 Đặt Bàn Trực Tuyến&lt;/h2&gt;
+      &lt;form action="#" method="post"&gt;
+        &lt;fieldset&gt;
+          &lt;legend&gt;Thông Tin Khách Hàng&lt;/legend&gt;
+          &lt;label&gt;Họ và tên: &lt;input type="text" name="name" required placeholder="Nguyễn Văn A"&gt;&lt;/label&gt;&lt;br&gt;&lt;br&gt;
+          &lt;label&gt;Email: &lt;input type="email" name="email" required&gt;&lt;/label&gt;&lt;br&gt;&lt;br&gt;
+          &lt;label&gt;Điện thoại: &lt;input type="tel" name="phone" placeholder="09xx xxx xxx"&gt;&lt;/label&gt;
+        &lt;/fieldset&gt;
+        &lt;br&gt;
+        &lt;fieldset&gt;
+          &lt;legend&gt;Thông Tin Đặt Bàn&lt;/legend&gt;
+          &lt;label&gt;Ngày: &lt;input type="date" name="date" required min="2025-01-01"&gt;&lt;/label&gt;&lt;br&gt;&lt;br&gt;
+          &lt;label&gt;Giờ: &lt;input type="time" name="time" required min="11:00" max="22:00"&gt;&lt;/label&gt;&lt;br&gt;&lt;br&gt;
+          &lt;label&gt;Số khách: &lt;input type="number" name="guests" min="1" max="20" value="2"&gt;&lt;/label&gt;&lt;br&gt;&lt;br&gt;
+          &lt;label&gt;Yêu cầu thêm:&lt;br&gt;
+            &lt;textarea name="notes" rows="3" cols="40" placeholder="Bàn cạnh cửa sổ, sinh nhật..."&gt;&lt;/textarea&gt;
+          &lt;/label&gt;
+        &lt;/fieldset&gt;
+        &lt;br&gt;
+        &lt;button type="submit"&gt;&amp;#128204; Đặt Bàn Ngay&lt;/button&gt;
+      &lt;/form&gt;
+    &lt;/section&gt;
+
+  &lt;/div&gt;
+
+  &lt;!-- FOOTER --&gt;
+  &lt;footer style="background:#8b1a1a; color:#ffd700; text-align:center; padding:20px; margin-top:40px;"&gt;
+    &lt;address&gt;
+      &amp;#127968; 123 Đường Lê Lợi, Quận 1, TP.HCM&lt;br&gt;
+      &amp;#128222; 028 3456 7890 &amp;nbsp;|&amp;nbsp;
+      &amp;#128197; Mở cửa: &lt;time&gt;10:00&lt;/time&gt; – &lt;time&gt;22:00&lt;/time&gt; mỗi ngày
+    &lt;/address&gt;
+    &lt;p&gt;&amp;copy; 2025 Nhà Hàng Bếp Việt&lt;/p&gt;
+  &lt;/footer&gt;
+
+&lt;/body&gt;
+&lt;/html&gt;</pre>
+        </div>
+      </div>
+    </div>
+  </div>
+  <a href="../index.html" class="btn-back" style="margin-top:20px;">&#8592; Quay lại</a>
+  <script type="module">
+    import { codeToHtml } from 'https://esm.sh/shiki@1';
+    const raw = document.getElementById('code-raw').textContent;
+    const highlighted = await codeToHtml(raw, { lang: 'html', theme: 'github-dark' });
+    document.getElementById('code-highlight').innerHTML = highlighted;
+    const pre = document.getElementById('code-highlight').querySelector('pre');
+    if (pre) pre.style.cssText = 'border-radius:10px;padding:20px;font-size:0.87rem;overflow-x:auto;margin:0;line-height:1.7';
+  </script>
+</body>
+</html>

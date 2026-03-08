@@ -1,0 +1,167 @@
+<!DOCTYPE html>
+<html lang="vi">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <meta name="description" content="Gọi API bên thứ ba với cURL và Guzzle, xử lý response và error handling.">
+  <meta name="author" content="Dương Nguyễn Phú Cường">
+  <meta property="og:locale" content="vi_VN">
+  <meta property="og:type" content="website">
+  <meta property="og:title" content="Bài 12 – API Client – Gọi API Bên Thứ Ba | NenTang.vn">
+  <meta property="og:url" content="https://nentang.vn/">
+  <meta property="og:site_name" content="Nền tảng Kiến thức">
+  <title>Bài 12 – API Client – Gọi API Bên Thứ Ba | NenTang.vn</title>
+  <link rel="stylesheet" href="../../shared.css" />
+</head>
+<body>
+  <div class="page-header module-php-3">
+    <div class="breadcrumb">
+      <a href="../../index.html">PHP Course</a> &rsaquo;
+      <a href="../index.html">Module 3</a> &rsaquo; Bài 12
+    </div>
+    <h1>Bài 12: API Client – Gọi API Bên Thứ Ba</h1>
+    <p>Module 3 – PHP &amp; MySQL Thực Chiến</p>
+  </div>
+
+  <div class="exercise-page">
+    <div class="exercise-box">
+      <div class="ex-head">
+        <h1>📝 Yêu cầu bài tập</h1>
+        <p>Gọi API bên thứ ba với cURL và Guzzle, xử lý response và error handling.</p>
+      </div>
+      <div class="ex-desc">
+        <h3>Yêu cầu</h3>
+        <ul>
+          <li>Gọi API với <code>file_get_contents</code> và <code>stream_context</code></li>
+          <li>Gọi API với cURL (GET, POST, headers)</li>
+          <li>Parse JSON response</li>
+          <li>Retry logic khi API thất bại</li>
+          <li>Gọi song song nhiều API (multi_curl)</li>
+        </ul>
+        <h3>🧠 Kiến thức cần nhớ</h3>
+        <ul>
+          <li><code>curl_init(), curl_setopt(), curl_exec(), curl_close()</code></li>
+          <li><code>CURLOPT_RETURNTRANSFER => true</code>: trả về string không in ra</li>
+          <li><code>curl_getinfo($ch, CURLINFO_HTTP_CODE)</code>: HTTP status code</li>
+          <li><code>curl_multi_exec()</code>: chạy nhiều requests song song</li>
+          <li>Rate limiting: dùng <code>sleep(1)</code> hoặc token bucket giữa các requests</li>
+        </ul>
+      </div>
+      <div class="ex-work">
+        <h3>💻 Code mẫu</h3>
+        <div id="code-highlight">
+          <pre id="code-raw" style="display:none">&lt;?php
+// ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+// HTTP Client đơn giản bằng cURL
+// ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+class HttpClient {
+    private array $default_headers = ['Content-Type: application/json', 'Accept: application/json'];
+    private int   $timeout = 30;
+    private int   $max_retries = 3;
+
+    public function get(string $url, array $headers = []): array {
+        return $this-&gt;request('GET', $url, null, $headers);
+    }
+    public function post(string $url, array $data, array $headers = []): array {
+        return $this-&gt;request('POST', $url, json_encode($data), $headers);
+    }
+    public function put(string $url, array $data, array $headers = []): array {
+        return $this-&gt;request('PUT', $url, json_encode($data), $headers);
+    }
+    public function delete(string $url, array $headers = []): array {
+        return $this-&gt;request('DELETE', $url, null, $headers);
+    }
+
+    private function request(string $method, string $url, ?string $body, array $extra_headers, int $retry = 0): array {
+        $ch = curl_init();
+        curl_setopt_array($ch, [
+            CURLOPT_URL            =&gt; $url,
+            CURLOPT_CUSTOMREQUEST  =&gt; $method,
+            CURLOPT_HTTPHEADER     =&gt; array_merge($this-&gt;default_headers, $extra_headers),
+            CURLOPT_RETURNTRANSFER =&gt; true,
+            CURLOPT_TIMEOUT        =&gt; $this-&gt;timeout,
+            CURLOPT_SSL_VERIFYPEER =&gt; true,
+            CURLOPT_FOLLOWLOCATION =&gt; true,
+        ]);
+        if ($body) curl_setopt($ch, CURLOPT_POSTFIELDS, $body);
+        $response = curl_exec($ch);
+        $code     = curl_getinfo($ch, CURLINFO_HTTP_CODE);
+        $error    = curl_error($ch);
+        curl_close($ch);
+
+        if ($error) {
+            if ($retry &lt; $this-&gt;max_retries) {
+                sleep(pow(2, $retry));  // exponential backoff
+                return $this-&gt;request($method, $url, $body, $extra_headers, $retry+1);
+            }
+            throw new RuntimeException("cURL Error: $error");
+        }
+        $data = json_decode($response, true);
+        return ['status' =&gt; $code, 'data' =&gt; $data, 'raw' =&gt; $response];
+    }
+
+    // Multi-request song song
+    public function parallel(array $requests): array {
+        $mh   = curl_multi_init();
+        $handles = [];
+        foreach ($requests as $key =&gt; $req) {
+            $ch = curl_init();
+            curl_setopt_array($ch, [
+                CURLOPT_URL =&gt; $req['url'], CURLOPT_RETURNTRANSFER =&gt; true,
+                CURLOPT_TIMEOUT =&gt; $this-&gt;timeout,
+            ]);
+            curl_multi_add_handle($mh, $ch);
+            $handles[$key] = $ch;
+        }
+        do { curl_multi_exec($mh, $active); curl_multi_select($mh); } while ($active);
+        $results = [];
+        foreach ($handles as $key =&gt; $ch) {
+            $results[$key] = json_decode(curl_multi_getcontent($ch), true);
+            curl_multi_remove_handle($mh, $ch);
+        }
+        curl_multi_close($mh);
+        return $results;
+    }
+}
+
+// ── Sử dụng ──────────────────────
+$client = new HttpClient();
+
+// GET request
+$res = $client-&gt;get('https://jsonplaceholder.typicode.com/users/1');
+if ($res['status'] === 200) {
+    echo "User: {$res['data']['name']} | Email: {$res['data']['email']}&lt;br&gt;";
+}
+
+// POST request
+$post = $client-&gt;post('https://jsonplaceholder.typicode.com/posts', [
+    'title' =&gt; 'Bài viết PHP',
+    'body'  =&gt; 'Học PHP với NenTang.vn',
+    'userId'=&gt; 1,
+]);
+echo "POST status: {$post['status']} | ID: {$post['data']['id']}&lt;br&gt;";
+
+// Parallel requests (nhanh hơn tuần tự)
+$t = microtime(true);
+$results = $client-&gt;parallel([
+    'user1' =&gt; ['url' =&gt; 'https://jsonplaceholder.typicode.com/users/1'],
+    'user2' =&gt; ['url' =&gt; 'https://jsonplaceholder.typicode.com/users/2'],
+    'posts' =&gt; ['url' =&gt; 'https://jsonplaceholder.typicode.com/posts?userId=1'],
+]);
+$ms = round((microtime(true)-$t)*1000);
+echo "Parallel {$ms}ms: {$results['user1']['name']}, {$results['user2']['name']}, " . count($results['posts']) . " bài&lt;br&gt;";</pre>
+        </div>
+      </div>
+    </div>
+  </div>
+  <a href="../index.html" class="btn-back">&#8592; Quay lại Module 3</a>
+  <script type="module">
+    import { codeToHtml } from 'https://esm.sh/shiki@1';
+    const raw = document.getElementById('code-raw').textContent;
+    const highlighted = await codeToHtml(raw, { lang: 'php', theme: 'github-dark' });
+    document.getElementById('code-highlight').innerHTML = highlighted;
+    const pre = document.getElementById('code-highlight').querySelector('pre');
+    if (pre) pre.style.cssText = 'border-radius:10px;padding:20px;font-size:0.87rem;overflow-x:auto;margin:0;line-height:1.7';
+  </script>
+</body>
+</html>

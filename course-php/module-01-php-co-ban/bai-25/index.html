@@ -1,0 +1,131 @@
+<!DOCTYPE html>
+<html lang="vi">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <meta name="keywords" content="PHP,Lập trình PHP,Web,NenTang,Bài tập PHP,PHP cơ bản">
+  <meta name="author" content="Dương Nguyễn Phú Cường">
+  <meta name="description" content="Sử dụng khai báo kiểu (type hints) và các tính năng mới PHP 8 để viết code an toàn.">
+  <meta property="og:locale" content="vi_VN">
+  <meta property="og:type" content="website">
+  <meta property="og:title" content="Bài 25 – Type Declarations và PHP 8 Features | NenTang.vn">
+  <meta property="og:description" content="Sử dụng khai báo kiểu (type hints) và các tính năng mới PHP 8 để viết code an toàn.">
+  <meta property="og:url" content="https://nentang.vn/">
+  <meta property="og:site_name" content="Nền tảng Kiến thức">
+  <title>Bài 25 – Type Declarations và PHP 8 Features | NenTang.vn</title>
+  <link rel="stylesheet" href="../../shared.css" />
+</head>
+<body>
+  <div class="page-header module-php-1">
+    <div class="breadcrumb">
+      <a href="../../index.html">PHP Course</a> &rsaquo;
+      <a href="../index.html">Module 1</a> &rsaquo; Bài 25
+    </div>
+    <h1>Bài 25: Type Declarations và PHP 8 Features</h1>
+    <p>Module 1 – PHP Cơ Bản</p>
+  </div>
+
+  <div class="exercise-page">
+    <div class="exercise-box">
+      <div class="ex-head">
+        <h1>📝 Yêu cầu bài tập</h1>
+        <p>Sử dụng khai báo kiểu (type hints) và các tính năng mới PHP 8 để viết code an toàn.</p>
+      </div>
+      <div class="ex-desc">
+        <h3>Yêu cầu</h3>
+        <ul>
+          <li>Khai báo kiểu tham số và giá trị trả về</li>
+          <li>Union types (<code>int|string</code>), Nullable (<code>?int</code>), <code>mixed</code></li>
+          <li>Named arguments (PHP 8.0)</li>
+          <li>Fibers (PHP 8.1)</li>
+          <li>Readonly properties (PHP 8.1), Enums (PHP 8.1)</li>
+        </ul>
+        <h3>🧠 Kiến thức cần nhớ</h3>
+        <ul>
+          <li><code>function add(int $a, int $b): int</code> — khai báo kiểu đầy đủ</li>
+          <li><code>?string</code> = <code>string|null</code>; <code>void</code>: hàm không return</li>
+          <li>Named args: <code>setcookie(name: 'theme', value: 'dark', httponly: true)</code></li>
+          <li><code>enum Status { Active; Inactive; }</code> — type-safe constants</li>
+          <li><code>readonly</code>: thuộc tính chỉ gán 1 lần trong constructor</li>
+        </ul>
+      </div>
+      <div class="ex-work">
+        <h3>💻 Code mẫu</h3>
+        <div id="code-highlight">
+          <pre id="code-raw" style="display:none">&lt;?php
+declare(strict_types=1);  // bật strict mode – ép kiểu chính xác
+
+// ── Union types &amp; Nullable ─────────
+function dinh_dang_id(int|string $id): string {
+    return is_int($id) ? "ID-{$id}" : strtoupper($id);
+}
+echo dinh_dang_id(42)   . "&lt;br&gt;";   // ID-42
+echo dinh_dang_id('abc') . "&lt;br&gt;";  // ABC
+
+function tim_user(?int $id): ?array {
+    if ($id === null) return null;
+    $db = [1 =&gt; ['ten' =&gt; 'An'], 2 =&gt; ['ten' =&gt; 'Bình']];
+    return $db[$id] ?? null;
+}
+$u = tim_user(1);
+echo ($u ? $u['ten'] : 'Không tìm thấy') . "&lt;br&gt;";
+
+// ── Enum (PHP 8.1) ────────────────
+// enum TrangThai: string {
+//     case Cho       = 'pending';
+//     case DangXu    = 'processing';
+//     case HoanThanh = 'completed';
+//     case HuyBo     = 'cancelled';
+//     public function nhan(): string {
+//         return match($this) {
+//             self::Cho       =&gt; '⏳ Chờ',
+//             self::DangXu    =&gt; '🔄 Đang xử lý',
+//             self::HoanThanh =&gt; '✅ Hoàn thành',
+//             self::HuyBo     =&gt; '❌ Hủy',
+//         };
+//     }
+// }
+// $ts = TrangThai::HoanThanh;
+// echo $ts-&gt;value . ": " . $ts-&gt;nhan() . "&lt;br&gt;";
+
+// ── Readonly properties (PHP 8.1) ──
+class DonHang {
+    public function __construct(
+        public readonly string $ma_don,
+        public readonly string $ngay_tao,
+        public float $tong_tien = 0.0,
+    ) {}
+}
+$don = new DonHang(ma_don: 'ORD-001', ngay_tao: date('Y-m-d'));
+$don-&gt;tong_tien = 500_000;    // OK – không readonly
+// $don-&gt;ma_don = 'XXX';     // Error – là readonly
+echo "Đơn {$don-&gt;ma_don} ngày {$don-&gt;ngay_tao}: " . number_format($don-&gt;tong_tien) . "đ&lt;br&gt;";
+
+// ── Named arguments ────────────────
+function tao_the_html(
+    string $tag,
+    string $noi_dung,
+    string $class = '',
+    string $id    = '',
+): string {
+    $attr  = $class ? " class="$class"" : '';
+    $attr .= $id    ? " id="$id""       : '';
+    return "&lt;$tag$attr&gt;$noi_dung&lt;/$tag&gt;";
+}
+echo tao_the_html(tag: 'h2', noi_dung: 'Tiêu đề', class: 'title') . "&lt;br&gt;";
+echo tao_the_html(noi_dung: 'Đoạn văn', tag: 'p', id: 'intro')    . "&lt;br&gt;";</pre>
+        </div>
+      </div>
+    </div>
+  </div>
+  <a href="../index.html" class="btn-back">&#8592; Quay lại Module 1</a>
+  <script type="module">
+    import { codeToHtml } from 'https://esm.sh/shiki@1';
+    const raw = document.getElementById('code-raw').textContent;
+    const highlighted = await codeToHtml(raw, { lang: 'php', theme: 'github-dark' });
+    document.getElementById('code-highlight').innerHTML = highlighted;
+    const pre = document.getElementById('code-highlight').querySelector('pre');
+    if (pre) pre.style.cssText = 'border-radius:10px;padding:20px;font-size:0.87rem;overflow-x:auto;margin:0;line-height:1.7';
+  </script>
+</body>
+</html>

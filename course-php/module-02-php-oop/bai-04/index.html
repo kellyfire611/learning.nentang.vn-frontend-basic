@@ -1,0 +1,155 @@
+<!DOCTYPE html>
+<html lang="vi">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <meta name="keywords" content="PHP OOP,PDO,MySQL,NenTang,Lập trình PHP nâng cao">
+  <meta name="author" content="Dương Nguyễn Phú Cường">
+  <meta name="description" content="Sử dụng static members, traits để tái sử dụng code và magic methods trong PHP.">
+  <meta property="og:locale" content="vi_VN">
+  <meta property="og:type" content="website">
+  <meta property="og:title" content="Bài 04 – OOP – Static, Traits và Magic Methods | NenTang.vn">
+  <meta property="og:description" content="Sử dụng static members, traits để tái sử dụng code và magic methods trong PHP.">
+  <meta property="og:url" content="https://nentang.vn/">
+  <meta property="og:site_name" content="Nền tảng Kiến thức">
+  <title>Bài 04 – OOP – Static, Traits và Magic Methods | NenTang.vn</title>
+  <link rel="stylesheet" href="../../shared.css" />
+</head>
+<body>
+  <div class="page-header module-php-2">
+    <div class="breadcrumb">
+      <a href="../../index.html">PHP Course</a> &rsaquo;
+      <a href="../index.html">Module 2</a> &rsaquo; Bài 04
+    </div>
+    <h1>Bài 04: OOP – Static, Traits và Magic Methods</h1>
+    <p>Module 2 – PHP OOP &amp; Nâng Cao</p>
+  </div>
+
+  <div class="exercise-page">
+    <div class="exercise-box">
+      <div class="ex-head">
+        <h1>📝 Yêu cầu bài tập</h1>
+        <p>Sử dụng static members, traits để tái sử dụng code và magic methods trong PHP.</p>
+      </div>
+      <div class="ex-desc">
+        <h3>Yêu cầu</h3>
+        <ul>
+          <li>Thuộc tính và phương thức <code>static</code></li>
+          <li>Tạo Singleton pattern bằng static</li>
+          <li>Tạo Trait <code>HasTimestamps</code>, <code>HasSoftDelete</code></li>
+          <li>Magic methods: <code>__get</code>, <code>__set</code>, <code>__call</code>, <code>__clone</code></li>
+          <li>Late static binding với <code>static::</code></li>
+        </ul>
+        <h3>🧠 Kiến thức cần nhớ</h3>
+        <ul>
+          <li><code>static $count</code>: dùng chung cho mọi instance của class</li>
+          <li><code>ClassName::$staticProp</code> hoặc <code>self::$staticProp</code></li>
+          <li>Trait: khối code có thể dùng lại trong nhiều class (<code>use TraitName</code>)</li>
+          <li><code>__get($name)</code>: gọi khi truy cập property không tồn tại</li>
+          <li><code>__call($name, $args)</code>: gọi khi method không tồn tại</li>
+        </ul>
+      </div>
+      <div class="ex-work">
+        <h3>💻 Code mẫu</h3>
+        <div id="code-highlight">
+          <pre id="code-raw" style="display:none">&lt;?php
+// ── Trait ─────────────────────────
+trait HasTimestamps {
+    private ?string $created_at = null;
+    private ?string $updated_at = null;
+
+    public function touch(): void {
+        $now = date('Y-m-d H:i:s');
+        if (!$this-&gt;created_at) $this-&gt;created_at = $now;
+        $this-&gt;updated_at = $now;
+    }
+    public function getCreatedAt(): ?string { return $this-&gt;created_at; }
+    public function getUpdatedAt(): ?string { return $this-&gt;updated_at; }
+}
+
+trait HasSoftDelete {
+    private ?string $deleted_at = null;
+    public function softDelete(): void { $this-&gt;deleted_at = date('Y-m-d H:i:s'); }
+    public function restore(): void  { $this-&gt;deleted_at = null; }
+    public function isDeleted(): bool { return $this-&gt;deleted_at !== null; }
+}
+
+// ── Singleton pattern ─────────────
+class Config {
+    private static ?Config $instance = null;
+    private array $data = [];
+
+    private function __construct() {}  // private!
+
+    public static function getInstance(): static {
+        if (static::$instance === null) {
+            static::$instance = new static();
+        }
+        return static::$instance;
+    }
+    public function set(string $key, mixed $val): void { $this-&gt;data[$key] = $val; }
+    public function get(string $key, mixed $default = null): mixed {
+        return $this-&gt;data[$key] ?? $default;
+    }
+}
+
+// ── Magic methods ─────────────────
+class DynamicModel {
+    use HasTimestamps, HasSoftDelete;
+    private array $attributes = [];
+    private static int $totalCreated = 0;
+
+    public function __construct(array $data = []) {
+        $this-&gt;attributes = $data;
+        $this-&gt;touch();
+        self::$totalCreated++;
+    }
+    // __get: truy cập dynamic property
+    public function __get(string $name): mixed {
+        return $this-&gt;attributes[$name] ?? null;
+    }
+    // __set: gán dynamic property
+    public function __set(string $name, mixed $val): void {
+        $this-&gt;attributes[$name] = $val;
+        $this-&gt;touch();
+    }
+    // __isset
+    public function __isset(string $name): bool { return isset($this-&gt;attributes[$name]); }
+    // __call: method không tồn tại
+    public function __call(string $name, array $args): mixed {
+        if (str_starts_with($name, 'get')) {
+            $key = lcfirst(substr($name, 3));
+            return $this-&gt;attributes[$key] ?? null;
+        }
+        throw new BadMethodCallException("Method $name không tồn tại");
+    }
+    public static function getTotalCreated(): int { return self::$totalCreated; }
+}
+
+// ── Sử dụng ──────────────────────
+$cfg = Config::getInstance();
+$cfg-&gt;set('app_name', 'NenTang');
+echo Config::getInstance()-&gt;get('app_name') . "&lt;br&gt;";  // Singleton = cùng 1 instance
+
+$m = new DynamicModel(['ten' =&gt; 'Sản phẩm A', 'gia' =&gt; 99000]);
+echo $m-&gt;ten  . "&lt;br&gt;";     // magic __get
+$m-&gt;ton_kho = 50;           // magic __set
+echo $m-&gt;getTen() . "&lt;br&gt;"; // magic __call → getTen → ten
+echo "Created: " . DynamicModel::getTotalCreated() . "&lt;br&gt;";
+$m-&gt;softDelete();
+echo "Đã xóa: " . ($m-&gt;isDeleted() ? "có" : "không") . "&lt;br&gt;";</pre>
+        </div>
+      </div>
+    </div>
+  </div>
+  <a href="../index.html" class="btn-back">&#8592; Quay lại Module 2</a>
+  <script type="module">
+    import { codeToHtml } from 'https://esm.sh/shiki@1';
+    const raw = document.getElementById('code-raw').textContent;
+    const highlighted = await codeToHtml(raw, { lang: 'php', theme: 'github-dark' });
+    document.getElementById('code-highlight').innerHTML = highlighted;
+    const pre = document.getElementById('code-highlight').querySelector('pre');
+    if (pre) pre.style.cssText = 'border-radius:10px;padding:20px;font-size:0.87rem;overflow-x:auto;margin:0;line-height:1.7';
+  </script>
+</body>
+</html>

@@ -1,0 +1,110 @@
+<!DOCTYPE html>
+<html lang="vi">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <meta name="keywords" content="PHP,Lập trình PHP,Web,NenTang,Bài tập PHP,PHP cơ bản">
+  <meta name="author" content="Dương Nguyễn Phú Cường">
+  <meta name="description" content="Tạo và thao tác với mảng chỉ số (indexed) và mảng kết hợp (associative).">
+  <meta property="og:locale" content="vi_VN">
+  <meta property="og:type" content="website">
+  <meta property="og:title" content="Bài 05 – Mảng (Array) Cơ Bản | NenTang.vn">
+  <meta property="og:description" content="Tạo và thao tác với mảng chỉ số (indexed) và mảng kết hợp (associative).">
+  <meta property="og:url" content="https://nentang.vn/">
+  <meta property="og:site_name" content="Nền tảng Kiến thức">
+  <title>Bài 05 – Mảng (Array) Cơ Bản | NenTang.vn</title>
+  <link rel="stylesheet" href="../../shared.css" />
+</head>
+<body>
+  <div class="page-header module-php-1">
+    <div class="breadcrumb">
+      <a href="../../index.html">PHP Course</a> &rsaquo;
+      <a href="../index.html">Module 1</a> &rsaquo; Bài 05
+    </div>
+    <h1>Bài 05: Mảng (Array) Cơ Bản</h1>
+    <p>Module 1 – PHP Cơ Bản</p>
+  </div>
+
+  <div class="exercise-page">
+    <div class="exercise-box">
+      <div class="ex-head">
+        <h1>📝 Yêu cầu bài tập</h1>
+        <p>Tạo và thao tác với mảng chỉ số (indexed) và mảng kết hợp (associative).</p>
+      </div>
+      <div class="ex-desc">
+        <h3>Yêu cầu</h3>
+        <ul>
+          <li>Tạo mảng chỉ số <code>[]</code>, thêm phần tử, in mảng bằng <code>print_r</code></li>
+          <li>Tạo mảng kết hợp (key => value)</li>
+          <li>Duyệt mảng bằng <code>foreach</code></li>
+          <li>Sắp xếp mảng: <code>sort()</code>, <code>rsort()</code>, <code>asort()</code></li>
+          <li>Tìm kiếm phần tử: <code>in_array()</code>, <code>array_search()</code></li>
+        </ul>
+        <h3>🧠 Kiến thức cần nhớ</h3>
+        <ul>
+          <li>Mảng chỉ số: <code>$arr = [1, 2, 3]</code> — key tự động 0, 1, 2...</li>
+          <li>Mảng kết hợp: <code>$arr = ['ten' => 'An', 'tuoi' => 20]</code></li>
+          <li><code>count($arr)</code> — số phần tử; <code>array_push($arr, $val)</code> — thêm cuối</li>
+          <li><code>sort()</code> sắp xếp tăng dần (reset key); <code>asort()</code> giữ key gốc</li>
+          <li><code>in_array($val, $arr)</code> — kiểm tra tồn tại; <code>array_search()</code> trả key</li>
+        </ul>
+      </div>
+      <div class="ex-work">
+        <h3>💻 Code mẫu</h3>
+        <div id="code-highlight">
+          <pre id="code-raw" style="display:none">&lt;?php
+// ── Mảng chỉ số ───────────────────
+$mon_hoc = ["Toán", "Văn", "Anh", "Lý", "Hóa"];
+echo "Số môn: " . count($mon_hoc) . "&lt;br&gt;";
+echo $mon_hoc[0] . "&lt;br&gt;";   // Toán
+array_push($mon_hoc, "Sinh"); // thêm cuối
+$mon_hoc[] = "Sử";            // cách 2 thêm cuối
+echo implode(", ", $mon_hoc) . "&lt;br&gt;";
+
+// ── Mảng kết hợp ──────────────────
+$sinh_vien = [
+    "ho_ten" =&gt; "Lê Thị Mai",
+    "tuoi"   =&gt; 20,
+    "diem"   =&gt; 8.5,
+    "lop"    =&gt; "CNTT-K22",
+];
+echo $sinh_vien["ho_ten"] . " – Lớp " . $sinh_vien["lop"] . "&lt;br&gt;";
+$sinh_vien["dia_chi"] = "Hà Nội";   // thêm key mới
+print_r($sinh_vien);
+
+// ── foreach ───────────────────────
+echo "&lt;ul&gt;";
+foreach ($sinh_vien as $key =&gt; $val) {
+    echo "&lt;li&gt;&lt;strong&gt;$key&lt;/strong&gt;: $val&lt;/li&gt;";
+}
+echo "&lt;/ul&gt;";
+
+// ── Sắp xếp ──────────────────────
+$diem_sv = [7.5, 9.0, 6.5, 8.0, 5.5];
+sort($diem_sv);                           // tăng dần
+echo implode(", ", $diem_sv) . "&lt;br&gt;";
+
+rsort($diem_sv);                          // giảm dần
+echo implode(", ", $diem_sv) . "&lt;br&gt;";
+
+// ── Tìm kiếm ─────────────────────
+if (in_array(9.0, $diem_sv)) {
+    echo "Có điểm 9.0 trong mảng&lt;br&gt;";
+}
+$vi_tri = array_search(8.0, $diem_sv);
+echo "Điểm 8.0 ở vị trí: $vi_tri&lt;br&gt;";</pre>
+        </div>
+      </div>
+    </div>
+  </div>
+  <a href="../index.html" class="btn-back">&#8592; Quay lại Module 1</a>
+  <script type="module">
+    import { codeToHtml } from 'https://esm.sh/shiki@1';
+    const raw = document.getElementById('code-raw').textContent;
+    const highlighted = await codeToHtml(raw, { lang: 'php', theme: 'github-dark' });
+    document.getElementById('code-highlight').innerHTML = highlighted;
+    const pre = document.getElementById('code-highlight').querySelector('pre');
+    if (pre) pre.style.cssText = 'border-radius:10px;padding:20px;font-size:0.87rem;overflow-x:auto;margin:0;line-height:1.7';
+  </script>
+</body>
+</html>

@@ -1,0 +1,109 @@
+<!DOCTYPE html>
+<html lang="vi">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <meta name="keywords" content="PHP,Lập trình PHP,Web,NenTang,Bài tập PHP,PHP cơ bản">
+  <meta name="author" content="Dương Nguyễn Phú Cường">
+  <meta name="description" content="Sử dụng các toán tử số học, so sánh, logic và chuỗi trong PHP.">
+  <meta property="og:locale" content="vi_VN">
+  <meta property="og:type" content="website">
+  <meta property="og:title" content="Bài 03 – Toán Tử Trong PHP | NenTang.vn">
+  <meta property="og:description" content="Sử dụng các toán tử số học, so sánh, logic và chuỗi trong PHP.">
+  <meta property="og:url" content="https://nentang.vn/">
+  <meta property="og:site_name" content="Nền tảng Kiến thức">
+  <title>Bài 03 – Toán Tử Trong PHP | NenTang.vn</title>
+  <link rel="stylesheet" href="../../shared.css" />
+</head>
+<body>
+  <div class="page-header module-php-1">
+    <div class="breadcrumb">
+      <a href="../../index.html">PHP Course</a> &rsaquo;
+      <a href="../index.html">Module 1</a> &rsaquo; Bài 03
+    </div>
+    <h1>Bài 03: Toán Tử Trong PHP</h1>
+    <p>Module 1 – PHP Cơ Bản</p>
+  </div>
+
+  <div class="exercise-page">
+    <div class="exercise-box">
+      <div class="ex-head">
+        <h1>📝 Yêu cầu bài tập</h1>
+        <p>Sử dụng các toán tử số học, so sánh, logic và chuỗi trong PHP.</p>
+      </div>
+      <div class="ex-desc">
+        <h3>Yêu cầu</h3>
+        <ul>
+          <li>Tính toán với 5 phép tính cơ bản và modulo (<code>%</code>), lũy thừa (<code>**</code>)</li>
+          <li>So sánh bằng <code>==</code> (giá trị) và <code>===</code> (giá trị + kiểu dữ liệu)</li>
+          <li>Dùng toán tử logic: AND <code>&&</code>, OR <code>||</code>, NOT <code>!</code></li>
+          <li>Nối chuỗi bằng <code>.</code>, gán nối chuỗi bằng <code>.=</code></li>
+          <li>Toán tử ba ngôi (ternary) và null coalescing <code>??</code></li>
+        </ul>
+        <h3>🧠 Kiến thức cần nhớ</h3>
+        <ul>
+          <li><code>==</code>: so sánh giá trị (1 == "1" là true); <code>===</code>: strict (1 === "1" là false)</li>
+          <li><code>%</code> lấy phần dư; <code>**</code> lũy thừa (2**10 = 1024)</li>
+          <li><code>.</code> nối chuỗi: "Hello " . "World" → "Hello World"</li>
+          <li><code>$a ?? $b</code>: trả về <code>$a</code> nếu không null, ngược lại trả <code>$b</code></li>
+          <li><code>$a <=> $b</code>: spaceship operator — trả về -1, 0, hoặc 1</li>
+        </ul>
+      </div>
+      <div class="ex-work">
+        <h3>💻 Code mẫu</h3>
+        <div id="code-highlight">
+          <pre id="code-raw" style="display:none">&lt;?php
+// ── Số học ─────────────────────────
+$a = 17; $b = 5;
+echo "$a + $b = " . ($a + $b) . "&lt;br&gt;";   // 22
+echo "$a - $b = " . ($a - $b) . "&lt;br&gt;";   // 12
+echo "$a * $b = " . ($a * $b) . "&lt;br&gt;";   // 85
+echo "$a / $b = " . ($a / $b) . "&lt;br&gt;";   // 3.4
+echo "$a % $b = " . ($a % $b) . "&lt;br&gt;";   // 2  (phần dư)
+echo "2 ** 10 = " . (2 ** 10)  . "&lt;br&gt;";  // 1024
+
+// ── So sánh ────────────────────────
+var_dump(1 == "1");   // true  (kiểu khác nhưng giá trị bằng)
+var_dump(1 === "1");  // false (kiểu khác nhau)
+var_dump(1 !== "1");  // true
+var_dump(10 &lt;=&gt; 20);  // -1 (10 nhỏ hơn 20)
+
+// ── Logic ──────────────────────────
+$diem = 7.5; $diem_danh_gia = "B";
+if ($diem &gt;= 5 &amp;&amp; $diem &lt; 8) {
+    echo "Khá – đạt yêu cầu&lt;br&gt;";
+}
+if ($diem &lt; 5 || $diem_danh_gia === "F") {
+    echo "Không đạt&lt;br&gt;";
+} else {
+    echo "Đạt&lt;br&gt;";
+}
+
+// ── Nối chuỗi ─────────────────────
+$ho = "Trần"; $ten = "Văn C";
+$ho_ten  = $ho . " " . $ten;    // nối bằng .
+$ho_ten .= " (Sinh viên)";       // gán nối .=
+echo $ho_ten . "&lt;br&gt;";
+
+// ── Ternary &amp; Null Coalescing ──────
+$tuoi = 20;
+echo ($tuoi &gt;= 18 ? "Đủ tuổi" : "Chưa đủ tuổi") . "&lt;br&gt;";
+
+$ten_nhap = null;
+$hien_thi = $ten_nhap ?? "Khách";   // null coalescing
+echo "Xin chào, $hien_thi!&lt;br&gt;";</pre>
+        </div>
+      </div>
+    </div>
+  </div>
+  <a href="../index.html" class="btn-back">&#8592; Quay lại Module 1</a>
+  <script type="module">
+    import { codeToHtml } from 'https://esm.sh/shiki@1';
+    const raw = document.getElementById('code-raw').textContent;
+    const highlighted = await codeToHtml(raw, { lang: 'php', theme: 'github-dark' });
+    document.getElementById('code-highlight').innerHTML = highlighted;
+    const pre = document.getElementById('code-highlight').querySelector('pre');
+    if (pre) pre.style.cssText = 'border-radius:10px;padding:20px;font-size:0.87rem;overflow-x:auto;margin:0;line-height:1.7';
+  </script>
+</body>
+</html>

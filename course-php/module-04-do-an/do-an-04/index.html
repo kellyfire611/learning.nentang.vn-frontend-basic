@@ -1,0 +1,219 @@
+<!DOCTYPE html>
+<html lang="vi">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <meta name="description" content="Xây dựng API hoàn chỉnh với authentication, CRUD, validation và OpenAPI documentation.">
+  <meta name="author" content="Dương Nguyễn Phú Cường">
+  <meta property="og:locale" content="vi_VN">
+  <meta property="og:type" content="website">
+  <meta property="og:title" content="Đồ Án 4: RESTful API Cho Ứng Dụng Todo | NenTang.vn">
+  <meta property="og:url" content="https://nentang.vn/">
+  <meta property="og:site_name" content="Nền tảng Kiến thức">
+  <title>Đồ Án 4: RESTful API Cho Ứng Dụng Todo | NenTang.vn</title>
+  <link rel="stylesheet" href="../../shared.css" />
+</head>
+<body>
+  <div class="page-header module-php-p">
+    <div class="breadcrumb">
+      <a href="../../index.html">PHP Course</a> &rsaquo;
+      <a href="../index.html">Đồ Án</a> &rsaquo; Dự Án 4
+    </div>
+    <h1>🏗️ Đồ Án 4: RESTful API Cho Ứng Dụng Todo</h1>
+    <p>Module 4 – Đồ Án Tổng Hợp PHP</p>
+  </div>
+
+  <div class="exercise-page">
+    <div class="exercise-box">
+      <div class="ex-head">
+        <h1>📋 Mô Tả Dự Án</h1>
+        <p>Xây dựng API hoàn chỉnh với authentication, CRUD, validation và OpenAPI documentation.</p>
+      </div>
+      <div class="ex-desc">
+        <h3>✅ Tính năng cần xây dựng</h3>
+        <ul>
+          <li>CRUD endpoints: GET/POST/PUT/PATCH/DELETE</li>
+          <li>JWT authentication middleware</li>
+          <li>Request validation với error messages chuẩn</li>
+          <li>Response format thống nhất: <code>{success, data, message, meta}</code></li>
+          <li>Rate limiting: 60 requests/minute per IP</li>
+          <li>API documentation với OpenAPI 3.0 spec</li>
+        </ul>
+        <h3>🧠 Kiến thức áp dụng</h3>
+        <ul>
+          <li>REST conventions: GET (read), POST (create), PUT (replace), PATCH (partial update), DELETE</li>
+          <li>HTTP Status: 200 OK, 201 Created, 400 Bad Request, 401 Unauthorized, 404 Not Found, 422 Validation Error, 429 Too Many Requests</li>
+          <li>Content negotiation: <code>Accept: application/json</code></li>
+          <li>Pagination: <code>?page=1&per_page=20</code>, response có <code>meta.total</code></li>
+          <li>CORS: cần cấu hình đúng để frontend gọi được từ domain khác</li>
+        </ul>
+      </div>
+      <div class="ex-work">
+        <h3>💻 Code mẫu / Kiến trúc tham khảo</h3>
+        <div id="code-highlight">
+          <pre id="code-raw" style="display:none">&lt;?php
+// ════════════════════════════════════
+// ĐỒ ÁN 4: RESTFUL API TODO APP
+// ════════════════════════════════════
+
+// Chạy: php -S localhost:8000 api.php
+header('Content-Type: application/json; charset=utf-8');
+header('Access-Control-Allow-Origin: *');
+header('Access-Control-Allow-Methods: GET, POST, PUT, PATCH, DELETE, OPTIONS');
+header('Access-Control-Allow-Headers: Content-Type, Authorization, X-Requested-With');
+if ($_SERVER['REQUEST_METHOD'] === 'OPTIONS') { http_response_code(204); exit; }
+
+// ─── Response helpers ─────────────
+function ok(mixed $data, string $msg = 'Success', int $code = 200, array $meta = []): never {
+    http_response_code($code);
+    echo json_encode(array_filter(['success'=&gt;true,'message'=&gt;$msg,'data'=&gt;$data,'meta'=&gt;$meta ?: null]),
+        JSON_UNESCAPED_UNICODE | JSON_PRETTY_PRINT); exit;
+}
+function err(string $msg, int $code = 400, array $errors = []): never {
+    http_response_code($code);
+    echo json_encode(array_filter(['success'=&gt;false,'message'=&gt;$msg,'errors'=&gt;$errors ?: null]),
+        JSON_UNESCAPED_UNICODE); exit;
+}
+
+// ─── Rate limiting ────────────────
+function check_rate_limit(int $max = 60): void {
+    $key    = 'rl:' . ($_SERVER['REMOTE_ADDR'] ?? '127') . ':' . date('YmdHi');
+    $count  = (int)(apcu_fetch($key) ?: 0) + 1;
+    apcu_store($key, $count, 60);
+    if ($count &gt; $max) {
+        header('Retry-After: 60');
+        err('Quá nhiều requests. Vui lòng chờ 1 phút', 429);
+    }
+    header('X-Rate-Limit-Remaining: ' . max(0, $max - $count));
+}
+
+// ─── JWT Auth ─────────────────────
+function auth(): array {
+    $auth  = $_SERVER['HTTP_AUTHORIZATION'] ?? '';
+    $token = ltrim(str_ireplace('Bearer', '', $auth));
+    if (!$token) err('Bạn chưa đăng nhập', 401);
+    try { return JWT::verify($token); }
+    catch (Exception $e) { err($e-&gt;getMessage(), 401); }
+}
+
+// ─── Input helpers ────────────────
+function body(): array { return json_decode(file_get_contents('php://input'), true) ?? []; }
+function query(string $key, mixed $default = null): mixed { return $_GET[$key] ?? $default; }
+
+// ─── Router ───────────────────────
+$method = $_SERVER['REQUEST_METHOD'];
+$uri    = parse_url($_SERVER['REQUEST_URI'], PHP_URL_PATH);
+$parts  = explode('/', trim($uri, '/'));
+$resource = $parts[1] ?? '';  // 'todos', 'auth'
+$id       = isset($parts[2]) ? (int)$parts[2] : null;
+
+// check_rate_limit();  // Bật nếu có APCu
+
+// ═══════════════════════════════════
+// Auth Routes
+// ═══════════════════════════════════
+if ($resource === 'auth') {
+    $action = $parts[2] ?? '';
+    if ($method === 'POST' &amp;&amp; $action === 'register') {
+        $b = body();
+        if (empty($b['email']) || empty($b['password'])) err('email/password bắt buộc', 422);
+        // ... register logic
+        ok(['token' =&gt; JWT::create(['uid'=&gt;1,'email'=&gt;$b['email']])], 'Đăng ký thành công', 201);
+    }
+    if ($method === 'POST' &amp;&amp; $action === 'login') {
+        $b = body();
+        // ... verify credentials
+        ok(['token' =&gt; JWT::create(['uid'=&gt;1,'email'=&gt;$b['email'] ?? ''])], 'Đăng nhập thành công');
+    }
+    err('Route không tồn tại', 404);
+}
+
+// ═══════════════════════════════════
+// Todos Routes (Protected)
+// ═══════════════════════════════════
+if ($resource === 'todos') {
+    $user = auth();  // require JWT
+
+    // In-memory store (thay bằng DB)
+    static $TODOS = [
+        1 =&gt; ['id'=&gt;1,'title'=&gt;'Học PHP','done'=&gt;false,'user_id'=&gt;1,'priority'=&gt;'high'],
+        2 =&gt; ['id'=&gt;2,'title'=&gt;'Tạo API','done'=&gt;true,'user_id'=&gt;1,'priority'=&gt;'medium'],
+        3 =&gt; ['id'=&gt;3,'title'=&gt;'Viết test','done'=&gt;false,'user_id'=&gt;1,'priority'=&gt;'low'],
+    ];
+
+    // GET /todos – danh sách
+    if ($method === 'GET' &amp;&amp; $id === null) {
+        $items = array_values($TODOS);
+        // Filter
+        if ($filter = query('done')) {
+            $items = array_filter($items, fn($t) =&gt; (string)$t['done'] === $filter);
+        }
+        if ($priority = query('priority')) {
+            $items = array_filter($items, fn($t) =&gt; $t['priority'] === $priority);
+        }
+        $items = array_values($items);
+        $page  = max(1, (int)query('page', 1));
+        $limit = min(50, max(1, (int)query('per_page', 10)));
+        $total = count($items);
+        $items = array_slice($items, ($page-1)*$limit, $limit);
+        ok($items, 'OK', 200, ['total'=&gt;$total,'page'=&gt;$page,'per_page'=&gt;$limit,'total_pages'=&gt;ceil($total/$limit)]);
+    }
+
+    // GET /todos/:id – chi tiết
+    if ($method === 'GET' &amp;&amp; $id) {
+        $todo = $TODOS[$id] ?? null;
+        if (!$todo || $todo['user_id'] !== $user['uid']) err('Không tìm thấy', 404);
+        ok($todo);
+    }
+
+    // POST /todos – tạo mới
+    if ($method === 'POST') {
+        $b = body();
+        $errs = [];
+        if (empty($b['title']))   $errs['title']    = 'Tiêu đề bắt buộc';
+        if (strlen($b['title'] ?? '') &gt; 200) $errs['title'] = 'Tối đa 200 ký tự';
+        $valid_priority = ['low','medium','high'];
+        if (!empty($b['priority']) &amp;&amp; !in_array($b['priority'], $valid_priority)) {
+            $errs['priority'] = 'priority: ' . implode('|',$valid_priority);
+        }
+        if ($errs) err('Dữ liệu không hợp lệ', 422, $errs);
+        $new_id = max(array_keys($TODOS)) + 1;
+        $TODOS[$new_id] = ['id'=&gt;$new_id,'title'=&gt;$b['title'],'done'=&gt;false,
+                           'user_id'=&gt;$user['uid'],'priority'=&gt;$b['priority']??'medium'];
+        ok($TODOS[$new_id], 'Tạo thành công', 201);
+    }
+
+    // PATCH /todos/:id – cập nhật một phần
+    if ($method === 'PATCH' &amp;&amp; $id) {
+        $todo = $TODOS[$id] ?? null;
+        if (!$todo || $todo['user_id'] !== $user['uid']) err('Không tìm thấy', 404);
+        $b = body();
+        if (isset($b['done']) &amp;&amp; is_bool($b['done'])) $TODOS[$id]['done'] = $b['done'];
+        if (!empty($b['title'])) $TODOS[$id]['title'] = $b['title'];
+        ok($TODOS[$id], 'Cập nhật thành công');
+    }
+
+    // DELETE /todos/:id – xóa
+    if ($method === 'DELETE' &amp;&amp; $id) {
+        if (!isset($TODOS[$id])) err('Không tìm thấy', 404);
+        $deleted = $TODOS[$id]; unset($TODOS[$id]);
+        ok($deleted, 'Xóa thành công');
+    }
+}
+
+err('Endpoint không tồn tại', 404);</pre>
+        </div>
+      </div>
+    </div>
+  </div>
+  <a href="../index.html" class="btn-back">&#8592; Quay lại Đồ Án</a>
+  <script type="module">
+    import { codeToHtml } from 'https://esm.sh/shiki@1';
+    const raw = document.getElementById('code-raw').textContent;
+    const highlighted = await codeToHtml(raw, { lang: 'php', theme: 'github-dark' });
+    document.getElementById('code-highlight').innerHTML = highlighted;
+    const pre = document.getElementById('code-highlight').querySelector('pre');
+    if (pre) pre.style.cssText = 'border-radius:10px;padding:20px;font-size:0.87rem;overflow-x:auto;margin:0;line-height:1.7';
+  </script>
+</body>
+</html>

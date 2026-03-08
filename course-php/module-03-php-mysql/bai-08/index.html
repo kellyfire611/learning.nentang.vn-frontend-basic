@@ -1,0 +1,170 @@
+<!DOCTYPE html>
+<html lang="vi">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <meta name="description" content="Xây dựng hệ thống đăng ký, đăng nhập hoàn chỉnh với password hashing và session.">
+  <meta name="author" content="Dương Nguyễn Phú Cường">
+  <meta property="og:locale" content="vi_VN">
+  <meta property="og:type" content="website">
+  <meta property="og:title" content="Bài 08 – Authentication – Đăng Ký và Đăng Nhập | NenTang.vn">
+  <meta property="og:url" content="https://nentang.vn/">
+  <meta property="og:site_name" content="Nền tảng Kiến thức">
+  <title>Bài 08 – Authentication – Đăng Ký và Đăng Nhập | NenTang.vn</title>
+  <link rel="stylesheet" href="../../shared.css" />
+</head>
+<body>
+  <div class="page-header module-php-3">
+    <div class="breadcrumb">
+      <a href="../../index.html">PHP Course</a> &rsaquo;
+      <a href="../index.html">Module 3</a> &rsaquo; Bài 08
+    </div>
+    <h1>Bài 08: Authentication – Đăng Ký và Đăng Nhập</h1>
+    <p>Module 3 – PHP &amp; MySQL Thực Chiến</p>
+  </div>
+
+  <div class="exercise-page">
+    <div class="exercise-box">
+      <div class="ex-head">
+        <h1>📝 Yêu cầu bài tập</h1>
+        <p>Xây dựng hệ thống đăng ký, đăng nhập hoàn chỉnh với password hashing và session.</p>
+      </div>
+      <div class="ex-desc">
+        <h3>Yêu cầu</h3>
+        <ul>
+          <li>Đăng ký với validation và hash password</li>
+          <li>Đăng nhập kiểm tra email + password</li>
+          <li>Lưu session sau login</li>
+          <li>Middleware bảo vệ route</li>
+          <li>Remember me bằng cookie</li>
+        </ul>
+        <h3>🧠 Kiến thức cần nhớ</h3>
+        <ul>
+          <li><code>password_hash($pass, PASSWORD_DEFAULT)</code>: hash bcrypt</li>
+          <li><code>password_verify($pass, $hash)</code>: verify hash</li>
+          <li>KHÔNG bao giờ lưu plain-text password vào DB</li>
+          <li>Session fixation attack: gọi <code>session_regenerate_id(true)</code> sau login</li>
+          <li>Remember me: lưu secure token vào DB và cookie, verify khi quay lại</li>
+        </ul>
+      </div>
+      <div class="ex-work">
+        <h3>💻 Code mẫu</h3>
+        <div id="code-highlight">
+          <pre id="code-raw" style="display:none">&lt;?php
+session_start();
+
+$pdo = get_pdo();
+// Tạo bảng users
+$pdo-&gt;exec("
+    CREATE TABLE IF NOT EXISTS users (
+        id          INT AUTO_INCREMENT PRIMARY KEY,
+        ho_ten      VARCHAR(100) NOT NULL,
+        email       VARCHAR(150) UNIQUE NOT NULL,
+        mat_khau    VARCHAR(255) NOT NULL,
+        role        ENUM('user','admin') DEFAULT 'user',
+        remember_token VARCHAR(64) NULL,
+        last_login  TIMESTAMP NULL,
+        created_at  TIMESTAMP DEFAULT CURRENT_TIMESTAMP
+    )
+");
+
+// ── Auth Service ──────────────────
+class AuthService {
+    public function __construct(private PDO $pdo) {}
+
+    // Đăng ký
+    public function register(string $ho_ten, string $email, string $mat_khau): array {
+        // Validation
+        if (strlen($ho_ten) &lt; 2) throw new InvalidArgumentException("Họ tên ít nhất 2 ký tự");
+        if (!filter_var($email, FILTER_VALIDATE_EMAIL)) throw new InvalidArgumentException("Email không hợp lệ");
+        if (strlen($mat_khau) &lt; 8) throw new InvalidArgumentException("Mật khẩu ít nhất 8 ký tự");
+
+        // Kiểm tra email đã tồn tại
+        $check = $this-&gt;pdo-&gt;prepare("SELECT id FROM users WHERE email = ?");
+        $check-&gt;execute([$email]);
+        if ($check-&gt;fetch()) throw new RuntimeException("Email đã được sử dụng");
+
+        // Hash và insert
+        $hash = password_hash($mat_khau, PASSWORD_DEFAULT);
+        $stmt = $this-&gt;pdo-&gt;prepare("INSERT INTO users (ho_ten, email, mat_khau) VALUES (?,?,?)");
+        $stmt-&gt;execute([$ho_ten, $email, $hash]);
+        return $this-&gt;findById((int)$this-&gt;pdo-&gt;lastInsertId());
+    }
+
+    // Đăng nhập
+    public function login(string $email, string $mat_khau, bool $remember = false): array {
+        $stmt = $this-&gt;pdo-&gt;prepare("SELECT * FROM users WHERE email = ? LIMIT 1");
+        $stmt-&gt;execute([$email]);
+        $user = $stmt-&gt;fetch();
+        if (!$user || !password_verify($mat_khau, $user['mat_khau'])) {
+            throw new RuntimeException("Email hoặc mật khẩu không đúng");
+        }
+        // Cập nhật thời gian login
+        $this-&gt;pdo-&gt;prepare("UPDATE users SET last_login = NOW() WHERE id = ?")-&gt;execute([$user['id']]);
+        // Session fixation prevention
+        session_regenerate_id(true);
+        $_SESSION['user_id'] = $user['id'];
+        $_SESSION['role']    = $user['role'];
+        // Remember me
+        if ($remember) {
+            $token = bin2hex(random_bytes(32));
+            $this-&gt;pdo-&gt;prepare("UPDATE users SET remember_token = ? WHERE id = ?")-&gt;execute([$token, $user['id']]);
+            setcookie('remember_token', $token, time() + 30*24*3600, '/', '', true, true);
+        }
+        return $user;
+    }
+
+    public function logout(): void {
+        if (isset($_COOKIE['remember_token'])) {
+            $this-&gt;pdo-&gt;prepare("UPDATE users SET remember_token=NULL WHERE remember_token=?")-&gt;execute([$_COOKIE['remember_token']]);
+            setcookie('remember_token', '', time()-1, '/');
+        }
+        session_destroy();
+    }
+
+    public function findById(int $id): array {
+        $stmt = $this-&gt;pdo-&gt;prepare("SELECT id, ho_ten, email, role, created_at FROM users WHERE id = ?");
+        $stmt-&gt;execute([$id]);
+        return $stmt-&gt;fetch() ?: throw new RuntimeException("User không tồn tại");
+    }
+
+    public function currentUser(): ?array {
+        if (!isset($_SESSION['user_id'])) return null;
+        try { return $this-&gt;findById($_SESSION['user_id']); }
+        catch (RuntimeException) { return null; }
+    }
+}
+
+// ── Test ──────────────────────────
+$auth = new AuthService($pdo);
+try {
+    $user = $auth-&gt;register("Nguyễn Test", "test@demo.vn", "password123");
+    echo "✅ Đăng ký: {$user['ho_ten']} (#{$user['id']})&lt;br&gt;";
+} catch (Exception $e) { echo "ℹ️ {$e-&gt;getMessage()}&lt;br&gt;"; }
+
+try {
+    $logged = $auth-&gt;login("test@demo.vn", "password123");
+    echo "✅ Đăng nhập: {$logged['ho_ten']} | Role: {$logged['role']}&lt;br&gt;";
+} catch (Exception $e) { echo "❌ {$e-&gt;getMessage()}&lt;br&gt;"; }
+
+try {
+    $auth-&gt;login("test@demo.vn", "sai_mat_khau");
+} catch (RuntimeException $e) { echo "❌ {$e-&gt;getMessage()}&lt;br&gt;"; }
+
+$current = $auth-&gt;currentUser();
+echo $current ? "Đang đăng nhập: {$current['ho_ten']}&lt;br&gt;" : "Chưa đăng nhập&lt;br&gt;";</pre>
+        </div>
+      </div>
+    </div>
+  </div>
+  <a href="../index.html" class="btn-back">&#8592; Quay lại Module 3</a>
+  <script type="module">
+    import { codeToHtml } from 'https://esm.sh/shiki@1';
+    const raw = document.getElementById('code-raw').textContent;
+    const highlighted = await codeToHtml(raw, { lang: 'php', theme: 'github-dark' });
+    document.getElementById('code-highlight').innerHTML = highlighted;
+    const pre = document.getElementById('code-highlight').querySelector('pre');
+    if (pre) pre.style.cssText = 'border-radius:10px;padding:20px;font-size:0.87rem;overflow-x:auto;margin:0;line-height:1.7';
+  </script>
+</body>
+</html>

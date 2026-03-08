@@ -1,0 +1,101 @@
+<!DOCTYPE html>
+<html lang="vi">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <meta name="keywords" content="PHP,Lập trình PHP,Web,NenTang,Bài tập PHP,PHP cơ bản">
+  <meta name="author" content="Dương Nguyễn Phú Cường">
+  <meta name="description" content="Sử dụng cấu trúc điều kiện để thực hiện logic phân nhánh trong PHP.">
+  <meta property="og:locale" content="vi_VN">
+  <meta property="og:type" content="website">
+  <meta property="og:title" content="Bài 06 – Câu Lệnh Điều Kiện if / else / elseif | NenTang.vn">
+  <meta property="og:description" content="Sử dụng cấu trúc điều kiện để thực hiện logic phân nhánh trong PHP.">
+  <meta property="og:url" content="https://nentang.vn/">
+  <meta property="og:site_name" content="Nền tảng Kiến thức">
+  <title>Bài 06 – Câu Lệnh Điều Kiện if / else / elseif | NenTang.vn</title>
+  <link rel="stylesheet" href="../../shared.css" />
+</head>
+<body>
+  <div class="page-header module-php-1">
+    <div class="breadcrumb">
+      <a href="../../index.html">PHP Course</a> &rsaquo;
+      <a href="../index.html">Module 1</a> &rsaquo; Bài 06
+    </div>
+    <h1>Bài 06: Câu Lệnh Điều Kiện if / else / elseif</h1>
+    <p>Module 1 – PHP Cơ Bản</p>
+  </div>
+
+  <div class="exercise-page">
+    <div class="exercise-box">
+      <div class="ex-head">
+        <h1>📝 Yêu cầu bài tập</h1>
+        <p>Sử dụng cấu trúc điều kiện để thực hiện logic phân nhánh trong PHP.</p>
+      </div>
+      <div class="ex-desc">
+        <h3>Yêu cầu</h3>
+        <ul>
+          <li>Viết hàm xếp loại học lực dựa vào điểm trung bình</li>
+          <li>Dùng <code>if / elseif / else</code> để phân loại tháng theo mùa</li>
+          <li>Dùng toán tử điều kiện lồng nhau</li>
+          <li>Dùng <code>match</code> (PHP 8) thay thế if/else</li>
+          <li>Viết chương trình kiểm tra năm nhuận</li>
+        </ul>
+        <h3>🧠 Kiến thức cần nhớ</h3>
+        <ul>
+          <li><code>if ($dk) { } elseif ($dk2) { } else { }</code></li>
+          <li>Điều kiện trúng khi biểu thức truthy (khác 0, khác "", khác null, khác [])</li>
+          <li><code>match($x)</code> so sánh strict (===) và ngắn gọn hơn switch</li>
+          <li>Toán tử <code>?:</code> (Elvis): <code>$a ?: $b</code> trả về $a nếu truthy, ngược lại $b</li>
+          <li>Năm nhuận: chia hết 400, hoặc chia hết 4 nhưng không chia hết 100</li>
+        </ul>
+      </div>
+      <div class="ex-work">
+        <h3>💻 Code mẫu</h3>
+        <div id="code-highlight">
+          <pre id="code-raw" style="display:none">&lt;?php
+// ── Xếp loại học lực ──────────────
+function xep_loai(float $diem): string {
+    if ($diem &gt;= 9.0) return "Xuất sắc";
+    elseif ($diem &gt;= 8.0) return "Giỏi";
+    elseif ($diem &gt;= 7.0) return "Khá";
+    elseif ($diem &gt;= 5.0) return "Trung bình";
+    else return "Yếu";
+}
+$danh_sach_diem = [9.5, 8.2, 6.8, 5.1, 4.0];
+foreach ($danh_sach_diem as $d) {
+    echo "$d → " . xep_loai($d) . "&lt;br&gt;";
+}
+
+// ── Mùa theo tháng (match PHP 8) ──
+$thang = (int) date('n');   // tháng hiện tại
+$mua = match(true) {
+    in_array($thang, [12, 1, 2]) =&gt; "Mùa Đông ❄️",
+    in_array($thang, [3, 4, 5])  =&gt; "Mùa Xuân 🌸",
+    in_array($thang, [6, 7, 8])  =&gt; "Mùa Hè ☀️",
+    default                      =&gt; "Mùa Thu 🍂",
+};
+echo "Tháng $thang: $mua&lt;br&gt;";
+
+// ── Năm nhuận ─────────────────────
+function la_nam_nhuan(int $nam): bool {
+    return ($nam % 400 === 0) || ($nam % 4 === 0 &amp;&amp; $nam % 100 !== 0);
+}
+foreach ([2000, 1900, 2024, 2023] as $nam) {
+    $ket = la_nam_nhuan($nam) ? "Nhuận ✅" : "Thường ❌";
+    echo "$nam: $ket&lt;br&gt;";
+}</pre>
+        </div>
+      </div>
+    </div>
+  </div>
+  <a href="../index.html" class="btn-back">&#8592; Quay lại Module 1</a>
+  <script type="module">
+    import { codeToHtml } from 'https://esm.sh/shiki@1';
+    const raw = document.getElementById('code-raw').textContent;
+    const highlighted = await codeToHtml(raw, { lang: 'php', theme: 'github-dark' });
+    document.getElementById('code-highlight').innerHTML = highlighted;
+    const pre = document.getElementById('code-highlight').querySelector('pre');
+    if (pre) pre.style.cssText = 'border-radius:10px;padding:20px;font-size:0.87rem;overflow-x:auto;margin:0;line-height:1.7';
+  </script>
+</body>
+</html>

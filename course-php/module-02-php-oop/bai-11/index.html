@@ -1,0 +1,151 @@
+<!DOCTYPE html>
+<html lang="vi">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <meta name="keywords" content="PHP OOP,PDO,MySQL,NenTang,Lập trình PHP nâng cao">
+  <meta name="author" content="Dương Nguyễn Phú Cường">
+  <meta name="description" content="Tích hợp PHPMailer để gửi email HTML, đính kèm file từ PHP.">
+  <meta property="og:locale" content="vi_VN">
+  <meta property="og:type" content="website">
+  <meta property="og:title" content="Bài 11 – Gửi Email bằng PHPMailer | NenTang.vn">
+  <meta property="og:description" content="Tích hợp PHPMailer để gửi email HTML, đính kèm file từ PHP.">
+  <meta property="og:url" content="https://nentang.vn/">
+  <meta property="og:site_name" content="Nền tảng Kiến thức">
+  <title>Bài 11 – Gửi Email bằng PHPMailer | NenTang.vn</title>
+  <link rel="stylesheet" href="../../shared.css" />
+</head>
+<body>
+  <div class="page-header module-php-2">
+    <div class="breadcrumb">
+      <a href="../../index.html">PHP Course</a> &rsaquo;
+      <a href="../index.html">Module 2</a> &rsaquo; Bài 11
+    </div>
+    <h1>Bài 11: Gửi Email bằng PHPMailer</h1>
+    <p>Module 2 – PHP OOP &amp; Nâng Cao</p>
+  </div>
+
+  <div class="exercise-page">
+    <div class="exercise-box">
+      <div class="ex-head">
+        <h1>📝 Yêu cầu bài tập</h1>
+        <p>Tích hợp PHPMailer để gửi email HTML, đính kèm file từ PHP.</p>
+      </div>
+      <div class="ex-desc">
+        <h3>Yêu cầu</h3>
+        <ul>
+          <li>Cài PHPMailer qua Composer</li>
+          <li>Cấu hình SMTP (Gmail)</li>
+          <li>Gửi email HTML với template đẹp</li>
+          <li>Đính kèm file</li>
+          <li>Xử lý lỗi gửi email</li>
+        </ul>
+        <h3>🧠 Kiến thức cần nhớ</h3>
+        <ul>
+          <li>PHPMailer: thư viện PHP phổ biến nhất để gửi email</li>
+          <li>SMTP: giao thức gửi email; Gmail cần App Password (bật 2FA)</li>
+          <li><code>$mail->isHTML(true)</code>: gửi HTML email</li>
+          <li><code>$mail->addAttachment($path)</code>: đính kèm file</li>
+          <li>Luôn dùng SMTP thay vì PHP mail() để tránh vào Spam</li>
+        </ul>
+      </div>
+      <div class="ex-work">
+        <h3>💻 Code mẫu</h3>
+        <div id="code-highlight">
+          <pre id="code-raw" style="display:none">&lt;?php
+// Cài đặt: composer require phpmailer/phpmailer
+
+use PHPMailer\PHPMailer\PHPMailer;
+use PHPMailer\PHPMailer\SMTP;
+
+require 'vendor/autoload.php';
+
+function gui_email(
+    string $to_email,
+    string $to_name,
+    string $subject,
+    string $body_html,
+    ?string $attachment = null
+): bool {
+    $mail = new PHPMailer(true);
+    try {
+        // Cấu hình SMTP
+        $mail-&gt;isSMTP();
+        $mail-&gt;Host        = 'smtp.gmail.com';
+        $mail-&gt;SMTPAuth    = true;
+        $mail-&gt;Username    = 'your_email@gmail.com';  // ← Gmail
+        $mail-&gt;Password    = 'your_app_password';     // ← App Password
+        $mail-&gt;SMTPSecure  = PHPMailer::ENCRYPTION_STARTTLS;
+        $mail-&gt;Port        = 587;
+        $mail-&gt;CharSet     = 'UTF-8';
+
+        // Người gửi và nhận
+        $mail-&gt;setFrom('no-reply@yoursite.vn', 'NenTang.vn');
+        $mail-&gt;addAddress($to_email, $to_name);
+
+        // Nội dung
+        $mail-&gt;isHTML(true);
+        $mail-&gt;Subject = $subject;
+        $mail-&gt;Body    = $body_html;
+        $mail-&gt;AltBody = strip_tags($body_html);  // plain text fallback
+
+        // File đính kèm
+        if ($attachment &amp;&amp; file_exists($attachment)) {
+            $mail-&gt;addAttachment($attachment);
+        }
+
+        $mail-&gt;send();
+        return true;
+    } catch (Exception $e) {
+        error_log("Email lỗi: " . $mail-&gt;ErrorInfo);
+        return false;
+    }
+}
+
+// Template email HTML
+function email_template(string $ten, string $noi_dung): string {
+    return &lt;&lt;&lt;HTML
+    &lt;!DOCTYPE html&gt;
+    &lt;html&gt;&lt;body style="font-family:Arial;background:#f5f5f5;padding:20px"&gt;
+    &lt;div style="max-width:600px;margin:0 auto;background:white;border-radius:12px;overflow:hidden"&gt;
+      &lt;div style="background:linear-gradient(135deg,#7928ca,#ff0080);padding:30px;color:white;text-align:center"&gt;
+        &lt;h1 style="margin:0"&gt;NenTang.vn&lt;/h1&gt;
+      &lt;/div&gt;
+      &lt;div style="padding:30px"&gt;
+        &lt;h2&gt;Xin chào, $ten!&lt;/h2&gt;
+        &lt;p&gt;$noi_dung&lt;/p&gt;
+        &lt;a href="https://nentang.vn" style="display:inline-block;background:#7928ca;color:white;padding:12px 24px;border-radius:8px;text-decoration:none;margin-top:16px"&gt;
+          Truy cập website
+        &lt;/a&gt;
+      &lt;/div&gt;
+      &lt;div style="padding:20px;text-align:center;color:#888;font-size:12px"&gt;
+        © 2026 NenTang.vn – Unsubscribe
+      &lt;/div&gt;
+    &lt;/div&gt;
+    &lt;/body&gt;&lt;/html&gt;
+    HTML;
+}
+
+// Gửi email chào mừng
+$ok = gui_email(
+    'new_user@example.com',
+    'Nguyễn Văn Mới',
+    'Chào mừng bạn đến với NenTang.vn!',
+    email_template('Nguyễn Văn Mới', 'Tài khoản của bạn đã được tạo thành công. Hãy bắt đầu học ngay!'),
+);
+echo $ok ? "✅ Email gửi thành công" : "❌ Gửi thất bại";</pre>
+        </div>
+      </div>
+    </div>
+  </div>
+  <a href="../index.html" class="btn-back">&#8592; Quay lại Module 2</a>
+  <script type="module">
+    import { codeToHtml } from 'https://esm.sh/shiki@1';
+    const raw = document.getElementById('code-raw').textContent;
+    const highlighted = await codeToHtml(raw, { lang: 'php', theme: 'github-dark' });
+    document.getElementById('code-highlight').innerHTML = highlighted;
+    const pre = document.getElementById('code-highlight').querySelector('pre');
+    if (pre) pre.style.cssText = 'border-radius:10px;padding:20px;font-size:0.87rem;overflow-x:auto;margin:0;line-height:1.7';
+  </script>
+</body>
+</html>

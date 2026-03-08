@@ -1,0 +1,162 @@
+<!DOCTYPE html>
+<html lang="vi">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <meta name="keywords" content="PHP OOP,PDO,MySQL,NenTang,Lập trình PHP nâng cao">
+  <meta name="author" content="Dương Nguyễn Phú Cường">
+  <meta name="description" content="Khám phá các tính năng mới nhất của PHP 8.1/8.2/8.3 bao gồm Fibers.">
+  <meta property="og:locale" content="vi_VN">
+  <meta property="og:type" content="website">
+  <meta property="og:title" content="Bài 20 – PHP 8.x Features – Fibers và Async | NenTang.vn">
+  <meta property="og:description" content="Khám phá các tính năng mới nhất của PHP 8.1/8.2/8.3 bao gồm Fibers.">
+  <meta property="og:url" content="https://nentang.vn/">
+  <meta property="og:site_name" content="Nền tảng Kiến thức">
+  <title>Bài 20 – PHP 8.x Features – Fibers và Async | NenTang.vn</title>
+  <link rel="stylesheet" href="../../shared.css" />
+</head>
+<body>
+  <div class="page-header module-php-2">
+    <div class="breadcrumb">
+      <a href="../../index.html">PHP Course</a> &rsaquo;
+      <a href="../index.html">Module 2</a> &rsaquo; Bài 20
+    </div>
+    <h1>Bài 20: PHP 8.x Features – Fibers và Async</h1>
+    <p>Module 2 – PHP OOP &amp; Nâng Cao</p>
+  </div>
+
+  <div class="exercise-page">
+    <div class="exercise-box">
+      <div class="ex-head">
+        <h1>📝 Yêu cầu bài tập</h1>
+        <p>Khám phá các tính năng mới nhất của PHP 8.1/8.2/8.3 bao gồm Fibers.</p>
+      </div>
+      <div class="ex-desc">
+        <h3>Yêu cầu</h3>
+        <ul>
+          <li>Fibers: concurrency không cần async/await</li>
+          <li>Readonly classes (PHP 8.2)</li>
+          <li>DNF types (Disjunctive Normal Form)</li>
+          <li>Enums nâng cao với methods và implements</li>
+          <li>First-class callable syntax</li>
+        </ul>
+        <h3>🧠 Kiến thức cần nhớ</h3>
+        <ul>
+          <li>Fiber: coroutine trong PHP – cho phép tạm dừng và tiếp tục thực thi</li>
+          <li><code>$fiber->start(); $fiber->resume($val);</code></li>
+          <li>Readonly class PHP 8.2: tất cả properties đều readonly</li>
+          <li>First-class callable: <code>strlen(...)</code> thay cho <code>fn($s) => strlen($s)</code></li>
+          <li>PHP 8.3: <code>json_validate()</code>, Typed class constants</li>
+        </ul>
+      </div>
+      <div class="ex-work">
+        <h3>💻 Code mẫu</h3>
+        <div id="code-highlight">
+          <pre id="code-raw" style="display:none">&lt;?php
+// ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+// Fibers (PHP 8.1) – Coroutines
+// ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+$fiber = new Fiber(function(): string {
+    $val1 = Fiber::suspend('Fiber tạm dừng lần 1');
+    echo "Fiber nhận: $val1&lt;br&gt;";
+    $val2 = Fiber::suspend('Fiber tạm dừng lần 2');
+    echo "Fiber nhận: $val2&lt;br&gt;";
+    return 'Fiber hoàn thành';
+});
+
+$v1 = $fiber-&gt;start();             // bắt đầu chạy đến suspend đầu tiên
+echo "Main nhận: $v1&lt;br&gt;";
+$v2 = $fiber-&gt;resume('Dữ liệu A'); // tiếp tục đến suspend tiếp theo
+echo "Main nhận: $v2&lt;br&gt;";
+$fiber-&gt;resume('Dữ liệu B');       // tiếp tục đến kết thúc
+echo "Fiber return: " . $fiber-&gt;getReturn() . "&lt;br&gt;&lt;br&gt;";
+
+// ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+// Enums với methods và interface (PHP 8.1)
+// ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+enum TrangThaiDonHang: string {
+    case ChoXacNhan = 'pending';
+    case DangGiao   = 'shipping';
+    case HoanThanh  = 'completed';
+    case HuyBo      = 'cancelled';
+
+    public function label(): string {
+        return match($this) {
+            self::ChoXacNhan =&gt; '⏳ Chờ xác nhận',
+            self::DangGiao   =&gt; '🚚 Đang giao',
+            self::HoanThanh  =&gt; '✅ Hoàn thành',
+            self::HuyBo      =&gt; '❌ Đã hủy',
+        };
+    }
+    public function isTerminal(): bool {
+        return in_array($this, [self::HoanThanh, self::HuyBo]);
+    }
+    public static function fromLabel(string $label): self {
+        foreach (self::cases() as $case) {
+            if ($case-&gt;label() === $label) return $case;
+        }
+        throw new ValueError("Label không hợp lệ: $label");
+    }
+}
+
+$ts = TrangThaiDonHang::DangGiao;
+echo $ts-&gt;label() . "&lt;br&gt;";
+echo "Terminal: " . ($ts-&gt;isTerminal() ? "có" : "không") . "&lt;br&gt;";
+echo "Value: " . $ts-&gt;value . "&lt;br&gt;";
+
+// ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+// Readonly class (PHP 8.2)
+// ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+readonly class Money {
+    public function __construct(
+        public int    $amount,   // VND
+        public string $currency = 'VND',
+    ) {}
+    public function add(Money $other): self {
+        if ($this-&gt;currency !== $other-&gt;currency) throw new InvalidArgumentException("Khác tiền tệ");
+        return new self($this-&gt;amount + $other-&gt;amount, $this-&gt;currency);
+    }
+    public function format(): string {
+        return number_format($this-&gt;amount, 0, ',', '.') . ' ' . $this-&gt;currency;
+    }
+}
+
+$gia = new Money(150_000);
+$phi = new Money(15_000);
+$tong = $gia-&gt;add($phi);
+echo $tong-&gt;format() . "&lt;br&gt;";  // 165.000 VND
+
+// ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+// First-class callable (PHP 8.1)
+// ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+$cac_ten = ['Bình', 'an', 'CÚC', 'dũng'];
+$chuan_hoa = array_map(mb_strtolower(...), $cac_ten);     // first-class callable
+echo implode(', ', $chuan_hoa) . "&lt;br&gt;";
+
+$chuan_hoa2 = array_map(ucfirst(...), $chuan_hoa);
+echo implode(', ', $chuan_hoa2) . "&lt;br&gt;";
+
+// ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+// json_validate (PHP 8.3)
+// ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+if (function_exists('json_validate')) {
+    var_dump(json_validate('{"name":"An","age":20}'));   // true
+    var_dump(json_validate('{invalid json}'));             // false
+} else {
+    echo "json_validate cần PHP 8.3+&lt;br&gt;";
+}</pre>
+        </div>
+      </div>
+    </div>
+  </div>
+  <a href="../index.html" class="btn-back">&#8592; Quay lại Module 2</a>
+  <script type="module">
+    import { codeToHtml } from 'https://esm.sh/shiki@1';
+    const raw = document.getElementById('code-raw').textContent;
+    const highlighted = await codeToHtml(raw, { lang: 'php', theme: 'github-dark' });
+    document.getElementById('code-highlight').innerHTML = highlighted;
+    const pre = document.getElementById('code-highlight').querySelector('pre');
+    if (pre) pre.style.cssText = 'border-radius:10px;padding:20px;font-size:0.87rem;overflow-x:auto;margin:0;line-height:1.7';
+  </script>
+</body>
+</html>

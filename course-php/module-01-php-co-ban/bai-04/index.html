@@ -1,0 +1,110 @@
+<!DOCTYPE html>
+<html lang="vi">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <meta name="keywords" content="PHP,Lập trình PHP,Web,NenTang,Bài tập PHP,PHP cơ bản">
+  <meta name="author" content="Dương Nguyễn Phú Cường">
+  <meta name="description" content="Dùng các hàm xử lý chuỗi phổ biến của PHP để thao tác với văn bản.">
+  <meta property="og:locale" content="vi_VN">
+  <meta property="og:type" content="website">
+  <meta property="og:title" content="Bài 04 – Xử Lý Chuỗi (String Functions) | NenTang.vn">
+  <meta property="og:description" content="Dùng các hàm xử lý chuỗi phổ biến của PHP để thao tác với văn bản.">
+  <meta property="og:url" content="https://nentang.vn/">
+  <meta property="og:site_name" content="Nền tảng Kiến thức">
+  <title>Bài 04 – Xử Lý Chuỗi (String Functions) | NenTang.vn</title>
+  <link rel="stylesheet" href="../../shared.css" />
+</head>
+<body>
+  <div class="page-header module-php-1">
+    <div class="breadcrumb">
+      <a href="../../index.html">PHP Course</a> &rsaquo;
+      <a href="../index.html">Module 1</a> &rsaquo; Bài 04
+    </div>
+    <h1>Bài 04: Xử Lý Chuỗi (String Functions)</h1>
+    <p>Module 1 – PHP Cơ Bản</p>
+  </div>
+
+  <div class="exercise-page">
+    <div class="exercise-box">
+      <div class="ex-head">
+        <h1>📝 Yêu cầu bài tập</h1>
+        <p>Dùng các hàm xử lý chuỗi phổ biến của PHP để thao tác với văn bản.</p>
+      </div>
+      <div class="ex-desc">
+        <h3>Yêu cầu</h3>
+        <ul>
+          <li>Đếm độ dài chuỗi, chuyển HOA/thường</li>
+          <li>Cắt khoảng trắng, tìm kiếm trong chuỗi</li>
+          <li>Thay thế chuỗi con, cắt chuỗi</li>
+          <li>Định dạng chuỗi với <code>sprintf</code></li>
+          <li>Tách chuỗi thành mảng và ngược lại</li>
+        </ul>
+        <h3>🧠 Kiến thức cần nhớ</h3>
+        <ul>
+          <li><code>strlen($s)</code>: độ dài chuỗi; <code>mb_strlen($s)</code>: đếm đúng Unicode/tiếng Việt</li>
+          <li><code>strtolower()</code> / <code>strtoupper()</code> — chuyển hoa/thường</li>
+          <li><code>trim()</code> cắt đầu cuối; <code>ltrim()</code> / <code>rtrim()</code> cắt trái/phải</li>
+          <li><code>str_replace($tim, $thay, $str)</code> — thay thế chuỗi con</li>
+          <li><code>explode($sep, $str)</code> → array; <code>implode($sep, $arr)</code> → string</li>
+        </ul>
+      </div>
+      <div class="ex-work">
+        <h3>💻 Code mẫu</h3>
+        <div id="code-highlight">
+          <pre id="code-raw" style="display:none">&lt;?php
+$chuoi = "  Chào mừng bạn đến với PHP!  ";
+
+// ── Độ dài và khoảng trắng ────────
+echo strlen($chuoi) . "&lt;br&gt;";       // đếm byte (sai với UTF-8)
+echo mb_strlen($chuoi) . "&lt;br&gt;";    // đếm ký tự đúng (UTF-8)
+$sach = trim($chuoi);               // cắt đầu cuối
+echo strlen($sach) . "&lt;br&gt;";
+
+// ── Hoa / Thường ──────────────────
+$ten = "nguyen van A";
+echo strtoupper($ten) . "&lt;br&gt;";   // NGUYEN VAN A
+echo strtolower($ten) . "&lt;br&gt;";   // nguyen van a
+echo ucfirst($ten)    . "&lt;br&gt;";   // Nguyen van A
+echo ucwords($ten)    . "&lt;br&gt;";   // Nguyen Van A
+
+// ── Tìm kiếm ─────────────────────
+$str = "PHP là ngôn ngữ phổ biến";
+echo strpos($str, "ngôn ngữ") . "&lt;br&gt;";   // vị trí (byte)
+echo (str_contains($str, "PHP") ? "Có PHP&lt;br&gt;" : "Không có&lt;br&gt;");  // PHP 8+
+echo substr_count($str, "n") . "&lt;br&gt;";    // đếm lần xuất hiện của "n"
+
+// ── Thay thế ─────────────────────
+$html = "&lt;h1&gt;Tiêu đề&lt;/h1&gt;&lt;p&gt;Nội dung&lt;/p&gt;";
+echo strip_tags($html) . "&lt;br&gt;";             // bỏ thẻ HTML
+echo str_replace("PHP", "Python", $str) . "&lt;br&gt;";
+
+// ── Cắt chuỗi ────────────────────
+echo substr($str, 0, 10) . "...&lt;br&gt;";   // 10 ký tự đầu
+
+// ── sprintf (định dạng) ───────────
+$gia = 1250000;
+$ten_sp = "Áo thun";
+echo sprintf("Sản phẩm: %s – Giá: %s đồng&lt;br&gt;", $ten_sp, number_format($gia, 0, ',', '.'));
+
+// ── explode / implode ─────────────
+$emails = "a@x.com,b@x.com,c@x.com";
+$arr    = explode(",", $emails);     // tách thành array
+echo count($arr) . " email&lt;br&gt;";
+$lai  = implode(" | ", $arr);       // ghép lại
+echo $lai . "&lt;br&gt;";</pre>
+        </div>
+      </div>
+    </div>
+  </div>
+  <a href="../index.html" class="btn-back">&#8592; Quay lại Module 1</a>
+  <script type="module">
+    import { codeToHtml } from 'https://esm.sh/shiki@1';
+    const raw = document.getElementById('code-raw').textContent;
+    const highlighted = await codeToHtml(raw, { lang: 'php', theme: 'github-dark' });
+    document.getElementById('code-highlight').innerHTML = highlighted;
+    const pre = document.getElementById('code-highlight').querySelector('pre');
+    if (pre) pre.style.cssText = 'border-radius:10px;padding:20px;font-size:0.87rem;overflow-x:auto;margin:0;line-height:1.7';
+  </script>
+</body>
+</html>

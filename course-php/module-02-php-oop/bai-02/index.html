@@ -1,0 +1,140 @@
+<!DOCTYPE html>
+<html lang="vi">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <meta name="keywords" content="PHP OOP,PDO,MySQL,NenTang,Lập trình PHP nâng cao">
+  <meta name="author" content="Dương Nguyễn Phú Cường">
+  <meta name="description" content="Xây dựng hệ thống phân cấp class với kế thừa – tái sử dụng và mở rộng code.">
+  <meta property="og:locale" content="vi_VN">
+  <meta property="og:type" content="website">
+  <meta property="og:title" content="Bài 02 – OOP – Kế Thừa (Inheritance) | NenTang.vn">
+  <meta property="og:description" content="Xây dựng hệ thống phân cấp class với kế thừa – tái sử dụng và mở rộng code.">
+  <meta property="og:url" content="https://nentang.vn/">
+  <meta property="og:site_name" content="Nền tảng Kiến thức">
+  <title>Bài 02 – OOP – Kế Thừa (Inheritance) | NenTang.vn</title>
+  <link rel="stylesheet" href="../../shared.css" />
+</head>
+<body>
+  <div class="page-header module-php-2">
+    <div class="breadcrumb">
+      <a href="../../index.html">PHP Course</a> &rsaquo;
+      <a href="../index.html">Module 2</a> &rsaquo; Bài 02
+    </div>
+    <h1>Bài 02: OOP – Kế Thừa (Inheritance)</h1>
+    <p>Module 2 – PHP OOP &amp; Nâng Cao</p>
+  </div>
+
+  <div class="exercise-page">
+    <div class="exercise-box">
+      <div class="ex-head">
+        <h1>📝 Yêu cầu bài tập</h1>
+        <p>Xây dựng hệ thống phân cấp class với kế thừa – tái sử dụng và mở rộng code.</p>
+      </div>
+      <div class="ex-desc">
+        <h3>Yêu cầu</h3>
+        <ul>
+          <li>Tạo class cha <code>Nguoi</code> với thuộc tính chung</li>
+          <li>Tạo class con <code>SinhVien</code> và <code>GiaoVien</code> kế thừa</li>
+          <li>Dùng <code>parent::__construct()</code> gọi constructor cha</li>
+          <li>Override phương thức trong class con</li>
+          <li>Dùng <code>final</code> ngăn kế thừa/override</li>
+        </ul>
+        <h3>🧠 Kiến thức cần nhớ</h3>
+        <ul>
+          <li><code>class Con extends Cha { }</code>: kế thừa</li>
+          <li><code>parent::method()</code>: gọi phương thức của class cha</li>
+          <li>Override: định nghĩa lại phương thức cha trong class con</li>
+          <li><code>final class Foo</code>: không thể extends; <code>final public function</code>: không được override</li>
+          <li><code>abstract class</code>: class cha có phương thức trừu tượng (abstract method) bắt con phải implement</li>
+        </ul>
+      </div>
+      <div class="ex-work">
+        <h3>💻 Code mẫu</h3>
+        <div id="code-highlight">
+          <pre id="code-raw" style="display:none">&lt;?php
+// ── Class cha ─────────────────────
+abstract class Nguoi {
+    public function __construct(
+        protected string $ho_ten,
+        protected int    $tuoi,
+        protected string $email,
+    ) {}
+
+    // Phương thức chung
+    public function thongTin(): string {
+        return "{$this-&gt;ho_ten} ({$this-&gt;tuoi} tuổi) – {$this-&gt;email}";
+    }
+
+    // Abstract method: bắt buộc class con phải implement
+    abstract public function vaiTro(): string;
+
+    // __toString
+    public function __toString(): string {
+        return "[{$this-&gt;vaiTro()}] " . $this-&gt;thongTin();
+    }
+}
+
+// ── Class con: Sinh viên ───────────
+class SinhVien extends Nguoi {
+    public function __construct(
+        string $ho_ten, int $tuoi, string $email,
+        private string $ma_sv,
+        private float  $diem_tb,
+    ) {
+        parent::__construct($ho_ten, $tuoi, $email);  // gọi cha
+    }
+
+    public function vaiTro(): string { return "Sinh viên"; }
+
+    // Override thongTin()
+    public function thongTin(): string {
+        return parent::thongTin() . " | MSV: {$this-&gt;ma_sv} | GPA: {$this-&gt;diem_tb}";
+    }
+}
+
+// ── Class con: Giáo viên ──────────
+class GiaoVien extends Nguoi {
+    public function __construct(
+        string $ho_ten, int $tuoi, string $email,
+        private string $mon_day,
+        private float  $luong,
+    ) {
+        parent::__construct($ho_ten, $tuoi, $email);
+    }
+
+    public function vaiTro(): string { return "Giáo viên"; }
+
+    public function thongTin(): string {
+        return parent::thongTin() . " | Môn: {$this-&gt;mon_day} | Lương: " . number_format($this-&gt;luong, 0, ',', '.') . "đ";
+    }
+}
+
+// ── Sử dụng ──────────────────────
+$sv = new SinhVien("Nguyễn An", 20, "an@sv.edu.vn", "SV001", 8.5);
+$gv = new GiaoVien("Cô Hoa",   35, "hoa@gv.edu.vn", "Toán", 15_000_000);
+
+$ds_nguoi = [$sv, $gv];
+foreach ($ds_nguoi as $n) {
+    echo $n . "&lt;br&gt;";
+}
+
+// instanceof kiểm tra kiểu
+var_dump($sv instanceof SinhVien);  // true
+var_dump($sv instanceof Nguoi);     // true
+var_dump($gv instanceof SinhVien);  // false</pre>
+        </div>
+      </div>
+    </div>
+  </div>
+  <a href="../index.html" class="btn-back">&#8592; Quay lại Module 2</a>
+  <script type="module">
+    import { codeToHtml } from 'https://esm.sh/shiki@1';
+    const raw = document.getElementById('code-raw').textContent;
+    const highlighted = await codeToHtml(raw, { lang: 'php', theme: 'github-dark' });
+    document.getElementById('code-highlight').innerHTML = highlighted;
+    const pre = document.getElementById('code-highlight').querySelector('pre');
+    if (pre) pre.style.cssText = 'border-radius:10px;padding:20px;font-size:0.87rem;overflow-x:auto;margin:0;line-height:1.7';
+  </script>
+</body>
+</html>

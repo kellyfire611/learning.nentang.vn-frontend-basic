@@ -1,0 +1,209 @@
+<!DOCTYPE html>
+<html lang="vi">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <meta name="description" content="Xây dựng tính năng giỏ hàng với session, quản lý đơn hàng và giả lập thanh toán.">
+  <meta name="author" content="Dương Nguyễn Phú Cường">
+  <meta property="og:locale" content="vi_VN">
+  <meta property="og:type" content="website">
+  <meta property="og:title" content="Đồ Án 3: Giỏ Hàng và Thanh Toán (Shopping Cart) | NenTang.vn">
+  <meta property="og:url" content="https://nentang.vn/">
+  <meta property="og:site_name" content="Nền tảng Kiến thức">
+  <title>Đồ Án 3: Giỏ Hàng và Thanh Toán (Shopping Cart) | NenTang.vn</title>
+  <link rel="stylesheet" href="../../shared.css" />
+</head>
+<body>
+  <div class="page-header module-php-p">
+    <div class="breadcrumb">
+      <a href="../../index.html">PHP Course</a> &rsaquo;
+      <a href="../index.html">Đồ Án</a> &rsaquo; Dự Án 3
+    </div>
+    <h1>🏗️ Đồ Án 3: Giỏ Hàng và Thanh Toán (Shopping Cart)</h1>
+    <p>Module 4 – Đồ Án Tổng Hợp PHP</p>
+  </div>
+
+  <div class="exercise-page">
+    <div class="exercise-box">
+      <div class="ex-head">
+        <h1>📋 Mô Tả Dự Án</h1>
+        <p>Xây dựng tính năng giỏ hàng với session, quản lý đơn hàng và giả lập thanh toán.</p>
+      </div>
+      <div class="ex-desc">
+        <h3>✅ Tính năng cần xây dựng</h3>
+        <ul>
+          <li>Giỏ hàng mưu trú trong Session</li>
+          <li>CRUD cart: thêm, cập nhật SL, xóa item</li>
+          <li>Kiểm tra tồn kho trước khi thêm giỏ</li>
+          <li>Tính tiền: giá gốc, giảm giá, phí ship</li>
+          <li>Đặt hàng: lưu vào DB trong transaction</li>
+          <li>Lịch sử đơn hàng của khách</li>
+        </ul>
+        <h3>🧠 Kiến thức áp dụng</h3>
+        <ul>
+          <li>Session cart: <code>$_SESSION['cart'][$sp_id] = ['qty'=>N,'price'=>P]</code></li>
+          <li>SHould verify stock khi checkout (double-check – không chỉ frontend)</li>
+          <li>Coupon code: bảng <code>coupons</code> với % hoặc fixed discount</li>
+          <li>Order status: pending → confirmed → shipping → delivered → completed</li>
+          <li>Webhook: nhận callback từ cổng thanh toán (VNPay, Momo, Stripe)</li>
+        </ul>
+      </div>
+      <div class="ex-work">
+        <h3>💻 Code mẫu / Kiến trúc tham khảo</h3>
+        <div id="code-highlight">
+          <pre id="code-raw" style="display:none">&lt;?php
+// ════════════════════════════════════
+// ĐỒ ÁN 3: SHOPPING CART
+// ════════════════════════════════════
+session_start();
+
+class ShoppingCart {
+    private const SESSION_KEY = 'cart';
+
+    // ─── Thêm vào giỏ ────────────
+    public static function add(int $sp_id, int $so_luong, PDO $pdo): void {
+        // Kiểm tra sản phẩm tồn tại và còn hàng
+        $stmt = $pdo-&gt;prepare("SELECT id, ten, gia, gia_km, so_luong FROM san_pham WHERE id=? AND active=1");
+        $stmt-&gt;execute([$sp_id]);
+        $sp = $stmt-&gt;fetch();
+        if (!$sp) throw new NotFoundException("Sản phẩm không tồn tại");
+
+        $cart    = $_SESSION[self::SESSION_KEY] ?? [];
+        $qty_hien_tai = $cart[$sp_id]['qty'] ?? 0;
+        $qty_moi = $qty_hien_tai + $so_luong;
+
+        if ($qty_moi &gt; $sp['so_luong']) {
+            throw new RuntimeException("Chỉ còn {$sp['so_luong']} sản phẩm trong kho");
+        }
+        $cart[$sp_id] = [
+            'id'    =&gt; $sp_id,
+            'ten'   =&gt; $sp['ten'],
+            'gia'   =&gt; (float)($sp['gia_km'] ?? $sp['gia']),
+            'gia_goc' =&gt; (float)$sp['gia'],
+            'qty'   =&gt; $qty_moi,
+        ];
+        $_SESSION[self::SESSION_KEY] = $cart;
+    }
+
+    // ─── Cập nhật số lượng ────────
+    public static function update(int $sp_id, int $so_luong): void {
+        $cart = $_SESSION[self::SESSION_KEY] ?? [];
+        if ($so_luong &lt;= 0) { unset($cart[$sp_id]); }
+        else { $cart[$sp_id]['qty'] = $so_luong; }
+        $_SESSION[self::SESSION_KEY] = $cart;
+    }
+
+    // ─── Xóa item ────────────────
+    public static function remove(int $sp_id): void {
+        unset($_SESSION[self::SESSION_KEY][$sp_id]);
+    }
+
+    // ─── Xóa toàn bộ ─────────────
+    public static function clear(): void {
+        unset($_SESSION[self::SESSION_KEY]);
+    }
+
+    // ─── Lấy danh sách + tổng ─────
+    public static function getItems(): array {
+        return array_values($_SESSION[self::SESSION_KEY] ?? []);
+    }
+
+    // ─── Tính tổng tiền ──────────
+    public static function totals(?string $coupon_discount = null, string $tinh_thanh = 'HCM'): array {
+        $items = $_SESSION[self::SESSION_KEY] ?? [];
+        $tam_tinh = array_sum(array_map(fn($i) =&gt; $i['gia'] * $i['qty'], $items));
+        $giam_gia = 0;
+        if ($coupon_discount) {
+            // 'SAVE10' = 10%, 'FLAT50K' = 50000đ
+            if (str_ends_with($coupon_discount, '%')) {
+                $giam_gia = $tam_tinh * (float)rtrim($coupon_discount,'%') / 100;
+            } else {
+                $giam_gia = (float)$coupon_discount;
+            }
+        }
+        $sau_giam = max(0, $tam_tinh - $giam_gia);
+        $phi_ship = $sau_giam &gt;= 500_000 ? 0 : (in_array($tinh_thanh, ['HCM','HN']) ? 20_000 : 35_000);
+        return [
+            'items'     =&gt; count($items),
+            'tam_tinh'  =&gt; $tam_tinh,
+            'giam_gia'  =&gt; $giam_gia,
+            'sau_giam'  =&gt; $sau_giam,
+            'phi_ship'  =&gt; $phi_ship,
+            'tong_cong' =&gt; $sau_giam + $phi_ship,
+        ];
+    }
+
+    // ─── Checkout: lưu vào DB ─────
+    public static function checkout(PDO $pdo, array $khach_hang, ?string $coupon = null): int {
+        $totals = self::totals($coupon, $khach_hang['tinh_thanh'] ?? 'HCM');
+        if (empty($_SESSION[self::SESSION_KEY])) throw new RuntimeException("Giỏ hàng trống");
+
+        $pdo-&gt;beginTransaction();
+        try {
+            // 1. Tạo đơn hàng
+            $ma_don = 'ORD' . strtoupper(substr(md5(uniqid()), 0, 8));
+            $stmt = $pdo-&gt;prepare("
+                INSERT INTO don_hang (ma_don, ten_khach, sdt, email, dia_chi, tinh_thanh,
+                                      tam_tinh, giam_gia, phi_ship, tong_cong, coupon_code)
+                VALUES (:ma_don,:ten,:sdt,:email,:dia_chi,:tinh,:tam,:giam,:phi,:tong,:coupon)
+            ");
+            $stmt-&gt;execute([
+                ':ma_don' =&gt; $ma_don, ':ten' =&gt; $khach_hang['ho_ten'],
+                ':sdt'    =&gt; $khach_hang['sdt'], ':email' =&gt; $khach_hang['email'],
+                ':dia_chi'=&gt; $khach_hang['dia_chi'], ':tinh' =&gt; $khach_hang['tinh_thanh'],
+                ':tam'    =&gt; $totals['tam_tinh'], ':giam' =&gt; $totals['giam_gia'],
+                ':phi'    =&gt; $totals['phi_ship'],':tong' =&gt; $totals['tong_cong'],
+                ':coupon' =&gt; $coupon,
+            ]);
+            $don_id = (int)$pdo-&gt;lastInsertId();
+
+            // 2. Lưu chi tiết + trừ kho
+            $ins = $pdo-&gt;prepare("INSERT INTO chi_tiet_don (don_hang_id,san_pham_id,ten_sp,so_luong,don_gia) VALUES (?,?,?,?,?)");
+            $upd = $pdo-&gt;prepare("UPDATE san_pham SET so_luong = so_luong - ? WHERE id=? AND so_luong &gt;= ?");
+            foreach ($_SESSION[self::SESSION_KEY] as $item) {
+                $upd-&gt;execute([$item['qty'], $item['id'], $item['qty']]);
+                if ($upd-&gt;rowCount() === 0) throw new RuntimeException("Hết hàng: {$item['ten']}");
+                $ins-&gt;execute([$don_id, $item['id'], $item['ten'], $item['qty'], $item['gia']]);
+            }
+            $pdo-&gt;commit();
+            self::clear();
+            return $don_id;
+        } catch (Exception $e) {
+            $pdo-&gt;rollBack();
+            throw $e;
+        }
+    }
+}
+
+// ── Demo ──────────────────────────
+echo "=== Shopping Cart Demo ===&lt;br&gt;";
+$pdo = get_pdo();
+
+ShoppingCart::add(1, 2, $pdo);
+ShoppingCart::add(2, 1, $pdo);
+echo "Giỏ hàng: " . count(ShoppingCart::getItems()) . " loại&lt;br&gt;";
+
+$totals = ShoppingCart::totals('10%', 'HCM');
+echo "Tạm tính: " . number_format($totals['tam_tinh'],0,',','.') . "đ&lt;br&gt;";
+echo "Giảm giá: " . number_format($totals['giam_gia'],0,',','.') . "đ&lt;br&gt;";
+echo "Phí ship: " . number_format($totals['phi_ship'],0,',','.') . "đ&lt;br&gt;";
+echo "Tổng: " . number_format($totals['tong_cong'],0,',','.') . "đ&lt;br&gt;";
+
+ShoppingCart::update(1, 5); // cập nhật số lượng
+ShoppingCart::remove(2);    // xóa item
+echo "Sau chỉnh sửa: " . count(ShoppingCart::getItems()) . " loại&lt;br&gt;";</pre>
+        </div>
+      </div>
+    </div>
+  </div>
+  <a href="../index.html" class="btn-back">&#8592; Quay lại Đồ Án</a>
+  <script type="module">
+    import { codeToHtml } from 'https://esm.sh/shiki@1';
+    const raw = document.getElementById('code-raw').textContent;
+    const highlighted = await codeToHtml(raw, { lang: 'php', theme: 'github-dark' });
+    document.getElementById('code-highlight').innerHTML = highlighted;
+    const pre = document.getElementById('code-highlight').querySelector('pre');
+    if (pre) pre.style.cssText = 'border-radius:10px;padding:20px;font-size:0.87rem;overflow-x:auto;margin:0;line-height:1.7';
+  </script>
+</body>
+</html>

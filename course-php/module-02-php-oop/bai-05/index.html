@@ -1,0 +1,150 @@
+<!DOCTYPE html>
+<html lang="vi">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <meta name="keywords" content="PHP OOP,PDO,MySQL,NenTang,Lập trình PHP nâng cao">
+  <meta name="author" content="Dương Nguyễn Phú Cường">
+  <meta name="description" content="Kết nối MySQL với PDO và thực hiện các thao tác CRUD: Create, Read, Update, Delete.">
+  <meta property="og:locale" content="vi_VN">
+  <meta property="og:type" content="website">
+  <meta property="og:title" content="Bài 05 – PDO – Kết Nối và CRUD Cơ Bản | NenTang.vn">
+  <meta property="og:description" content="Kết nối MySQL với PDO và thực hiện các thao tác CRUD: Create, Read, Update, Delete.">
+  <meta property="og:url" content="https://nentang.vn/">
+  <meta property="og:site_name" content="Nền tảng Kiến thức">
+  <title>Bài 05 – PDO – Kết Nối và CRUD Cơ Bản | NenTang.vn</title>
+  <link rel="stylesheet" href="../../shared.css" />
+</head>
+<body>
+  <div class="page-header module-php-2">
+    <div class="breadcrumb">
+      <a href="../../index.html">PHP Course</a> &rsaquo;
+      <a href="../index.html">Module 2</a> &rsaquo; Bài 05
+    </div>
+    <h1>Bài 05: PDO – Kết Nối và CRUD Cơ Bản</h1>
+    <p>Module 2 – PHP OOP &amp; Nâng Cao</p>
+  </div>
+
+  <div class="exercise-page">
+    <div class="exercise-box">
+      <div class="ex-head">
+        <h1>📝 Yêu cầu bài tập</h1>
+        <p>Kết nối MySQL với PDO và thực hiện các thao tác CRUD: Create, Read, Update, Delete.</p>
+      </div>
+      <div class="ex-desc">
+        <h3>Yêu cầu</h3>
+        <ul>
+          <li>Tạo kết nối PDO đến MySQL với Exception handling</li>
+          <li>Tạo bảng và insert dữ liệu</li>
+          <li>Đọc dữ liệu bằng <code>query()</code> và <code>fetch()</code></li>
+          <li>Cập nhật và xóa bản ghi</li>
+          <li>Đếm, lọc, sắp xếp kết quả</li>
+        </ul>
+        <h3>🧠 Kiến thức cần nhớ</h3>
+        <ul>
+          <li><code>new PDO($dsn, $user, $pass, $options)</code>: kết nối database</li>
+          <li>PDO::ERRMODE_EXCEPTION: ném exception khi lỗi SQL</li>
+          <li><code>$pdo->query($sql)</code>: truy vấn không có tham số</li>
+          <li><code>$stmt->fetch(PDO::FETCH_ASSOC)</code>: lấy 1 hàng; <code>fetchAll()</code>: tất cả</li>
+          <li>LUÔN LUÔN dùng Prepared Statements để tránh SQL Injection</li>
+        </ul>
+      </div>
+      <div class="ex-work">
+        <h3>💻 Code mẫu</h3>
+        <div id="code-highlight">
+          <pre id="code-raw" style="display:none">&lt;?php
+// ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+// 1. Kết nối PDO
+// ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+$dsn = 'mysql:host=localhost;dbname=test_php;charset=utf8mb4';
+try {
+    $pdo = new PDO($dsn, 'root', '', [
+        PDO::ATTR_ERRMODE            =&gt; PDO::ERRMODE_EXCEPTION,
+        PDO::ATTR_DEFAULT_FETCH_MODE =&gt; PDO::FETCH_ASSOC,
+        PDO::ATTR_EMULATE_PREPARES   =&gt; false,
+    ]);
+    echo "✅ Kết nối thành công!&lt;br&gt;";
+} catch (PDOException $e) {
+    die("❌ Kết nối thất bại: " . $e-&gt;getMessage());
+}
+
+// ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+// 2. Tạo bảng (CREATE TABLE)
+// ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+$pdo-&gt;exec("
+    CREATE TABLE IF NOT EXISTS san_pham (
+        id         INT AUTO_INCREMENT PRIMARY KEY,
+        ten        VARCHAR(200) NOT NULL,
+        gia        DECIMAL(15,2) NOT NULL DEFAULT 0,
+        mo_ta      TEXT,
+        so_luong   INT DEFAULT 0,
+        created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP
+    ) ENGINE=InnoDB CHARSET=utf8mb4
+");
+
+// ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+// 3. INSERT (Prepared Statement)
+// ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+$stmt = $pdo-&gt;prepare("INSERT INTO san_pham (ten, gia, mo_ta, so_luong) VALUES (?, ?, ?, ?)");
+$data = [
+    ["Áo thun nam",      150_000, "Cotton 100%",     100],
+    ["Quần jeans",       450_000, "Slim fit",          50],
+    ["Giày thể thao",    850_000, "Đế cao su chống trượt", 30],
+    ["Mũ lưỡi trai",     120_000, "Chống nắng UV",     80],
+];
+foreach ($data as $row) {
+    $stmt-&gt;execute($row);
+}
+echo "Đã thêm " . count($data) . " sản phẩm&lt;br&gt;";
+
+// ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+// 4. SELECT tất cả
+// ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+$ds = $pdo-&gt;query("SELECT * FROM san_pham ORDER BY gia DESC")-&gt;fetchAll();
+echo "&lt;table border='1' style='border-collapse:collapse'&gt;";
+echo "&lt;tr&gt;&lt;th&gt;ID&lt;/th&gt;&lt;th&gt;Tên&lt;/th&gt;&lt;th&gt;Giá&lt;/th&gt;&lt;th&gt;Số lượng&lt;/th&gt;&lt;/tr&gt;";
+foreach ($ds as $sp) {
+    echo "&lt;tr&gt;&lt;td&gt;{$sp['id']}&lt;/td&gt;&lt;td&gt;{$sp['ten']}&lt;/td&gt;&lt;td&gt;" . number_format($sp['gia'],0,',','.') . "đ&lt;/td&gt;&lt;td&gt;{$sp['so_luong']}&lt;/td&gt;&lt;/tr&gt;";
+}
+echo "&lt;/table&gt;&lt;br&gt;";
+
+// ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+// 5. UPDATE
+// ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+$update = $pdo-&gt;prepare("UPDATE san_pham SET gia = ?, so_luong = ? WHERE id = ?");
+$update-&gt;execute([199_000, 120, 1]);
+echo "Cập nhật: " . $update-&gt;rowCount() . " hàng&lt;br&gt;";
+
+// ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+// 6. SELECT 1 hàng theo ID
+// ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+$find = $pdo-&gt;prepare("SELECT * FROM san_pham WHERE id = ?");
+$find-&gt;execute([1]);
+$sp = $find-&gt;fetch();
+echo "Sản phẩm #1: {$sp['ten']} – " . number_format($sp['gia'],0,',','.') . "đ&lt;br&gt;";
+
+// ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+// 7. DELETE
+// ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+$del = $pdo-&gt;prepare("DELETE FROM san_pham WHERE id = ?");
+$del-&gt;execute([4]);
+echo "Xóa: " . $del-&gt;rowCount() . " hàng&lt;br&gt;";
+
+// Đếm
+$total = $pdo-&gt;query("SELECT COUNT(*) FROM san_pham")-&gt;fetchColumn();
+echo "Còn lại: $total sản phẩm&lt;br&gt;";</pre>
+        </div>
+      </div>
+    </div>
+  </div>
+  <a href="../index.html" class="btn-back">&#8592; Quay lại Module 2</a>
+  <script type="module">
+    import { codeToHtml } from 'https://esm.sh/shiki@1';
+    const raw = document.getElementById('code-raw').textContent;
+    const highlighted = await codeToHtml(raw, { lang: 'php', theme: 'github-dark' });
+    document.getElementById('code-highlight').innerHTML = highlighted;
+    const pre = document.getElementById('code-highlight').querySelector('pre');
+    if (pre) pre.style.cssText = 'border-radius:10px;padding:20px;font-size:0.87rem;overflow-x:auto;margin:0;line-height:1.7';
+  </script>
+</body>
+</html>

@@ -1,0 +1,279 @@
+<!DOCTYPE html>
+<html lang="vi">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <meta name="description" content="Khóa học PHP từ cơ bản đến nâng cao: 60 bài tập + 6 đồ án thực chiến">
+  <meta name="author" content="Dương Nguyễn Phú Cường">
+  <meta property="og:locale" content="vi_VN">
+  <meta property="og:type" content="website">
+  <meta property="og:title" content="Học PHP Toàn Tập | NenTang.vn">
+  <meta property="og:url" content="https://nentang.vn/">
+  <meta property="og:site_name" content="Nền tảng Kiến thức">
+  <title>Học PHP Toàn Tập | NenTang.vn</title>
+  <link rel="stylesheet" href="shared.css" />
+  <style>
+    .course-intro {
+      max-width: 860px;
+      margin: 40px auto 0;
+      padding: 0 20px 60px;
+      font-family: 'Segoe UI', sans-serif;
+    }
+    .course-intro h2 {
+      font-size: 1.6rem;
+      color: #1a1a2e;
+      margin-bottom: 10px;
+    }
+    .course-intro p {
+      color: #555;
+      line-height: 1.7;
+      margin-bottom: 24px;
+    }
+    .module-cards {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(340px, 1fr));
+      gap: 22px;
+      margin-top: 10px;
+    }
+    .module-card {
+      border-radius: 14px;
+      overflow: hidden;
+      text-decoration: none;
+      display: flex;
+      flex-direction: column;
+      box-shadow: 0 4px 20px rgba(0,0,0,0.09);
+      transition: transform 0.2s, box-shadow 0.2s;
+    }
+    .module-card:hover { transform: translateY(-4px); box-shadow: 0 10px 32px rgba(0,0,0,0.14); }
+    .module-card .mc-header {
+      padding: 26px 28px 20px;
+      color: white;
+    }
+    .module-card.m1 .mc-header { background: linear-gradient(135deg, #667eea 0%, #e040fb 100%); }
+    .module-card.m2 .mc-header { background: linear-gradient(135deg, #1565C0 0%, #42a5f5 100%); }
+    .module-card.m3 .mc-header { background: linear-gradient(135deg, #e65100 0%, #ffcc02 100%); }
+    .module-card.mp .mc-header { background: linear-gradient(135deg, #1b5e20 0%, #66bb6a 100%); }
+    .mc-header .mc-icon { font-size: 2.4rem; margin-bottom: 6px; }
+    .mc-header h3 { font-size: 1.25rem; margin: 0 0 4px; font-weight: 700; }
+    .mc-header p { margin: 0; opacity: 0.92; font-size: 0.9rem; }
+    .mc-body {
+      padding: 20px 28px 22px;
+      background: white;
+      flex: 1;
+      display: flex;
+      flex-direction: column;
+      justify-content: space-between;
+    }
+    .mc-body ul {
+      list-style: none;
+      padding: 0; margin: 0 0 18px;
+      display: flex; flex-direction: column; gap: 6px;
+    }
+    .mc-body ul li {
+      font-size: 0.88rem;
+      color: #444;
+      padding-left: 20px;
+      position: relative;
+    }
+    .mc-body ul li::before { content: '✓'; position: absolute; left: 0; color: #4caf50; font-weight: 700; }
+    .mc-meta {
+      display: flex; gap: 14px; flex-wrap: wrap;
+    }
+    .mc-badge {
+      background: #f0f4ff;
+      border-radius: 20px;
+      padding: 4px 12px;
+      font-size: 0.8rem;
+      color: #5a5a8a;
+      font-weight: 600;
+    }
+    .mc-badge.proj { background: #e8f5e9; color: #2e7d32; }
+    .mc-btn {
+      display: inline-block;
+      margin-top: 16px;
+      padding: 9px 22px;
+      border-radius: 8px;
+      font-weight: 700;
+      font-size: 0.9rem;
+      text-decoration: none;
+      color: white;
+      transition: opacity 0.2s;
+    }
+    .mc-btn:hover { opacity: 0.85; }
+    .module-card.m1 .mc-btn { background: #667eea; }
+    .module-card.m2 .mc-btn { background: #1565C0; }
+    .module-card.m3 .mc-btn { background: #e65100; }
+    .module-card.mp .mc-btn { background: #2e7d32; }
+
+    .stats-bar {
+      display: flex;
+      gap: 30px;
+      flex-wrap: wrap;
+      background: #f8f9ff;
+      border-radius: 14px;
+      padding: 22px 28px;
+      margin-bottom: 32px;
+      border: 1px solid #e8e8f5;
+    }
+    .stat-item { text-align: center; }
+    .stat-num { font-size: 2rem; font-weight: 800; color: #3f51b5; }
+    .stat-lbl { font-size: 0.8rem; color: #888; margin-top: 2px; }
+
+    @media (max-width: 600px) {
+      .stats-bar { gap: 18px; padding: 18px; }
+      .stat-num { font-size: 1.5rem; }
+    }
+  </style>
+</head>
+<body>
+  <div class="course-header">
+    <div class="ch-inner">
+      <a href="../index.html" class="btn-back" style="margin-bottom:12px;display:inline-block">
+        &#8592; Trang chủ
+      </a>
+      <h1>🐘 Học PHP Toàn Tập</h1>
+      <p>Lộ trình từ cơ bản → OOP → MySQL → Đồ án dự án thực chiến</p>
+    </div>
+  </div>
+
+  <div class="course-intro">
+
+    <!-- Stats bar -->
+    <div class="stats-bar">
+      <div class="stat-item">
+        <div class="stat-num">60</div>
+        <div class="stat-lbl">Bài tập</div>
+      </div>
+      <div class="stat-item">
+        <div class="stat-num">6</div>
+        <div class="stat-lbl">Đồ án</div>
+      </div>
+      <div class="stat-item">
+        <div class="stat-num">3</div>
+        <div class="stat-lbl">Modules</div>
+      </div>
+      <div class="stat-item">
+        <div class="stat-num">PHP 8</div>
+        <div class="stat-lbl">Phiên bản</div>
+      </div>
+      <div class="stat-item">
+        <div class="stat-num">MySQL</div>
+        <div class="stat-lbl">Database</div>
+      </div>
+    </div>
+
+    <h2>📚 Nội dung khóa học</h2>
+    <p>Khóa học được thiết kế theo lộ trình từ dễ đến khó, phù hợp với người mới bắt đầu
+    lẫn người muốn củng cố kiến thức PHP back-end hiện đại.</p>
+
+    <!-- Module cards -->
+    <div class="module-cards">
+
+      <!-- Module 1 -->
+      <a href="module-01-php-co-ban/index.html" class="module-card m1">
+        <div class="mc-header">
+          <div class="mc-icon">🐘</div>
+          <h3>Module 1 – PHP Cơ Bản</h3>
+          <p>Nền tảng vững chắc cho mọi PHP developer</p>
+        </div>
+        <div class="mc-body">
+          <ul>
+            <li>Cú pháp, biến, kiểu dữ liệu</li>
+            <li>Hàm, mảng, vòng lặp, điều kiện</li>
+            <li>Form GET/POST, Session, Cookie</li>
+            <li>File I/O, JSON, Exception Handling</li>
+            <li>PHP 8 – match, named args, fibers</li>
+          </ul>
+          <div>
+            <div class="mc-meta">
+              <span class="mc-badge">25 bài tập</span>
+              <span class="mc-badge">Cơ bản</span>
+            </div>
+            <span class="mc-btn">Bắt đầu học →</span>
+          </div>
+        </div>
+      </a>
+
+      <!-- Module 2 -->
+      <a href="module-02-php-oop/index.html" class="module-card m2">
+        <div class="mc-header">
+          <div class="mc-icon">🏗️</div>
+          <h3>Module 2 – PHP OOP</h3>
+          <p>Lập trình hướng đối tượng và design patterns</p>
+        </div>
+        <div class="mc-body">
+          <ul>
+            <li>Class, Object, Kế thừa, Interface</li>
+            <li>PDO CRUD + Prepared Statements</li>
+            <li>Repository, Service, MVC Pattern</li>
+            <li>JWT Auth, Email, GD Image, Queue</li>
+            <li>PHPUnit, Middleware, WebSocket</li>
+          </ul>
+          <div>
+            <div class="mc-meta">
+              <span class="mc-badge">20 bài tập</span>
+              <span class="mc-badge">Trung cấp</span>
+            </div>
+            <span class="mc-btn">Bắt đầu học →</span>
+          </div>
+        </div>
+      </a>
+
+      <!-- Module 3 -->
+      <a href="module-03-php-mysql/index.html" class="module-card m3">
+        <div class="mc-header">
+          <div class="mc-icon">🗄️</div>
+          <h3>Module 3 – PHP &amp; MySQL Thực Chiến</h3>
+          <p>Làm chủ database và ứng dụng thực tế</p>
+        </div>
+        <div class="mc-body">
+          <ul>
+            <li>Thiết kế DB, ERD, INSERT bulk</li>
+            <li>JOIN nhiều bảng, Full-text search</li>
+            <li>Phân trang, Stored Procedures</li>
+            <li>Upload media, cURL API client</li>
+            <li>Query optimization, INDEX, EXPLAIN</li>
+          </ul>
+          <div>
+            <div class="mc-meta">
+              <span class="mc-badge">15 bài tập</span>
+              <span class="mc-badge">Nâng cao</span>
+            </div>
+            <span class="mc-btn">Bắt đầu học →</span>
+          </div>
+        </div>
+      </a>
+
+      <!-- Projects -->
+      <a href="module-04-do-an/index.html" class="module-card mp">
+        <div class="mc-header">
+          <div class="mc-icon">🏆</div>
+          <h3>Đồ Án PHP Tổng Hợp</h3>
+          <p>6 dự án thực chiến – áp dụng toàn bộ kiến thức</p>
+        </div>
+        <div class="mc-body">
+          <ul>
+            <li>Auth System: login/register/JWT/email</li>
+            <li>Blog CRUD: bài viết, tags, comments</li>
+            <li>Shopping Cart + Thanh toán</li>
+            <li>RESTful API (Todo App) + OpenAPI</li>
+            <li>Quản lý Sinh Viên + GPA Report</li>
+          </ul>
+          <div>
+            <div class="mc-meta">
+              <span class="mc-badge proj">6 đồ án</span>
+              <span class="mc-badge proj">Thực chiến</span>
+            </div>
+            <span class="mc-btn">Xem đồ án →</span>
+          </div>
+        </div>
+      </a>
+
+    </div>
+
+    <p style="margin-top:32px;color:#888;font-size:0.88rem;text-align:center">
+      Tất cả code mẫu được hiển thị với <strong>Shiki syntax highlighting</strong> ngôn ngữ PHP.
+    </p>
+  </div>
+</body>
+</html>

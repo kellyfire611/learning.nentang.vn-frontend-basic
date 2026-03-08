@@ -1,0 +1,189 @@
+<!DOCTYPE html>
+<html lang="vi">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <meta name="keywords" content="Nền tảng,HTML,CSS,JavaScript,Lập trình,Web,Kiến thức,Đồ án">
+  <meta name="author" content="Dương Nguyễn Phú Cường">
+  <meta name="description" content="Xây dựng trang blog cá nhân hoàn chỉnh với danh sách bài viết, sidebar và phân trang.">
+  <meta property="og:locale" content="vi_VN">
+  <meta property="og:type" content="website">
+  <meta property="og:title" content="Bài 31 – Đồ Án: Trang Blog Cá Nhân | NenTang.vn">
+  <meta property="og:description" content="Xây dựng trang blog cá nhân hoàn chỉnh với danh sách bài viết, sidebar và phân trang.">
+  <meta property="og:url" content="https://nentang.vn/">
+  <meta property="og:site_name" content="Nền tảng Kiến thức">
+  <title>Bài 31 – Đồ Án: Trang Blog Cá Nhân | NenTang.vn</title>
+  <link rel="stylesheet" href="../../shared.css" />
+</head>
+<body>
+  <div class="page-header module-1">
+    <div class="breadcrumb">
+      <a href="../../index.html">Trang Chủ</a> &rsaquo;
+      <a href="../index.html">Module 1</a> &rsaquo; Bài 31
+    </div>
+    <h1>Bài 31: Đồ Án: Trang Blog Cá Nhân</h1>
+    <p>Module 1 – HTML Cơ Bản &nbsp;|&nbsp; 🏆 Bài Đồ Án Tổng Hợp</p>
+  </div>
+
+  <div class="exercise-page">
+    <div class="exercise-box">
+      <div class="ex-head">
+        <h1>🏆 Đồ Án: Đồ Án: Trang Blog Cá Nhân</h1>
+        <p>Xây dựng trang blog cá nhân hoàn chỉnh với danh sách bài viết, sidebar và phân trang.</p>
+      </div>
+      <div class="ex-desc">
+        <h3>Mô tả dự án</h3>
+        <p>Trang blog là dự án thực tế giúp bạn tổng hợp toàn bộ kiến thức HTML: 
+   cấu trúc semantic, danh sách, liên kết, hình ảnh, bảng và form. 
+   Blog cần có layout 2 cột (nội dung chính + sidebar), các thẻ bài viết, 
+   và form đăng ký nhận tin tức.</p>
+        <h3>📋 Yêu cầu chi tiết</h3>
+        <ul>
+          <li>Tạo header với logo, tên blog và nav điều hướng (Trang Chủ, Về tôi, Liên Hệ)</li>
+          <li>Tạo layout 2 cột dùng thẻ &lt;main&gt; và &lt;aside&gt; (tỷ lệ 70/30)</li>
+          <li>Trong main: liệt kê 3 bài viết, mỗi bài có ảnh thumbnail, tiêu đề h2, tóm tắt, ngày đăng, link <em>Đọc thêm</em></li>
+          <li>Trong aside: widget danh mục, widget bài viết mới nhất (dùng ul/li), widget tag cloud</li>
+          <li>Thêm phân trang (1, 2, 3 ... Tiếp theo) ở dưới danh sách bài viết</li>
+          <li>Tạo footer với bản quyền, liên kết mạng xã hội (dùng ký tự entity ✉ ✦)</li>
+          <li>Thêm form đăng ký nhận bản tin (email input + button Subscribe)</li>
+          <li>Áp dụng thẻ semantic: header, nav, main, article, section, aside, footer</li>
+        </ul>
+        <h3>🧠 Kiến thức tổng hợp áp dụng</h3>
+        <ul>
+          <li>Thẻ semantic: &lt;header&gt;, &lt;nav&gt;, &lt;main&gt;, &lt;article&gt;, &lt;section&gt;, &lt;aside&gt;, &lt;footer&gt;</li>
+          <li>Cấu trúc &lt;article&gt;: có &lt;header&gt;, &lt;figure&gt;, &lt;p&gt;, &lt;footer&gt; bên trong</li>
+          <li>Liên kết: &lt;a href&gt; điều hướng, target='_blank' mở tab mới</li>
+          <li>&lt;time datetime='2025-01-15'&gt; cho ngày tháng semantic</li>
+          <li>HTML entities: &amp;copy; cho ©, &amp;mdash; cho —</li>
+          <li>Form: &lt;form&gt;, &lt;input type='email'&gt;, &lt;button&gt;</li>
+        </ul>
+      </div>
+      <div class="ex-work">
+        <h3>💻 Code Skeleton – Khung sườn ban đầu để bắt đầu</h3>
+        <p style="color:#718096;font-size:0.88rem;margin-bottom:12px;">
+          📌 Đây là khung HTML cơ bản. Bạn cần tự điền nội dung, thêm CSS inline hoặc thẻ &lt;style&gt; để hoàn thiện theo yêu cầu.
+        </p>
+        <div id="code-highlight">
+          <pre id="code-raw" style="display:none">&lt;!DOCTYPE html&gt;
+&lt;html lang="vi"&gt;
+&lt;head&gt;
+  &lt;meta charset="UTF-8"&gt;
+  &lt;meta name="viewport" content="width=device-width, initial-scale=1.0"&gt;
+  &lt;title&gt;Blog Của Tôi&lt;/title&gt;
+  &lt;style&gt;
+    /* TODO: Thêm CSS của bạn vào đây */
+    body { font-family: Arial, sans-serif; margin: 0; padding: 0; }
+    .container { max-width: 1100px; margin: 0 auto; padding: 0 20px; }
+
+    /* Header */
+    header { background: #2c3e50; color: white; padding: 16px 0; }
+    nav a { color: white; margin: 0 12px; text-decoration: none; }
+
+    /* Layout 2 cột */
+    .layout { display: flex; gap: 32px; margin: 32px 0; }
+    main   { flex: 7; }   /* 70% */
+    aside  { flex: 3; }   /* 30% */
+
+    /* TODO: Bạn tự thêm style cho article card, aside widget, footer... */
+  &lt;/style&gt;
+&lt;/head&gt;
+&lt;body&gt;
+
+  &lt;!-- HEADER --&gt;
+  &lt;header&gt;
+    &lt;div class="container"&gt;
+      &lt;h1&gt;📝 Blog Lập Trình&lt;/h1&gt;
+      &lt;nav&gt;
+        &lt;a href="#"&gt;Trang Chủ&lt;/a&gt;
+        &lt;a href="#"&gt;Về Tôi&lt;/a&gt;
+        &lt;a href="#"&gt;Liên Hệ&lt;/a&gt;
+      &lt;/nav&gt;
+    &lt;/div&gt;
+  &lt;/header&gt;
+
+  &lt;!-- BODY LAYOUT --&gt;
+  &lt;div class="container layout"&gt;
+
+    &lt;!-- NỘI DUNG CHÍNH --&gt;
+    &lt;main&gt;
+      &lt;!-- TODO: Thêm 3 article bài viết vào đây --&gt;
+      &lt;article&gt;
+        &lt;header&gt;
+          &lt;h2&gt;&lt;a href="#"&gt;Tiêu đề bài viết 1&lt;/a&gt;&lt;/h2&gt;
+          &lt;time datetime="2025-03-01"&gt;01/03/2025&lt;/time&gt;
+        &lt;/header&gt;
+        &lt;figure&gt;
+          &lt;img src="https://picsum.photos/600/200" alt="Ảnh minh họa" width="100%"&gt;
+          &lt;figcaption&gt;Chú thích ảnh&lt;/figcaption&gt;
+        &lt;/figure&gt;
+        &lt;p&gt;Tóm tắt nội dung bài viết... Lorem ipsum dolor sit amet.&lt;/p&gt;
+        &lt;a href="#"&gt;Đọc thêm &amp;rarr;&lt;/a&gt;
+      &lt;/article&gt;
+
+      &lt;!-- TODO: Thêm bài viết 2 và 3 tương tự --&gt;
+
+      &lt;!-- Phân trang --&gt;
+      &lt;nav aria-label="Phân trang"&gt;
+        &lt;a href="#"&gt;&amp;laquo; Trước&lt;/a&gt;
+        &lt;a href="#" aria-current="page"&gt;1&lt;/a&gt;
+        &lt;a href="#"&gt;2&lt;/a&gt;
+        &lt;a href="#"&gt;3&lt;/a&gt;
+        &lt;a href="#"&gt;Tiếp &amp;raquo;&lt;/a&gt;
+      &lt;/nav&gt;
+    &lt;/main&gt;
+
+    &lt;!-- SIDEBAR --&gt;
+    &lt;aside&gt;
+      &lt;!-- Widget Danh Mục --&gt;
+      &lt;section&gt;
+        &lt;h3&gt;Danh Mục&lt;/h3&gt;
+        &lt;ul&gt;
+          &lt;li&gt;&lt;a href="#"&gt;HTML (12)&lt;/a&gt;&lt;/li&gt;
+          &lt;li&gt;&lt;a href="#"&gt;CSS (8)&lt;/a&gt;&lt;/li&gt;
+          &lt;li&gt;&lt;a href="#"&gt;JavaScript (15)&lt;/a&gt;&lt;/li&gt;
+        &lt;/ul&gt;
+      &lt;/section&gt;
+
+      &lt;!-- Widget Tags --&gt;
+      &lt;section&gt;
+        &lt;h3&gt;Tags&lt;/h3&gt;
+        &lt;!-- TODO: Thêm các tag --&gt;
+      &lt;/section&gt;
+
+      &lt;!-- Form đăng ký bản tin --&gt;
+      &lt;section&gt;
+        &lt;h3&gt;&amp;#128231; Nhận Bản Tin&lt;/h3&gt;
+        &lt;form&gt;
+          &lt;input type="email" placeholder="Email của bạn" required&gt;
+          &lt;button type="submit"&gt;Đăng Ký&lt;/button&gt;
+        &lt;/form&gt;
+      &lt;/section&gt;
+    &lt;/aside&gt;
+
+  &lt;/div&gt;&lt;!-- /.layout --&gt;
+
+  &lt;!-- FOOTER --&gt;
+  &lt;footer&gt;
+    &lt;div class="container"&gt;
+      &lt;p&gt;&amp;copy; 2025 Blog Của Tôi. All rights reserved.&lt;/p&gt;
+      &lt;!-- TODO: Thêm liên kết mạng xã hội --&gt;
+    &lt;/div&gt;
+  &lt;/footer&gt;
+
+&lt;/body&gt;
+&lt;/html&gt;</pre>
+        </div>
+      </div>
+    </div>
+  </div>
+  <a href="../index.html" class="btn-back" style="margin-top:20px;">&#8592; Quay lại</a>
+  <script type="module">
+    import { codeToHtml } from 'https://esm.sh/shiki@1';
+    const raw = document.getElementById('code-raw').textContent;
+    const highlighted = await codeToHtml(raw, { lang: 'html', theme: 'github-dark' });
+    document.getElementById('code-highlight').innerHTML = highlighted;
+    const pre = document.getElementById('code-highlight').querySelector('pre');
+    if (pre) pre.style.cssText = 'border-radius:10px;padding:20px;font-size:0.87rem;overflow-x:auto;margin:0;line-height:1.7';
+  </script>
+</body>
+</html>

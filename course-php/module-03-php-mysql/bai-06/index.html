@@ -1,0 +1,159 @@
+<!DOCTYPE html>
+<html lang="vi">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <meta name="description" content="Xây dựng tính năng tìm kiếm, lọc đa điều kiện và gợi ý từ khóa.">
+  <meta name="author" content="Dương Nguyễn Phú Cường">
+  <meta property="og:locale" content="vi_VN">
+  <meta property="og:type" content="website">
+  <meta property="og:title" content="Bài 06 – Tìm Kiếm và Lọc Nâng Cao | NenTang.vn">
+  <meta property="og:url" content="https://nentang.vn/">
+  <meta property="og:site_name" content="Nền tảng Kiến thức">
+  <title>Bài 06 – Tìm Kiếm và Lọc Nâng Cao | NenTang.vn</title>
+  <link rel="stylesheet" href="../../shared.css" />
+</head>
+<body>
+  <div class="page-header module-php-3">
+    <div class="breadcrumb">
+      <a href="../../index.html">PHP Course</a> &rsaquo;
+      <a href="../index.html">Module 3</a> &rsaquo; Bài 06
+    </div>
+    <h1>Bài 06: Tìm Kiếm và Lọc Nâng Cao</h1>
+    <p>Module 3 – PHP &amp; MySQL Thực Chiến</p>
+  </div>
+
+  <div class="exercise-page">
+    <div class="exercise-box">
+      <div class="ex-head">
+        <h1>📝 Yêu cầu bài tập</h1>
+        <p>Xây dựng tính năng tìm kiếm, lọc đa điều kiện và gợi ý từ khóa.</p>
+      </div>
+      <div class="ex-desc">
+        <h3>Yêu cầu</h3>
+        <ul>
+          <li>Lọc đa điều kiện: danh mục + khoảng giá + từ khóa</li>
+          <li>Dynamic WHERE clause an toàn không SQL injection</li>
+          <li>Sắp xếp theo nhiều tiêu chí</li>
+          <li>Autocomplete – gợi ý từ khóa</li>
+          <li>Full-text search với MATCH AGAINST</li>
+        </ul>
+        <h3>🧠 Kiến thức cần nhớ</h3>
+        <ul>
+          <li>Dynamic WHERE: build mảng <code>$where[]</code> và <code>$params[]</code> rồi join</li>
+          <li>Column name KHÔNG parameterize được → dùng whitelist validation</li>
+          <li><code>MATCH(col) AGAINST('keyword' IN BOOLEAN MODE)</code>: full-text index</li>
+          <li>Autocomplete: <code>SELECT DISTINCT ten FROM ... WHERE ten LIKE 'kw%' LIMIT 10</code></li>
+          <li>Relevance sorting: MATCH() trả về score, ORDER BY score DESC</li>
+        </ul>
+      </div>
+      <div class="ex-work">
+        <h3>💻 Code mẫu</h3>
+        <div id="code-highlight">
+          <pre id="code-raw" style="display:none">&lt;?php
+$pdo = get_pdo();
+
+// ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+// Hàm tìm kiếm đa điều kiện
+// ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+function search_san_pham(PDO $pdo, array $filters = [], int $page = 1, int $per_page = 6): array {
+    $where  = ['sp.active = 1', 'sp.deleted_at IS NULL'];
+    $params = [];
+
+    // Từ khóa
+    if (!empty($filters['q'])) {
+        $where[] = '(sp.ten LIKE :q OR sp.mo_ta LIKE :q)';
+        $params[':q'] = '%' . $filters['q'] . '%';
+    }
+    // Danh mục
+    if (!empty($filters['dm_id'])) {
+        $where[] = 'sp.danh_muc_id = :dm_id';
+        $params[':dm_id'] = (int)$filters['dm_id'];
+    }
+    // Khoảng giá
+    if (!empty($filters['gia_min'])) {
+        $where[]         = 'sp.gia &gt;= :gia_min';
+        $params[':gia_min'] = (float)$filters['gia_min'];
+    }
+    if (!empty($filters['gia_max'])) {
+        $where[]         = 'sp.gia &lt;= :gia_max';
+        $params[':gia_max'] = (float)$filters['gia_max'];
+    }
+    // Chỉ khuyến mãi
+    if (!empty($filters['km_only'])) {
+        $where[] = 'sp.gia_km IS NOT NULL AND sp.gia_km &lt; sp.gia';
+    }
+    // Còn hàng
+    if (!empty($filters['con_hang'])) {
+        $where[] = 'sp.so_luong &gt; 0';
+    }
+
+    // Sắp xếp (whitelist)
+    $sortable = ['gia' =&gt; 'sp.gia', 'ten' =&gt; 'sp.ten', 'luot_xem' =&gt; 'sp.luot_xem', 'moi' =&gt; 'sp.created_at'];
+    $sort_col = $sortable[$filters['sort'] ?? ''] ?? 'sp.created_at';
+    $sort_dir = ($filters['dir'] ?? '') === 'asc' ? 'ASC' : 'DESC';
+
+    $where_sql = implode(' AND ', $where);
+
+    // Đếm tổng
+    $count_stmt = $pdo-&gt;prepare("SELECT COUNT(*) FROM san_pham sp JOIN danh_muc dm ON dm.id = sp.danh_muc_id WHERE $where_sql");
+    $count_stmt-&gt;execute($params);
+    $total = (int)$count_stmt-&gt;fetchColumn();
+
+    // Dữ liệu trang
+    $offset = ($page - 1) * $per_page;
+    $stmt   = $pdo-&gt;prepare("
+        SELECT sp.id, sp.ten, sp.gia, sp.gia_km, sp.so_luong, sp.luot_xem,
+               dm.ten AS danh_muc
+        FROM san_pham sp
+        JOIN danh_muc dm ON dm.id = sp.danh_muc_id
+        WHERE $where_sql
+        ORDER BY $sort_col $sort_dir
+        LIMIT :limit OFFSET :offset
+    ");
+    $stmt-&gt;execute(array_merge($params, [':limit' =&gt; $per_page, ':offset' =&gt; $offset]));
+
+    return [
+        'items'      =&gt; $stmt-&gt;fetchAll(),
+        'total'      =&gt; $total,
+        'tong_trang' =&gt; (int)ceil($total / $per_page),
+        'trang'      =&gt; $page,
+    ];
+}
+
+// ── Test tìm kiếm ─────────────────
+$ket_qua = search_san_pham($pdo, [
+    'q'        =&gt; 'á',
+    'gia_min'  =&gt; 100_000,
+    'gia_max'  =&gt; 500_000,
+    'con_hang' =&gt; true,
+    'sort'     =&gt; 'gia',
+    'dir'      =&gt; 'asc',
+]);
+echo "Tìm thấy {$ket_qua['total']} sản phẩm (trang {$ket_qua['trang']}/{$ket_qua['tong_trang']}):&lt;br&gt;";
+foreach ($ket_qua['items'] as $sp) {
+    $gia = $sp['gia_km'] ? number_format($sp['gia_km'],0,',','.') . "đ 🔥" : number_format($sp['gia'],0,',','.') . "đ";
+    echo "• [{$sp['danh_muc']}] {$sp['ten']}: $gia (còn {$sp['so_luong']})&lt;br&gt;";
+}
+
+// ── Autocomplete gợi ý ────────────
+$ac_kw = 'á';
+$ac = $pdo-&gt;prepare("SELECT DISTINCT ten FROM san_pham WHERE ten LIKE ? AND active = 1 LIMIT 8");
+$ac-&gt;execute([$ac_kw . '%']);
+$suggestions = $ac-&gt;fetchAll(PDO::FETCH_COLUMN);
+echo "&lt;br&gt;Gợi ý '$ac_kw': " . implode(', ', $suggestions) . "&lt;br&gt;";</pre>
+        </div>
+      </div>
+    </div>
+  </div>
+  <a href="../index.html" class="btn-back">&#8592; Quay lại Module 3</a>
+  <script type="module">
+    import { codeToHtml } from 'https://esm.sh/shiki@1';
+    const raw = document.getElementById('code-raw').textContent;
+    const highlighted = await codeToHtml(raw, { lang: 'php', theme: 'github-dark' });
+    document.getElementById('code-highlight').innerHTML = highlighted;
+    const pre = document.getElementById('code-highlight').querySelector('pre');
+    if (pre) pre.style.cssText = 'border-radius:10px;padding:20px;font-size:0.87rem;overflow-x:auto;margin:0;line-height:1.7';
+  </script>
+</body>
+</html>
