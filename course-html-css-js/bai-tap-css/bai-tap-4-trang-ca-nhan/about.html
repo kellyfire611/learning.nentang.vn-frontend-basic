@@ -1,0 +1,177 @@
+<!DOCTYPE html>
+<html lang="vi">
+
+<head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <meta name="description" content="Trang giới thiệu bản thân - Bài tập 4 trang HTML/CSS3" />
+    <title>Giới thiệu | Bài tập 4 trang</title>
+    <link rel="stylesheet" href="css/styles.css" />
+</head>
+
+<body>
+
+    <!-- HEADER -->
+    <header class="site-header">
+        <div class="container">
+            <h1 class="logo">&#128100; Trang Cá Nhân</h1>
+            <nav>
+                <ul>
+                    <li><a href="index.html">Trang chủ</a></li>
+                    <li><a href="about.html" class="active">Giới thiệu</a></li>
+                    <li><a href="skills.html">Kỹ năng</a></li>
+                    <li><a href="contact.html">Liên hệ</a></li>
+                </ul>
+            </nav>
+        </div>
+    </header>
+
+    <!-- PAGE HERO -->
+    <div class="page-hero">
+        <h2>&#128203; Giới thiệu bản thân</h2>
+        <p>Thông tin cá nhân, học vấn và đôi điều chia sẻ về con người tôi</p>
+    </div>
+
+    <!-- ABOUT CONTENT -->
+    <section class="section">
+        <div class="container">
+            <div class="about-wrapper">
+
+                <!-- Avatar bên trái -->
+                <div class="about-avatar">
+                    <img
+                        src="../thiet-ke-khung-trinh-bay-san-pham-css3/img/hoa-1.jpg"
+                        alt="Ảnh đại diện"
+                        class="about-avatar-img"
+                    />
+                    <div class="about-avatar-name">Nguyễn Văn A</div>
+                    <div class="about-avatar-role">Sinh viên CNTT &mdash; Web Developer</div>
+
+                    <div style="margin-top:24px; display:flex; flex-direction:column; gap:10px;">
+                        <a href="contact.html" class="btn" style="text-align:center;">&#128231; Liên hệ tôi</a>
+                        <a href="skills.html" class="btn-outline" style="text-align:center;">&#128187; Xem kỹ năng</a>
+                    </div>
+                </div>
+
+                <!-- Thông tin bên phải -->
+                <div class="about-info">
+
+                    <h3>Thông tin sinh viên</h3>
+                    <table class="info-table">
+                        <tr>
+                            <td>&#127989; Họ và tên</td>
+                            <td>Nguyễn Văn A</td>
+                        </tr>
+                        <tr>
+                            <td>&#128203; Mã sinh viên</td>
+                            <td><strong style="color:#1a237e;">SV20260001</strong></td>
+                        </tr>
+                        <tr>
+                            <td>&#127979; Mã lớp</td>
+                            <td><strong style="color:#1a237e;">26CNTT01</strong></td>
+                        </tr>
+                        <tr>
+                            <td>&#127979; Khoa / Ngành</td>
+                            <td>Công nghệ Thông tin &mdash; Lập trình Web</td>
+                        </tr>
+                        <tr>
+                            <td>&#127979; Trường</td>
+                            <td>Đại học Công nghệ NenTang</td>
+                        </tr>
+                        <tr>
+                            <td>&#127963; Khóa học</td>
+                            <td>K2025 &mdash; Niên khóa 2025&ndash;2026</td>
+                        </tr>
+                        <tr>
+                            <td>&#128197; Ngày sinh</td>
+                            <td>01/01/2003</td>
+                        </tr>
+                        <tr>
+                            <td>&#127757; Quê quán</td>
+                            <td>TP. Cần Thơ</td>
+                        </tr>
+                        <tr>
+                            <td>&#128222; Số điện thoại</td>
+                            <td>0909 123 456</td>
+                        </tr>
+                        <tr>
+                            <td>&#128231; Email</td>
+                            <td>nguyenvana@email.com</td>
+                        </tr>
+                        <tr>
+                            <td>&#128279; Github</td>
+                            <td>github.com/nguyenvana</td>
+                        </tr>
+                    </table>
+
+                    <h3 style="margin-top:30px;">Giới thiệu thêm</h3>
+                    <div class="about-bio">
+                        <p>Tôi là sinh viên năm cuối ngành Công nghệ Thông tin, chuyên hướng <strong>Lập trình Web</strong>. Tôi có đam mê với việc xây dựng giao diện người dùng đẹp và trải nghiệm người dùng tốt.</p>
+                        <br />
+                        <p>Ngoài việc học tại trường, tôi thường xuyên tự học qua các nền tảng như <strong>Nentang.vn</strong>, YouTube và các tài liệu kỹ thuật online. Tôi đã hoàn thành nhiều bài tập thực hành về HTML, CSS, JavaScript và PHP.</p>
+                        <br />
+                        <p>Mục tiêu của tôi sau khi tốt nghiệp là làm <strong>Front-end Developer</strong> tại một công ty công nghệ tại TP. Cần Thơ, đóng góp vào những sản phẩm web thực sự có giá trị cho cộng đồng.</p>
+                    </div>
+
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- EDUCATION TIMELINE -->
+    <section class="section" style="background:#fff; padding-top:0;">
+        <div class="container">
+            <h2 class="section-title">Quá trình học tập</h2>
+            <div class="section-divider"></div>
+
+            <div style="max-width:700px; margin:0 auto; position:relative;">
+                <!-- Line -->
+                <div style="position:absolute; left:20px; top:0; bottom:0; width:3px; background:#e8eaf6; border-radius:2px;"></div>
+
+                <!-- Item 1 -->
+                <div style="display:flex; gap:28px; margin-bottom:32px; position:relative;">
+                    <div style="width:43px; height:43px; background:#3949ab; border-radius:50%; display:flex; align-items:center; justify-content:center; color:#fff; font-size:1.1rem; flex-shrink:0; z-index:1;">&#127891;</div>
+                    <div style="background:#f4f6f9; border-radius:8px; padding:16px 20px; flex:1; border-left:3px solid #3949ab;">
+                        <div style="font-weight:700; color:#1a237e; font-size:0.95rem;">Đại học Công nghệ NenTang</div>
+                        <div style="font-size:0.85rem; color:#5c6bc0; margin:4px 0;">2025 &ndash; 2026 &nbsp;|&nbsp; Cử nhân Công nghệ Thông tin</div>
+                        <div style="font-size:0.88rem; color:#555;">Chuyên ngành Lập trình Web. GPA: 3.2/4.0. Tham gia CLB Lập trình của trường.</div>
+                    </div>
+                </div>
+
+                <!-- Item 2 -->
+                <div style="display:flex; gap:28px; margin-bottom:32px; position:relative;">
+                    <div style="width:43px; height:43px; background:#5c6bc0; border-radius:50%; display:flex; align-items:center; justify-content:center; color:#fff; font-size:1.1rem; flex-shrink:0; z-index:1;">&#127979;</div>
+                    <div style="background:#f4f6f9; border-radius:8px; padding:16px 20px; flex:1; border-left:3px solid #5c6bc0;">
+                        <div style="font-weight:700; color:#1a237e; font-size:0.95rem;">THPT Châu Văn Liêm</div>
+                        <div style="font-size:0.85rem; color:#5c6bc0; margin:4px 0;">2018 &ndash; 2021 &nbsp;|&nbsp; Ban Khoa học Tự nhiên</div>
+                        <div style="font-size:0.88rem; color:#555;">Tốt nghiệp loại Khá. Đạt giải Ba môn Tin học cấp trường năm 2021.</div>
+                    </div>
+                </div>
+
+                <!-- Item 3 -->
+                <div style="display:flex; gap:28px; position:relative;">
+                    <div style="width:43px; height:43px; background:#7986cb; border-radius:50%; display:flex; align-items:center; justify-content:center; color:#fff; font-size:1.1rem; flex-shrink:0; z-index:1;">&#127970;</div>
+                    <div style="background:#f4f6f9; border-radius:8px; padding:16px 20px; flex:1; border-left:3px solid #7986cb;">
+                        <div style="font-weight:700; color:#1a237e; font-size:0.95rem;">Tự học Online</div>
+                        <div style="font-size:0.85rem; color:#5c6bc0; margin:4px 0;">2020 &ndash; nay &nbsp;|&nbsp; Nentang.vn, Udemy, YouTube</div>
+                        <div style="font-size:0.88rem; color:#555;">HTML/CSS, JavaScript, jQuery, PHP, Bootstrap. Hoàn thành 20+ khóa học thực hành.</div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- FOOTER -->
+    <footer class="site-footer">
+        <div class="container">
+            <p>© 2026 &mdash; Bài tập 4 trang HTML/CSS3 &nbsp;|&nbsp;
+                <a href="index.html">Trang chủ</a> &nbsp;·&nbsp;
+                <a href="about.html">Giới thiệu</a> &nbsp;·&nbsp;
+                <a href="skills.html">Kỹ năng</a> &nbsp;·&nbsp;
+                <a href="contact.html">Liên hệ</a>
+            </p>
+        </div>
+    </footer>
+
+</body>
+</html>

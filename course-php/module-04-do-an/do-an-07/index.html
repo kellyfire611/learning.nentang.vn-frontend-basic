@@ -1,0 +1,499 @@
+<!DOCTYPE html>
+<html lang="vi">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <meta name="description" content="Xây dựng website đọc truyện tranh online với hệ thống chapter, lượt xem, yêu thích và admin quản lý nội dung.">
+  <meta name="author" content="Dương Nguyễn Phú Cường">
+  <meta property="og:locale" content="vi_VN">
+  <meta property="og:type" content="website">
+  <meta property="og:title" content="Đồ Án 7: Website Truyện Tranh Online | NenTang.vn">
+  <meta property="og:url" content="https://nentang.vn/">
+  <meta property="og:site_name" content="Nền tảng Kiến thức">
+  <title>Đồ Án 7: Website Truyện Tranh Online | NenTang.vn</title>
+  <link rel="stylesheet" href="../../shared.css" />
+</head>
+<body>
+  <div class="page-header module-php-p">
+    <div class="breadcrumb">
+      <a href="../../index.html">PHP Course</a> &rsaquo;
+      <a href="../index.html">Đồ Án</a> &rsaquo; Dự Án 7
+    </div>
+    <h1>📚 Đồ Án 7: Website Truyện Tranh Online</h1>
+    <p>Module 4 – Đồ Án Tổng Hợp PHP</p>
+  </div>
+
+  <div class="exercise-page">
+    <div class="exercise-box">
+
+      <!-- Mô tả -->
+      <div class="ex-head">
+        <h1>📋 Mô Tả Dự Án</h1>
+        <p>Xây dựng website đọc truyện tranh online hoàn chỉnh với hệ thống chapter ảnh, lượt xem,
+           bình luận, yêu thích cho người dùng và trang Admin quản lý toàn bộ nội dung.
+           Database thiết kế đơn giản gồm 3 bảng lõi: <code>truyen</code>, <code>chuong</code>,
+           <code>chuong_hinhanh</code>.</p>
+      </div>
+
+      <!-- Tính năng -->
+      <div class="ex-desc">
+        <h3>🗄️ Database Schema (3 bảng lõi + mở rộng)</h3>
+        <ul>
+          <li><code>truyen</code> – thông tin truyện: tên, slug, ảnh bìa, tác giả, thể loại, mô tả, trạng thái, lượt xem</li>
+          <li><code>chuong</code> – mỗi chapter: truyen_id, số thứ tự, tiêu đề, ngày đăng</li>
+          <li><code>chuong_hinhanh</code> – mỗi ảnh trong chapter: chuong_id, đường dẫn file, thứ tự trang</li>
+          <li><code>the_loai</code> &amp; <code>truyen_the_loai</code> – many-to-many thể loại (Action, Romance, Fantasy…)</li>
+          <li><code>users</code> – tài khoản người đọc (đăng nhập để yêu thích, bình luận)</li>
+          <li><code>yeu_thich</code> – user_id + truyen_id (unique)</li>
+          <li><code>binh_luan</code> – bình luận theo chapter, hỗ trợ reply lồng nhau</li>
+          <li><code>lich_su_doc</code> – lưu chapter cuối user đã đọc mỗi bộ truyện</li>
+        </ul>
+
+        <h3>✅ Tính năng phía Người Dùng (Frontend)</h3>
+        <ul>
+          <li><strong>Trang chủ:</strong> truyện mới cập nhật, truyện hot (lượt xem cao), truyện theo thể loại</li>
+          <li><strong>Tìm kiếm:</strong> tìm theo tên, lọc theo thể loại, trạng thái (đang ra / hoàn thành), sắp xếp theo lượt xem / ngày cập nhật</li>
+          <li><strong>Trang chi tiết truyện:</strong> ảnh bìa, mô tả, danh sách chapter với ngày đăng, nút Đọc Mới Nhất / Đọc Từ Đầu</li>
+          <li><strong>Trang đọc chapter:</strong> hiển thị ảnh full-width tuần tự, điều hướng chapter trước/sau, lazy-load ảnh</li>
+          <li><strong>Lịch sử đọc:</strong> tự động lưu chapter cuối, tiếp tục đọc từ chỗ dừng</li>
+          <li><strong>Yêu thích:</strong> thêm/bỏ yêu thích (cần đăng nhập), trang quản lý danh sách yêu thích</li>
+          <li><strong>Bình luận:</strong> bình luận theo chapter, reply, phân trang bình luận</li>
+          <li><strong>Thể loại:</strong> trang liệt kê truyện theo từng tag thể loại</li>
+        </ul>
+
+        <h3>🛠️ Tính năng Admin Panel</h3>
+        <ul>
+          <li><strong>Dashboard:</strong> tổng số truyện, chapter, lượt xem, người dùng, biểu đồ top 10 truyện hot</li>
+          <li><strong>Quản lý Truyện:</strong> thêm/sửa/xóa truyện (tên, mô tả, ảnh bìa, thể loại, trạng thái)</li>
+          <li><strong>Quản lý Chapter:</strong> thêm chapter mới, sửa tiêu đề, xóa chapter và toàn bộ ảnh</li>
+          <li><strong>Upload Ảnh:</strong> upload nhiều ảnh cùng lúc, sắp xếp thứ tự trang bằng drag-and-drop, xóa từng trang</li>
+          <li><strong>Quản lý Thể Loại:</strong> CRUD thể loại, gắn thể loại cho truyện</li>
+          <li><strong>Quản lý Bình Luận:</strong> duyệt / xóa bình luận vi phạm</li>
+          <li><strong>Quản lý Users:</strong> xem danh sách, khóa/mở tài khoản</li>
+        </ul>
+
+        <h3>🧠 Kiến thức áp dụng</h3>
+        <ul>
+          <li>Slug URL thân thiện: <code>/truyen/one-piece/chuong-1100</code></li>
+          <li>Lazy-load ảnh chapter: dùng <code>loading="lazy"</code> hoặc IntersectionObserver JS</li>
+          <li>Upload nhiều file: <code>&lt;input type="file" multiple&gt;</code> + vòng lặp <code>$_FILES</code></li>
+          <li>Tăng lượt xem không bị F5 spam: dùng <code>Session</code> hoặc cookie đánh dấu đã xem</li>
+          <li>Truy vấn tối ưu: dùng <code>JOIN</code> lấy chapter mới nhất cùng lúc với query danh sách truyện</li>
+          <li>Many-to-many thể loại: bảng pivot + <code>GROUP_CONCAT</code> trong SQL</li>
+          <li>Phân quyền: middleware kiểm tra <code>$_SESSION['role'] === 'admin'</code></li>
+          <li>Xóa cascade: khi xóa truyện → xóa chapter → xóa ảnh (file + DB)</li>
+        </ul>
+      </div>
+
+      <!-- Code mẫu -->
+      <div class="ex-work">
+        <h3>💻 Code mẫu – Database &amp; Core Classes</h3>
+        <div id="code-highlight">
+          <pre id="code-raw" style="display:none">&lt;?php
+// ════════════════════════════════════
+// ĐỒ ÁN 7: WEBSITE TRUYỆN TRANH
+// ════════════════════════════════════
+
+// ══ DATABASE SCHEMA ══════════════════
+/*
+-- Bảng truyện
+CREATE TABLE truyen (
+    id          INT AUTO_INCREMENT PRIMARY KEY,
+    ten         VARCHAR(300) NOT NULL,
+    slug        VARCHAR(300) UNIQUE NOT NULL,
+    anh_bia     VARCHAR(255),
+    tac_gia     VARCHAR(200),
+    mo_ta       TEXT,
+    trang_thai  ENUM('dang_ra','hoan_thanh','tam_dung') DEFAULT 'dang_ra',
+    luot_xem    BIGINT DEFAULT 0,
+    created_at  TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
+    updated_at  TIMESTAMP DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP
+);
+
+-- Bảng chương
+CREATE TABLE chuong (
+    id          INT AUTO_INCREMENT PRIMARY KEY,
+    truyen_id   INT NOT NULL,
+    so_thu_tu   DECIMAL(7,1) NOT NULL,  -- hỗ trợ chap 10.5
+    tieu_de     VARCHAR(300),
+    luot_xem    INT DEFAULT 0,
+    created_at  TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
+    UNIQUE KEY uq_truyen_chuong (truyen_id, so_thu_tu),
+    FOREIGN KEY (truyen_id) REFERENCES truyen(id) ON DELETE CASCADE
+);
+
+-- Bảng hình ảnh từng trang trong chương
+CREATE TABLE chuong_hinhanh (
+    id          INT AUTO_INCREMENT PRIMARY KEY,
+    chuong_id   INT NOT NULL,
+    duong_dan   VARCHAR(500) NOT NULL,  -- relative path: uploads/truyen/1/ch100/001.jpg
+    thu_tu      SMALLINT DEFAULT 1,
+    FOREIGN KEY (chuong_id) REFERENCES chuong(id) ON DELETE CASCADE
+);
+
+-- Thể loại many-to-many
+CREATE TABLE the_loai (
+    id   INT AUTO_INCREMENT PRIMARY KEY,
+    ten  VARCHAR(100) UNIQUE NOT NULL,
+    slug VARCHAR(100) UNIQUE NOT NULL
+);
+CREATE TABLE truyen_the_loai (
+    truyen_id   INT NOT NULL,
+    the_loai_id INT NOT NULL,
+    PRIMARY KEY (truyen_id, the_loai_id)
+);
+
+-- Yêu thích
+CREATE TABLE yeu_thich (
+    user_id     INT NOT NULL,
+    truyen_id   INT NOT NULL,
+    created_at  TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
+    PRIMARY KEY (user_id, truyen_id)
+);
+
+-- Lịch sử đọc (tiếp tục từ chỗ dừng)
+CREATE TABLE lich_su_doc (
+    user_id     INT NOT NULL,
+    truyen_id   INT NOT NULL,
+    chuong_id   INT NOT NULL,
+    updated_at  TIMESTAMP DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,
+    PRIMARY KEY (user_id, truyen_id)
+);
+
+-- Bình luận (lồng nhau 1 cấp)
+CREATE TABLE binh_luan (
+    id          INT AUTO_INCREMENT PRIMARY KEY,
+    chuong_id   INT NOT NULL,
+    user_id     INT NOT NULL,
+    parent_id   INT DEFAULT NULL,
+    noi_dung    TEXT NOT NULL,
+    created_at  TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
+    FOREIGN KEY (chuong_id) REFERENCES chuong(id) ON DELETE CASCADE
+);
+*/
+
+// ══ TRUYEN REPOSITORY ════════════════
+class TruyenRepository {
+    public function __construct(private PDO $pdo) {}
+
+    // ─── Trang chủ: truyện mới cập nhật ─
+    public function getMoiCapNhat(int $limit = 20): array {
+        return $this-&gt;pdo-&gt;query("
+            SELECT t.id, t.ten, t.slug, t.anh_bia, t.trang_thai,
+                   MAX(c.so_thu_tu) AS chuong_moi,
+                   MAX(c.created_at) AS cap_nhat_luc
+            FROM truyen t
+            LEFT JOIN chuong c ON c.truyen_id = t.id
+            GROUP BY t.id
+            ORDER BY cap_nhat_luc DESC
+            LIMIT $limit
+        ")-&gt;fetchAll();
+    }
+
+    // ─── Top truyện hot (lượt xem cao) ──
+    public function getTopHot(int $limit = 10, string $khoang = 'week'): array {
+        $dk_ngay = match($khoang) {
+            'day'   =&gt; "AND c.created_at &gt;= DATE_SUB(NOW(), INTERVAL 1 DAY)",
+            'week'  =&gt; "AND c.created_at &gt;= DATE_SUB(NOW(), INTERVAL 7 DAY)",
+            'month' =&gt; "AND c.created_at &gt;= DATE_SUB(NOW(), INTERVAL 30 DAY)",
+            default =&gt; ""
+        };
+        return $this-&gt;pdo-&gt;query("
+            SELECT t.id, t.ten, t.slug, t.anh_bia, SUM(c.luot_xem) AS tong_xem
+            FROM truyen t
+            JOIN chuong c ON c.truyen_id = t.id
+            WHERE 1=1 $dk_ngay
+            GROUP BY t.id
+            ORDER BY tong_xem DESC
+            LIMIT $limit
+        ")-&gt;fetchAll();
+    }
+
+    // ─── Chi tiết truyện kèm thể loại ───
+    public function getBySlug(string $slug): ?array {
+        $stmt = $this-&gt;pdo-&gt;prepare("
+            SELECT t.*,
+                   GROUP_CONCAT(tl.ten ORDER BY tl.ten SEPARATOR ', ') AS the_loai,
+                   GROUP_CONCAT(tl.slug ORDER BY tl.ten SEPARATOR ',') AS the_loai_slugs,
+                   COUNT(DISTINCT c.id) AS so_chuong
+            FROM truyen t
+            LEFT JOIN truyen_the_loai ttl ON ttl.truyen_id = t.id
+            LEFT JOIN the_loai tl ON tl.id = ttl.the_loai_id
+            LEFT JOIN chuong c ON c.truyen_id = t.id
+            WHERE t.slug = ?
+            GROUP BY t.id
+        ");
+        $stmt-&gt;execute([$slug]);
+        return $stmt-&gt;fetch() ?: null;
+    }
+
+    // ─── Danh sách chương của truyện ────
+    public function getDanhSachChuong(int $truyen_id): array {
+        $stmt = $this-&gt;pdo-&gt;prepare("
+            SELECT id, so_thu_tu, tieu_de, luot_xem, created_at
+            FROM chuong WHERE truyen_id = ?
+            ORDER BY so_thu_tu DESC
+        ");
+        $stmt-&gt;execute([$truyen_id]);
+        return $stmt-&gt;fetchAll();
+    }
+
+    // ─── Tìm kiếm nâng cao ───────────────
+    public function search(array $filter, int $page = 1, int $limit = 24): array {
+        $where = ["1=1"];
+        $params = [];
+
+        if (!empty($filter['q'])) {
+            $where[] = "(t.ten LIKE ? OR t.tac_gia LIKE ?)";
+            $params[] = "%{$filter['q']}%";
+            $params[] = "%{$filter['q']}%";
+        }
+        if (!empty($filter['the_loai'])) {
+            $where[] = "EXISTS (
+                SELECT 1 FROM truyen_the_loai ttl
+                JOIN the_loai tl ON tl.id = ttl.the_loai_id
+                WHERE ttl.truyen_id = t.id AND tl.slug = ?
+            )";
+            $params[] = $filter['the_loai'];
+        }
+        if (!empty($filter['trang_thai'])) {
+            $where[] = "t.trang_thai = ?";
+            $params[] = $filter['trang_thai'];
+        }
+
+        $order = match($filter['sap_xep'] ?? 'moi') {
+            'xem'   =&gt; "t.luot_xem DESC",
+            'ten'   =&gt; "t.ten ASC",
+            default =&gt; "t.updated_at DESC",
+        };
+
+        $where_sql = implode(' AND ', $where);
+        $offset     = ($page - 1) * $limit;
+
+        $total = $this-&gt;pdo-&gt;prepare(
+            "SELECT COUNT(*) FROM truyen t WHERE $where_sql"
+        );
+        $total-&gt;execute($params);
+
+        $rows = $this-&gt;pdo-&gt;prepare("
+            SELECT t.id, t.ten, t.slug, t.anh_bia, t.trang_thai, t.luot_xem,
+                   MAX(c.so_thu_tu) AS chuong_moi
+            FROM truyen t
+            LEFT JOIN chuong c ON c.truyen_id = t.id
+            WHERE $where_sql
+            GROUP BY t.id
+            ORDER BY $order
+            LIMIT $limit OFFSET $offset
+        ");
+        $rows-&gt;execute($params);
+
+        return [
+            'items' =&gt; $rows-&gt;fetchAll(),
+            'total' =&gt; (int)$total-&gt;fetchColumn(),
+            'page'  =&gt; $page,
+            'pages' =&gt; (int)ceil($total-&gt;fetchColumn() / $limit),
+        ];
+    }
+
+    // ─── Tăng lượt xem (chống F5 spam) ──
+    public function tangLuotXem(int $truyen_id, int $chuong_id): void {
+        $key = "viewed_{$chuong_id}";
+        if (!isset($_SESSION[$key])) {
+            $_SESSION[$key] = true;
+            $this-&gt;pdo-&gt;prepare("UPDATE chuong SET luot_xem = luot_xem + 1 WHERE id=?")
+                 -&gt;execute([$chuong_id]);
+            $this-&gt;pdo-&gt;prepare("UPDATE truyen SET luot_xem = luot_xem + 1 WHERE id=?")
+                 -&gt;execute([$truyen_id]);
+        }
+    }
+}
+
+// ══ CHUONG REPOSITORY ════════════════
+class ChuongRepository {
+    public function __construct(private PDO $pdo) {}
+
+    public function getWithImages(int $chuong_id): ?array {
+        $stmt = $this-&gt;pdo-&gt;prepare("SELECT * FROM chuong WHERE id = ?");
+        $stmt-&gt;execute([$chuong_id]);
+        $chuong = $stmt-&gt;fetch();
+        if (!$chuong) return null;
+
+        $imgs = $this-&gt;pdo-&gt;prepare(
+            "SELECT duong_dan FROM chuong_hinhanh WHERE chuong_id = ? ORDER BY thu_tu"
+        );
+        $imgs-&gt;execute([$chuong_id]);
+        $chuong['hinhanh'] = $imgs-&gt;fetchAll(PDO::FETCH_COLUMN);
+        return $chuong;
+    }
+
+    // ─── Chapter trước / sau ─────────────
+    public function getNavigation(int $truyen_id, float $so_thu_tu): array {
+        $prev = $this-&gt;pdo-&gt;prepare(
+            "SELECT id, so_thu_tu FROM chuong WHERE truyen_id=? AND so_thu_tu &lt; ? ORDER BY so_thu_tu DESC LIMIT 1"
+        );
+        $prev-&gt;execute([$truyen_id, $so_thu_tu]);
+
+        $next = $this-&gt;pdo-&gt;prepare(
+            "SELECT id, so_thu_tu FROM chuong WHERE truyen_id=? AND so_thu_tu &gt; ? ORDER BY so_thu_tu ASC LIMIT 1"
+        );
+        $next-&gt;execute([$truyen_id, $so_thu_tu]);
+
+        return ['prev' =&gt; $prev-&gt;fetch() ?: null, 'next' =&gt; $next-&gt;fetch() ?: null];
+    }
+
+    // ─── Upload ảnh cho chapter ──────────
+    public function uploadHinhanh(int $chuong_id, array $files, string $upload_dir): int {
+        $inserted = 0;
+        $stmt_max  = $this-&gt;pdo-&gt;prepare(
+            "SELECT COALESCE(MAX(thu_tu),0) FROM chuong_hinhanh WHERE chuong_id=?"
+        );
+        $stmt_max-&gt;execute([$chuong_id]);
+        $thu_tu = (int)$stmt_max-&gt;fetchColumn();
+
+        $stmt = $this-&gt;pdo-&gt;prepare(
+            "INSERT INTO chuong_hinhanh (chuong_id, duong_dan, thu_tu) VALUES (?,?,?)"
+        );
+
+        foreach ($files['tmp_name'] as $i =&gt; $tmp) {
+            if ($files['error'][$i] !== UPLOAD_ERR_OK) continue;
+            $ext  = strtolower(pathinfo($files['name'][$i], PATHINFO_EXTENSION));
+            if (!in_array($ext, ['jpg','jpeg','png','webp','gif'])) continue;
+            $thu_tu++;
+            $filename  = sprintf('%04d.%s', $thu_tu, $ext);
+            $dest_dir  = rtrim($upload_dir, '/') . "/$chuong_id/";
+            if (!is_dir($dest_dir)) mkdir($dest_dir, 0755, true);
+            if (move_uploaded_file($tmp, $dest_dir . $filename)) {
+                $stmt-&gt;execute([$chuong_id, "uploads/chuong/$chuong_id/$filename", $thu_tu]);
+                $inserted++;
+            }
+        }
+        return $inserted;
+    }
+}
+
+// ══ YEU THICH SERVICE ════════════════
+class YeuThichService {
+    public function __construct(private PDO $pdo) {}
+
+    public function toggle(int $user_id, int $truyen_id): bool {
+        $check = $this-&gt;pdo-&gt;prepare(
+            "SELECT 1 FROM yeu_thich WHERE user_id=? AND truyen_id=?"
+        );
+        $check-&gt;execute([$user_id, $truyen_id]);
+        if ($check-&gt;fetch()) {
+            $this-&gt;pdo-&gt;prepare("DELETE FROM yeu_thich WHERE user_id=? AND truyen_id=?")
+                 -&gt;execute([$user_id, $truyen_id]);
+            return false; // đã bỏ yêu thích
+        }
+        $this-&gt;pdo-&gt;prepare("INSERT INTO yeu_thich (user_id, truyen_id) VALUES (?,?)")
+             -&gt;execute([$user_id, $truyen_id]);
+        return true;  // đã thêm yêu thích
+    }
+
+    public function getDanhSach(int $user_id): array {
+        $stmt = $this-&gt;pdo-&gt;prepare("
+            SELECT t.id, t.ten, t.slug, t.anh_bia, t.trang_thai,
+                   MAX(c.so_thu_tu) AS chuong_moi,
+                   lsd.chuong_id AS chuong_dang_doc
+            FROM yeu_thich yt
+            JOIN truyen t ON t.id = yt.truyen_id
+            LEFT JOIN chuong c ON c.truyen_id = t.id
+            LEFT JOIN lich_su_doc lsd ON lsd.user_id = ? AND lsd.truyen_id = t.id
+            WHERE yt.user_id = ?
+            GROUP BY t.id
+            ORDER BY yt.created_at DESC
+        ");
+        $stmt-&gt;execute([$user_id, $user_id]);
+        return $stmt-&gt;fetchAll();
+    }
+}
+
+// ══ ADMIN – XÓA TRUYỆN CASCADE ═══════
+function adminXoaTruyen(PDO $pdo, int $truyen_id, string $upload_dir): void {
+    // Lấy tất cả ảnh trước khi xóa
+    $hinh = $pdo-&gt;prepare("
+        SELECT ch.duong_dan FROM chuong_hinhanh ch
+        JOIN chuong c ON c.id = ch.chuong_id
+        WHERE c.truyen_id = ?
+    ");
+    $hinh-&gt;execute([$truyen_id]);
+    $files = $hinh-&gt;fetchAll(PDO::FETCH_COLUMN);
+
+    // Xóa DB (CASCADE tự xóa chuong + chuong_hinhanh + lich_su_doc, yeu_thich)
+    $pdo-&gt;prepare("DELETE FROM truyen WHERE id=?")-&gt;execute([$truyen_id]);
+
+    // Xóa file vật lý
+    foreach ($files as $path) {
+        $full = rtrim($upload_dir, '/') . '/' . ltrim($path, '/');
+        if (file_exists($full)) unlink($full);
+    }
+    // Dọn thư mục rỗng
+    $dir = $upload_dir . "/chuong/";
+    foreach (glob("$dir*", GLOB_ONLYDIR) as $d) {
+        if (count(glob("$d/*")) === 0) rmdir($d);
+    }
+}
+
+// ══ ROUTE VÍ DỤ (FRONTEND) ═══════════
+/*
+GET  /                           → trang chủ (mới + hot)
+GET  /truyen/{slug}              → chi tiết truyện + danh sách chapter
+GET  /truyen/{slug}/{chuong_id}  → đọc chapter (ảnh full width)
+GET  /the-loai/{slug}            → ds truyện theo thể loại
+GET  /tim-kiem?q=...             → kết quả tìm kiếm + filter
+POST /yeu-thich                  → toggle yêu thích (AJAX, auth)
+GET  /tai-khoan/yeu-thich        → danh sách truyện yêu thích
+GET  /tai-khoan/lich-su          → lịch sử đọc
+*/
+
+// ══ ROUTE VÍ DỤ (ADMIN) ══════════════
+/*
+GET  /admin                         → dashboard thống kê
+GET  /admin/truyen                  → danh sách + tìm kiếm
+GET  /admin/truyen/them             → form thêm truyện
+POST /admin/truyen                  → lưu truyện mới
+GET  /admin/truyen/{id}/sua         → form sửa
+PUT  /admin/truyen/{id}             → lưu thay đổi
+DEL  /admin/truyen/{id}             → xóa + file ảnh
+GET  /admin/truyen/{id}/chuong      → ds chapter của truyện
+POST /admin/truyen/{id}/chuong      → thêm chapter
+POST /admin/chuong/{id}/hinhanh     → upload ảnh (multiple)
+DEL  /admin/hinhanh/{id}            → xóa 1 trang ảnh
+PUT  /admin/chuong/{id}/sap-xep     → cập nhật thứ tự trang (JSON)
+*/
+
+// Demo output
+echo "=== Website Truyện Tranh – Structure Demo ===\n";
+echo "Tables: truyen, chuong, chuong_hinhanh\n";
+echo "        the_loai, truyen_the_loai\n";
+echo "        users, yeu_thich, lich_su_doc, binh_luan\n\n";
+echo "Classes:\n";
+echo "  TruyenRepository  – getMoiCapNhat, getTopHot, getBySlug,\n";
+echo "                      getDanhSachChuong, search, tangLuotXem\n";
+echo "  ChuongRepository  – getWithImages, getNavigation, uploadHinhanh\n";
+echo "  YeuThichService   – toggle, getDanhSach\n\n";
+echo "Key features:\n";
+echo "  ✅ Slug URL: /truyen/one-piece/1100\n";
+echo "  ✅ Lazy load ảnh chapter\n";
+echo "  ✅ Chống spam lượt xem qua Session\n";
+echo "  ✅ Tìm kiếm + lọc đa tiêu chí\n";
+echo "  ✅ Upload ảnh multiple, tự đặt tên 0001.jpg\n";
+echo "  ✅ Xóa cascade: DB + file vật lý\n";
+echo "  ✅ Lịch sử đọc – tiếp tục từ chỗ dừng\n";</pre>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <a href="../index.html" class="btn-back">&#8592; Quay lại Đồ Án</a>
+
+  <script type="module">
+    import { codeToHtml } from 'https://esm.sh/shiki@1';
+    const raw = document.getElementById('code-raw').textContent;
+    const highlighted = await codeToHtml(raw, { lang: 'php', theme: 'github-dark' });
+    document.getElementById('code-highlight').innerHTML = highlighted;
+    const pre = document.getElementById('code-highlight').querySelector('pre');
+    if (pre) pre.style.cssText = 'border-radius:10px;padding:20px;font-size:0.87rem;overflow-x:auto;margin:0;line-height:1.7';
+  </script>
+</body>
+</html>

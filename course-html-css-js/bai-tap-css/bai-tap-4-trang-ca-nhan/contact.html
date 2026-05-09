@@ -1,0 +1,213 @@
+<!DOCTYPE html>
+<html lang="vi">
+
+<head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <meta name="description" content="Trang liên hệ - Bài tập 4 trang HTML/CSS3" />
+    <title>Liên hệ | Bài tập 4 trang</title>
+    <link rel="stylesheet" href="css/styles.css" />
+</head>
+
+<body>
+
+    <!-- HEADER -->
+    <header class="site-header">
+        <div class="container">
+            <h1 class="logo">&#128100; Trang Cá Nhân</h1>
+            <nav>
+                <ul>
+                    <li><a href="index.html">Trang chủ</a></li>
+                    <li><a href="about.html">Giới thiệu</a></li>
+                    <li><a href="skills.html">Kỹ năng</a></li>
+                    <li><a href="contact.html" class="active">Liên hệ</a></li>
+                </ul>
+            </nav>
+        </div>
+    </header>
+
+    <!-- PAGE HERO -->
+    <div class="page-hero">
+        <h2>&#128222; Liên hệ với tôi</h2>
+        <p>Gửi cho tôi một tin nhắn — tôi sẽ phản hồi sớm nhất có thể!</p>
+    </div>
+
+    <!-- CONTACT CONTENT -->
+    <section class="section">
+        <div class="container">
+            <div class="contact-wrapper">
+
+                <!-- Thông tin liên hệ bên trái -->
+                <div class="contact-info">
+                    <h3>Thông tin liên hệ</h3>
+
+                    <div class="contact-info-item">
+                        <div class="contact-icon">&#128205;</div>
+                        <div>
+                            <p>Địa chỉ</p>
+                            <strong>TP. Cần Thơ, Việt Nam</strong>
+                        </div>
+                    </div>
+
+                    <div class="contact-info-item">
+                        <div class="contact-icon">&#128222;</div>
+                        <div>
+                            <p>Điện thoại</p>
+                            <strong>0909 123 456</strong>
+                        </div>
+                    </div>
+
+                    <div class="contact-info-item">
+                        <div class="contact-icon">&#128231;</div>
+                        <div>
+                            <p>Email</p>
+                            <strong>nguyenvana@email.com</strong>
+                        </div>
+                    </div>
+
+                    <div class="contact-info-item">
+                        <div class="contact-icon">&#128279;</div>
+                        <div>
+                            <p>GitHub</p>
+                            <strong>github.com/nguyenvana</strong>
+                        </div>
+                    </div>
+
+                    <div class="contact-info-item">
+                        <div class="contact-icon">&#127979;</div>
+                        <div>
+                            <p>Trường / Lớp</p>
+                            <strong>NenTang &mdash; 26CNTT01</strong>
+                        </div>
+                    </div>
+
+                    <!-- Giờ phản hồi -->
+                    <div style="background:#e8eaf6; border-radius:8px; padding:16px 18px; margin-top:24px;">
+                        <div style="font-weight:700; color:#1a237e; margin-bottom:10px;">&#128336; Thời gian phản hồi</div>
+                        <div style="font-size:0.88rem; color:#555; line-height:2;">
+                            Thứ 2 – Thứ 6: <strong>8:00 – 21:00</strong><br />
+                            Thứ 7 – Chủ nhật: <strong>9:00 – 17:00</strong><br />
+                            <span style="color:#3949ab;">Thường phản hồi trong vòng 24h</span>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Form liên hệ bên phải -->
+                <div class="contact-form-wrapper">
+                    <h3>&#128393; Gửi tin nhắn cho tôi</h3>
+
+                    <form action="#" method="post" onsubmit="handleSubmit(event)">
+
+                        <div class="form-row">
+                            <div class="form-group">
+                                <label for="full-name">Họ và tên <span style="color:#e53935;">*</span></label>
+                                <input type="text" id="full-name" name="full_name"
+                                    placeholder="Nguyễn Văn B" required />
+                            </div>
+                            <div class="form-group">
+                                <label for="email">Email <span style="color:#e53935;">*</span></label>
+                                <input type="email" id="email" name="email"
+                                    placeholder="example@email.com" required />
+                            </div>
+                        </div>
+
+                        <div class="form-row">
+                            <div class="form-group">
+                                <label for="phone">Số điện thoại</label>
+                                <input type="tel" id="phone" name="phone"
+                                    placeholder="0909 xxx xxx" />
+                            </div>
+                            <div class="form-group">
+                                <label for="subject">Chủ đề <span style="color:#e53935;">*</span></label>
+                                <select id="subject" name="subject" required>
+                                    <option value="">-- Chọn chủ đề --</option>
+                                    <option value="hop-tac">Hợp tác dự án</option>
+                                    <option value="thuc-tap">Cơ hội thực tập</option>
+                                    <option value="hoi-tham">Hỏi thăm / Kết nối</option>
+                                    <option value="giang-vien">Phản hồi từ giảng viên</option>
+                                    <option value="khac">Khác</option>
+                                </select>
+                            </div>
+                        </div>
+
+                        <div class="form-group">
+                            <label for="message">Nội dung tin nhắn <span style="color:#e53935;">*</span></label>
+                            <textarea id="message" name="message"
+                                placeholder="Nhập nội dung bạn muốn nhắn gửi..." required></textarea>
+                        </div>
+
+                        <div class="form-group" style="display:flex; align-items:center; gap:10px;">
+                            <input type="checkbox" id="agree" name="agree" required
+                                style="width:auto; cursor:pointer;" />
+                            <label for="agree" style="margin-bottom:0; font-weight:400; cursor:pointer;">
+                                Tôi đồng ý để thông tin của mình được sử dụng để liên lạc
+                            </label>
+                        </div>
+
+                        <button type="submit" class="btn" style="width:100%; padding:14px; font-size:1rem;">
+                            &#128640; Gửi tin nhắn
+                        </button>
+                    </form>
+
+                    <!-- Thông báo thành công (ẩn mặc định) -->
+                    <div id="success-msg" style="display:none; margin-top:20px; background:#e8f5e9; border:1.5px solid #66bb6a; border-radius:8px; padding:16px 20px; color:#2e7d32; font-size:0.95rem;">
+                        &#10003; &nbsp;<strong>Gửi thành công!</strong> Cảm ơn bạn đã liên hệ. Tôi sẽ phản hồi sớm nhất có thể.
+                    </div>
+                </div>
+
+            </div>
+        </div>
+    </section>
+
+    <!-- MAP PLACEHOLDER -->
+    <section style="background:#e8eaf6; padding:40px 20px; text-align:center;">
+        <div class="container">
+            <h2 class="section-title">Vị trí</h2>
+            <p class="section-subtitle">TP. Cần Thơ, Việt Nam</p>
+            <div class="section-divider"></div>
+
+            <!-- Placeholder cho bản đồ (thay bằng iframe Google Maps thực tế nếu cần) -->
+            <div style="
+                background: linear-gradient(135deg, #c5cae9 0%, #9fa8da 100%);
+                border-radius: 12px;
+                height: 220px;
+                display: flex;
+                align-items: center;
+                justify-content: center;
+                font-size: 3rem;
+                max-width: 800px;
+                margin: 0 auto;
+                box-shadow: 0 4px 16px rgba(0,0,0,0.1);
+            ">
+                <div style="text-align:center;">
+                    <div>&#128205;</div>
+                    <div style="font-size:1rem; color:#1a237e; font-weight:600; margin-top:10px;">TP. Cần Thơ, Việt Nam</div>
+                    <div style="font-size:0.82rem; color:#3949ab; margin-top:4px;">(Nhúng Google Maps tại đây nếu cần)</div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- FOOTER -->
+    <footer class="site-footer">
+        <div class="container">
+            <p>© 2026 &mdash; Bài tập 4 trang HTML/CSS3 &nbsp;|&nbsp;
+                <a href="index.html">Trang chủ</a> &nbsp;·&nbsp;
+                <a href="about.html">Giới thiệu</a> &nbsp;·&nbsp;
+                <a href="skills.html">Kỹ năng</a> &nbsp;·&nbsp;
+                <a href="contact.html">Liên hệ</a>
+            </p>
+        </div>
+    </footer>
+
+    <script>
+        function handleSubmit(e) {
+            e.preventDefault();
+            document.getElementById('success-msg').style.display = 'block';
+            e.target.reset();
+            e.target.style.display = 'none';
+        }
+    </script>
+
+</body>
+</html>
