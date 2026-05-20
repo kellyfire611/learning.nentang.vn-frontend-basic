@@ -212,93 +212,78 @@
         <section class="exercise" id="exercise">
           <span class="level">Bài tập thực hành</span>
           <h2>Yêu cầu đề bài</h2>
-          <p>Tạo một quy trình 3 bước. Desktop hiển thị theo hàng ngang, mobile hiển thị theo cột dọc.</p>
+          <p>Tạo thanh mục lục bài viết (Table of Contents) cho trang blog. Có 5 mục: Giới thiệu, Khái niệm, Ví dụ, Thực hành, Tổng kết. Desktop: danh sách thẳng đứng (<code>column</code>). Mobile ≤40px: chuyển ngang ngang (<code>row</code>). <em>Bài này khác với ví dụ: khác loại UI và có media query thực sự.</em></p>
           <ol class="steps">
-            <li>Tạo container <code>.steps</code> chứa 3 item.</li>
-            <li>Desktop dùng <code>flex-direction: row</code>.</li>
-            <li>Trong media query dưới 640px, chuyển sang <code>column</code>.</li>
-            <li>Thử thêm <code>justify-content</code> và mô tả nó đang căn theo trục nào.</li>
+            <li>Tạo <code>nav.toc</code> chứa 5 <code>a.toc-item</code>.</li>
+            <li>Desktop: <code>flex-direction: column; gap: 4px</code>.</li>
+            <li>Thêm media query <code>@media (max-width: 640px)</code>: đổi sang <code>row; overflow-x: auto</code>.</li>
+            <li>Kiểm tra bằng cách thu hẹp cửa sổ trình duyệt.</li>
           </ol>
           <h3>Tiêu chí chấm</h3>
           <ul>
-            <li>Desktop xếp ngang, mobile xếp dọc.</li>
-            <li>Không dùng reverse để sửa thứ tự HTML sai.</li>
-            <li>Bạn mô tả được main axis ở mỗi trạng thái.</li>
+            <li>Desktop: 5 mục xếp dọc.</li>
+            <li>Mobile: 5 mục xếp ngang, cuộn khi tràn.</li>
+            <li>Có style để phân biệt mục đang active.</li>
           </ul>
         </section>
 
         <section class="lesson solution" id="solution">
           <h2>Bài giải tham khảo</h2>
-          <p>Lời giải dưới đây bám đúng yêu cầu đề. Hãy tự làm trước, sau đó mới đối chiếu.</p>
+          <p>Bài giải xây dựng mục lục (TOC) responsive. Chú ý media query đểi <code>flex-direction</code> — khác hoàn toàn cách code ví dụ chỉ dùng column cố định.</p>
           <pre><code data-lang="html">&lt;!DOCTYPE html&gt;
 &lt;html lang=&quot;vi&quot;&gt;
 &lt;head&gt;
   &lt;meta charset=&quot;UTF-8&quot;&gt;
   &lt;meta name=&quot;viewport&quot; content=&quot;width=device-width, initial-scale=1.0&quot;&gt;
-  &lt;title&gt;Main axis, cross axis và flex-direction&lt;/title&gt;
   &lt;style&gt;
-    * { box-sizing: border-box; }
-    body {
-      margin: 0;
-      padding: 24px;
-      font-family: &quot;Segoe UI&quot;, Tahoma, sans-serif;
-      color: #172033;
-      background: #f5f7fb;
-    }
-    a { color: #0f766e; text-decoration: none; font-weight: 700; }
-    button {
-      border: 0;
-      border-radius: 8px;
-      padding: 10px 14px;
-      color: white;
-      background: #0f766e;
-      font-weight: 800;
-    }
-    input, textarea, select {
-      min-height: 40px;
-      border: 1px solid #ccd6e0;
-      border-radius: 8px;
-      padding: 8px 10px;
-      font: inherit;
-    }
-    .demo-surface {
-      border: 2px dashed #94a3b8;
-      border-radius: 10px;
-      padding: 16px;
-      background: #ffffff;
-    }
-    
-    .demo-box {
-      border: 1px solid #ccd6e0;
-      border-radius: 8px;
-      padding: 14px;
-      background: #ffffff;
-    }
-    
-    .demo-item {
-      border: 2px solid #0f766e;
-      border-radius: 8px;
-      padding: 12px;
-      background: #ccfbf1;
-      color: #115e59;
-      font-weight: 800;
-      text-align: center;
-    }
-    .demo-surface {
-      min-height: 260px;
+    * { box-sizing: border-box; margin: 0; }
+    body { font-family: sans-serif; padding: 24px; background: #f8fafc; }
+    h3 { margin-bottom: 12px; color: #1e293b; font-size: 0.85rem; text-transform: uppercase; letter-spacing: 1px; }
+    /* Desktop: cột dọc */
+    .toc {
       display: flex;
       flex-direction: column;
-      justify-content: center;
-      gap: 12px;
+      gap: 4px;
+      background: white;
+      border: 1px solid #e2e8f0;
+      border-radius: 12px;
+      padding: 16px;
+      max-width: 220px;
+    }
+    .toc-item {
+      display: flex;
+      align-items: center;
+      gap: 8px;
+      padding: 8px 12px;
+      border-radius: 8px;
+      text-decoration: none;
+      color: #475569;
+      font-size: 0.9rem;
+    }
+    .toc-item:hover { background: #f1f5f9; }
+    .toc-item.active { background: #eff6ff; color: #2563eb; font-weight: 700; }
+    /* Mobile: hàng ngang, cuộn khi tràn */
+    @media (max-width: 640px) {
+      .toc {
+        flex-direction: row;
+        max-width: 100%;
+        overflow-x: auto;
+        gap: 8px;
+        padding: 10px;
+      }
+      .toc-item { white-space: nowrap; }
     }
   &lt;/style&gt;
 &lt;/head&gt;
 &lt;body&gt;
-  &lt;section class=&quot;demo-surface&quot;&gt;
-    &lt;div class=&quot;demo-item&quot;&gt;Bước 1&lt;/div&gt;
-    &lt;div class=&quot;demo-item&quot;&gt;Bước 2&lt;/div&gt;
-    &lt;div class=&quot;demo-item&quot;&gt;Bước 3&lt;/div&gt;
-  &lt;/section&gt;
+  &lt;h3&gt;Mục lục&lt;/h3&gt;
+  &lt;nav class=&quot;toc&quot;&gt;
+    &lt;a class=&quot;toc-item active&quot; href=&quot;#&quot;&gt;📌 Giới thiệu&lt;/a&gt;
+    &lt;a class=&quot;toc-item&quot; href=&quot;#&quot;&gt;📖 Khái niệm&lt;/a&gt;
+    &lt;a class=&quot;toc-item&quot; href=&quot;#&quot;&gt;💡 Ví dụ&lt;/a&gt;
+    &lt;a class=&quot;toc-item&quot; href=&quot;#&quot;&gt;🎯 Thực hành&lt;/a&gt;
+    &lt;a class=&quot;toc-item&quot; href=&quot;#&quot;&gt;✅ Tổng kết&lt;/a&gt;
+  &lt;/nav&gt;
 &lt;/body&gt;
 &lt;/html&gt;</code></pre>
           <div class="result-panel">
@@ -306,77 +291,7 @@
               <h3>Kết quả bài giải</h3>
               <span>Preview chạy trực tiếp từ HTML/CSS của bài</span>
             </div>
-            <iframe class="result-frame" title="Kết quả bài giải" srcdoc="&lt;!DOCTYPE html&gt;
-&lt;html lang=&quot;vi&quot;&gt;
-&lt;head&gt;
-  &lt;meta charset=&quot;UTF-8&quot;&gt;
-  &lt;meta name=&quot;viewport&quot; content=&quot;width=device-width, initial-scale=1.0&quot;&gt;
-  &lt;title&gt;Main axis, cross axis và flex-direction&lt;/title&gt;
-  &lt;style&gt;
-    * { box-sizing: border-box; }
-    body {
-      margin: 0;
-      padding: 24px;
-      font-family: &quot;Segoe UI&quot;, Tahoma, sans-serif;
-      color: #172033;
-      background: #f5f7fb;
-    }
-    a { color: #0f766e; text-decoration: none; font-weight: 700; }
-    button {
-      border: 0;
-      border-radius: 8px;
-      padding: 10px 14px;
-      color: white;
-      background: #0f766e;
-      font-weight: 800;
-    }
-    input, textarea, select {
-      min-height: 40px;
-      border: 1px solid #ccd6e0;
-      border-radius: 8px;
-      padding: 8px 10px;
-      font: inherit;
-    }
-    .demo-surface {
-      border: 2px dashed #94a3b8;
-      border-radius: 10px;
-      padding: 16px;
-      background: #ffffff;
-    }
-    
-    .demo-box {
-      border: 1px solid #ccd6e0;
-      border-radius: 8px;
-      padding: 14px;
-      background: #ffffff;
-    }
-    
-    .demo-item {
-      border: 2px solid #0f766e;
-      border-radius: 8px;
-      padding: 12px;
-      background: #ccfbf1;
-      color: #115e59;
-      font-weight: 800;
-      text-align: center;
-    }
-    .demo-surface {
-      min-height: 260px;
-      display: flex;
-      flex-direction: column;
-      justify-content: center;
-      gap: 12px;
-    }
-  &lt;/style&gt;
-&lt;/head&gt;
-&lt;body&gt;
-  &lt;section class=&quot;demo-surface&quot;&gt;
-    &lt;div class=&quot;demo-item&quot;&gt;Bước 1&lt;/div&gt;
-    &lt;div class=&quot;demo-item&quot;&gt;Bước 2&lt;/div&gt;
-    &lt;div class=&quot;demo-item&quot;&gt;Bước 3&lt;/div&gt;
-  &lt;/section&gt;
-&lt;/body&gt;
-&lt;/html&gt;"></iframe>
+            <iframe class="result-frame" title="Kết quả bài giải" srcdoc="&lt;!DOCTYPE html&gt;&lt;html lang=&quot;vi&quot;&gt;&lt;head&gt;&lt;meta charset=&quot;UTF-8&quot;&gt;&lt;meta name=&quot;viewport&quot; content=&quot;width=device-width, initial-scale=1.0&quot;&gt;&lt;style&gt;* { box-sizing: border-box; margin: 0; } body { font-family: sans-serif; padding: 24px; background: #f8fafc; } h3 { margin-bottom: 12px; color: #1e293b; font-size: 0.85rem; text-transform: uppercase; letter-spacing: 1px; } .toc { display: flex; flex-direction: column; gap: 4px; background: white; border: 1px solid #e2e8f0; border-radius: 12px; padding: 16px; max-width: 220px; } .toc-item { display: flex; align-items: center; gap: 8px; padding: 8px 12px; border-radius: 8px; text-decoration: none; color: #475569; font-size: 0.9rem; } .toc-item.active { background: #eff6ff; color: #2563eb; font-weight: 700; }&lt;/style&gt;&lt;/head&gt;&lt;body&gt;&lt;h3&gt;Mục lục&lt;/h3&gt;&lt;nav class=&quot;toc&quot;&gt;&lt;a class=&quot;toc-item active&quot; href=&quot;#&quot;&gt;📌 Giới thiệu&lt;/a&gt;&lt;a class=&quot;toc-item&quot; href=&quot;#&quot;&gt;📖 Khái niệm&lt;/a&gt;&lt;a class=&quot;toc-item&quot; href=&quot;#&quot;&gt;💡 Ví dụ&lt;/a&gt;&lt;a class=&quot;toc-item&quot; href=&quot;#&quot;&gt;🎯 Thực hành&lt;/a&gt;&lt;a class=&quot;toc-item&quot; href=&quot;#&quot;&gt;✅ Tổng kết&lt;/a&gt;&lt;/nav&gt;&lt;/body&gt;&lt;/html&gt;"></iframe>
           </div>
         </section>
 

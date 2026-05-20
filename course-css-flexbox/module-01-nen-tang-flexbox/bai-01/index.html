@@ -202,91 +202,73 @@
         <section class="exercise" id="exercise">
           <span class="level">Bài tập thực hành</span>
           <h2>Yêu cầu đề bài</h2>
-          <p>Tạo một header đơn giản gồm logo, 3 link menu và một nút đăng nhập. Không cần responsive ở bài này, chỉ cần chứng minh bạn chọn đúng flex container.</p>
+          <p>Tạo hàng <strong>"Tính năng nổi bật"</strong> cho trang chủ SaaS gồm 4 ô tính năng nằm ngang. Mỗi ô có icon emoji và tên tính năng. Bố cục tự xuống dòng khi màn hình hẹp. <em>Đây là bài tập khác với code ví dụ — hãy viết từ đầu.</em></p>
           <ol class="steps">
-            <li>Tạo <code>header.site-header</code> chứa logo, nav và button.</li>
-            <li>Bật <code>display: flex</code> trên header.</li>
-            <li>Thêm <code>gap</code> để tạo khoảng cách giữa các item.</li>
-            <li>Dùng DevTools kiểm tra các phần tử con trực tiếp của header.</li>
+            <li>Tạo <code>div.features</code> chứa 4 <code>div.feature-item</code>.</li>
+            <li>Bật <code>display: flex</code> và <code>flex-wrap: wrap</code> trên <code>.features</code>.</li>
+            <li>Đặt <code>gap: 16px</code> để tạo khoảng cách đều giữa các ô.</li>
+            <li>Mỗi <code>.feature-item</code> có <code>flex: 1; min-width: 160px</code> để co giãn hợp lý.</li>
+            <li>Thêm 4 tính năng: 📚 Học theo lộ trình, 🎯 Bài tập thực tế, 🏆 Có bài giải, 💬 Hỗ trợ 24/7.</li>
           </ol>
           <h3>Tiêu chí chấm</h3>
           <ul>
-            <li>Logo, nav và button nằm trên một hàng.</li>
-            <li>CSS không dùng float hoặc table.</li>
-            <li>Bạn chỉ ra được phần tử nào là container và phần tử nào là item.</li>
+            <li>4 ô nằm một hàng trên màn hình rộng, tự xuống dòng khi hẹp.</li>
+            <li>Chỉ bật <code>display: flex</code> trên <code>.features</code>, không cần bật thêm trên từng ô.</li>
+            <li>Bạn giải thích được tại sao chọn <code>.features</code> làm flex container.</li>
           </ul>
         </section>
 
         <section class="lesson solution" id="solution">
           <h2>Bài giải tham khảo</h2>
-          <p>Lời giải dưới đây bám đúng yêu cầu đề. Hãy tự làm trước, sau đó mới đối chiếu.</p>
+          <p>Bài giải dưới đây giải đúng bài tập hàng tính năng nổi bật. Chú ý: code này <strong>khác hoàn toàn</strong> code ví dụ phía trên — hãy tự làm trước khi xem.</p>
           <pre><code data-lang="html">&lt;!DOCTYPE html&gt;
 &lt;html lang=&quot;vi&quot;&gt;
 &lt;head&gt;
   &lt;meta charset=&quot;UTF-8&quot;&gt;
-  &lt;meta name=&quot;viewport&quot; content=&quot;width=device-width, initial-scale=1.0&quot;&gt;
-  &lt;title&gt;Flexbox là gì và khi nào nên dùng&lt;/title&gt;
   &lt;style&gt;
-    * { box-sizing: border-box; }
-    body {
-      margin: 0;
-      padding: 24px;
-      font-family: &quot;Segoe UI&quot;, Tahoma, sans-serif;
-      color: #172033;
-      background: #f5f7fb;
+    * { box-sizing: border-box; margin: 0; }
+    body { font-family: sans-serif; padding: 32px; background: #f4f7fb; }
+    h2 { margin-bottom: 20px; color: #1e293b; font-size: 1rem; text-transform: uppercase; letter-spacing: 1px; }
+    /* Container: bật Flexbox và wrap */
+    .features {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 16px;
     }
-    a { color: #0f766e; text-decoration: none; font-weight: 700; }
-    button {
-      border: 0;
-      border-radius: 8px;
-      padding: 10px 14px;
-      color: white;
-      background: #0f766e;
-      font-weight: 800;
-    }
-    input, textarea, select {
-      min-height: 40px;
-      border: 1px solid #ccd6e0;
-      border-radius: 8px;
-      padding: 8px 10px;
-      font: inherit;
-    }
-    .demo-surface {
-      border: 2px dashed #94a3b8;
-      border-radius: 10px;
-      padding: 16px;
-      background: #ffffff;
-    }
-    
-    .demo-box {
-      border: 1px solid #ccd6e0;
-      border-radius: 8px;
-      padding: 14px;
-      background: #ffffff;
-    }
-    
-    .demo-item {
-      border: 2px solid #0f766e;
-      border-radius: 8px;
-      padding: 12px;
-      background: #ccfbf1;
-      color: #115e59;
-      font-weight: 800;
+    /* Mỗi ô: co giãn đều, không nhỏ hơn 160px */
+    .feature-item {
+      flex: 1;
+      min-width: 160px;
+      background: white;
+      border: 1px solid #e2e8f0;
+      border-radius: 12px;
+      padding: 24px 16px;
       text-align: center;
     }
-    .demo-surface {
-      display: flex;
-      align-items: center;
-      gap: 12px;
-    }
+    .feature-icon { font-size: 2.2rem; display: block; margin-bottom: 10px; }
+    .feature-title { font-weight: 700; color: #1e293b; font-size: 0.9rem; }
   &lt;/style&gt;
 &lt;/head&gt;
 &lt;body&gt;
-  &lt;section class=&quot;demo-surface&quot;&gt;
-    &lt;div class=&quot;demo-item&quot;&gt;Logo&lt;/div&gt;
-    &lt;div class=&quot;demo-item&quot;&gt;Menu&lt;/div&gt;
-    &lt;div class=&quot;demo-item&quot;&gt;Nút đăng nhập&lt;/div&gt;
-  &lt;/section&gt;
+  &lt;h2&gt;Tính năng nổi bật&lt;/h2&gt;
+  &lt;div class=&quot;features&quot;&gt;
+    &lt;div class=&quot;feature-item&quot;&gt;
+      &lt;span class=&quot;feature-icon&quot;&gt;📚&lt;/span&gt;
+      &lt;span class=&quot;feature-title&quot;&gt;Học theo lộ trình&lt;/span&gt;
+    &lt;/div&gt;
+    &lt;div class=&quot;feature-item&quot;&gt;
+      &lt;span class=&quot;feature-icon&quot;&gt;🎯&lt;/span&gt;
+      &lt;span class=&quot;feature-title&quot;&gt;Bài tập thực tế&lt;/span&gt;
+    &lt;/div&gt;
+    &lt;div class=&quot;feature-item&quot;&gt;
+      &lt;span class=&quot;feature-icon&quot;&gt;🏆&lt;/span&gt;
+      &lt;span class=&quot;feature-title&quot;&gt;Có bài giải&lt;/span&gt;
+    &lt;/div&gt;
+    &lt;div class=&quot;feature-item&quot;&gt;
+      &lt;span class=&quot;feature-icon&quot;&gt;💬&lt;/span&gt;
+      &lt;span class=&quot;feature-title&quot;&gt;Hỗ trợ 24/7&lt;/span&gt;
+    &lt;/div&gt;
+  &lt;/div&gt;
 &lt;/body&gt;
 &lt;/html&gt;</code></pre>
           <div class="result-panel">
@@ -294,75 +276,7 @@
               <h3>Kết quả bài giải</h3>
               <span>Preview chạy trực tiếp từ HTML/CSS của bài</span>
             </div>
-            <iframe class="result-frame" title="Kết quả bài giải" srcdoc="&lt;!DOCTYPE html&gt;
-&lt;html lang=&quot;vi&quot;&gt;
-&lt;head&gt;
-  &lt;meta charset=&quot;UTF-8&quot;&gt;
-  &lt;meta name=&quot;viewport&quot; content=&quot;width=device-width, initial-scale=1.0&quot;&gt;
-  &lt;title&gt;Flexbox là gì và khi nào nên dùng&lt;/title&gt;
-  &lt;style&gt;
-    * { box-sizing: border-box; }
-    body {
-      margin: 0;
-      padding: 24px;
-      font-family: &quot;Segoe UI&quot;, Tahoma, sans-serif;
-      color: #172033;
-      background: #f5f7fb;
-    }
-    a { color: #0f766e; text-decoration: none; font-weight: 700; }
-    button {
-      border: 0;
-      border-radius: 8px;
-      padding: 10px 14px;
-      color: white;
-      background: #0f766e;
-      font-weight: 800;
-    }
-    input, textarea, select {
-      min-height: 40px;
-      border: 1px solid #ccd6e0;
-      border-radius: 8px;
-      padding: 8px 10px;
-      font: inherit;
-    }
-    .demo-surface {
-      border: 2px dashed #94a3b8;
-      border-radius: 10px;
-      padding: 16px;
-      background: #ffffff;
-    }
-    
-    .demo-box {
-      border: 1px solid #ccd6e0;
-      border-radius: 8px;
-      padding: 14px;
-      background: #ffffff;
-    }
-    
-    .demo-item {
-      border: 2px solid #0f766e;
-      border-radius: 8px;
-      padding: 12px;
-      background: #ccfbf1;
-      color: #115e59;
-      font-weight: 800;
-      text-align: center;
-    }
-    .demo-surface {
-      display: flex;
-      align-items: center;
-      gap: 12px;
-    }
-  &lt;/style&gt;
-&lt;/head&gt;
-&lt;body&gt;
-  &lt;section class=&quot;demo-surface&quot;&gt;
-    &lt;div class=&quot;demo-item&quot;&gt;Logo&lt;/div&gt;
-    &lt;div class=&quot;demo-item&quot;&gt;Menu&lt;/div&gt;
-    &lt;div class=&quot;demo-item&quot;&gt;Nút đăng nhập&lt;/div&gt;
-  &lt;/section&gt;
-&lt;/body&gt;
-&lt;/html&gt;"></iframe>
+            <iframe class="result-frame" title="Kết quả bài giải" srcdoc="&lt;!DOCTYPE html&gt;&lt;html lang=&quot;vi&quot;&gt;&lt;head&gt;&lt;meta charset=&quot;UTF-8&quot;&gt;&lt;style&gt;* { box-sizing: border-box; margin: 0; } body { font-family: sans-serif; padding: 32px; background: #f4f7fb; } h2 { margin-bottom: 20px; color: #1e293b; font-size: 1rem; text-transform: uppercase; letter-spacing: 1px; } .features { display: flex; flex-wrap: wrap; gap: 16px; } .feature-item { flex: 1; min-width: 160px; background: white; border: 1px solid #e2e8f0; border-radius: 12px; padding: 24px 16px; text-align: center; } .feature-icon { font-size: 2.2rem; display: block; margin-bottom: 10px; } .feature-title { font-weight: 700; color: #1e293b; font-size: 0.9rem; }&lt;/style&gt;&lt;/head&gt;&lt;body&gt;&lt;h2&gt;Tính năng nổi bật&lt;/h2&gt;&lt;div class=&quot;features&quot;&gt;&lt;div class=&quot;feature-item&quot;&gt;&lt;span class=&quot;feature-icon&quot;&gt;📚&lt;/span&gt;&lt;span class=&quot;feature-title&quot;&gt;Học theo lộ trình&lt;/span&gt;&lt;/div&gt;&lt;div class=&quot;feature-item&quot;&gt;&lt;span class=&quot;feature-icon&quot;&gt;🎯&lt;/span&gt;&lt;span class=&quot;feature-title&quot;&gt;Bài tập thực tế&lt;/span&gt;&lt;/div&gt;&lt;div class=&quot;feature-item&quot;&gt;&lt;span class=&quot;feature-icon&quot;&gt;🏆&lt;/span&gt;&lt;span class=&quot;feature-title&quot;&gt;Có bài giải&lt;/span&gt;&lt;/div&gt;&lt;div class=&quot;feature-item&quot;&gt;&lt;span class=&quot;feature-icon&quot;&gt;💬&lt;/span&gt;&lt;span class=&quot;feature-title&quot;&gt;Hỗ trợ 24/7&lt;/span&gt;&lt;/div&gt;&lt;/div&gt;&lt;/body&gt;&lt;/html&gt;"></iframe>
           </div>
         </section>
 
