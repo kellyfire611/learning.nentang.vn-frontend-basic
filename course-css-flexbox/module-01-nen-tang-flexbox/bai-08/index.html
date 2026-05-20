@@ -300,260 +300,64 @@
         </section>
 
         <section class="exercise" id="exercise">
-          <span class="level">Bài tập thực hành</span>
-          <h2>Yêu cầu đề bài</h2>
-          <p>Tạo task card có header gồm tiêu đề và badge bên phải, nút hành động luôn nằm cuối card.</p>
+          <span class="level">Bài tập thực hành thực tế</span>
+          <h2>Case study: Product card có nút mua luôn ở cuối</h2>
+          <p>Dựng card sản phẩm có ảnh, tiêu đề, mô tả, giá và nút mua. Dù mô tả dài/ngắn thì nút vẫn nằm cuối card.</p>
+          <figure>
+            <img src="https://images.unsplash.com/photo-1441986300917-64674bd600d8?auto=format&fit=crop&w=1200&q=80" alt="Kệ trưng bày sản phẩm thời trang" loading="lazy" />
+            <figcaption>Ảnh tham chiếu card sản phẩm thực tế từ Unsplash.</figcaption>
+          </figure>
           <ol class="steps">
-            <li>Đặt card là flex column.</li>
-            <li>Đặt header trong card là nested flex.</li>
-            <li>Dùng <code>margin-left: auto</code> cho badge.</li>
-            <li>Dùng <code>margin-top: auto</code> cho button.</li>
-            <li>Mở DevTools để kiểm tra container lồng nhau.</li>
+            <li>Tạo lưới card bằng Flexbox với 3 card.</li>
+            <li>Mỗi card là một flex column (nested flex).</li>
+            <li>Dùng <code>margin-top: auto</code> để ghim nút mua ở cuối card.</li>
+            <li>Dùng <code>order</code> để đưa badge khuyến mãi lên trước tiêu đề ở mobile.</li>
           </ol>
           <h3>Tiêu chí chấm</h3>
           <ul>
-            <li>Badge nằm bên phải header.</li>
-            <li>Button nằm cuối card dù mô tả ngắn hay dài.</li>
-            <li>Không dùng absolute positioning.</li>
+            <li>Các card có nút mua thẳng hàng theo đáy.</li>
+            <li>Badge thay đổi vị trí bằng order nhưng HTML vẫn dễ đọc.</li>
+            <li>Không dùng absolute để ghim nút.</li>
           </ul>
         </section>
 
         <section class="lesson solution" id="solution">
           <h2>Bài giải tham khảo</h2>
-          <p>Lời giải dưới đây bám đúng yêu cầu đề. Hãy tự làm trước, sau đó mới đối chiếu.</p>
-          <pre><code data-lang="html">&lt;!DOCTYPE html&gt;
-&lt;html lang=&quot;vi&quot;&gt;
-&lt;head&gt;
-  &lt;meta charset=&quot;UTF-8&quot;&gt;
-  &lt;meta name=&quot;viewport&quot; content=&quot;width=device-width, initial-scale=1.0&quot;&gt;
-  &lt;title&gt;order, auto margin, nested flex và debug thực tế&lt;/title&gt;
-  &lt;style&gt;
-    * { box-sizing: border-box; }
-    body {
-      margin: 0;
-      padding: 24px;
-      font-family: &quot;Segoe UI&quot;, Tahoma, sans-serif;
-      color: #172033;
-      background: #f5f7fb;
-    }
-    a { color: #0f766e; text-decoration: none; font-weight: 700; }
-    button {
-      border: 0;
-      border-radius: 8px;
-      padding: 10px 14px;
-      color: white;
-      background: #0f766e;
-      font-weight: 800;
-    }
-    input, textarea, select {
-      min-height: 40px;
-      border: 1px solid #ccd6e0;
-      border-radius: 8px;
-      padding: 8px 10px;
-      font: inherit;
-    }
-    .demo-surface {
-      border: 2px dashed #94a3b8;
-      border-radius: 10px;
-      padding: 16px;
-      background: #ffffff;
-    }
-    
-    .demo-box {
-      border: 1px solid #ccd6e0;
-      border-radius: 8px;
-      padding: 14px;
-      background: #ffffff;
-    }
-    
-    .demo-item {
-      border: 2px solid #0f766e;
-      border-radius: 8px;
-      padding: 12px;
-      background: #ccfbf1;
-      color: #115e59;
-      font-weight: 800;
-      text-align: center;
-    }
-    .card, .panel, .toolbar, .site-header, .comment, .form-row, .tabs, .footer-col, .product-card, .profile-card, .chat-row, .summary-box {
-      border: 1px solid #d9e2ec;
-      border-radius: 10px;
-      background: #ffffff;
-      padding: 14px;
-    }
-    .muted { color: #64748b; }
-    .avatar {
-      width: 52px;
-      height: 52px;
-      display: grid;
-      place-items: center;
-      border-radius: 50%;
-      background: #e85d4f;
-      color: white;
-      font-weight: 900;
-    }
-    .badge {
-      display: inline-flex;
-      align-items: center;
-      border-radius: 999px;
-      padding: 5px 10px;
-      background: #e0f2fe;
-      color: #075985;
-      font-weight: 800;
-    }
-    .task-card {
-      min-height: 240px;
-      display: flex;
-      flex-direction: column;
-      gap: 12px;
-    }
-    
-    .task-card header {
-      display: flex;
-      align-items: center;
-      gap: 12px;
-    }
-    
-    .task-card .badge {
-      margin-left: auto;
-    }
-    
-    .task-card button {
-      margin-top: auto;
-      align-self: flex-start;
-    }
-  &lt;/style&gt;
-&lt;/head&gt;
-&lt;body&gt;
-  &lt;article class=&quot;task-card&quot;&gt;
-    &lt;header&gt;
-      &lt;h3&gt;Bài tập Flexbox&lt;/h3&gt;
-      &lt;span class=&quot;badge&quot;&gt;Cần làm&lt;/span&gt;
-    &lt;/header&gt;
-    &lt;p&gt;Đọc lý thuyết, tự code lại ví dụ và so sánh với bài giải.&lt;/p&gt;
-    &lt;button&gt;Đánh dấu xong&lt;/button&gt;
-  &lt;/article&gt;
-&lt;/body&gt;
-&lt;/html&gt;</code></pre>
-          <div class="result-panel">
-            <div class="result-head">
-              <h3>Kết quả bài giải</h3>
-              <span>Preview chạy trực tiếp từ HTML/CSS của bài</span>
-            </div>
-            <iframe class="result-frame" title="Kết quả bài giải" srcdoc="&lt;!DOCTYPE html&gt;
-&lt;html lang=&quot;vi&quot;&gt;
-&lt;head&gt;
-  &lt;meta charset=&quot;UTF-8&quot;&gt;
-  &lt;meta name=&quot;viewport&quot; content=&quot;width=device-width, initial-scale=1.0&quot;&gt;
-  &lt;title&gt;order, auto margin, nested flex và debug thực tế&lt;/title&gt;
-  &lt;style&gt;
-    * { box-sizing: border-box; }
-    body {
-      margin: 0;
-      padding: 24px;
-      font-family: &quot;Segoe UI&quot;, Tahoma, sans-serif;
-      color: #172033;
-      background: #f5f7fb;
-    }
-    a { color: #0f766e; text-decoration: none; font-weight: 700; }
-    button {
-      border: 0;
-      border-radius: 8px;
-      padding: 10px 14px;
-      color: white;
-      background: #0f766e;
-      font-weight: 800;
-    }
-    input, textarea, select {
-      min-height: 40px;
-      border: 1px solid #ccd6e0;
-      border-radius: 8px;
-      padding: 8px 10px;
-      font: inherit;
-    }
-    .demo-surface {
-      border: 2px dashed #94a3b8;
-      border-radius: 10px;
-      padding: 16px;
-      background: #ffffff;
-    }
-    
-    .demo-box {
-      border: 1px solid #ccd6e0;
-      border-radius: 8px;
-      padding: 14px;
-      background: #ffffff;
-    }
-    
-    .demo-item {
-      border: 2px solid #0f766e;
-      border-radius: 8px;
-      padding: 12px;
-      background: #ccfbf1;
-      color: #115e59;
-      font-weight: 800;
-      text-align: center;
-    }
-    .card, .panel, .toolbar, .site-header, .comment, .form-row, .tabs, .footer-col, .product-card, .profile-card, .chat-row, .summary-box {
-      border: 1px solid #d9e2ec;
-      border-radius: 10px;
-      background: #ffffff;
-      padding: 14px;
-    }
-    .muted { color: #64748b; }
-    .avatar {
-      width: 52px;
-      height: 52px;
-      display: grid;
-      place-items: center;
-      border-radius: 50%;
-      background: #e85d4f;
-      color: white;
-      font-weight: 900;
-    }
-    .badge {
-      display: inline-flex;
-      align-items: center;
-      border-radius: 999px;
-      padding: 5px 10px;
-      background: #e0f2fe;
-      color: #075985;
-      font-weight: 800;
-    }
-    .task-card {
-      min-height: 240px;
-      display: flex;
-      flex-direction: column;
-      gap: 12px;
-    }
-    
-    .task-card header {
-      display: flex;
-      align-items: center;
-      gap: 12px;
-    }
-    
-    .task-card .badge {
-      margin-left: auto;
-    }
-    
-    .task-card button {
-      margin-top: auto;
-      align-self: flex-start;
-    }
-  &lt;/style&gt;
-&lt;/head&gt;
-&lt;body&gt;
-  &lt;article class=&quot;task-card&quot;&gt;
-    &lt;header&gt;
-      &lt;h3&gt;Bài tập Flexbox&lt;/h3&gt;
-      &lt;span class=&quot;badge&quot;&gt;Cần làm&lt;/span&gt;
-    &lt;/header&gt;
-    &lt;p&gt;Đọc lý thuyết, tự code lại ví dụ và so sánh với bài giải.&lt;/p&gt;
-    &lt;button&gt;Đánh dấu xong&lt;/button&gt;
-  &lt;/article&gt;
-&lt;/body&gt;
-&lt;/html&gt;"></iframe>
+          <p>Lời giải dưới đây dùng nested flex + auto margin cho tình huống card thực tế.</p>
+          <div class="code-grid">
+            <div><h3>HTML</h3><pre><code data-lang="html">&lt;article class=&quot;product-card&quot;&gt;
+  &lt;img src=&quot;https://images.unsplash.com/photo-1521572163474-6864f9cf17ab?auto=format&fit=crop&w=800&q=80&quot; alt=&quot;Áo khoác bomber&quot;&gt;
+  &lt;span class=&quot;badge-sale&quot;&gt;-20%&lt;/span&gt;
+  &lt;h3&gt;Áo khoác bomber&lt;/h3&gt;
+  &lt;p&gt;Form regular, chất liệu nhẹ, phù hợp đi học và đi làm.&lt;/p&gt;
+  &lt;strong&gt;499.000đ&lt;/strong&gt;
+  &lt;button&gt;Thêm vào giỏ&lt;/button&gt;
+&lt;/article&gt;</code></pre></div>
+            <div><h3>CSS</h3><pre><code data-lang="css">.product-card {
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+  min-height: 420px;
+  padding: 14px;
+  border-radius: 12px;
+  background: #fff;
+}
+
+.product-card img {
+  width: 100%;
+  aspect-ratio: 4 / 3;
+  object-fit: cover;
+  border-radius: 10px;
+}
+
+.product-card button {
+  margin-top: auto;
+  align-self: flex-start;
+}
+
+@media (max-width: 640px) {
+  .product-card .badge-sale { order: -1; }
+}</code></pre></div>
           </div>
         </section>
 

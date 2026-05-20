@@ -279,241 +279,64 @@
         </section>
 
         <section class="exercise" id="exercise">
-          <span class="level">Bài tập thực hành</span>
-          <h2>Yêu cầu đề bài</h2>
-          <p>Tạo thanh tìm kiếm: logo giữ kích thước, input chiếm phần còn lại, button giữ kích thước tự nhiên.</p>
+          <span class="level">Bài tập thực hành thực tế</span>
+          <h2>Case study: Header tìm kiếm của sàn thương mại điện tử</h2>
+          <p>Thiết kế header gồm logo, ô tìm kiếm và cụm nút giỏ hàng/tài khoản để phần search luôn chiếm phần còn lại.</p>
+          <figure>
+            <img src="https://images.unsplash.com/photo-1556740749-887f6717d7e4?auto=format&fit=crop&w=1200&q=80" alt="Màn hình mua sắm trực tuyến" loading="lazy" />
+            <figcaption>Ảnh tham chiếu giao diện mua sắm từ Unsplash.</figcaption>
+          </figure>
           <ol class="steps">
-            <li>Tạo container gồm logo, input và button.</li>
-            <li>Đặt container là flex row.</li>
-            <li>Gán input <code>flex: 1</code> và <code>min-width: 0</code>.</li>
-            <li>Gán logo/button <code>flex: 0 0 auto</code>.</li>
+            <li>Tạo <code>.shop-header</code> gồm logo, form tìm kiếm và khối action.</li>
+            <li>Form tìm kiếm dùng <code>flex: 1 1 420px</code>.</li>
+            <li>Logo và action dùng <code>flex: 0 0 auto</code>.</li>
+            <li>Kiểm thử ở 320px để đảm bảo không vỡ layout.</li>
           </ol>
           <h3>Tiêu chí chấm</h3>
           <ul>
-            <li>Input co giãn theo chiều rộng màn hình.</li>
-            <li>Logo và button không bị ép méo.</li>
-            <li>Không dùng width cố định cho input.</li>
+            <li>Ô tìm kiếm co giãn linh hoạt theo chiều rộng.</li>
+            <li>Cụm action không bị ép méo.</li>
+            <li>Nội dung dài trong input không làm tràn hàng.</li>
           </ul>
         </section>
 
         <section class="lesson solution" id="solution">
           <h2>Bài giải tham khảo</h2>
-          <p>Lời giải dưới đây bám đúng yêu cầu đề. Hãy tự làm trước, sau đó mới đối chiếu.</p>
-          <pre><code data-lang="html">&lt;!DOCTYPE html&gt;
-&lt;html lang=&quot;vi&quot;&gt;
-&lt;head&gt;
-  &lt;meta charset=&quot;UTF-8&quot;&gt;
-  &lt;meta name=&quot;viewport&quot; content=&quot;width=device-width, initial-scale=1.0&quot;&gt;
-  &lt;title&gt;flex-grow, flex-shrink, flex-basis và shorthand flex&lt;/title&gt;
-  &lt;style&gt;
-    * { box-sizing: border-box; }
-    body {
-      margin: 0;
-      padding: 24px;
-      font-family: &quot;Segoe UI&quot;, Tahoma, sans-serif;
-      color: #172033;
-      background: #f5f7fb;
-    }
-    a { color: #0f766e; text-decoration: none; font-weight: 700; }
-    button {
-      border: 0;
-      border-radius: 8px;
-      padding: 10px 14px;
-      color: white;
-      background: #0f766e;
-      font-weight: 800;
-    }
-    input, textarea, select {
-      min-height: 40px;
-      border: 1px solid #ccd6e0;
-      border-radius: 8px;
-      padding: 8px 10px;
-      font: inherit;
-    }
-    .demo-surface {
-      border: 2px dashed #94a3b8;
-      border-radius: 10px;
-      padding: 16px;
-      background: #ffffff;
-    }
-    
-    .demo-box {
-      border: 1px solid #ccd6e0;
-      border-radius: 8px;
-      padding: 14px;
-      background: #ffffff;
-    }
-    
-    .demo-item {
-      border: 2px solid #0f766e;
-      border-radius: 8px;
-      padding: 12px;
-      background: #ccfbf1;
-      color: #115e59;
-      font-weight: 800;
-      text-align: center;
-    }
-    .card, .panel, .toolbar, .site-header, .comment, .form-row, .tabs, .footer-col, .product-card, .profile-card, .chat-row, .summary-box {
-      border: 1px solid #d9e2ec;
-      border-radius: 10px;
-      background: #ffffff;
-      padding: 14px;
-    }
-    .muted { color: #64748b; }
-    .avatar {
-      width: 52px;
-      height: 52px;
-      display: grid;
-      place-items: center;
-      border-radius: 50%;
-      background: #e85d4f;
-      color: white;
-      font-weight: 900;
-    }
-    .badge {
-      display: inline-flex;
-      align-items: center;
-      border-radius: 999px;
-      padding: 5px 10px;
-      background: #e0f2fe;
-      color: #075985;
-      font-weight: 800;
-    }
-    .search-row {
-      display: flex;
-      align-items: center;
-      gap: 12px;
-    }
-    
-    .search-row input {
-      flex: 1;
-      min-width: 0;
-    }
-    
-    .search-row .logo,
-    .search-row button {
-      flex: 0 0 auto;
-    }
-  &lt;/style&gt;
-&lt;/head&gt;
-&lt;body&gt;
-  &lt;div class=&quot;search-row&quot;&gt;
-    &lt;a class=&quot;logo&quot; href=&quot;#&quot;&gt;NenTang&lt;/a&gt;
-    &lt;input type=&quot;search&quot; placeholder=&quot;Tìm bài học Flexbox&quot;&gt;
-    &lt;button&gt;Tìm&lt;/button&gt;
+          <p>Lời giải dưới đây tập trung vào tỉ lệ co giãn giữa các vùng bằng <code>flex</code> shorthand.</p>
+          <div class="code-grid">
+            <div><h3>HTML</h3><pre><code data-lang="html">&lt;header class=&quot;shop-header&quot;&gt;
+  &lt;a href=&quot;#&quot; class=&quot;logo&quot;&gt;ShopFlex&lt;/a&gt;
+  &lt;form class=&quot;search-form&quot;&gt;
+    &lt;input type=&quot;search&quot; placeholder=&quot;Tìm áo khoác, giày, phụ kiện...&quot;&gt;
+    &lt;button type=&quot;submit&quot;&gt;Tìm&lt;/button&gt;
+  &lt;/form&gt;
+  &lt;div class=&quot;actions&quot;&gt;
+    &lt;a href=&quot;#&quot;&gt;Giỏ hàng&lt;/a&gt;
+    &lt;a href=&quot;#&quot;&gt;Tài khoản&lt;/a&gt;
   &lt;/div&gt;
-&lt;/body&gt;
-&lt;/html&gt;</code></pre>
-          <div class="result-panel">
-            <div class="result-head">
-              <h3>Kết quả bài giải</h3>
-              <span>Preview chạy trực tiếp từ HTML/CSS của bài</span>
-            </div>
-            <iframe class="result-frame" title="Kết quả bài giải" srcdoc="&lt;!DOCTYPE html&gt;
-&lt;html lang=&quot;vi&quot;&gt;
-&lt;head&gt;
-  &lt;meta charset=&quot;UTF-8&quot;&gt;
-  &lt;meta name=&quot;viewport&quot; content=&quot;width=device-width, initial-scale=1.0&quot;&gt;
-  &lt;title&gt;flex-grow, flex-shrink, flex-basis và shorthand flex&lt;/title&gt;
-  &lt;style&gt;
-    * { box-sizing: border-box; }
-    body {
-      margin: 0;
-      padding: 24px;
-      font-family: &quot;Segoe UI&quot;, Tahoma, sans-serif;
-      color: #172033;
-      background: #f5f7fb;
-    }
-    a { color: #0f766e; text-decoration: none; font-weight: 700; }
-    button {
-      border: 0;
-      border-radius: 8px;
-      padding: 10px 14px;
-      color: white;
-      background: #0f766e;
-      font-weight: 800;
-    }
-    input, textarea, select {
-      min-height: 40px;
-      border: 1px solid #ccd6e0;
-      border-radius: 8px;
-      padding: 8px 10px;
-      font: inherit;
-    }
-    .demo-surface {
-      border: 2px dashed #94a3b8;
-      border-radius: 10px;
-      padding: 16px;
-      background: #ffffff;
-    }
-    
-    .demo-box {
-      border: 1px solid #ccd6e0;
-      border-radius: 8px;
-      padding: 14px;
-      background: #ffffff;
-    }
-    
-    .demo-item {
-      border: 2px solid #0f766e;
-      border-radius: 8px;
-      padding: 12px;
-      background: #ccfbf1;
-      color: #115e59;
-      font-weight: 800;
-      text-align: center;
-    }
-    .card, .panel, .toolbar, .site-header, .comment, .form-row, .tabs, .footer-col, .product-card, .profile-card, .chat-row, .summary-box {
-      border: 1px solid #d9e2ec;
-      border-radius: 10px;
-      background: #ffffff;
-      padding: 14px;
-    }
-    .muted { color: #64748b; }
-    .avatar {
-      width: 52px;
-      height: 52px;
-      display: grid;
-      place-items: center;
-      border-radius: 50%;
-      background: #e85d4f;
-      color: white;
-      font-weight: 900;
-    }
-    .badge {
-      display: inline-flex;
-      align-items: center;
-      border-radius: 999px;
-      padding: 5px 10px;
-      background: #e0f2fe;
-      color: #075985;
-      font-weight: 800;
-    }
-    .search-row {
-      display: flex;
-      align-items: center;
-      gap: 12px;
-    }
-    
-    .search-row input {
-      flex: 1;
-      min-width: 0;
-    }
-    
-    .search-row .logo,
-    .search-row button {
-      flex: 0 0 auto;
-    }
-  &lt;/style&gt;
-&lt;/head&gt;
-&lt;body&gt;
-  &lt;div class=&quot;search-row&quot;&gt;
-    &lt;a class=&quot;logo&quot; href=&quot;#&quot;&gt;NenTang&lt;/a&gt;
-    &lt;input type=&quot;search&quot; placeholder=&quot;Tìm bài học Flexbox&quot;&gt;
-    &lt;button&gt;Tìm&lt;/button&gt;
-  &lt;/div&gt;
-&lt;/body&gt;
-&lt;/html&gt;"></iframe>
+&lt;/header&gt;</code></pre></div>
+            <div><h3>CSS</h3><pre><code data-lang="css">.shop-header {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+}
+
+.shop-header .logo,
+.shop-header .actions {
+  flex: 0 0 auto;
+}
+
+.shop-header .search-form {
+  flex: 1 1 420px;
+  min-width: 0;
+  display: flex;
+  gap: 8px;
+}
+
+.shop-header .search-form input {
+  flex: 1;
+  min-width: 0;
+}</code></pre></div>
           </div>
         </section>
 
