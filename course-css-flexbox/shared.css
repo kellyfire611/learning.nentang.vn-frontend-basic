@@ -592,6 +592,25 @@ pre code {
   order: 1;
 }
 
+.mini-demo.basis .mini-item {
+  flex: 1 1 120px;
+}
+
+.mini-demo.shrink .mini-item {
+  flex: 0 1 160px;
+  min-width: 0;
+}
+
+.mini-demo.auto .mini-item:nth-child(4) {
+  margin-left: auto;
+}
+
+.mini-demo.nested .mini-item:nth-child(2) {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
 .mini-item {
   min-width: 58px;
   min-height: 46px;
@@ -692,6 +711,44 @@ pre code {
   color: #9a3412;
   font-size: 0.82rem;
   font-weight: 900;
+}
+
+.demo-code,
+.result-panel {
+  margin-top: 18px;
+  border: 1px solid var(--line);
+  border-radius: 8px;
+  background: #f8fafc;
+  padding: 16px;
+}
+
+.demo-code h3,
+.result-head h3 {
+  margin: 0 0 6px;
+}
+
+.demo-code p,
+.result-head span {
+  color: var(--muted);
+  font-size: 0.9rem;
+}
+
+.result-head {
+  display: flex;
+  align-items: baseline;
+  justify-content: space-between;
+  gap: 12px;
+  flex-wrap: wrap;
+  margin-bottom: 12px;
+}
+
+.result-frame {
+  width: 100%;
+  min-height: 340px;
+  display: block;
+  border: 1px solid #cbd5e1;
+  border-radius: 8px;
+  background: white;
 }
 
 .steps {

@@ -55,30 +55,29 @@
       <article class="module-article">
         <section class="lesson" id="goal">
           <h2>Mục tiêu bài học</h2>
-          <p>Sau bài này, bạn sẽ biết cách dùng chủ đề <strong>Media object: avatar và nội dung</strong> trong một layout thật, hiểu thuộc tính nào đặt ở container, thuộc tính nào đặt ở item và biết tự kiểm tra lỗi thường gặp.</p>
+          <p>Tạo bố cục avatar cố định và nội dung co giãn. Trọng tâm áp dụng trong bài này là <strong>Media object: avatar và nội dung</strong>.</p>
           <ul>
-            <li>Nhận diện đúng flex container và flex item trong HTML.</li>
-            <li>Viết được CSS tối thiểu để tạo bố cục mong muốn.</li>
-            <li>Biết thử nghiệm bằng DevTools hoặc playground trước khi sửa code lớn.</li>
+            <li>Căn thời gian, badge hoặc action về cuối hàng.</li>
+            <li>Xử lý text dài trong phần nội dung bằng <code>min-width: 0</code>.</li>
           </ul>
         </section>
 
         <section class="lesson" id="theory">
           <h2>Lý thuyết cho người mới</h2>
-          <p>Flexbox hoạt động theo quan hệ cha con trực tiếp. Phần tử cha giữ vai trò điều phối hướng, căn chỉnh và khoảng cách; phần tử con nhận kích thước, thứ tự hoặc mức co giãn. Khi học media object: avatar và nội dung, hãy luôn hỏi: thuộc tính này đặt ở container hay item?</p>
+          <p>Media object là pattern gồm hình/biểu tượng bên trái và nội dung bên phải. Avatar thường dùng <code>flex: 0 0 48px</code>, nội dung dùng <code>flex: 1</code>.</p>
+          <p>Nếu có thời gian hoặc nút action bên phải, dùng <code>margin-left: auto</code> để đẩy nó ra cuối hàng.</p>
           <ol class="steps">
-            <li>Tạo HTML rõ ràng trước, chưa vội viết nhiều CSS.</li>
-            <li>Đặt <code>display: flex</code> cho phần tử cha cần sắp xếp con trực tiếp.</li>
-            <li>Chọn hướng bằng <code>flex-direction</code> nếu layout không phải hàng ngang mặc định.</li>
-            <li>Căn theo main axis bằng <code>justify-content</code>, căn theo cross axis bằng <code>align-items</code>.</li>
-            <li>Kiểm soát item bằng <code>flex</code>, <code>order</code>, <code>align-self</code> khi cần.</li>
+            <li>Khoanh vùng phần layout liên quan đến <strong>Media object: avatar và nội dung</strong>.</li>
+            <li>Chọn phần tử cha làm flex container và kiểm tra các item con trực tiếp.</li>
+            <li>Viết CSS tối thiểu trước, sau đó mới thêm màu, padding, border hoặc hiệu ứng.</li>
+            <li>Thu nhỏ màn hình để kiểm tra item có tràn, chồng chữ hoặc mất khoảng cách không.</li>
           </ol>
         </section>
 
         <section class="lesson" id="demo">
           <h2>Minh họa trực quan</h2>
-          <p>Khung nét đứt là flex container. Các ô màu là flex item. Thay đổi thuộc tính trong code ví dụ bên dưới sẽ làm item đổi vị trí, khoảng cách hoặc kích thước.</p>
-          <div class="mini-demo order">
+          <p>Minh họa bên dưới tập trung vào cơ chế chính của bài <strong>Media object: avatar và nội dung</strong>. Hãy nhìn hướng di chuyển, khoảng cách và kích thước của từng item trước khi đọc code.</p>
+          <div class="mini-demo grow">
     <div class="mini-item">1</div>
     <div class="mini-item">2</div>
     <div class="mini-item">3</div>
@@ -86,75 +85,235 @@
     <div class="axis-label main-axis">main axis</div>
     <div class="axis-label cross-axis">cross axis</div>
   </div>
+          <div class="demo-code">
+            <h3>Code tạo minh họa</h3>
+            <p>Đoạn CSS này là phần quan trọng điều khiển cách các item trong khung minh họa được sắp xếp.</p>
+            <pre><code data-lang="css">.mini-demo {
+  display: flex;
+  gap: 10px;
+}
+
+.mini-item:nth-child(2) {
+  flex: 1;
+}</code></pre>
+          </div>
         </section>
 
         <section class="lesson" id="code">
           <h2>Code ví dụ</h2>
-          <p>Ví dụ tách HTML và CSS để dễ nhìn. Khi luyện tập, hãy tự gõ lại từng dòng để nhớ vai trò của từng thuộc tính.</p>
+          <p>Ví dụ này dùng một tình huống gần với giao diện thật để bạn thấy <strong>Media object: avatar và nội dung</strong> được áp dụng trong thực tế, không chỉ là các ô vuông mẫu.</p>
           <div class="code-grid">
             <div>
               <h3>HTML</h3>
-              <pre><code data-lang="html">&lt;section class=&quot;cards&quot;&gt;
-  &lt;article class=&quot;card&quot;&gt;
-    &lt;h3&gt;Gói Cơ bản&lt;/h3&gt;
-    &lt;p&gt;Phù hợp người mới học HTML/CSS.&lt;/p&gt;
-    &lt;button&gt;Chọn gói&lt;/button&gt;
-  &lt;/article&gt;
-  &lt;article class=&quot;card featured&quot;&gt;
-    &lt;h3&gt;Gói Thực hành&lt;/h3&gt;
-    &lt;p&gt;Có bài tập, bài giải và dự án nhỏ.&lt;/p&gt;
-    &lt;button&gt;Chọn gói&lt;/button&gt;
-  &lt;/article&gt;
-&lt;/section&gt;</code></pre>
+              <pre><code data-lang="html">&lt;article class=&quot;comment&quot;&gt;
+  &lt;div class=&quot;avatar&quot;&gt;A&lt;/div&gt;
+  &lt;div class=&quot;comment-body&quot;&gt;
+    &lt;h3&gt;Nguyễn Văn A&lt;/h3&gt;
+    &lt;p&gt;Bố cục này dùng Flexbox để avatar cố định, nội dung co giãn.&lt;/p&gt;
+  &lt;/div&gt;
+  &lt;time&gt;09:30&lt;/time&gt;
+&lt;/article&gt;</code></pre>
             </div>
             <div>
               <h3>CSS</h3>
-              <pre><code data-lang="css">.site-header {
+              <pre><code data-lang="css">.comment {
   display: flex;
-  align-items: center;
-  gap: 18px;
-  flex-wrap: wrap;
-}
-
-.site-nav {
-  display: flex;
+  align-items: flex-start;
   gap: 12px;
-  margin-left: auto;
 }
 
-@media (max-width: 640px) {
-  .site-nav {
-    width: 100%;
-    margin-left: 0;
-    flex-wrap: wrap;
-  }
+.avatar {
+  flex: 0 0 48px;
+}
+
+.comment-body {
+  flex: 1;
+  min-width: 0;
+}
+
+.comment time {
+  margin-left: auto;
 }</code></pre>
             </div>
+          </div>
+          <div class="result-panel">
+            <div class="result-head">
+              <h3>Kết quả khi chạy code ví dụ</h3>
+              <span>Preview chạy từ HTML/CSS bên trên</span>
+            </div>
+            <iframe class="result-frame" title="Kết quả khi chạy code ví dụ" srcdoc="&lt;!DOCTYPE html&gt;
+&lt;html lang=&quot;vi&quot;&gt;
+&lt;head&gt;
+  &lt;meta charset=&quot;UTF-8&quot;&gt;
+  &lt;meta name=&quot;viewport&quot; content=&quot;width=device-width, initial-scale=1.0&quot;&gt;
+  &lt;style&gt;
+    * { box-sizing: border-box; }
+    body {
+      margin: 0;
+      padding: 18px;
+      font-family: &quot;Segoe UI&quot;, Tahoma, sans-serif;
+      color: #18212f;
+      background: #f8fafc;
+    }
+    a { color: #0f766e; text-decoration: none; font-weight: 700; }
+    button {
+      border: 0;
+      border-radius: 8px;
+      padding: 10px 14px;
+      color: white;
+      background: #0f766e;
+      font-weight: 800;
+    }
+    input {
+      min-height: 40px;
+      border: 1px solid #cbd5e1;
+      border-radius: 8px;
+      padding: 8px 10px;
+      font: inherit;
+    }
+    .site-header,
+    .search-row,
+    .comment,
+    .card,
+    .content,
+    .sidebar,
+    .login-box {
+      border: 1px solid #d9e2ec;
+      border-radius: 8px;
+      background: white;
+      padding: 14px;
+    }
+    .logo {
+      color: #18212f;
+      font-size: 1.05rem;
+      font-weight: 900;
+    }
+    .featured {
+      border-color: #0f766e;
+      box-shadow: 0 10px 24px rgba(15, 118, 110, 0.14);
+    }
+    .sidebar {
+      color: white;
+      background: #18212f;
+    }
+    .content-header {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 12px;
+    }
+    .content-header h2,
+    .comment h3,
+    .card h3,
+    .login-box h2 {
+      margin: 0 0 8px;
+    }
+    .avatar {
+      width: 48px;
+      height: 48px;
+      display: grid;
+      place-items: center;
+      border-radius: 50%;
+      color: white;
+      background: #e85d4f;
+      font-weight: 900;
+    }
+    .direction-demo article,
+    .tag-board span,
+    .course-list article,
+    .board article,
+    .debug-item,
+    .hero-preview,
+    .file-icon,
+    .stepper span,
+    .chips span,
+    .faq-list article {
+      border: 1px solid #d9e2ec;
+      border-radius: 8px;
+      background: white;
+      padding: 12px;
+    }
+    .hero-preview,
+    .file-icon,
+    .stepper span {
+      display: grid;
+      place-items: center;
+      color: white;
+      background: #2563eb;
+      font-weight: 900;
+    }
+    .file-icon,
+    .stepper span {
+      width: 44px;
+      height: 44px;
+      flex: 0 0 auto;
+    }
+    .tag-board span,
+    .chips span {
+      text-align: center;
+    }
+    .bottom-nav {
+      border: 1px solid #d9e2ec;
+      border-radius: 12px;
+      background: white;
+      padding: 10px;
+    }
+    .comment {
+      display: flex;
+      align-items: flex-start;
+      gap: 12px;
+    }
+    
+    .avatar {
+      flex: 0 0 48px;
+    }
+    
+    .comment-body {
+      flex: 1;
+      min-width: 0;
+    }
+    
+    .comment time {
+      margin-left: auto;
+    }
+  &lt;/style&gt;
+&lt;/head&gt;
+&lt;body&gt;
+  &lt;article class=&quot;comment&quot;&gt;
+    &lt;div class=&quot;avatar&quot;&gt;A&lt;/div&gt;
+    &lt;div class=&quot;comment-body&quot;&gt;
+      &lt;h3&gt;Nguyễn Văn A&lt;/h3&gt;
+      &lt;p&gt;Bố cục này dùng Flexbox để avatar cố định, nội dung co giãn.&lt;/p&gt;
+    &lt;/div&gt;
+    &lt;time&gt;09:30&lt;/time&gt;
+  &lt;/article&gt;
+&lt;/body&gt;
+&lt;/html&gt;"></iframe>
           </div>
         </section>
 
         <section class="exercise" id="exercise">
           <span class="level">Bài tập thực hành</span>
           <h2>Yêu cầu</h2>
-          <p>Dựng lại ví dụ <strong>Media object: avatar và nội dung</strong> trong một thư mục riêng. Bài làm cần chạy được khi mở file HTML trực tiếp trên trình duyệt.</p>
+          <p>Tạo comment row gồm avatar, tên, nội dung và thời gian. Nội dung co giãn, thời gian nằm bên phải. Chủ đề cần thể hiện rõ trong sản phẩm cuối: <strong>Media object: avatar và nội dung</strong>.</p>
           <ol class="steps">
-            <li>Tạo thư mục <code>bai-05-module-02-truc-can-chinh</code>.</li>
-            <li>Tạo 2 file <code>index.html</code> và <code>style.css</code>.</li>
-            <li>Viết HTML theo đúng cấu trúc cha con trong phần ví dụ.</li>
-            <li>Viết CSS Flexbox, kiểm tra desktop trước.</li>
-            <li>Thu nhỏ màn hình còn khoảng 360px và sửa lỗi tràn ngang nếu có.</li>
+            <li>Avatar dùng <code>flex: 0 0 48px</code>.</li>
+            <li>Phần nội dung dùng <code>flex: 1</code> và <code>min-width: 0</code>.</li>
+            <li>Thời gian dùng <code>margin-left: auto</code>.</li>
+            <li>Thêm nội dung dài để kiểm tra dòng không phá layout.</li>
+            <li>Mobile vẫn phải đọc được avatar, text và thời gian.</li>
           </ol>
           <h3>Tiêu chí đạt</h3>
           <ul>
-            <li>Không dùng table hoặc float để tạo layout chính.</li>
-            <li>Khoảng cách giữa item dùng <code>gap</code> khi phù hợp.</li>
-            <li>Không có chữ hoặc nút bị chồng lên nhau trên mobile.</li>
+            <li>Layout chính dùng Flexbox, không dùng table hoặc float để giả lập.</li>
+            <li>Khoảng cách, căn chỉnh và thứ tự item đúng với mục tiêu bài học.</li>
+            <li>Không có nội dung bị tràn ngang hoặc nút bị chồng lên chữ trên màn hình nhỏ.</li>
           </ul>
         </section>
 
         <section class="lesson solution" id="solution">
           <h2>Bài giải tham khảo</h2>
-          <p>Đây là một lời giải gọn để đối chiếu sau khi bạn đã tự làm. Có thể có nhiều cách đúng; quan trọng là bạn giải thích được vì sao đặt từng thuộc tính ở vị trí đó.</p>
+          <p>Bài giải tham khảo ưu tiên CSS ngắn và dễ đọc. Sau khi xem lời giải, hãy tự chỉ ra dòng nào điều khiển container và dòng nào điều khiển item.</p>
           <pre><code data-lang="html">&lt;!DOCTYPE html&gt;
 &lt;html lang=&quot;vi&quot;&gt;
 &lt;head&gt;
@@ -162,51 +321,199 @@
   &lt;meta name=&quot;viewport&quot; content=&quot;width=device-width, initial-scale=1.0&quot;&gt;
   &lt;title&gt;Media object: avatar và nội dung&lt;/title&gt;
   &lt;style&gt;
-    .site-header {
+    .comment {
       display: flex;
-      align-items: center;
-      gap: 18px;
-      flex-wrap: wrap;
-    }
-    
-    .site-nav {
-      display: flex;
+      align-items: flex-start;
       gap: 12px;
-      margin-left: auto;
     }
     
-    @media (max-width: 640px) {
-      .site-nav {
-        width: 100%;
-        margin-left: 0;
-        flex-wrap: wrap;
-      }
+    .avatar {
+      flex: 0 0 48px;
+    }
+    
+    .comment-body {
+      flex: 1;
+      min-width: 0;
+    }
+    
+    .comment time {
+      margin-left: auto;
     }
   &lt;/style&gt;
 &lt;/head&gt;
 &lt;body&gt;
-  &lt;section class=&quot;cards&quot;&gt;
-    &lt;article class=&quot;card&quot;&gt;
-      &lt;h3&gt;Gói Cơ bản&lt;/h3&gt;
-      &lt;p&gt;Phù hợp người mới học HTML/CSS.&lt;/p&gt;
-      &lt;button&gt;Chọn gói&lt;/button&gt;
-    &lt;/article&gt;
-    &lt;article class=&quot;card featured&quot;&gt;
-      &lt;h3&gt;Gói Thực hành&lt;/h3&gt;
-      &lt;p&gt;Có bài tập, bài giải và dự án nhỏ.&lt;/p&gt;
-      &lt;button&gt;Chọn gói&lt;/button&gt;
-    &lt;/article&gt;
-  &lt;/section&gt;
+  &lt;article class=&quot;comment&quot;&gt;
+    &lt;div class=&quot;avatar&quot;&gt;A&lt;/div&gt;
+    &lt;div class=&quot;comment-body&quot;&gt;
+      &lt;h3&gt;Nguyễn Văn A&lt;/h3&gt;
+      &lt;p&gt;Bố cục này dùng Flexbox để avatar cố định, nội dung co giãn.&lt;/p&gt;
+    &lt;/div&gt;
+    &lt;time&gt;09:30&lt;/time&gt;
+  &lt;/article&gt;
 &lt;/body&gt;
 &lt;/html&gt;</code></pre>
+          <div class="result-panel">
+            <div class="result-head">
+              <h3>Kết quả bài giải</h3>
+              <span>Preview chạy từ HTML/CSS bên trên</span>
+            </div>
+            <iframe class="result-frame" title="Kết quả bài giải" srcdoc="&lt;!DOCTYPE html&gt;
+&lt;html lang=&quot;vi&quot;&gt;
+&lt;head&gt;
+  &lt;meta charset=&quot;UTF-8&quot;&gt;
+  &lt;meta name=&quot;viewport&quot; content=&quot;width=device-width, initial-scale=1.0&quot;&gt;
+  &lt;style&gt;
+    * { box-sizing: border-box; }
+    body {
+      margin: 0;
+      padding: 18px;
+      font-family: &quot;Segoe UI&quot;, Tahoma, sans-serif;
+      color: #18212f;
+      background: #f8fafc;
+    }
+    a { color: #0f766e; text-decoration: none; font-weight: 700; }
+    button {
+      border: 0;
+      border-radius: 8px;
+      padding: 10px 14px;
+      color: white;
+      background: #0f766e;
+      font-weight: 800;
+    }
+    input {
+      min-height: 40px;
+      border: 1px solid #cbd5e1;
+      border-radius: 8px;
+      padding: 8px 10px;
+      font: inherit;
+    }
+    .site-header,
+    .search-row,
+    .comment,
+    .card,
+    .content,
+    .sidebar,
+    .login-box {
+      border: 1px solid #d9e2ec;
+      border-radius: 8px;
+      background: white;
+      padding: 14px;
+    }
+    .logo {
+      color: #18212f;
+      font-size: 1.05rem;
+      font-weight: 900;
+    }
+    .featured {
+      border-color: #0f766e;
+      box-shadow: 0 10px 24px rgba(15, 118, 110, 0.14);
+    }
+    .sidebar {
+      color: white;
+      background: #18212f;
+    }
+    .content-header {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 12px;
+    }
+    .content-header h2,
+    .comment h3,
+    .card h3,
+    .login-box h2 {
+      margin: 0 0 8px;
+    }
+    .avatar {
+      width: 48px;
+      height: 48px;
+      display: grid;
+      place-items: center;
+      border-radius: 50%;
+      color: white;
+      background: #e85d4f;
+      font-weight: 900;
+    }
+    .direction-demo article,
+    .tag-board span,
+    .course-list article,
+    .board article,
+    .debug-item,
+    .hero-preview,
+    .file-icon,
+    .stepper span,
+    .chips span,
+    .faq-list article {
+      border: 1px solid #d9e2ec;
+      border-radius: 8px;
+      background: white;
+      padding: 12px;
+    }
+    .hero-preview,
+    .file-icon,
+    .stepper span {
+      display: grid;
+      place-items: center;
+      color: white;
+      background: #2563eb;
+      font-weight: 900;
+    }
+    .file-icon,
+    .stepper span {
+      width: 44px;
+      height: 44px;
+      flex: 0 0 auto;
+    }
+    .tag-board span,
+    .chips span {
+      text-align: center;
+    }
+    .bottom-nav {
+      border: 1px solid #d9e2ec;
+      border-radius: 12px;
+      background: white;
+      padding: 10px;
+    }
+    .comment {
+      display: flex;
+      align-items: flex-start;
+      gap: 12px;
+    }
+    
+    .avatar {
+      flex: 0 0 48px;
+    }
+    
+    .comment-body {
+      flex: 1;
+      min-width: 0;
+    }
+    
+    .comment time {
+      margin-left: auto;
+    }
+  &lt;/style&gt;
+&lt;/head&gt;
+&lt;body&gt;
+  &lt;article class=&quot;comment&quot;&gt;
+    &lt;div class=&quot;avatar&quot;&gt;A&lt;/div&gt;
+    &lt;div class=&quot;comment-body&quot;&gt;
+      &lt;h3&gt;Nguyễn Văn A&lt;/h3&gt;
+      &lt;p&gt;Bố cục này dùng Flexbox để avatar cố định, nội dung co giãn.&lt;/p&gt;
+    &lt;/div&gt;
+    &lt;time&gt;09:30&lt;/time&gt;
+  &lt;/article&gt;
+&lt;/body&gt;
+&lt;/html&gt;"></iframe>
+          </div>
         </section>
 
         <section class="callout">
           <h2>Lỗi thường gặp</h2>
           <ul>
-            <li>Đặt thuộc tính container như <code>justify-content</code> vào item nên không có tác dụng.</li>
-            <li>Quên <code>min-width: 0</code> với item chứa text dài, làm layout bị tràn.</li>
-            <li>Dùng margin rời rạc quá nhiều thay vì <code>gap</code>, khiến khoảng cách khó kiểm soát.</li>
+            <li>Chọn sai container nên thuộc tính Flexbox không tác động đến item mong muốn.</li>
+            <li>Thêm quá nhiều CSS trang trí trước khi kiểm tra bố cục cơ bản.</li>
+            <li>Không kiểm tra responsive nên layout chỉ đúng trên một kích thước màn hình.</li>
           </ul>
         </section>
 
