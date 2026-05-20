@@ -1,0 +1,653 @@
+<!DOCTYPE html>
+<html lang="vi">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <meta name="description" content="Thực hành hàng filter và danh sách sản phẩm responsive." />
+  <meta name="keywords" content="CSS Flexbox, học CSS, layout web, frontend, bài tập CSS, responsive, NenTang.vn" />
+  <meta name="author" content="Dương Nguyễn Phú Cường" />
+  <meta property="og:locale" content="vi_VN" />
+  <meta property="og:type" content="website" />
+  <meta property="og:title" content="Bài 03 - Dự án 3: Product catalog có filter bar | Module 4 CSS Flexbox | NenTang.vn" />
+  <meta property="og:description" content="Thực hành hàng filter và danh sách sản phẩm responsive." />
+  <meta property="og:url" content="https://nentang.vn/" />
+  <meta property="og:site_name" content="Nền tảng Kiến thức" />
+  <title>Bài 03 - Dự án 3: Product catalog có filter bar | Module 4 CSS Flexbox | NenTang.vn</title>
+  <link rel="stylesheet" href="../../shared.css" />
+</head>
+<body>
+  <header class="topbar">
+    <div class="topbar-inner">
+      <a class="brand" href="../../index.html"><span class="brand-mark">F</span><span>CSS Flexbox</span></a>
+      <nav class="nav-links" aria-label="Điều hướng khóa học">
+        <a href="../../../index.html">Trang chủ</a>
+        <a href="../../index.html#modules">Module</a>
+        <a href="../../index.html#playground">Playground</a>
+      </nav>
+    </div>
+  </header>
+  <section class="module-hero m4">
+    <div class="container">
+      <div class="breadcrumb"><a href="../../index.html">CSS Flexbox</a><span>/</span><a href="../index.html">Module 4</a><span>/</span><span>Bài 03</span></div>
+      <h1>Bài 03: Dự án 3: Product catalog có filter bar</h1>
+      <p>Thực hành hàng filter và danh sách sản phẩm responsive.</p>
+    </div>
+  </section>
+  <main class="section">
+    <div class="container lesson-layout">
+      <aside class="side-nav" aria-label="Mục lục bài học">
+        <a href="#goal">Mục tiêu</a>
+        <a href="#theory">Lý thuyết</a>
+        <a href="#demo">Minh họa</a>
+        <a href="#code">Code ví dụ</a>
+        <a href="#exercise">Thực hành</a>
+        <a href="#solution">Bài giải</a>
+      </aside>
+      <article class="module-article">
+        <section class="lesson" id="goal">
+          <h2>Mục tiêu bài học</h2>
+          <ul>
+            <li>Phân tích yêu cầu đề thành các vùng layout rõ ràng.</li>
+            <li>Dùng Flexbox đúng vai trò cho từng vùng, không gượng ép một container xử lý mọi thứ.</li>
+            <li>Hoàn thiện bản desktop và mobile có thể chạy trực tiếp trong trình duyệt.</li>
+          </ul>
+        </section>
+
+        <section class="lesson" id="theory">
+          <h2>Lý thuyết thực tế</h2>
+          <p>Với bài thực hành, hãy chia giao diện thành các khối nhỏ: header, danh sách, card, action bar, footer. Mỗi khối có thể là một flex container riêng.</p>
+          <p>Không phải phần nào cũng cần Flexbox. Chỉ bật flex khi có nhu cầu căn hàng/cột, chia khoảng cách, co giãn hoặc đẩy item.</p>
+          <ol class="steps">
+            <li>Đọc đề và liệt kê các vùng UI cần có.</li>
+            <li>Viết HTML có nghĩa trước, chưa viết CSS.</li>
+            <li>Bật Flexbox từng vùng một và kiểm tra preview.</li>
+            <li>Thêm responsive sau khi desktop ổn.</li>
+          </ol>
+        </section>
+
+        <section class="lesson" id="demo">
+          <h2>Minh họa trực quan</h2>
+          <p>Minh họa này tập trung vào cơ chế chính của bài. Code bên dưới chính là phần điều khiển layout.</p>
+          <style>.demo-surface {
+  border: 2px dashed #94a3b8;
+  border-radius: 10px;
+  padding: 16px;
+  background: #ffffff;
+}
+
+.demo-box {
+  border: 1px solid #ccd6e0;
+  border-radius: 8px;
+  padding: 14px;
+  background: #ffffff;
+}
+
+.demo-item {
+  border: 2px solid #0f766e;
+  border-radius: 8px;
+  padding: 12px;
+  background: #ccfbf1;
+  color: #115e59;
+  font-weight: 800;
+  text-align: center;
+}
+.card, .panel, .toolbar, .site-header, .comment, .form-row, .tabs, .footer-col, .product-card, .profile-card, .chat-row, .summary-box {
+  border: 1px solid #d9e2ec;
+  border-radius: 10px;
+  background: #ffffff;
+  padding: 14px;
+}
+.muted { color: #64748b; }
+.avatar {
+  width: 52px;
+  height: 52px;
+  display: grid;
+  place-items: center;
+  border-radius: 50%;
+  background: #e85d4f;
+  color: white;
+  font-weight: 900;
+}
+.badge {
+  display: inline-flex;
+  align-items: center;
+  border-radius: 999px;
+  padding: 5px 10px;
+  background: #e0f2fe;
+  color: #075985;
+  font-weight: 800;
+}.demo-surface {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 12px;
+}
+.demo-item {
+  flex: 1 1 160px;
+}</style>
+          <section class="catalog">
+  <div class="toolbar">
+    <strong>Sản phẩm</strong>
+    <button>Danh mục</button>
+    <button>Sắp xếp</button>
+  </div>
+  <div class="product-list">
+    <article class="product-card"><h3>Áo thun</h3><p class="muted">199.000đ</p><button>Thêm</button></article>
+    <article class="product-card"><h3>Balo</h3><p class="muted">399.000đ</p><button>Thêm</button></article>
+    <article class="product-card"><h3>Giày</h3><p class="muted">599.000đ</p><button>Thêm</button></article>
+  </div>
+</section>
+          <div class="demo-code">
+            <h3>Code tạo minh họa</h3>
+            <pre><code data-lang="css">.demo-surface {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 12px;
+}
+.demo-item {
+  flex: 1 1 160px;
+}</code></pre>
+          </div>
+        </section>
+
+        <section class="lesson" id="code">
+          <h2>Code ví dụ</h2>
+          <p>Ví dụ này là một tình huống giao diện thật, không phải đoạn CSS rời rạc.</p>
+          <div class="code-grid">
+            <div><h3>HTML</h3><pre><code data-lang="html">&lt;section class=&quot;catalog&quot;&gt;
+  &lt;div class=&quot;toolbar&quot;&gt;
+    &lt;strong&gt;Sản phẩm&lt;/strong&gt;
+    &lt;button&gt;Danh mục&lt;/button&gt;
+    &lt;button&gt;Sắp xếp&lt;/button&gt;
+  &lt;/div&gt;
+  &lt;div class=&quot;product-list&quot;&gt;
+    &lt;article class=&quot;product-card&quot;&gt;&lt;h3&gt;Áo thun&lt;/h3&gt;&lt;p class=&quot;muted&quot;&gt;199.000đ&lt;/p&gt;&lt;button&gt;Thêm&lt;/button&gt;&lt;/article&gt;
+    &lt;article class=&quot;product-card&quot;&gt;&lt;h3&gt;Balo&lt;/h3&gt;&lt;p class=&quot;muted&quot;&gt;399.000đ&lt;/p&gt;&lt;button&gt;Thêm&lt;/button&gt;&lt;/article&gt;
+    &lt;article class=&quot;product-card&quot;&gt;&lt;h3&gt;Giày&lt;/h3&gt;&lt;p class=&quot;muted&quot;&gt;599.000đ&lt;/p&gt;&lt;button&gt;Thêm&lt;/button&gt;&lt;/article&gt;
+  &lt;/div&gt;
+&lt;/section&gt;</code></pre></div>
+            <div><h3>CSS</h3><pre><code data-lang="css">.catalog {
+  display: flex;
+  flex-direction: column;
+  gap: 16px;
+}
+
+.toolbar {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  flex-wrap: wrap;
+}
+
+.toolbar strong {
+  margin-right: auto;
+}
+
+.product-list {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 16px;
+}
+
+.product-card {
+  flex: 1 1 220px;
+  display: flex;
+  flex-direction: column;
+  min-height: 180px;
+}
+
+.product-card button {
+  margin-top: auto;
+  align-self: flex-start;
+}</code></pre></div>
+          </div>
+          <div class="result-panel">
+            <div class="result-head">
+              <h3>Kết quả khi chạy code ví dụ</h3>
+              <span>Preview chạy trực tiếp từ HTML/CSS của bài</span>
+            </div>
+            <iframe class="result-frame" title="Kết quả khi chạy code ví dụ" srcdoc="&lt;!DOCTYPE html&gt;
+&lt;html lang=&quot;vi&quot;&gt;
+&lt;head&gt;
+  &lt;meta charset=&quot;UTF-8&quot;&gt;
+  &lt;meta name=&quot;viewport&quot; content=&quot;width=device-width, initial-scale=1.0&quot;&gt;
+  &lt;title&gt;Dự án 3: Product catalog có filter bar&lt;/title&gt;
+  &lt;style&gt;
+    * { box-sizing: border-box; }
+    body {
+      margin: 0;
+      padding: 24px;
+      font-family: &quot;Segoe UI&quot;, Tahoma, sans-serif;
+      color: #172033;
+      background: #f5f7fb;
+    }
+    a { color: #0f766e; text-decoration: none; font-weight: 700; }
+    button {
+      border: 0;
+      border-radius: 8px;
+      padding: 10px 14px;
+      color: white;
+      background: #0f766e;
+      font-weight: 800;
+    }
+    input, textarea, select {
+      min-height: 40px;
+      border: 1px solid #ccd6e0;
+      border-radius: 8px;
+      padding: 8px 10px;
+      font: inherit;
+    }
+    .demo-surface {
+      border: 2px dashed #94a3b8;
+      border-radius: 10px;
+      padding: 16px;
+      background: #ffffff;
+    }
+    
+    .demo-box {
+      border: 1px solid #ccd6e0;
+      border-radius: 8px;
+      padding: 14px;
+      background: #ffffff;
+    }
+    
+    .demo-item {
+      border: 2px solid #0f766e;
+      border-radius: 8px;
+      padding: 12px;
+      background: #ccfbf1;
+      color: #115e59;
+      font-weight: 800;
+      text-align: center;
+    }
+    .card, .panel, .toolbar, .site-header, .comment, .form-row, .tabs, .footer-col, .product-card, .profile-card, .chat-row, .summary-box {
+      border: 1px solid #d9e2ec;
+      border-radius: 10px;
+      background: #ffffff;
+      padding: 14px;
+    }
+    .muted { color: #64748b; }
+    .avatar {
+      width: 52px;
+      height: 52px;
+      display: grid;
+      place-items: center;
+      border-radius: 50%;
+      background: #e85d4f;
+      color: white;
+      font-weight: 900;
+    }
+    .badge {
+      display: inline-flex;
+      align-items: center;
+      border-radius: 999px;
+      padding: 5px 10px;
+      background: #e0f2fe;
+      color: #075985;
+      font-weight: 800;
+    }
+    .catalog {
+      display: flex;
+      flex-direction: column;
+      gap: 16px;
+    }
+    
+    .toolbar {
+      display: flex;
+      align-items: center;
+      gap: 10px;
+      flex-wrap: wrap;
+    }
+    
+    .toolbar strong {
+      margin-right: auto;
+    }
+    
+    .product-list {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 16px;
+    }
+    
+    .product-card {
+      flex: 1 1 220px;
+      display: flex;
+      flex-direction: column;
+      min-height: 180px;
+    }
+    
+    .product-card button {
+      margin-top: auto;
+      align-self: flex-start;
+    }
+  &lt;/style&gt;
+&lt;/head&gt;
+&lt;body&gt;
+  &lt;section class=&quot;catalog&quot;&gt;
+    &lt;div class=&quot;toolbar&quot;&gt;
+      &lt;strong&gt;Sản phẩm&lt;/strong&gt;
+      &lt;button&gt;Danh mục&lt;/button&gt;
+      &lt;button&gt;Sắp xếp&lt;/button&gt;
+    &lt;/div&gt;
+    &lt;div class=&quot;product-list&quot;&gt;
+      &lt;article class=&quot;product-card&quot;&gt;&lt;h3&gt;Áo thun&lt;/h3&gt;&lt;p class=&quot;muted&quot;&gt;199.000đ&lt;/p&gt;&lt;button&gt;Thêm&lt;/button&gt;&lt;/article&gt;
+      &lt;article class=&quot;product-card&quot;&gt;&lt;h3&gt;Balo&lt;/h3&gt;&lt;p class=&quot;muted&quot;&gt;399.000đ&lt;/p&gt;&lt;button&gt;Thêm&lt;/button&gt;&lt;/article&gt;
+      &lt;article class=&quot;product-card&quot;&gt;&lt;h3&gt;Giày&lt;/h3&gt;&lt;p class=&quot;muted&quot;&gt;599.000đ&lt;/p&gt;&lt;button&gt;Thêm&lt;/button&gt;&lt;/article&gt;
+    &lt;/div&gt;
+  &lt;/section&gt;
+&lt;/body&gt;
+&lt;/html&gt;"></iframe>
+          </div>
+        </section>
+
+        <section class="exercise" id="exercise">
+          <span class="level">Bài tập thực hành</span>
+          <h2>Yêu cầu đề bài</h2>
+          <p>Tạo catalog có filter bar phía trên và danh sách sản phẩm phía dưới. Filter bar wrap trên mobile, product card tự xuống dòng.</p>
+          <ol class="steps">
+            <li>Tạo toolbar có tiêu đề và 2 nút filter.</li>
+            <li>Tạo ít nhất 6 product card.</li>
+            <li>Toolbar dùng flex wrap, tiêu đề đẩy các nút sang phải.</li>
+            <li>Product list dùng flex-wrap và flex-basis.</li>
+            <li>Nút trong card nằm cuối.</li>
+          </ol>
+          <h3>Tiêu chí chấm</h3>
+          <ul>
+            <li>Toolbar không tràn mobile.</li>
+            <li>Product card xuống dòng hợp lý.</li>
+            <li>Card có cấu trúc rõ: title, price, action.</li>
+          </ul>
+        </section>
+
+        <section class="lesson solution" id="solution">
+          <h2>Bài giải tham khảo</h2>
+          <p>Lời giải dưới đây bám đúng yêu cầu đề. Hãy tự làm trước, sau đó mới đối chiếu.</p>
+          <pre><code data-lang="html">&lt;!DOCTYPE html&gt;
+&lt;html lang=&quot;vi&quot;&gt;
+&lt;head&gt;
+  &lt;meta charset=&quot;UTF-8&quot;&gt;
+  &lt;meta name=&quot;viewport&quot; content=&quot;width=device-width, initial-scale=1.0&quot;&gt;
+  &lt;title&gt;Dự án 3: Product catalog có filter bar&lt;/title&gt;
+  &lt;style&gt;
+    * { box-sizing: border-box; }
+    body {
+      margin: 0;
+      padding: 24px;
+      font-family: &quot;Segoe UI&quot;, Tahoma, sans-serif;
+      color: #172033;
+      background: #f5f7fb;
+    }
+    a { color: #0f766e; text-decoration: none; font-weight: 700; }
+    button {
+      border: 0;
+      border-radius: 8px;
+      padding: 10px 14px;
+      color: white;
+      background: #0f766e;
+      font-weight: 800;
+    }
+    input, textarea, select {
+      min-height: 40px;
+      border: 1px solid #ccd6e0;
+      border-radius: 8px;
+      padding: 8px 10px;
+      font: inherit;
+    }
+    .demo-surface {
+      border: 2px dashed #94a3b8;
+      border-radius: 10px;
+      padding: 16px;
+      background: #ffffff;
+    }
+    
+    .demo-box {
+      border: 1px solid #ccd6e0;
+      border-radius: 8px;
+      padding: 14px;
+      background: #ffffff;
+    }
+    
+    .demo-item {
+      border: 2px solid #0f766e;
+      border-radius: 8px;
+      padding: 12px;
+      background: #ccfbf1;
+      color: #115e59;
+      font-weight: 800;
+      text-align: center;
+    }
+    .card, .panel, .toolbar, .site-header, .comment, .form-row, .tabs, .footer-col, .product-card, .profile-card, .chat-row, .summary-box {
+      border: 1px solid #d9e2ec;
+      border-radius: 10px;
+      background: #ffffff;
+      padding: 14px;
+    }
+    .muted { color: #64748b; }
+    .avatar {
+      width: 52px;
+      height: 52px;
+      display: grid;
+      place-items: center;
+      border-radius: 50%;
+      background: #e85d4f;
+      color: white;
+      font-weight: 900;
+    }
+    .badge {
+      display: inline-flex;
+      align-items: center;
+      border-radius: 999px;
+      padding: 5px 10px;
+      background: #e0f2fe;
+      color: #075985;
+      font-weight: 800;
+    }
+    .catalog {
+      display: flex;
+      flex-direction: column;
+      gap: 16px;
+    }
+    
+    .toolbar {
+      display: flex;
+      align-items: center;
+      gap: 10px;
+      flex-wrap: wrap;
+    }
+    
+    .toolbar strong {
+      margin-right: auto;
+    }
+    
+    .product-list {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 16px;
+    }
+    
+    .product-card {
+      flex: 1 1 220px;
+      display: flex;
+      flex-direction: column;
+      min-height: 180px;
+    }
+    
+    .product-card button {
+      margin-top: auto;
+      align-self: flex-start;
+    }
+  &lt;/style&gt;
+&lt;/head&gt;
+&lt;body&gt;
+  &lt;section class=&quot;catalog&quot;&gt;
+    &lt;div class=&quot;toolbar&quot;&gt;
+      &lt;strong&gt;Sản phẩm&lt;/strong&gt;
+      &lt;button&gt;Danh mục&lt;/button&gt;
+      &lt;button&gt;Sắp xếp&lt;/button&gt;
+    &lt;/div&gt;
+    &lt;div class=&quot;product-list&quot;&gt;
+      &lt;article class=&quot;product-card&quot;&gt;&lt;h3&gt;Áo thun&lt;/h3&gt;&lt;p class=&quot;muted&quot;&gt;199.000đ&lt;/p&gt;&lt;button&gt;Thêm&lt;/button&gt;&lt;/article&gt;
+      &lt;article class=&quot;product-card&quot;&gt;&lt;h3&gt;Balo&lt;/h3&gt;&lt;p class=&quot;muted&quot;&gt;399.000đ&lt;/p&gt;&lt;button&gt;Thêm&lt;/button&gt;&lt;/article&gt;
+      &lt;article class=&quot;product-card&quot;&gt;&lt;h3&gt;Giày&lt;/h3&gt;&lt;p class=&quot;muted&quot;&gt;599.000đ&lt;/p&gt;&lt;button&gt;Thêm&lt;/button&gt;&lt;/article&gt;
+    &lt;/div&gt;
+  &lt;/section&gt;
+&lt;/body&gt;
+&lt;/html&gt;</code></pre>
+          <div class="result-panel">
+            <div class="result-head">
+              <h3>Kết quả bài giải</h3>
+              <span>Preview chạy trực tiếp từ HTML/CSS của bài</span>
+            </div>
+            <iframe class="result-frame" title="Kết quả bài giải" srcdoc="&lt;!DOCTYPE html&gt;
+&lt;html lang=&quot;vi&quot;&gt;
+&lt;head&gt;
+  &lt;meta charset=&quot;UTF-8&quot;&gt;
+  &lt;meta name=&quot;viewport&quot; content=&quot;width=device-width, initial-scale=1.0&quot;&gt;
+  &lt;title&gt;Dự án 3: Product catalog có filter bar&lt;/title&gt;
+  &lt;style&gt;
+    * { box-sizing: border-box; }
+    body {
+      margin: 0;
+      padding: 24px;
+      font-family: &quot;Segoe UI&quot;, Tahoma, sans-serif;
+      color: #172033;
+      background: #f5f7fb;
+    }
+    a { color: #0f766e; text-decoration: none; font-weight: 700; }
+    button {
+      border: 0;
+      border-radius: 8px;
+      padding: 10px 14px;
+      color: white;
+      background: #0f766e;
+      font-weight: 800;
+    }
+    input, textarea, select {
+      min-height: 40px;
+      border: 1px solid #ccd6e0;
+      border-radius: 8px;
+      padding: 8px 10px;
+      font: inherit;
+    }
+    .demo-surface {
+      border: 2px dashed #94a3b8;
+      border-radius: 10px;
+      padding: 16px;
+      background: #ffffff;
+    }
+    
+    .demo-box {
+      border: 1px solid #ccd6e0;
+      border-radius: 8px;
+      padding: 14px;
+      background: #ffffff;
+    }
+    
+    .demo-item {
+      border: 2px solid #0f766e;
+      border-radius: 8px;
+      padding: 12px;
+      background: #ccfbf1;
+      color: #115e59;
+      font-weight: 800;
+      text-align: center;
+    }
+    .card, .panel, .toolbar, .site-header, .comment, .form-row, .tabs, .footer-col, .product-card, .profile-card, .chat-row, .summary-box {
+      border: 1px solid #d9e2ec;
+      border-radius: 10px;
+      background: #ffffff;
+      padding: 14px;
+    }
+    .muted { color: #64748b; }
+    .avatar {
+      width: 52px;
+      height: 52px;
+      display: grid;
+      place-items: center;
+      border-radius: 50%;
+      background: #e85d4f;
+      color: white;
+      font-weight: 900;
+    }
+    .badge {
+      display: inline-flex;
+      align-items: center;
+      border-radius: 999px;
+      padding: 5px 10px;
+      background: #e0f2fe;
+      color: #075985;
+      font-weight: 800;
+    }
+    .catalog {
+      display: flex;
+      flex-direction: column;
+      gap: 16px;
+    }
+    
+    .toolbar {
+      display: flex;
+      align-items: center;
+      gap: 10px;
+      flex-wrap: wrap;
+    }
+    
+    .toolbar strong {
+      margin-right: auto;
+    }
+    
+    .product-list {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 16px;
+    }
+    
+    .product-card {
+      flex: 1 1 220px;
+      display: flex;
+      flex-direction: column;
+      min-height: 180px;
+    }
+    
+    .product-card button {
+      margin-top: auto;
+      align-self: flex-start;
+    }
+  &lt;/style&gt;
+&lt;/head&gt;
+&lt;body&gt;
+  &lt;section class=&quot;catalog&quot;&gt;
+    &lt;div class=&quot;toolbar&quot;&gt;
+      &lt;strong&gt;Sản phẩm&lt;/strong&gt;
+      &lt;button&gt;Danh mục&lt;/button&gt;
+      &lt;button&gt;Sắp xếp&lt;/button&gt;
+    &lt;/div&gt;
+    &lt;div class=&quot;product-list&quot;&gt;
+      &lt;article class=&quot;product-card&quot;&gt;&lt;h3&gt;Áo thun&lt;/h3&gt;&lt;p class=&quot;muted&quot;&gt;199.000đ&lt;/p&gt;&lt;button&gt;Thêm&lt;/button&gt;&lt;/article&gt;
+      &lt;article class=&quot;product-card&quot;&gt;&lt;h3&gt;Balo&lt;/h3&gt;&lt;p class=&quot;muted&quot;&gt;399.000đ&lt;/p&gt;&lt;button&gt;Thêm&lt;/button&gt;&lt;/article&gt;
+      &lt;article class=&quot;product-card&quot;&gt;&lt;h3&gt;Giày&lt;/h3&gt;&lt;p class=&quot;muted&quot;&gt;599.000đ&lt;/p&gt;&lt;button&gt;Thêm&lt;/button&gt;&lt;/article&gt;
+    &lt;/div&gt;
+  &lt;/section&gt;
+&lt;/body&gt;
+&lt;/html&gt;"></iframe>
+          </div>
+        </section>
+
+        <section class="callout">
+          <h2>Lỗi thường gặp</h2>
+          <ul>
+            <li>Viết HTML thiếu vùng nên CSS phải vá bằng class khó hiểu.</li>
+            <li>Bật flex ở quá nhiều cấp không cần thiết.</li>
+            <li>Không kiểm tra mobile trước khi xem là hoàn thành.</li>
+          </ul>
+        </section>
+
+        <div class="pager">
+          <a class="btn" href="../bai-02/index.html">Bài trước</a>
+          <a class="btn primary" href="../bai-04/index.html">Bài tiếp theo</a>
+        </div>
+      </article>
+    </div>
+  </main>
+  <footer class="footer"><p><a href="../index.html">Quay lại Module 4</a></p></footer>
+  <script type="module" src="../../app.js"></script>
+</body>
+</html>

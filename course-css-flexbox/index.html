@@ -3,16 +3,16 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <meta name="description" content="Khóa học CSS Flexbox gồm 4 module, 80 bài học, ví dụ trực quan, bài tập, bài giải và code highlight bằng Shiki." />
-  <meta name="keywords" content="CSS Flexbox, học CSS, layout web, frontend, NenTang.vn, bài tập CSS, responsive" />
+  <meta name="description" content="Khóa học CSS Flexbox tinh gọn gồm 32 bài cần thiết, ví dụ thực tế, bài tập và bài giải đúng đề." />
+  <meta name="keywords" content="CSS Flexbox, học CSS, layout web, frontend, bài tập CSS, responsive, NenTang.vn" />
   <meta name="author" content="Dương Nguyễn Phú Cường" />
   <meta property="og:locale" content="vi_VN" />
   <meta property="og:type" content="website" />
-  <meta property="og:title" content="Học CSS Flexbox Toàn Tập | NenTang.vn" />
-  <meta property="og:description" content="Khóa học CSS Flexbox gồm 4 module, 80 bài học, ví dụ trực quan, bài tập, bài giải và code highlight bằng Shiki." />
+  <meta property="og:title" content="Học CSS Flexbox Thực Tế | NenTang.vn" />
+  <meta property="og:description" content="Khóa học CSS Flexbox tinh gọn gồm 32 bài cần thiết, ví dụ thực tế, bài tập và bài giải đúng đề." />
   <meta property="og:url" content="https://nentang.vn/" />
   <meta property="og:site_name" content="Nền tảng Kiến thức" />
-  <title>Học CSS Flexbox Toàn Tập | NenTang.vn</title>
+  <title>Học CSS Flexbox Thực Tế | NenTang.vn</title>
   <link rel="stylesheet" href="shared.css" />
 </head>
 <body>
@@ -30,11 +30,11 @@
     <section class="hero">
       <div class="hero-inner">
         <div>
-          <p class="eyebrow">Khóa học thực hành cho người mới</p>
-          <h1>Học CSS Flexbox từ nền tảng đến dự án</h1>
-          <p>80 bài học theo 4 module. Mỗi bài có giải thích dễ hiểu, minh họa trực quan, code HTML/CSS, bài tập thực hành và bài giải tham khảo.</p>
+          <p class="eyebrow">Khóa học thực hành, không học lan man</p>
+          <h1>Học CSS Flexbox qua layout thật</h1>
+          <p>Lộ trình được cắt lại chỉ giữ các bài cần thiết: nền tảng, pattern giao diện, responsive thực tế và bài thực hành có đề/lời giải khớp nhau.</p>
           <div class="hero-actions">
-            <a class="btn primary" href="#modules">Xem 4 module</a>
+            <a class="btn primary" href="#modules">Xem module</a>
             <a class="btn" href="#playground">Thử Playground</a>
           </div>
         </div>
@@ -42,9 +42,8 @@
           <div class="visual-stage">
             <div class="visual-item">logo</div>
             <div class="visual-item">nav</div>
-            <div class="visual-item">main</div>
-            <div class="visual-item">aside</div>
-            <div class="visual-item">cta</div>
+            <div class="visual-item">search</div>
+            <div class="visual-item">action</div>
           </div>
         </div>
       </div>
@@ -53,10 +52,10 @@
     <section class="section alt">
       <div class="container">
         <div class="stats-grid">
-          <div class="stat"><strong>4</strong><span>Module từ cơ bản đến dự án</span></div>
-          <div class="stat"><strong>80</strong><span>Bài học chi tiết</span></div>
-          <div class="stat"><strong>80</strong><span>Bài tập kèm bài giải</span></div>
-          <div class="stat"><strong>Shiki</strong><span>Highlight HTML/CSS đầy đủ</span></div>
+          <div class="stat"><strong>4</strong><span>Module</span></div>
+          <div class="stat"><strong>32</strong><span>Bài học cần thiết</span></div>
+          <div class="stat"><strong>8</strong><span>Bài thực hành dự án</span></div>
+          <div class="stat"><strong>Shiki</strong><span>Code highlight</span></div>
         </div>
       </div>
     </section>
@@ -64,86 +63,82 @@
     <section class="section" id="modules">
       <div class="container">
         <div class="section-head">
-          <h2>Lộ trình học theo module</h2>
-          <p>Lộ trình được thiết kế giống cấu trúc khóa PHP trong repo: module riêng, bài học riêng, bài tập riêng và bài giải để người học có thể tự luyện.</p>
+          <h2>Lộ trình mới</h2>
+          <p>Mỗi module chỉ giữ những bài thực sự phục vụ việc học và dùng Flexbox trong giao diện thực tế.</p>
         </div>
         <div class="module-grid">
-          <a class="module-link m1" href="module-01-nhap-mon-flexbox/index.html">
+          <a class="module-link m1" href="module-01-nen-tang-flexbox/index.html">
             <header>
-              <h3>Module 1: Nhập môn CSS Flexbox</h3>
-              <p>Nền tảng container, item, trục chính, trục phụ và các thuộc tính căn bản.</p>
+              <h3>Module 1: Nền tảng Flexbox cần nắm</h3>
+              <p>Các khái niệm và thuộc tính cốt lõi, không học lan man.</p>
             </header>
             <div class="module-body">
               <ul>
                 <li>Flexbox là gì và khi nào nên dùng</li>
-                <li>display: flex và inline-flex</li>
-                <li>Flex container và flex item</li>
-                <li>Main axis và cross axis</li>
-                <li>flex-direction: row, column, reverse</li>
+                <li>display: flex, inline-flex và quan hệ container/item</li>
+                <li>Main axis, cross axis và flex-direction</li>
+                <li>justify-content: phân phối item trên trục chính</li>
               </ul>
               <div class="tag-row">
-                <span class="tag">20 bài học</span>
-                <span class="tag">20 bài tập</span>
+                <span class="tag">8 bài</span>
+                <span class="tag">Có preview</span>
                 <span class="tag">Có bài giải</span>
               </div>
             </div>
           </a>
-<a class="module-link m2" href="module-02-truc-can-chinh/index.html">
+<a class="module-link m2" href="module-02-pattern-giao-dien/index.html">
             <header>
-              <h3>Module 2: Căn chỉnh và pattern thường gặp</h3>
-              <p>Ứng dụng Flexbox vào menu, card, form, tab, footer và các hàng dữ liệu.</p>
+              <h3>Module 2: Pattern giao diện dùng Flexbox</h3>
+              <p>Những bố cục gặp thường xuyên khi làm web thật.</p>
             </header>
             <div class="module-body">
               <ul>
-                <li>Căn giữa một khối trong màn hình</li>
-                <li>Navbar logo trái, menu phải</li>
-                <li>Toolbar có nhóm nút hành động</li>
-                <li>Card row cao bằng nhau</li>
-                <li>Media object: avatar và nội dung</li>
+                <li>Navbar responsive</li>
+                <li>Toolbar và nhóm nút hành động</li>
+                <li>Media object: avatar, nội dung và thời gian</li>
+                <li>Form row và newsletter form responsive</li>
               </ul>
               <div class="tag-row">
-                <span class="tag">20 bài học</span>
-                <span class="tag">20 bài tập</span>
+                <span class="tag">8 bài</span>
+                <span class="tag">Có preview</span>
                 <span class="tag">Có bài giải</span>
               </div>
             </div>
           </a>
-<a class="module-link m3" href="module-03-flex-item-responsive/index.html">
+<a class="module-link m3" href="module-03-responsive-thuc-te/index.html">
             <header>
-              <h3>Module 3: Flex item và responsive layout</h3>
-              <p>Làm chủ co giãn item, layout nhiều cột, sidebar, dashboard và mobile-first.</p>
+              <h3>Module 3: Responsive và layout thực tế</h3>
+              <p>Áp dụng Flexbox vào các layout có ràng buộc thật.</p>
             </header>
             <div class="module-body">
               <ul>
                 <li>Fluid cards với flex: 1 1 240px</li>
-                <li>Product grid không dùng CSS Grid</li>
                 <li>Sidebar và content layout</li>
-                <li>Dashboard shell</li>
                 <li>Card cao bằng nhau, nút nằm cuối</li>
+                <li>Search bar co giãn trong header</li>
               </ul>
               <div class="tag-row">
-                <span class="tag">20 bài học</span>
-                <span class="tag">20 bài tập</span>
+                <span class="tag">8 bài</span>
+                <span class="tag">Có preview</span>
                 <span class="tag">Có bài giải</span>
               </div>
             </div>
           </a>
-<a class="module-link m4" href="module-04-thuc-hanh-du-an/index.html">
+<a class="module-link m4" href="module-04-bai-thuc-hanh/index.html">
             <header>
-              <h3>Module 4: Thực hành dự án và bài giải</h3>
-              <p>20 bài thực hành có yêu cầu, hướng dẫn từng bước, code lời giải và tiêu chí tự kiểm tra.</p>
+              <h3>Module 4: Bài thực hành Flexbox</h3>
+              <p>Đề bài thực tế, yêu cầu rõ ràng, lời giải khớp với đề.</p>
             </header>
             <div class="module-body">
               <ul>
-                <li>Dự án menu responsive</li>
-                <li>Dự án pricing section</li>
-                <li>Dự án product card list</li>
-                <li>Dự án admin dashboard</li>
-                <li>Dự án trang cá nhân</li>
+                <li>Dự án 1: Navbar khóa học responsive</li>
+                <li>Dự án 2: Pricing section 3 gói</li>
+                <li>Dự án 3: Product catalog có filter bar</li>
+                <li>Dự án 4: Admin dashboard shell</li>
               </ul>
               <div class="tag-row">
-                <span class="tag">20 bài học</span>
-                <span class="tag">20 bài tập</span>
+                <span class="tag">8 bài</span>
+                <span class="tag">Có preview</span>
                 <span class="tag">Có bài giải</span>
               </div>
             </div>
@@ -156,71 +151,32 @@
       <div class="container">
         <div class="section-head">
           <h2>Flexbox Playground</h2>
-          <p>Thay đổi thuộc tính để thấy item dịch chuyển ngay. Code bên dưới cũng được Shiki highlight sau khi trang tải xong.</p>
+          <p>Thử thay đổi thuộc tính và quan sát item di chuyển trước khi đọc code chi tiết trong bài.</p>
         </div>
         <div class="playground" data-playground>
           <div class="playground-layout">
             <div class="controls">
-              <div class="control">
-                <label for="direction">flex-direction</label>
-                <select id="direction" data-css-prop="flex-direction">
-                  <option value="row">row</option>
-                  <option value="row-reverse">row-reverse</option>
-                  <option value="column">column</option>
-                  <option value="column-reverse">column-reverse</option>
-                </select>
-              </div>
-              <div class="control">
-                <label for="justify">justify-content</label>
-                <select id="justify" data-css-prop="justify-content">
-                  <option value="flex-start">flex-start</option>
-                  <option value="center">center</option>
-                  <option value="flex-end">flex-end</option>
-                  <option value="space-between">space-between</option>
-                  <option value="space-around">space-around</option>
-                  <option value="space-evenly">space-evenly</option>
-                </select>
-              </div>
-              <div class="control">
-                <label for="align">align-items</label>
-                <select id="align" data-css-prop="align-items">
-                  <option value="stretch">stretch</option>
-                  <option value="flex-start">flex-start</option>
-                  <option value="center">center</option>
-                  <option value="flex-end">flex-end</option>
-                  <option value="baseline">baseline</option>
-                </select>
-              </div>
-              <div class="control">
-                <label for="wrap">flex-wrap</label>
-                <select id="wrap" data-css-prop="flex-wrap">
-                  <option value="nowrap">nowrap</option>
-                  <option value="wrap">wrap</option>
-                  <option value="wrap-reverse">wrap-reverse</option>
-                </select>
-              </div>
-              <div class="control">
-                <label for="gap">gap</label>
-                <input id="gap" data-css-prop="gap" type="range" min="0" max="42" value="12" />
-              </div>
+              <div class="control"><label for="direction">flex-direction</label><select id="direction" data-css-prop="flex-direction"><option value="row">row</option><option value="column">column</option><option value="row-reverse">row-reverse</option><option value="column-reverse">column-reverse</option></select></div>
+              <div class="control"><label for="justify">justify-content</label><select id="justify" data-css-prop="justify-content"><option value="flex-start">flex-start</option><option value="center">center</option><option value="space-between">space-between</option><option value="space-evenly">space-evenly</option><option value="flex-end">flex-end</option></select></div>
+              <div class="control"><label for="align">align-items</label><select id="align" data-css-prop="align-items"><option value="stretch">stretch</option><option value="center">center</option><option value="flex-start">flex-start</option><option value="flex-end">flex-end</option></select></div>
+              <div class="control"><label for="wrap">flex-wrap</label><select id="wrap" data-css-prop="flex-wrap"><option value="nowrap">nowrap</option><option value="wrap">wrap</option></select></div>
+              <div class="control"><label for="gap">gap</label><input id="gap" data-css-prop="gap" type="range" min="0" max="42" value="12" /></div>
             </div>
-            <div class="demo-shell">
+            <div>
               <div class="demo-box" data-demo>
                 <div class="demo-item">1</div>
                 <div class="demo-item">2</div>
                 <div class="demo-item">3</div>
                 <div class="demo-item">4</div>
               </div>
-              <pre><code data-code data-lang="css"></code></pre>
+              <pre style="margin-top:14px"><code data-code data-lang="css"></code></pre>
             </div>
           </div>
         </div>
       </div>
     </section>
   </main>
-  <footer class="footer">
-    <p>CSS Flexbox Course - NenTang.vn</p>
-  </footer>
+  <footer class="footer"><p>CSS Flexbox Course - NenTang.vn</p></footer>
   <script type="module" src="app.js"></script>
 </body>
 </html>

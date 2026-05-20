@@ -7,11 +7,9 @@ async function highlightCode() {
   try {
     const { codeToHtml } = await import("https://esm.sh/shiki@1");
     await Promise.all(blocks.map(async (block) => {
-      const lang = block.dataset.lang || "text";
       const raw = block.dataset.raw || block.textContent;
       if (block.dataset.highlighted === raw) return;
-
-      const html = await codeToHtml(raw, { lang, theme: "github-dark" });
+      const html = await codeToHtml(raw, { lang: block.dataset.lang || "text", theme: "github-dark" });
       const wrapper = document.createElement("div");
       wrapper.innerHTML = html;
       const highlightedPre = wrapper.querySelector("pre");
@@ -76,21 +74,5 @@ if (playground) {
 
   render();
 }
-
-document.querySelectorAll("[data-progress]").forEach((box) => {
-  const key = "flexbox-course:" + box.dataset.progress;
-  const inputs = Array.from(box.querySelectorAll("input[type='checkbox']"));
-  const saved = JSON.parse(localStorage.getItem(key) || "[]");
-
-  inputs.forEach((input, index) => {
-    input.checked = saved.includes(index);
-    input.addEventListener("change", () => {
-      const checked = inputs
-        .map((item, itemIndex) => (item.checked ? itemIndex : null))
-        .filter((itemIndex) => itemIndex !== null);
-      localStorage.setItem(key, JSON.stringify(checked));
-    });
-  });
-});
 
 highlightCode();
