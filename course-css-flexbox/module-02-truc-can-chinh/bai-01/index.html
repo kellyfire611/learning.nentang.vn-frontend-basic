@@ -1,0 +1,198 @@
+<!DOCTYPE html>
+<html lang="vi">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <meta name="description" content="Bài 01 CSS Flexbox: căn giữa một khối trong màn hình. Có lý thuyết, ví dụ minh họa, bài tập thực hành và bài giải chi tiết." />
+  <meta name="keywords" content="CSS Flexbox, học CSS, layout web, frontend, NenTang.vn, bài tập CSS, responsive" />
+  <meta name="author" content="Dương Nguyễn Phú Cường" />
+  <meta property="og:locale" content="vi_VN" />
+  <meta property="og:type" content="website" />
+  <meta property="og:title" content="Bài 01 - Căn giữa một khối trong màn hình | Module 2 CSS Flexbox | NenTang.vn" />
+  <meta property="og:description" content="Bài 01 CSS Flexbox: căn giữa một khối trong màn hình. Có lý thuyết, ví dụ minh họa, bài tập thực hành và bài giải chi tiết." />
+  <meta property="og:url" content="https://nentang.vn/" />
+  <meta property="og:site_name" content="Nền tảng Kiến thức" />
+  <title>Bài 01 - Căn giữa một khối trong màn hình | Module 2 CSS Flexbox | NenTang.vn</title>
+  <link rel="stylesheet" href="../../shared.css" />
+</head>
+<body>
+  <header class="topbar">
+    <div class="topbar-inner">
+      <a class="brand" href="../../index.html"><span class="brand-mark">F</span><span>CSS Flexbox</span></a>
+      <nav class="nav-links" aria-label="Điều hướng khóa học">
+        <a href="../../../index.html">Trang chủ</a>
+        <a href="../../index.html#modules">Module</a>
+        <a href="../../index.html#playground">Playground</a>
+      </nav>
+    </div>
+  </header>
+
+  <section class="module-hero m2">
+    <div class="container">
+      <div class="breadcrumb">
+        <a href="../../index.html">CSS Flexbox</a>
+        <span>/</span>
+        <a href="../index.html">Module 2</a>
+        <span>/</span>
+        <span>Bài 01</span>
+      </div>
+      <h1>Bài 01: Căn giữa một khối trong màn hình</h1>
+      <p>Bài 01 CSS Flexbox: căn giữa một khối trong màn hình. Có lý thuyết, ví dụ minh họa, bài tập thực hành và bài giải chi tiết.</p>
+    </div>
+  </section>
+
+  <main class="section">
+    <div class="container lesson-layout">
+      <aside class="side-nav" aria-label="Mục lục bài học">
+        <a href="#goal">Mục tiêu</a>
+        <a href="#theory">Lý thuyết</a>
+        <a href="#demo">Minh họa</a>
+        <a href="#code">Code ví dụ</a>
+        <a href="#exercise">Bài tập</a>
+        <a href="#solution">Bài giải</a>
+      </aside>
+
+      <article class="module-article">
+        <section class="lesson" id="goal">
+          <h2>Mục tiêu bài học</h2>
+          <p>Sau bài này, bạn sẽ biết cách dùng chủ đề <strong>Căn giữa một khối trong màn hình</strong> trong một layout thật, hiểu thuộc tính nào đặt ở container, thuộc tính nào đặt ở item và biết tự kiểm tra lỗi thường gặp.</p>
+          <ul>
+            <li>Nhận diện đúng flex container và flex item trong HTML.</li>
+            <li>Viết được CSS tối thiểu để tạo bố cục mong muốn.</li>
+            <li>Biết thử nghiệm bằng DevTools hoặc playground trước khi sửa code lớn.</li>
+          </ul>
+        </section>
+
+        <section class="lesson" id="theory">
+          <h2>Lý thuyết cho người mới</h2>
+          <p>Flexbox hoạt động theo quan hệ cha con trực tiếp. Phần tử cha giữ vai trò điều phối hướng, căn chỉnh và khoảng cách; phần tử con nhận kích thước, thứ tự hoặc mức co giãn. Khi học căn giữa một khối trong màn hình, hãy luôn hỏi: thuộc tính này đặt ở container hay item?</p>
+          <ol class="steps">
+            <li>Tạo HTML rõ ràng trước, chưa vội viết nhiều CSS.</li>
+            <li>Đặt <code>display: flex</code> cho phần tử cha cần sắp xếp con trực tiếp.</li>
+            <li>Chọn hướng bằng <code>flex-direction</code> nếu layout không phải hàng ngang mặc định.</li>
+            <li>Căn theo main axis bằng <code>justify-content</code>, căn theo cross axis bằng <code>align-items</code>.</li>
+            <li>Kiểm soát item bằng <code>flex</code>, <code>order</code>, <code>align-self</code> khi cần.</li>
+          </ol>
+        </section>
+
+        <section class="lesson" id="demo">
+          <h2>Minh họa trực quan</h2>
+          <p>Khung nét đứt là flex container. Các ô màu là flex item. Thay đổi thuộc tính trong code ví dụ bên dưới sẽ làm item đổi vị trí, khoảng cách hoặc kích thước.</p>
+          <div class="mini-demo space">
+    <div class="mini-item">1</div>
+    <div class="mini-item">2</div>
+    <div class="mini-item">3</div>
+    <div class="mini-item">4</div>
+    <div class="axis-label main-axis">main axis</div>
+    <div class="axis-label cross-axis">cross axis</div>
+  </div>
+        </section>
+
+        <section class="lesson" id="code">
+          <h2>Code ví dụ</h2>
+          <p>Ví dụ tách HTML và CSS để dễ nhìn. Khi luyện tập, hãy tự gõ lại từng dòng để nhớ vai trò của từng thuộc tính.</p>
+          <div class="code-grid">
+            <div>
+              <h3>HTML</h3>
+              <pre><code data-lang="html">&lt;section class=&quot;cards&quot;&gt;
+  &lt;article class=&quot;card&quot;&gt;
+    &lt;h3&gt;Gói Cơ bản&lt;/h3&gt;
+    &lt;p&gt;Phù hợp người mới học HTML/CSS.&lt;/p&gt;
+    &lt;button&gt;Chọn gói&lt;/button&gt;
+  &lt;/article&gt;
+  &lt;article class=&quot;card featured&quot;&gt;
+    &lt;h3&gt;Gói Thực hành&lt;/h3&gt;
+    &lt;p&gt;Có bài tập, bài giải và dự án nhỏ.&lt;/p&gt;
+    &lt;button&gt;Chọn gói&lt;/button&gt;
+  &lt;/article&gt;
+&lt;/section&gt;</code></pre>
+            </div>
+            <div>
+              <h3>CSS</h3>
+              <pre><code data-lang="css">.page-center {
+  min-height: 100vh;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}</code></pre>
+            </div>
+          </div>
+        </section>
+
+        <section class="exercise" id="exercise">
+          <span class="level">Bài tập thực hành</span>
+          <h2>Yêu cầu</h2>
+          <p>Dựng lại ví dụ <strong>Căn giữa một khối trong màn hình</strong> trong một thư mục riêng. Bài làm cần chạy được khi mở file HTML trực tiếp trên trình duyệt.</p>
+          <ol class="steps">
+            <li>Tạo thư mục <code>bai-01-module-02-truc-can-chinh</code>.</li>
+            <li>Tạo 2 file <code>index.html</code> và <code>style.css</code>.</li>
+            <li>Viết HTML theo đúng cấu trúc cha con trong phần ví dụ.</li>
+            <li>Viết CSS Flexbox, kiểm tra desktop trước.</li>
+            <li>Thu nhỏ màn hình còn khoảng 360px và sửa lỗi tràn ngang nếu có.</li>
+          </ol>
+          <h3>Tiêu chí đạt</h3>
+          <ul>
+            <li>Không dùng table hoặc float để tạo layout chính.</li>
+            <li>Khoảng cách giữa item dùng <code>gap</code> khi phù hợp.</li>
+            <li>Không có chữ hoặc nút bị chồng lên nhau trên mobile.</li>
+          </ul>
+        </section>
+
+        <section class="lesson solution" id="solution">
+          <h2>Bài giải tham khảo</h2>
+          <p>Đây là một lời giải gọn để đối chiếu sau khi bạn đã tự làm. Có thể có nhiều cách đúng; quan trọng là bạn giải thích được vì sao đặt từng thuộc tính ở vị trí đó.</p>
+          <pre><code data-lang="html">&lt;!DOCTYPE html&gt;
+&lt;html lang=&quot;vi&quot;&gt;
+&lt;head&gt;
+  &lt;meta charset=&quot;UTF-8&quot;&gt;
+  &lt;meta name=&quot;viewport&quot; content=&quot;width=device-width, initial-scale=1.0&quot;&gt;
+  &lt;title&gt;Căn giữa một khối trong màn hình&lt;/title&gt;
+  &lt;style&gt;
+    .page-center {
+      min-height: 100vh;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+    }
+  &lt;/style&gt;
+&lt;/head&gt;
+&lt;body&gt;
+  &lt;section class=&quot;cards&quot;&gt;
+    &lt;article class=&quot;card&quot;&gt;
+      &lt;h3&gt;Gói Cơ bản&lt;/h3&gt;
+      &lt;p&gt;Phù hợp người mới học HTML/CSS.&lt;/p&gt;
+      &lt;button&gt;Chọn gói&lt;/button&gt;
+    &lt;/article&gt;
+    &lt;article class=&quot;card featured&quot;&gt;
+      &lt;h3&gt;Gói Thực hành&lt;/h3&gt;
+      &lt;p&gt;Có bài tập, bài giải và dự án nhỏ.&lt;/p&gt;
+      &lt;button&gt;Chọn gói&lt;/button&gt;
+    &lt;/article&gt;
+  &lt;/section&gt;
+&lt;/body&gt;
+&lt;/html&gt;</code></pre>
+        </section>
+
+        <section class="callout">
+          <h2>Lỗi thường gặp</h2>
+          <ul>
+            <li>Đặt thuộc tính container như <code>justify-content</code> vào item nên không có tác dụng.</li>
+            <li>Quên <code>min-width: 0</code> với item chứa text dài, làm layout bị tràn.</li>
+            <li>Dùng margin rời rạc quá nhiều thay vì <code>gap</code>, khiến khoảng cách khó kiểm soát.</li>
+          </ul>
+        </section>
+
+        <div class="pager">
+          <a class="btn" href="../index.html">Bài trước</a>
+          <a class="btn primary" href="../bai-02/index.html">Bài tiếp theo</a>
+        </div>
+      </article>
+    </div>
+  </main>
+
+  <footer class="footer">
+    <p><a href="../index.html">Quay lại Module 2</a></p>
+  </footer>
+  <script type="module" src="../../app.js"></script>
+</body>
+</html>
