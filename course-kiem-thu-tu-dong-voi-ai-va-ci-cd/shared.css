@@ -614,17 +614,15 @@ thead th {
   .side-nav {
     position: static;
   }
-}
 
-@media (max-width: 640px) {
-  .module-grid {
+  .hero-grid,
+  .stats-grid {
     grid-template-columns: 1fr;
   }
 }
 
-@media (max-width: 900px) {
-  .hero-grid,
-  .stats-grid {
+@media (max-width: 640px) {
+  .module-grid {
     grid-template-columns: 1fr;
   }
 }
