@@ -1,0 +1,243 @@
+<!DOCTYPE html>
+<html lang="vi">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <meta name="description" content="CSS Grid và accessibility — thứ tự DOM, reading order, và landmark navigation." />
+  <title>Bài 04 - CSS Grid và Accessibility | Module 4 CSS Grid | NenTang.vn</title>
+  <link rel="stylesheet" href="../../shared.css" />
+</head>
+<body>
+  <header class="topbar">
+    <div class="topbar-inner">
+      <a class="brand" href="../../index.html"><span class="brand-mark">G</span><span>CSS Grid</span></a>
+      <nav class="nav-links">
+        <a href="../../../index.html">Trang chủ</a>
+        <a href="../../index.html#modules">Module</a>
+      </nav>
+    </div>
+  </header>
+  <section class="module-hero m4">
+    <div class="container">
+      <div class="breadcrumb"><a href="../../index.html">CSS Grid</a><span>/</span><a href="../index.html">Module 4</a><span>/</span><span>Bài 04</span></div>
+      <h1>Bài 04: CSS Grid và Accessibility</h1>
+      <p>Đảm bảo Grid layout không phá vỡ accessibility — thứ tự DOM, keyboard navigation, và screen readers.</p>
+    </div>
+  </section>
+  <main class="section">
+    <div class="container lesson-layout">
+      <aside class="side-nav">
+        <a href="#goal">Mục tiêu</a>
+        <a href="#theory">Lý thuyết</a>
+        <a href="#demo">Minh họa</a>
+        <a href="#code">Code ví dụ</a>
+        <a href="#exercise">Thực hành</a>
+        <a href="#solution">Bài giải</a>
+      </aside>
+      <article class="module-article">
+        <section class="lesson" id="goal">
+          <h2>Mục tiêu bài học</h2>
+          <ul>
+            <li>Hiểu tại sao CSS Grid có thể gây vấn đề accessibility khi thay đổi visual order.</li>
+            <li>Dùng semantic HTML + Grid để layout đẹp mà vẫn accessible.</li>
+            <li>Tránh các anti-patterns: dùng order property và dense packing cho content quan trọng.</li>
+          </ul>
+        </section>
+        <section class="lesson" id="theory">
+          <h2>Lý thuyết thực tế</h2>
+          <p><strong>DOM order = accessibility order.</strong> Screen readers và keyboard navigation (Tab key) theo DOM order, không theo visual order. CSS Grid có thể thay đổi visual order mà không thay đổi DOM order — điều này rất tiện cho layout nhưng nguy hiểm cho accessibility. Ví dụ: <code>order</code> property, negative grid coordinates, hay <code>grid-auto-flow: dense</code> đều thay đổi visual order.</p>
+          <p><strong>Rules:</strong> (1) DOM order phải có nghĩa logic khi đọc từ trên xuống, không có CSS. (2) Chỉ dùng visual reordering cho nội dung thuần visual (không thể focus/interact). (3) Navigation menus: DOM order phải giống visual order để keyboard nav hợp lý. (4) Dùng semantic HTML elements: <code>nav</code>, <code>main</code>, <code>aside</code>, <code>header</code>, <code>footer</code> — screen reader nhận diện được landmarks này.</p>
+          <ol class="steps">
+            <li>Viết HTML theo thứ tự đọc logic, sau đó mới dùng Grid để reorder visually.</li>
+            <li>Kiểm tra accessibility bằng Tab key — focus order phải hợp lý.</li>
+            <li>Test với screen reader hoặc dùng Chrome DevTools &gt; Accessibility.</li>
+            <li>Thêm <code>aria-label</code> cho landmark regions nếu cần.</li>
+          </ol>
+        </section>
+        <section class="lesson" id="demo">
+          <h2>Minh họa trực quan</h2>
+          <p>So sánh DOM order vs visual order.</p>
+          <style>
+.a11y-demo { display: grid; grid-template-columns: 1fr 1fr; gap: 16px; }
+.order-visual { display: grid; grid-template-columns: 1fr; gap: 4px; }
+.ov-item { padding: 8px 12px; border-radius: 4px; font-size: .78rem; font-weight: 700; }
+.ov-dom { background: #ede9fe; color: #4c1d95; border-left: 3px solid #7c3aed; }
+.ov-vis { padding: 8px 12px; border-radius: 4px; font-size: .78rem; font-weight: 700; background: white; border: 1px solid #e2e8f0; }
+.ov-visual-order { display: grid; grid-template-columns: 1fr; gap: 4px; }
+.ov-visual-order .ov-vis:nth-child(1) { order: 3; }
+.ov-visual-order .ov-vis:nth-child(2) { order: 1; }
+.ov-visual-order .ov-vis:nth-child(3) { order: 2; }
+.demo-note { font-size: .72rem; color: #5e6b7a; margin-top: 6px; }
+          </style>
+          <div class="demo-surface">
+            <div class="a11y-demo">
+              <div>
+                <p style="font-size:.75rem;font-weight:700;color:#059669;margin-bottom:6px">✅ DOM order (screen reader đọc):</p>
+                <div class="order-visual">
+                  <div class="ov-dom">1. Logo</div>
+                  <div class="ov-dom">2. Navigation</div>
+                  <div class="ov-dom">3. Main content</div>
+                  <div class="ov-dom">4. Sidebar</div>
+                </div>
+              </div>
+              <div>
+                <p style="font-size:.75rem;font-weight:700;color:#e85d4f;margin-bottom:6px">⚠️ Visual order (dùng order property):</p>
+                <div class="ov-visual-order" style="display:grid;gap:4px">
+                  <div class="ov-vis" style="order:1">2. Navigation (moved)</div>
+                  <div class="ov-vis" style="order:2">3. Main content</div>
+                  <div class="ov-vis" style="order:3">1. Logo (moved)</div>
+                  <div class="ov-vis" style="order:4">4. Sidebar</div>
+                </div>
+                <p class="demo-note">DOM order ≠ Visual order → Tab order sai!</p>
+              </div>
+            </div>
+          </div>
+          <div class="demo-code">
+            <h3>Semantic HTML + Grid</h3>
+            <pre><code data-lang="html">&lt;!-- Dùng semantic elements --&gt;
+&lt;header&gt;...&lt;/header&gt;
+&lt;nav&gt;...&lt;/nav&gt;
+&lt;main&gt;...&lt;/main&gt;
+&lt;aside aria-label="Related content"&gt;...&lt;/aside&gt;
+&lt;footer&gt;...&lt;/footer&gt;</code></pre>
+          </div>
+        </section>
+        <section class="lesson" id="code">
+          <h2>Code ví dụ</h2>
+          <p>Accessible page layout với semantic HTML và Grid.</p>
+          <div class="code-grid">
+            <div><h3>HTML (Accessible)</h3><pre><code data-lang="html">&lt;!-- DOM order = reading order --&gt;
+&lt;body class="page"&gt;
+  &lt;header role="banner"&gt;
+    &lt;a href="#main" class="skip-link"&gt;
+      Bỏ qua navigation
+    &lt;/a&gt;
+    &lt;h1&gt;Site Name&lt;/h1&gt;
+  &lt;/header&gt;
+  &lt;nav aria-label="Main navigation"&gt;
+    &lt;a href="/"&gt;Home&lt;/a&gt;
+    &lt;a href="/about"&gt;About&lt;/a&gt;
+  &lt;/nav&gt;
+  &lt;main id="main"&gt;
+    &lt;h2&gt;Page content&lt;/h2&gt;
+    &lt;p&gt;...&lt;/p&gt;
+  &lt;/main&gt;
+  &lt;aside aria-label="Sidebar"&gt;
+    ...
+  &lt;/aside&gt;
+  &lt;footer&gt;...&lt;/footer&gt;
+&lt;/body&gt;</code></pre></div>
+            <div><h3>CSS</h3><pre><code data-lang="css">.page {
+  display: grid;
+  grid-template-areas:
+    "header  header"
+    "nav     nav"
+    "main    aside"
+    "footer  footer";
+}
+/* Skip link cho keyboard users */
+.skip-link {
+  position: absolute;
+  left: -9999px;
+  top: 0;
+}
+.skip-link:focus {
+  left: 0;
+  z-index: 999;
+  background: #7c3aed;
+  color: white;
+  padding: 8px 16px;
+}
+/* Không dùng 'order' property
+   để thay đổi thứ tự focused elements */</code></pre></div>
+          </div>
+          <div class="result-panel">
+            <div class="result-head"><h3>Kết quả</h3><span>Accessible Grid layout</span></div>
+            <iframe class="result-frame" title="accessible grid demo" srcdoc="&lt;!DOCTYPE html&gt;&lt;html lang='vi'&gt;&lt;head&gt;&lt;meta charset='UTF-8'&gt;&lt;style&gt;*{box-sizing:border-box;margin:0}body{font-family:sans-serif}.skip-link{position:absolute;left:-9999px;top:0;background:#7c3aed;color:white;padding:8px 16px;z-index:999}.skip-link:focus{left:0}.page{display:grid;grid-template-columns:1fr 200px;grid-template-rows:auto auto 1fr auto;grid-template-areas:'header header' 'nav nav' 'main aside' 'footer footer';min-height:280px;gap:6px;padding:6px}header{grid-area:header;background:#7c3aed;color:white;padding:12px 16px;border-radius:6px}nav{grid-area:nav;background:#ede9fe;padding:8px 16px;border-radius:6px;display:flex;gap:16px}nav a{color:#4c1d95;text-decoration:none;font-weight:600;font-size:.85rem}main{grid-area:main;background:white;padding:16px;border-radius:6px;border:1px solid #e2e8f0}aside{grid-area:aside;background:#fef3c7;padding:12px;border-radius:6px;font-size:.82rem}footer{grid-area:footer;background:#1e1b4b;color:#c4b5fd;padding:10px 16px;border-radius:6px;font-size:.82rem}&lt;/style&gt;&lt;/head&gt;&lt;body&gt;&lt;div class='page'&gt;&lt;header&gt;&lt;a href='#main' class='skip-link'&gt;Bỏ qua nav&lt;/a&gt;&lt;strong&gt;Site Name&lt;/strong&gt;&lt;/header&gt;&lt;nav aria-label='Main'&gt;&lt;a href='#'&gt;Home&lt;/a&gt;&lt;a href='#'&gt;About&lt;/a&gt;&lt;a href='#'&gt;Blog&lt;/a&gt;&lt;a href='#'&gt;Contact&lt;/a&gt;&lt;/nav&gt;&lt;main id='main'&gt;&lt;h2 style='margin-bottom:8px;font-size:1rem'&gt;Page Content&lt;/h2&gt;&lt;p style='font-size:.85rem;color:#475569'&gt;DOM order = reading order. Tab qua page để test keyboard navigation.&lt;/p&gt;&lt;/main&gt;&lt;aside aria-label='Sidebar'&gt;&lt;strong style='display:block;margin-bottom:6px'&gt;Related&lt;/strong&gt;&lt;p&gt;Link 1&lt;br&gt;Link 2&lt;/p&gt;&lt;/aside&gt;&lt;footer&gt;© 2024 Accessible Grid&lt;/footer&gt;&lt;/div&gt;&lt;/body&gt;&lt;/html&gt;"></iframe>
+          </div>
+        </section>
+        <section class="exercise" id="exercise">
+          <span class="level">Bài tập thực hành</span>
+          <h2>Yêu cầu đề bài</h2>
+          <p>Tạo accessible card grid với focus styles rõ ràng và semantic markup. <em>Mỗi card phải có thể focus bằng Tab và có visible focus ring.</em></p>
+          <ol class="steps">
+            <li>Tạo grid 3 cột với 6 article cards.</li>
+            <li>Mỗi card dùng <code>&lt;article&gt;</code> với <code>&lt;h3&gt;</code> và <code>&lt;a&gt;</code> link.</li>
+            <li>CSS: <code>a:focus { outline: 3px solid #7c3aed; outline-offset: 2px }</code>.</li>
+            <li>DOM order = đọc từ trái qua phải, trên xuống dưới.</li>
+          </ol>
+          <h3>Tiêu chí chấm</h3>
+          <ul>
+            <li>Cards có focus ring khi Tab qua.</li>
+            <li>Semantic HTML đúng.</li>
+            <li>DOM order hợp lý.</li>
+          </ul>
+        </section>
+        <section class="lesson solution" id="solution">
+          <h2>Bài giải tham khảo</h2>
+          <pre><code data-lang="html">&lt;!DOCTYPE html&gt;
+&lt;html lang="vi"&gt;
+&lt;head&gt;
+  &lt;meta charset="UTF-8"&gt;
+  &lt;style&gt;
+    * { box-sizing: border-box; margin: 0; }
+    body { font-family: sans-serif; padding: 24px; background: #f4f7fb; }
+    h1 { margin-bottom: 20px; font-size: 1.1rem; }
+    .card-grid {
+      display: grid;
+      grid-template-columns: repeat(3, 1fr);
+      gap: 16px;
+    }
+    article {
+      background: white;
+      border-radius: 10px;
+      padding: 20px;
+      box-shadow: 0 1px 4px rgba(0,0,0,.08);
+    }
+    h3 { margin-bottom: 8px; color: #1e293b; }
+    p { font-size: .85rem; color: #64748b; margin-bottom: 12px; }
+    a {
+      color: #7c3aed;
+      font-weight: 700;
+      font-size: .85rem;
+      text-decoration: none;
+      padding: 4px 0;
+      display: inline-block;
+      border-radius: 2px;
+    }
+    a:hover { text-decoration: underline; }
+    a:focus {
+      outline: 3px solid #7c3aed;
+      outline-offset: 3px;
+      text-decoration: none;
+    }
+  &lt;/style&gt;
+&lt;/head&gt;
+&lt;body&gt;
+  &lt;h1&gt;Bài viết nổi bật&lt;/h1&gt;
+  &lt;div class="card-grid" role="list"&gt;
+    &lt;article role="listitem"&gt;&lt;h3&gt;CSS Grid Cơ Bản&lt;/h3&gt;&lt;p&gt;Bắt đầu với CSS Grid từ display:grid đến template columns.&lt;/p&gt;&lt;a href="#"&gt;Đọc ngay →&lt;/a&gt;&lt;/article&gt;
+    &lt;article role="listitem"&gt;&lt;h3&gt;Responsive Layout&lt;/h3&gt;&lt;p&gt;Xây dựng responsive grid không cần media query.&lt;/p&gt;&lt;a href="#"&gt;Đọc ngay →&lt;/a&gt;&lt;/article&gt;
+    &lt;article role="listitem"&gt;&lt;h3&gt;Grid vs Flexbox&lt;/h3&gt;&lt;p&gt;Khi nào dùng Grid, khi nào dùng Flexbox cho đúng.&lt;/p&gt;&lt;a href="#"&gt;Đọc ngay →&lt;/a&gt;&lt;/article&gt;
+    &lt;article role="listitem"&gt;&lt;h3&gt;Template Areas&lt;/h3&gt;&lt;p&gt;Đặt tên vùng grid để layout code dễ đọc hơn.&lt;/p&gt;&lt;a href="#"&gt;Đọc ngay →&lt;/a&gt;&lt;/article&gt;
+    &lt;article role="listitem"&gt;&lt;h3&gt;Subgrid&lt;/h3&gt;&lt;p&gt;Căn chỉnh nested grid items với parent tracks.&lt;/p&gt;&lt;a href="#"&gt;Đọc ngay →&lt;/a&gt;&lt;/article&gt;
+    &lt;article role="listitem"&gt;&lt;h3&gt;Grid Accessibility&lt;/h3&gt;&lt;p&gt;Đảm bảo DOM order và keyboard navigation đúng.&lt;/p&gt;&lt;a href="#"&gt;Đọc ngay →&lt;/a&gt;&lt;/article&gt;
+  &lt;/div&gt;
+&lt;/body&gt;
+&lt;/html&gt;</code></pre>
+          <div class="result-panel">
+            <div class="result-head"><h3>Kết quả bài giải</h3><span>Preview trực tiếp — Tab để test focus</span></div>
+            <iframe class="result-frame" title="Bài giải accessible grid" srcdoc="&lt;!DOCTYPE html&gt;&lt;html lang='vi'&gt;&lt;head&gt;&lt;meta charset='UTF-8'&gt;&lt;style&gt;*{box-sizing:border-box;margin:0}body{font-family:sans-serif;padding:16px;background:#f4f7fb}h1{margin-bottom:14px;font-size:1rem}.card-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:12px}article{background:white;border-radius:8px;padding:14px;box-shadow:0 1px 4px rgba(0,0,0,.08)}h3{margin-bottom:6px;color:#1e293b;font-size:.9rem}p{font-size:.8rem;color:#64748b;margin-bottom:10px}a{color:#7c3aed;font-weight:700;font-size:.82rem;text-decoration:none;padding:3px 0;display:inline-block;border-radius:2px}a:hover{text-decoration:underline}a:focus{outline:3px solid #7c3aed;outline-offset:3px}&lt;/style&gt;&lt;/head&gt;&lt;body&gt;&lt;h1&gt;Bài viết nổi bật&lt;/h1&gt;&lt;div class='card-grid'&gt;&lt;article&gt;&lt;h3&gt;CSS Grid Cơ Bản&lt;/h3&gt;&lt;p&gt;Bắt đầu với CSS Grid từ display:grid đến template columns.&lt;/p&gt;&lt;a href='#'&gt;Đọc ngay →&lt;/a&gt;&lt;/article&gt;&lt;article&gt;&lt;h3&gt;Responsive Layout&lt;/h3&gt;&lt;p&gt;Xây dựng responsive grid không media query.&lt;/p&gt;&lt;a href='#'&gt;Đọc ngay →&lt;/a&gt;&lt;/article&gt;&lt;article&gt;&lt;h3&gt;Grid vs Flexbox&lt;/h3&gt;&lt;p&gt;Khi nào dùng Grid, khi nào Flexbox.&lt;/p&gt;&lt;a href='#'&gt;Đọc ngay →&lt;/a&gt;&lt;/article&gt;&lt;article&gt;&lt;h3&gt;Template Areas&lt;/h3&gt;&lt;p&gt;Đặt tên vùng grid dễ đọc hơn.&lt;/p&gt;&lt;a href='#'&gt;Đọc ngay →&lt;/a&gt;&lt;/article&gt;&lt;article&gt;&lt;h3&gt;Subgrid&lt;/h3&gt;&lt;p&gt;Căn chỉnh nested items với parent.&lt;/p&gt;&lt;a href='#'&gt;Đọc ngay →&lt;/a&gt;&lt;/article&gt;&lt;article&gt;&lt;h3&gt;Accessibility&lt;/h3&gt;&lt;p&gt;DOM order và keyboard navigation.&lt;/p&gt;&lt;a href='#'&gt;Đọc ngay →&lt;/a&gt;&lt;/article&gt;&lt;/div&gt;&lt;/body&gt;&lt;/html&gt;"></iframe>
+          </div>
+        </section>
+        <div class="pager">
+          <a class="btn" href="../bai-03/index.html">← Bài trước</a>
+          <a class="btn primary" href="../bai-05/index.html">Bài tiếp theo →</a>
+        </div>
+      </article>
+    </div>
+  </main>
+  <footer class="footer"><p><a href="../index.html">Quay lại Module 4</a></p></footer>
+  <script type="module" src="../../app.js"></script>
+</body>
+</html>

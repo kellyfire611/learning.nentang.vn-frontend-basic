@@ -1,0 +1,194 @@
+<!DOCTYPE html>
+<html lang="vi">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <meta name="description" content="Implicit grid: grid-auto-rows, grid-auto-columns, grid-auto-flow trong CSS Grid." />
+  <title>Bài 08 - Implicit grid | Module 1 CSS Grid | NenTang.vn</title>
+  <link rel="stylesheet" href="../../shared.css" />
+</head>
+<body>
+  <header class="topbar">
+    <div class="topbar-inner">
+      <a class="brand" href="../../index.html"><span class="brand-mark">G</span><span>CSS Grid</span></a>
+      <nav class="nav-links">
+        <a href="../../../index.html">Trang chủ</a>
+        <a href="../../index.html#modules">Module</a>
+      </nav>
+    </div>
+  </header>
+  <section class="module-hero m1">
+    <div class="container">
+      <div class="breadcrumb"><a href="../../index.html">CSS Grid</a><span>/</span><a href="../index.html">Module 1</a><span>/</span><span>Bài 08</span></div>
+      <h1>Bài 08: Implicit grid — grid-auto-rows, grid-auto-columns, grid-auto-flow</h1>
+      <p>Kiểm soát hành vi của grid khi số items nhiều hơn số track bạn đã định nghĩa.</p>
+    </div>
+  </section>
+  <main class="section">
+    <div class="container lesson-layout">
+      <aside class="side-nav">
+        <a href="#goal">Mục tiêu</a>
+        <a href="#theory">Lý thuyết</a>
+        <a href="#demo">Minh họa</a>
+        <a href="#code">Code ví dụ</a>
+        <a href="#exercise">Thực hành</a>
+        <a href="#solution">Bài giải</a>
+      </aside>
+      <article class="module-article">
+        <section class="lesson" id="goal">
+          <h2>Mục tiêu bài học</h2>
+          <ul>
+            <li>Hiểu implicit grid tự tạo thêm track khi số items tràn ra ngoài grid định nghĩa.</li>
+            <li>Kiểm soát kích thước implicit tracks bằng <code>grid-auto-rows</code> và <code>grid-auto-columns</code>.</li>
+            <li>Thay đổi hướng thêm items bằng <code>grid-auto-flow: column</code>.</li>
+          </ul>
+        </section>
+        <section class="lesson" id="theory">
+          <h2>Lý thuyết thực tế</h2>
+          <p>Khi bạn có grid 3 cột và 9 items, 6 items đầu vào hàng định nghĩa (explicit), 3 items còn lại tự rơi vào hàng mới được tạo tự động (implicit rows). Mặc định, implicit rows có chiều cao <code>auto</code> — cao theo nội dung. Dùng <code>grid-auto-rows: 200px</code> để đặt chiều cao cố định, hoặc <code>grid-auto-rows: minmax(100px, auto)</code> để có chiều cao tối thiểu nhưng vẫn co giãn.</p>
+          <p><code>grid-auto-flow</code> mặc định là <code>row</code> — thêm items theo hàng, sang hàng mới khi hết cột. Đổi thành <code>column</code> để thêm items theo cột trước rồi sang cột mới. Kết hợp <code>grid-auto-flow: row dense</code> để lấp đầy khoảng trống (xem bài 2-04).</p>
+          <ol class="steps">
+            <li>Định nghĩa <code>grid-template-columns</code> nhưng không cần định nghĩa rows.</li>
+            <li>Thêm <code>grid-auto-rows: minmax(80px, auto)</code> để implicit rows có chiều cao tối thiểu.</li>
+            <li>Thêm bao nhiêu items tùy ý — grid tự tạo thêm hàng.</li>
+            <li>Dùng <code>grid-auto-flow: column</code> nếu muốn grid thêm items theo chiều cột.</li>
+          </ol>
+        </section>
+        <section class="lesson" id="demo">
+          <h2>Minh họa trực quan</h2>
+          <p>Grid 3 cột với 9 items — grid-auto-rows tạo hàng đều nhau.</p>
+          <style>
+.implicit-demo { display: grid; grid-template-columns: repeat(3, 1fr); grid-auto-rows: minmax(60px, auto); gap: 8px; }
+.implicit-demo div { background: #7c3aed; color: white; padding: 12px; border-radius: 6px; text-align: center; font-weight: 700; font-size: 0.85rem; }
+.implicit-demo div:nth-child(n+4) { background: #5b21b6; } /* implicit rows */
+          </style>
+          <div class="demo-surface">
+            <div class="implicit-demo">
+              <div>1 (explicit)</div>
+              <div>2 (explicit)</div>
+              <div>3 (explicit)</div>
+              <div>4 (implicit)</div>
+              <div>5 (implicit)</div>
+              <div>6 (implicit)</div>
+              <div>7 (implicit)</div>
+              <div>8 (implicit)</div>
+              <div>9 (implicit)</div>
+            </div>
+          </div>
+          <div class="demo-code">
+            <h3>Code tạo minh họa</h3>
+            <pre><code data-lang="css">.grid {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  /* không định nghĩa rows */
+  grid-auto-rows: minmax(60px, auto);
+  gap: 8px;
+}
+/* Items tự rơi vào implicit rows */</code></pre>
+          </div>
+        </section>
+        <section class="lesson" id="code">
+          <h2>Code ví dụ</h2>
+          <p>Blog posts grid với implicit rows — thêm bài viết tự động.</p>
+          <div class="code-grid">
+            <div><h3>HTML</h3><pre><code data-lang="html">&lt;div class="blog-grid"&gt;
+  &lt;article&gt;Bài viết 1&lt;/article&gt;
+  &lt;article&gt;Bài viết 2&lt;/article&gt;
+  &lt;article&gt;Bài viết 3&lt;/article&gt;
+  &lt;!-- thêm nhiều bài tùy ý --&gt;
+  &lt;article&gt;Bài viết 4&lt;/article&gt;
+  &lt;article&gt;Bài viết 5&lt;/article&gt;
+&lt;/div&gt;</code></pre></div>
+            <div><h3>CSS</h3><pre><code data-lang="css">.blog-grid {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  grid-auto-rows: minmax(200px, auto);
+  gap: 20px;
+}
+/* Không cần định nghĩa số hàng —
+   implicit grid tự tạo */</code></pre></div>
+          </div>
+          <div class="result-panel">
+            <div class="result-head"><h3>Kết quả</h3><span>Implicit rows tự động</span></div>
+            <iframe class="result-frame" title="implicit grid demo" srcdoc="&lt;!DOCTYPE html&gt;&lt;html&gt;&lt;head&gt;&lt;meta charset='UTF-8'&gt;&lt;style&gt;*{box-sizing:border-box;margin:0}body{font-family:sans-serif;padding:20px;background:#f4f7fb}.blog-grid{display:grid;grid-template-columns:repeat(3,1fr);grid-auto-rows:minmax(140px,auto);gap:16px}article{background:white;padding:18px;border-radius:8px;border:1px solid #e2e8f0;font-weight:700;color:#1e293b}article span{display:block;color:#7c3aed;font-size:.8rem;margin-bottom:6px}&lt;/style&gt;&lt;/head&gt;&lt;body&gt;&lt;div class='blog-grid'&gt;&lt;article&gt;&lt;span&gt;Row 1&lt;/span&gt;Bài viết 1&lt;/article&gt;&lt;article&gt;&lt;span&gt;Row 1&lt;/span&gt;Bài viết 2&lt;/article&gt;&lt;article&gt;&lt;span&gt;Row 1&lt;/span&gt;Bài viết 3&lt;/article&gt;&lt;article&gt;&lt;span&gt;Row 2 (implicit)&lt;/span&gt;Bài viết 4&lt;/article&gt;&lt;article&gt;&lt;span&gt;Row 2 (implicit)&lt;/span&gt;Bài viết 5&lt;/article&gt;&lt;/div&gt;&lt;/body&gt;&lt;/html&gt;"></iframe>
+          </div>
+        </section>
+        <section class="exercise" id="exercise">
+          <span class="level">Bài tập thực hành</span>
+          <h2>Yêu cầu đề bài</h2>
+          <p>Tạo grid ảnh 4 cột với <code>grid-auto-rows: 150px</code> để mọi ảnh (dùng div màu) đều có chiều cao đồng đều. <em>Khác với ví dụ — 4 cột, chiều cao cố định.</em></p>
+          <ol class="steps">
+            <li>Tạo <code>div.photo-grid</code> chứa 8 <code>div.photo</code>.</li>
+            <li>Dùng <code>grid-template-columns: repeat(4, 1fr)</code>.</li>
+            <li>Thêm <code>grid-auto-rows: 150px</code> để mọi ảnh đều cao 150px.</li>
+            <li>Tô màu gradient khác nhau cho mỗi ảnh để phân biệt.</li>
+          </ol>
+          <h3>Tiêu chí chấm</h3>
+          <ul>
+            <li>4 cột đều nhau.</li>
+            <li>Tất cả ô đều cao 150px, không phụ thuộc vào nội dung.</li>
+            <li>8 ảnh hiển thị trên 2 hàng.</li>
+          </ul>
+        </section>
+        <section class="lesson solution" id="solution">
+          <h2>Bài giải tham khảo</h2>
+          <pre><code data-lang="html">&lt;!DOCTYPE html&gt;
+&lt;html lang="vi"&gt;
+&lt;head&gt;
+  &lt;meta charset="UTF-8"&gt;
+  &lt;style&gt;
+    * { box-sizing: border-box; margin: 0; }
+    body { font-family: sans-serif; padding: 20px; background: #f4f7fb; }
+    .photo-grid {
+      display: grid;
+      grid-template-columns: repeat(4, 1fr);
+      grid-auto-rows: 150px;
+      gap: 12px;
+    }
+    .photo {
+      border-radius: 8px;
+      display: grid;
+      place-items: center;
+      font-weight: 700;
+      color: white;
+      font-size: 0.9rem;
+    }
+    .photo:nth-child(1) { background: linear-gradient(135deg, #7c3aed, #4c1d95); }
+    .photo:nth-child(2) { background: linear-gradient(135deg, #2563eb, #1e40af); }
+    .photo:nth-child(3) { background: linear-gradient(135deg, #e85d4f, #9f1239); }
+    .photo:nth-child(4) { background: linear-gradient(135deg, #059669, #065f46); }
+    .photo:nth-child(5) { background: linear-gradient(135deg, #d97706, #92400e); }
+    .photo:nth-child(6) { background: linear-gradient(135deg, #7c3aed, #2563eb); }
+    .photo:nth-child(7) { background: linear-gradient(135deg, #e85d4f, #d97706); }
+    .photo:nth-child(8) { background: linear-gradient(135deg, #059669, #7c3aed); }
+  &lt;/style&gt;
+&lt;/head&gt;
+&lt;body&gt;
+  &lt;div class="photo-grid"&gt;
+    &lt;div class="photo"&gt;Ảnh 1&lt;/div&gt;
+    &lt;div class="photo"&gt;Ảnh 2&lt;/div&gt;
+    &lt;div class="photo"&gt;Ảnh 3&lt;/div&gt;
+    &lt;div class="photo"&gt;Ảnh 4&lt;/div&gt;
+    &lt;div class="photo"&gt;Ảnh 5&lt;/div&gt;
+    &lt;div class="photo"&gt;Ảnh 6&lt;/div&gt;
+    &lt;div class="photo"&gt;Ảnh 7&lt;/div&gt;
+    &lt;div class="photo"&gt;Ảnh 8&lt;/div&gt;
+  &lt;/div&gt;
+&lt;/body&gt;
+&lt;/html&gt;</code></pre>
+          <div class="result-panel">
+            <div class="result-head"><h3>Kết quả bài giải</h3><span>Preview trực tiếp</span></div>
+            <iframe class="result-frame" title="Bài giải implicit" srcdoc="&lt;!DOCTYPE html&gt;&lt;html&gt;&lt;head&gt;&lt;meta charset='UTF-8'&gt;&lt;style&gt;*{box-sizing:border-box;margin:0}body{font-family:sans-serif;padding:20px;background:#f4f7fb}.photo-grid{display:grid;grid-template-columns:repeat(4,1fr);grid-auto-rows:150px;gap:12px}.photo{border-radius:8px;display:grid;place-items:center;font-weight:700;color:white;font-size:.9rem}.photo:nth-child(1){background:linear-gradient(135deg,#7c3aed,#4c1d95)}.photo:nth-child(2){background:linear-gradient(135deg,#2563eb,#1e40af)}.photo:nth-child(3){background:linear-gradient(135deg,#e85d4f,#9f1239)}.photo:nth-child(4){background:linear-gradient(135deg,#059669,#065f46)}.photo:nth-child(5){background:linear-gradient(135deg,#d97706,#92400e)}.photo:nth-child(6){background:linear-gradient(135deg,#7c3aed,#2563eb)}.photo:nth-child(7){background:linear-gradient(135deg,#e85d4f,#d97706)}.photo:nth-child(8){background:linear-gradient(135deg,#059669,#7c3aed)}&lt;/style&gt;&lt;/head&gt;&lt;body&gt;&lt;div class='photo-grid'&gt;&lt;div class='photo'&gt;Ảnh 1&lt;/div&gt;&lt;div class='photo'&gt;Ảnh 2&lt;/div&gt;&lt;div class='photo'&gt;Ảnh 3&lt;/div&gt;&lt;div class='photo'&gt;Ảnh 4&lt;/div&gt;&lt;div class='photo'&gt;Ảnh 5&lt;/div&gt;&lt;div class='photo'&gt;Ảnh 6&lt;/div&gt;&lt;div class='photo'&gt;Ảnh 7&lt;/div&gt;&lt;div class='photo'&gt;Ảnh 8&lt;/div&gt;&lt;/div&gt;&lt;/body&gt;&lt;/html&gt;"></iframe>
+          </div>
+        </section>
+        <div class="pager">
+          <a class="btn" href="../bai-07/index.html">← Bài trước</a>
+          <a class="btn primary" href="../../module-02-template-areas/bai-01/index.html">Module tiếp theo →</a>
+        </div>
+      </article>
+    </div>
+  </main>
+  <footer class="footer"><p><a href="../index.html">Quay lại Module 1</a></p></footer>
+  <script type="module" src="../../app.js"></script>
+</body>
+</html>

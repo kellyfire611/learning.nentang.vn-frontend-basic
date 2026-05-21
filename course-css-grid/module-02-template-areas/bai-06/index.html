@@ -1,0 +1,176 @@
+<!DOCTYPE html>
+<html lang="vi">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <meta name="description" content="fr unit và minmax() trong CSS Grid — phân chia không gian linh hoạt." />
+  <title>Bài 06 - fr unit và minmax() | Module 2 CSS Grid | NenTang.vn</title>
+  <link rel="stylesheet" href="../../shared.css" />
+</head>
+<body>
+  <header class="topbar">
+    <div class="topbar-inner">
+      <a class="brand" href="../../index.html"><span class="brand-mark">G</span><span>CSS Grid</span></a>
+      <nav class="nav-links">
+        <a href="../../../index.html">Trang chủ</a>
+        <a href="../../index.html#modules">Module</a>
+      </nav>
+    </div>
+  </header>
+  <section class="module-hero m2">
+    <div class="container">
+      <div class="breadcrumb"><a href="../../index.html">CSS Grid</a><span>/</span><a href="../index.html">Module 2</a><span>/</span><span>Bài 06</span></div>
+      <h1>Bài 06: fr unit và minmax()</h1>
+      <p>Dùng fr để phân chia không gian linh hoạt, minmax() để giới hạn kích thước track một cách thông minh.</p>
+    </div>
+  </section>
+  <main class="section">
+    <div class="container lesson-layout">
+      <aside class="side-nav">
+        <a href="#goal">Mục tiêu</a>
+        <a href="#theory">Lý thuyết</a>
+        <a href="#demo">Minh họa</a>
+        <a href="#code">Code ví dụ</a>
+        <a href="#exercise">Thực hành</a>
+        <a href="#solution">Bài giải</a>
+      </aside>
+      <article class="module-article">
+        <section class="lesson" id="goal">
+          <h2>Mục tiêu bài học</h2>
+          <ul>
+            <li>Hiểu fr unit chia không gian còn lại sau khi trừ đi các cột cố định.</li>
+            <li>Dùng <code>minmax(min, max)</code> để định nghĩa khoảng kích thước cho một track.</li>
+            <li>Kết hợp fr với minmax() để tạo layout vừa linh hoạt vừa có giới hạn tối thiểu.</li>
+          </ul>
+        </section>
+        <section class="lesson" id="theory">
+          <h2>Lý thuyết thực tế</h2>
+          <p><code>fr</code> (fractional unit) đại diện cho một phần của không gian còn lại sau khi các cột có kích thước cố định (px, %, auto) đã được phân bổ. Ví dụ: <code>grid-template-columns: 200px 1fr 2fr</code> — 200px được lấy trước, không gian còn lại chia làm 3 phần: cột 2 nhận 1 phần, cột 3 nhận 2 phần. fr không bao giờ nhỏ hơn 0.</p>
+          <p><code>minmax(min, max)</code> định nghĩa khoảng kích thước cho một track. Track không bao giờ nhỏ hơn <code>min</code> và không lớn hơn <code>max</code>. <code>minmax(200px, 1fr)</code> nghĩa là track tối thiểu 200px nhưng tối đa có thể lấy 1fr. Kết hợp với <code>auto-fill</code> hay <code>auto-fit</code> sẽ tạo responsive grid không cần media query (xem Module 3).</p>
+          <ol class="steps">
+            <li>Dùng fr cho các cột cần co giãn theo container.</li>
+            <li>Kết hợp px với fr: <code>280px 1fr</code> cho sidebar cố định + main co giãn.</li>
+            <li>Dùng <code>minmax(0, 1fr)</code> thay <code>1fr</code> khi nội dung có thể overflow (đặc biệt với text dài).</li>
+            <li>Dùng <code>minmax(200px, 1fr)</code> để track không bao giờ quá nhỏ.</li>
+          </ol>
+        </section>
+        <section class="lesson" id="demo">
+          <h2>Minh họa trực quan</h2>
+          <p>Grid với 1fr, 2fr, 1fr để thấy phân chia không gian.</p>
+          <style>
+.fr-demo { display: grid; grid-template-columns: 1fr 2fr 1fr; gap: 8px; }
+.fr-demo div { padding: 12px; border-radius: 6px; text-align: center; font-weight: 700; color: white; font-size: 0.8rem; }
+.fr-demo .f1 { background: #7c3aed; }
+.fr-demo .f2 { background: #e85d4f; }
+.fr-demo .f3 { background: #7c3aed; }
+          </style>
+          <div class="demo-surface">
+            <div class="fr-demo">
+              <div class="f1">1fr (1/4)</div>
+              <div class="f2">2fr (2/4)</div>
+              <div class="f3">1fr (1/4)</div>
+            </div>
+          </div>
+          <div class="demo-code">
+            <h3>Hiểu fr unit</h3>
+            <pre><code data-lang="css">.grid {
+  grid-template-columns: 1fr 2fr 1fr;
+  /* Tổng: 4 phần
+     Cột 1: 1/4 không gian
+     Cột 2: 2/4 không gian
+     Cột 3: 1/4 không gian */
+}</code></pre>
+          </div>
+        </section>
+        <section class="lesson" id="code">
+          <h2>Code ví dụ</h2>
+          <p>Layout dùng minmax() cho sidebar và main content.</p>
+          <div class="code-grid">
+            <div><h3>HTML</h3><pre><code data-lang="html">&lt;div class="layout"&gt;
+  &lt;aside class="sidebar"&gt;Sidebar&lt;/aside&gt;
+  &lt;main class="main"&gt;Main Content&lt;/main&gt;
+&lt;/div&gt;</code></pre></div>
+            <div><h3>CSS</h3><pre><code data-lang="css">.layout {
+  display: grid;
+  grid-template-columns:
+    minmax(200px, 280px)  /* sidebar: 200-280px */
+    minmax(0, 3fr);       /* main: co giãn, max 3fr */
+  gap: 16px;
+}
+/* minmax(0, 1fr) vs 1fr:
+   1fr không nhỏ hơn content-size
+   minmax(0, 1fr) có thể shrink về 0 */</code></pre></div>
+          </div>
+          <div class="result-panel">
+            <div class="result-head"><h3>Kết quả</h3><span>Preview trực tiếp</span></div>
+            <iframe class="result-frame" title="fr minmax demo" srcdoc="&lt;!DOCTYPE html&gt;&lt;html&gt;&lt;head&gt;&lt;meta charset='UTF-8'&gt;&lt;style&gt;*{box-sizing:border-box;margin:0}body{font-family:sans-serif;padding:20px;background:#f4f7fb}.layout{display:grid;grid-template-columns:minmax(200px,280px) minmax(0,3fr);gap:16px;min-height:200px}.sidebar{background:#fef3c7;color:#78350f;padding:16px;border-radius:8px;font-weight:700}.main{background:white;padding:16px;border-radius:8px;border:1px solid #e2e8f0}.label{font-size:.8rem;color:#94a3b8;display:block;margin-bottom:4px}&lt;/style&gt;&lt;/head&gt;&lt;body&gt;&lt;div class='layout'&gt;&lt;aside class='sidebar'&gt;&lt;span class='label'&gt;minmax(200px, 280px)&lt;/span&gt;Sidebar&lt;/aside&gt;&lt;main class='main'&gt;&lt;span class='label'&gt;minmax(0, 3fr)&lt;/span&gt;Main Content Area&lt;/main&gt;&lt;/div&gt;&lt;/body&gt;&lt;/html&gt;"></iframe>
+          </div>
+        </section>
+        <section class="exercise" id="exercise">
+          <span class="level">Bài tập thực hành</span>
+          <h2>Yêu cầu đề bài</h2>
+          <p>Tạo grid 4 cột với cột 1 và 4 cố định 150px, cột 2 và 3 chia đều phần còn lại. <em>Khác với ví dụ — dùng mix px và fr cho 4 cột.</em></p>
+          <ol class="steps">
+            <li>Dùng <code>grid-template-columns: 150px 1fr 1fr 150px</code>.</li>
+            <li>Tạo 4 div với nội dung khác nhau để thấy rõ kích thước.</li>
+            <li>Thêm màu sắc để phân biệt cột cố định (px) và cột linh hoạt (fr).</li>
+            <li>Thêm nhãn hiển thị đơn vị sử dụng trong mỗi cột.</li>
+          </ol>
+          <h3>Tiêu chí chấm</h3>
+          <ul>
+            <li>Cột 1 và 4 luôn cố định 150px dù container thay đổi kích thước.</li>
+            <li>Cột 2 và 3 chia đều phần còn lại.</li>
+            <li>Layout trực quan, dễ phân biệt.</li>
+          </ul>
+        </section>
+        <section class="lesson solution" id="solution">
+          <h2>Bài giải tham khảo</h2>
+          <pre><code data-lang="html">&lt;!DOCTYPE html&gt;
+&lt;html lang="vi"&gt;
+&lt;head&gt;
+  &lt;meta charset="UTF-8"&gt;
+  &lt;style&gt;
+    * { box-sizing: border-box; margin: 0; }
+    body { font-family: sans-serif; padding: 20px; background: #f4f7fb; }
+    .four-col {
+      display: grid;
+      grid-template-columns: 150px 1fr 1fr 150px;
+      gap: 12px;
+      min-height: 120px;
+    }
+    .col {
+      padding: 16px;
+      border-radius: 8px;
+      display: grid;
+      align-items: center;
+    }
+    .col span { font-size: 0.75rem; display: block; margin-bottom: 4px; opacity: 0.8; }
+    .col-fixed { background: #ede9fe; color: #4c1d95; font-weight: 700; }
+    .col-flex  { background: #7c3aed; color: white; font-weight: 700; }
+  &lt;/style&gt;
+&lt;/head&gt;
+&lt;body&gt;
+  &lt;div class="four-col"&gt;
+    &lt;div class="col col-fixed"&gt;&lt;span&gt;150px (cố định)&lt;/span&gt;Cột 1&lt;/div&gt;
+    &lt;div class="col col-flex"&gt;&lt;span&gt;1fr (linh hoạt)&lt;/span&gt;Cột 2&lt;/div&gt;
+    &lt;div class="col col-flex"&gt;&lt;span&gt;1fr (linh hoạt)&lt;/span&gt;Cột 3&lt;/div&gt;
+    &lt;div class="col col-fixed"&gt;&lt;span&gt;150px (cố định)&lt;/span&gt;Cột 4&lt;/div&gt;
+  &lt;/div&gt;
+&lt;/body&gt;
+&lt;/html&gt;</code></pre>
+          <div class="result-panel">
+            <div class="result-head"><h3>Kết quả bài giải</h3><span>Preview trực tiếp</span></div>
+            <iframe class="result-frame" title="Bài giải fr minmax" srcdoc="&lt;!DOCTYPE html&gt;&lt;html&gt;&lt;head&gt;&lt;meta charset='UTF-8'&gt;&lt;style&gt;*{box-sizing:border-box;margin:0}body{font-family:sans-serif;padding:20px;background:#f4f7fb}.four-col{display:grid;grid-template-columns:150px 1fr 1fr 150px;gap:12px;min-height:120px}.col{padding:16px;border-radius:8px;display:grid;align-items:center}.col span{font-size:.75rem;display:block;margin-bottom:4px;opacity:.8}.col-fixed{background:#ede9fe;color:#4c1d95;font-weight:700}.col-flex{background:#7c3aed;color:white;font-weight:700}&lt;/style&gt;&lt;/head&gt;&lt;body&gt;&lt;div class='four-col'&gt;&lt;div class='col col-fixed'&gt;&lt;span&gt;150px (cố định)&lt;/span&gt;Cột 1&lt;/div&gt;&lt;div class='col col-flex'&gt;&lt;span&gt;1fr (linh hoạt)&lt;/span&gt;Cột 2&lt;/div&gt;&lt;div class='col col-flex'&gt;&lt;span&gt;1fr (linh hoạt)&lt;/span&gt;Cột 3&lt;/div&gt;&lt;div class='col col-fixed'&gt;&lt;span&gt;150px (cố định)&lt;/span&gt;Cột 4&lt;/div&gt;&lt;/div&gt;&lt;/body&gt;&lt;/html&gt;"></iframe>
+          </div>
+        </section>
+        <div class="pager">
+          <a class="btn" href="../bai-05/index.html">← Bài trước</a>
+          <a class="btn primary" href="../../module-03-responsive-grid/bai-01/index.html">Module tiếp theo →</a>
+        </div>
+      </article>
+    </div>
+  </main>
+  <footer class="footer"><p><a href="../index.html">Quay lại Module 2</a></p></footer>
+  <script type="module" src="../../app.js"></script>
+</body>
+</html>

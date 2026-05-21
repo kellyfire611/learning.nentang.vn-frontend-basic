@@ -1,0 +1,170 @@
+<!DOCTYPE html>
+<html lang="vi">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <meta name="description" content="Khóa học CSS Grid toàn tập gồm 32 bài thực tế, ví dụ minh họa, bài tập và bài giải đúng đề." />
+  <meta name="keywords" content="CSS Grid, học CSS, layout web, frontend, bài tập CSS, responsive, NenTang.vn" />
+  <meta name="author" content="Dương Nguyễn Phú Cường" />
+  <meta property="og:locale" content="vi_VN" />
+  <meta property="og:type" content="website" />
+  <meta property="og:title" content="Học CSS Grid Toàn Tập | NenTang.vn" />
+  <meta property="og:description" content="Khóa học CSS Grid toàn tập gồm 32 bài thực tế, ví dụ minh họa, bài tập và bài giải đúng đề." />
+  <meta property="og:url" content="https://nentang.vn/" />
+  <meta property="og:site_name" content="Nền tảng Kiến thức" />
+  <title>Học CSS Grid Toàn Tập | NenTang.vn</title>
+  <link rel="stylesheet" href="shared.css" />
+</head>
+<body>
+  <header class="topbar">
+    <div class="topbar-inner">
+      <a class="brand" href="index.html"><span class="brand-mark">G</span><span>CSS Grid</span></a>
+      <nav class="nav-links" aria-label="Điều hướng khóa học">
+        <a href="../index.html">Trang chủ</a>
+        <a href="#modules">Module</a>
+      </nav>
+    </div>
+  </header>
+  <main>
+    <section class="hero">
+      <div class="hero-inner">
+        <div>
+          <p class="eyebrow">Khóa học thực hành, layout hai chiều mạnh mẽ</p>
+          <h1>Học CSS Grid qua layout thật</h1>
+          <p>Lộ trình từ nền tảng đến nâng cao: grid-template, named areas, responsive, subgrid và các bài thực hành dự án thực tế có đề/lời giải.</p>
+          <div class="hero-actions">
+            <a class="btn primary" href="#modules">Xem module</a>
+            <a class="btn" href="module-01-nen-tang-grid/index.html">Bắt đầu học</a>
+          </div>
+        </div>
+        <div class="hero-visual" aria-label="Minh họa CSS Grid">
+          <div class="visual-stage">
+            <div class="visual-item">header</div>
+            <div class="visual-item">sidebar</div>
+            <div class="visual-item">main</div>
+            <div class="visual-item">footer</div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <section class="section alt">
+      <div class="container">
+        <div class="stats-grid">
+          <div class="stat"><strong>5</strong><span>Module</span></div>
+          <div class="stat"><strong>32+</strong><span>Bài học</span></div>
+          <div class="stat"><strong>10+</strong><span>Bài thực hành</span></div>
+          <div class="stat"><strong>Shiki</strong><span>Code highlight</span></div>
+        </div>
+      </div>
+    </section>
+
+    <section class="section" id="modules">
+      <div class="container">
+        <div class="section-head">
+          <h2>Lộ trình CSS Grid</h2>
+          <p>Từ nền tảng grid container/item đến layout phức tạp, responsive và bài thực hành dự án thực tế.</p>
+        </div>
+        <div class="module-grid">
+          <a class="module-link m1" href="module-01-nen-tang-grid/index.html">
+            <header>
+              <h3>Module 1: Nền tảng CSS Grid</h3>
+              <p>Các khái niệm cốt lõi: container, item, tracks, gap, placement.</p>
+            </header>
+            <div class="module-body">
+              <ul>
+                <li>CSS Grid là gì và khi nào nên dùng</li>
+                <li>grid-template-columns và grid-template-rows</li>
+                <li>gap, grid-column, grid-row</li>
+                <li>justify-items, align-items, place-items</li>
+              </ul>
+              <div class="tag-row">
+                <span class="tag">8 bài</span>
+                <span class="tag">Có preview</span>
+                <span class="tag">Có bài giải</span>
+              </div>
+            </div>
+          </a>
+          <a class="module-link m2" href="module-02-template-areas/index.html">
+            <header>
+              <h3>Module 2: Grid Template Areas &amp; Named Lines</h3>
+              <p>Đặt tên vùng, named lines, span keyword và implicit grid.</p>
+            </header>
+            <div class="module-body">
+              <ul>
+                <li>grid-template-areas — đặt tên vùng</li>
+                <li>Named grid lines và span keyword</li>
+                <li>Dense packing và fr unit</li>
+                <li>Explicit vs Implicit grid</li>
+              </ul>
+              <div class="tag-row">
+                <span class="tag">6 bài</span>
+                <span class="tag">Có preview</span>
+                <span class="tag">Có bài giải</span>
+              </div>
+            </div>
+          </a>
+          <a class="module-link m3" href="module-03-responsive-grid/index.html">
+            <header>
+              <h3>Module 3: Responsive Grid</h3>
+              <p>auto-fill, auto-fit, minmax() và các layout responsive thực tế.</p>
+            </header>
+            <div class="module-body">
+              <ul>
+                <li>auto-fill vs auto-fit với minmax()</li>
+                <li>Responsive card grid và holy grail layout</li>
+                <li>Sidebar + content, magazine layout</li>
+                <li>Responsive với media queries</li>
+              </ul>
+              <div class="tag-row">
+                <span class="tag">6 bài</span>
+                <span class="tag">Có preview</span>
+                <span class="tag">Có bài giải</span>
+              </div>
+            </div>
+          </a>
+          <a class="module-link m4" href="module-04-grid-nang-cao/index.html">
+            <header>
+              <h3>Module 4: Grid Nâng Cao</h3>
+              <p>Grid vs Flexbox, overlapping, subgrid, accessibility, animation, DevTools.</p>
+            </header>
+            <div class="module-body">
+              <ul>
+                <li>Grid vs Flexbox — khi nào dùng cái nào</li>
+                <li>Overlapping items với z-index</li>
+                <li>Subgrid và CSS Grid accessibility</li>
+                <li>Grid animation và debug với DevTools</li>
+              </ul>
+              <div class="tag-row">
+                <span class="tag">6 bài</span>
+                <span class="tag">Có preview</span>
+                <span class="tag">Có bài giải</span>
+              </div>
+            </div>
+          </a>
+          <a class="module-link m5" href="module-05-bai-thuc-hanh/index.html">
+            <header>
+              <h3>Module 5: Bài Thực Hành</h3>
+              <p>Đề bài thực tế, yêu cầu rõ ràng, lời giải khớp với đề.</p>
+            </header>
+            <div class="module-body">
+              <ul>
+                <li>Blog layout và photo gallery</li>
+                <li>Pricing table và admin dashboard</li>
+                <li>Landing page hero và e-commerce grid</li>
+              </ul>
+              <div class="tag-row">
+                <span class="tag">6 bài</span>
+                <span class="tag">Có preview</span>
+                <span class="tag">Có bài giải</span>
+              </div>
+            </div>
+          </a>
+        </div>
+      </div>
+    </section>
+  </main>
+  <footer class="footer"><p>CSS Grid Course - NenTang.vn</p></footer>
+  <script type="module" src="app.js"></script>
+</body>
+</html>

@@ -1,0 +1,220 @@
+<!DOCTYPE html>
+<html lang="vi">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <meta name="description" content="Overlapping items với z-index trong CSS Grid — xếp chồng elements theo ý muốn." />
+  <title>Bài 02 - Overlapping items với z-index | Module 4 CSS Grid | NenTang.vn</title>
+  <link rel="stylesheet" href="../../shared.css" />
+</head>
+<body>
+  <header class="topbar">
+    <div class="topbar-inner">
+      <a class="brand" href="../../index.html"><span class="brand-mark">G</span><span>CSS Grid</span></a>
+      <nav class="nav-links">
+        <a href="../../../index.html">Trang chủ</a>
+        <a href="../../index.html#modules">Module</a>
+      </nav>
+    </div>
+  </header>
+  <section class="module-hero m4">
+    <div class="container">
+      <div class="breadcrumb"><a href="../../index.html">CSS Grid</a><span>/</span><a href="../index.html">Module 4</a><span>/</span><span>Bài 02</span></div>
+      <h1>Bài 02: Overlapping items với z-index</h1>
+      <p>Xếp chồng grid items lên nhau bằng cách dùng cùng grid area và kiểm soát thứ tự với z-index.</p>
+    </div>
+  </section>
+  <main class="section">
+    <div class="container lesson-layout">
+      <aside class="side-nav">
+        <a href="#goal">Mục tiêu</a>
+        <a href="#theory">Lý thuyết</a>
+        <a href="#demo">Minh họa</a>
+        <a href="#code">Code ví dụ</a>
+        <a href="#exercise">Thực hành</a>
+        <a href="#solution">Bài giải</a>
+      </aside>
+      <article class="module-article">
+        <section class="lesson" id="goal">
+          <h2>Mục tiêu bài học</h2>
+          <ul>
+            <li>Đặt nhiều grid items vào cùng một vùng grid để tạo overlay effect.</li>
+            <li>Kiểm soát thứ tự hiển thị bằng <code>z-index</code>.</li>
+            <li>Tạo các UI patterns thú vị: image overlays, stacked cards, hero text trên ảnh.</li>
+          </ul>
+        </section>
+        <section class="lesson" id="theory">
+          <h2>Lý thuyết thực tế</h2>
+          <p>Grid items mặc định không overlap — mỗi item chiếm ô riêng. Nhưng bạn có thể buộc nhiều items vào cùng vùng bằng cách explicitly place chúng cùng <code>grid-column</code> và <code>grid-row</code>. Khi overlap, items theo DOM order (sau = trên), nhưng <code>z-index</code> ghi đè thứ tự đó.</p>
+          <p>Use cases phổ biến: text overlay trên ảnh (dùng nhiều trong hero sections), cards xếp chồng với offset (portfolio galleries), loading overlay trên content, badge/label đè lên card. Grid overlap mạnh hơn <code>position: absolute</code> vì items vẫn thuộc flow, không cần container relative, và kết hợp tốt với responsive.</p>
+          <ol class="steps">
+            <li>Đặt hai elements vào cùng <code>grid-column: 1 / 2; grid-row: 1 / 2</code>.</li>
+            <li>Chúng tự overlap — item sau trong DOM nằm trên.</li>
+            <li>Thêm <code>z-index</code> để kiểm soát ai ở trên ai.</li>
+            <li>Dùng opacity/blend-mode để tạo visual effects đẹp.</li>
+          </ol>
+        </section>
+        <section class="lesson" id="demo">
+          <h2>Minh họa trực quan</h2>
+          <p>Ảnh và text overlay trong cùng grid cell.</p>
+          <style>
+.overlap-demo { display: grid; grid-template-columns: 1fr 1fr; gap: 16px; }
+.overlap-hero { display: grid; border-radius: 8px; overflow: hidden; }
+.oh-img { grid-area: 1 / 1 / 2 / 2; height: 120px; background: linear-gradient(135deg, #7c3aed, #1e1b4b); }
+.oh-overlay { grid-area: 1 / 1 / 2 / 2; background: rgba(0,0,0,.4); z-index: 1; display: flex; align-items: flex-end; padding: 12px; }
+.oh-text { color: white; font-weight: 700; font-size: .85rem; z-index: 2; }
+.overlap-stack { display: grid; }
+.os-card { border-radius: 8px; padding: 12px; font-size: .8rem; font-weight: 700; width: 80px; height: 80px; display: flex; align-items: center; justify-content: center; }
+.os-card:nth-child(1) { grid-area: 1/1; background: #ede9fe; color: #4c1d95; }
+.os-card:nth-child(2) { grid-area: 1/1; background: #7c3aed; color: white; transform: translate(24px, 24px); z-index: 1; }
+          </style>
+          <div class="demo-surface">
+            <div class="overlap-demo">
+              <div>
+                <p style="font-size:.75rem;margin-bottom:8px;font-weight:700;color:#5e6b7a">Text overlay trên ảnh:</p>
+                <div class="overlap-hero">
+                  <div class="oh-img"></div>
+                  <div class="oh-overlay"></div>
+                  <div class="oh-text" style="grid-area:1/1;z-index:2;align-self:end;padding:10px">Hero Text</div>
+                </div>
+              </div>
+              <div>
+                <p style="font-size:.75rem;margin-bottom:8px;font-weight:700;color:#5e6b7a">Cards xếp chồng:</p>
+                <div class="overlap-stack">
+                  <div class="os-card">Card 1</div>
+                  <div class="os-card">Card 2</div>
+                </div>
+              </div>
+            </div>
+          </div>
+          <div class="demo-code">
+            <h3>Overlap technique</h3>
+            <pre><code data-lang="css">.container { display: grid; }
+/* Cả hai cùng area 1/1 */
+.bg, .text { grid-area: 1 / 1; }
+.text { z-index: 1; }</code></pre>
+          </div>
+        </section>
+        <section class="lesson" id="code">
+          <h2>Code ví dụ</h2>
+          <p>Hero section với image + gradient overlay + text.</p>
+          <div class="code-grid">
+            <div><h3>HTML</h3><pre><code data-lang="html">&lt;div class="hero"&gt;
+  &lt;div class="hero-bg"&gt;&lt;/div&gt;
+  &lt;div class="hero-overlay"&gt;&lt;/div&gt;
+  &lt;div class="hero-content"&gt;
+    &lt;h1&gt;CSS Grid Hero&lt;/h1&gt;
+    &lt;p&gt;Beautiful overlapping layout&lt;/p&gt;
+  &lt;/div&gt;
+&lt;/div&gt;</code></pre></div>
+            <div><h3>CSS</h3><pre><code data-lang="css">.hero { display: grid; }
+/* Tất cả share cùng cell */
+.hero-bg,
+.hero-overlay,
+.hero-content {
+  grid-area: 1 / 1;
+}
+.hero-bg {
+  height: 300px;
+  background: url(...) center/cover;
+}
+.hero-overlay {
+  background: linear-gradient(
+    to bottom,
+    transparent 30%,
+    rgba(0,0,0,.7)
+  );
+  z-index: 1;
+}
+.hero-content {
+  align-self: end;
+  padding: 32px;
+  z-index: 2;
+  color: white;
+}</code></pre></div>
+          </div>
+          <div class="result-panel">
+            <div class="result-head"><h3>Kết quả</h3><span>Preview trực tiếp</span></div>
+            <iframe class="result-frame" title="overlapping items demo" srcdoc="&lt;!DOCTYPE html&gt;&lt;html&gt;&lt;head&gt;&lt;meta charset='UTF-8'&gt;&lt;style&gt;*{box-sizing:border-box;margin:0}body{font-family:sans-serif;padding:20px;background:#f4f7fb}.hero{display:grid;border-radius:12px;overflow:hidden}.hero-bg,.hero-overlay,.hero-content{grid-area:1/1}.hero-bg{height:250px;background:linear-gradient(135deg,#7c3aed,#1e1b4b,#0f172a)}.hero-overlay{background:linear-gradient(to bottom,transparent 30%,rgba(0,0,0,.75));z-index:1}.hero-content{align-self:end;padding:28px;z-index:2;color:white}.hero-content .tag{display:inline-block;background:rgba(255,255,255,.2);color:white;padding:4px 12px;border-radius:99px;font-size:.78rem;margin-bottom:10px;backdrop-filter:blur(4px)}.hero-content h1{font-size:1.6rem;margin-bottom:8px}.hero-content p{opacity:.85;font-size:.9rem}&lt;/style&gt;&lt;/head&gt;&lt;body&gt;&lt;div class='hero'&gt;&lt;div class='hero-bg'&gt;&lt;/div&gt;&lt;div class='hero-overlay'&gt;&lt;/div&gt;&lt;div class='hero-content'&gt;&lt;span class='tag'&gt;CSS Grid&lt;/span&gt;&lt;h1&gt;Overlapping Items&lt;/h1&gt;&lt;p&gt;Text overlay trên ảnh không cần position: absolute — chỉ cần Grid!&lt;/p&gt;&lt;/div&gt;&lt;/div&gt;&lt;/body&gt;&lt;/html&gt;"></iframe>
+          </div>
+        </section>
+        <section class="exercise" id="exercise">
+          <span class="level">Bài tập thực hành</span>
+          <h2>Yêu cầu đề bài</h2>
+          <p>Tạo product card với badge "Giảm giá" đè lên góc trên trái của card image. <em>Badge và image ở cùng grid cell.</em></p>
+          <ol class="steps">
+            <li>Card image và badge cùng <code>grid-area: 1 / 1</code>.</li>
+            <li>Badge "HOT -30%" ở góc trên trái với padding và màu đỏ.</li>
+            <li>Tạo 3 product cards với badge.</li>
+            <li>Dùng flexbox cho card layout tổng thể (image + info).</li>
+          </ol>
+          <h3>Tiêu chí chấm</h3>
+          <ul>
+            <li>Badge đè lên image đúng vị trí.</li>
+            <li>Cards trông như product listing thật.</li>
+            <li>Badge nổi bật.</li>
+          </ul>
+        </section>
+        <section class="lesson solution" id="solution">
+          <h2>Bài giải tham khảo</h2>
+          <pre><code data-lang="html">&lt;!DOCTYPE html&gt;
+&lt;html lang="vi"&gt;
+&lt;head&gt;
+  &lt;meta charset="UTF-8"&gt;
+  &lt;style&gt;
+    * { box-sizing: border-box; margin: 0; }
+    body { font-family: sans-serif; padding: 20px; background: #f4f7fb; }
+    .products { display: grid; grid-template-columns: repeat(3, 1fr); gap: 16px; }
+    .product-card { background: white; border-radius: 10px; overflow: hidden; box-shadow: 0 2px 8px rgba(0,0,0,.08); }
+    .card-image-wrap { display: grid; }
+    .card-img { grid-area: 1/1; height: 160px; }
+    .badge { grid-area: 1/1; align-self: start; justify-self: start; background: #e85d4f; color: white; font-size: .75rem; font-weight: 700; padding: 4px 10px; margin: 8px; border-radius: 4px; z-index: 1; }
+    .card-info { padding: 14px; }
+    .product-name { font-weight: 700; margin-bottom: 6px; }
+    .price-row { display: flex; gap: 8px; align-items: center; }
+    .price-new { font-weight: 700; color: #e85d4f; font-size: 1.1rem; }
+    .price-old { text-decoration: line-through; color: #94a3b8; font-size: .85rem; }
+  &lt;/style&gt;
+&lt;/head&gt;
+&lt;body&gt;
+  &lt;div class="products"&gt;
+    &lt;div class="product-card"&gt;
+      &lt;div class="card-image-wrap"&gt;
+        &lt;div class="card-img" style="background:linear-gradient(135deg,#7c3aed,#4c1d95)"&gt;&lt;/div&gt;
+        &lt;span class="badge"&gt;HOT -30%&lt;/span&gt;
+      &lt;/div&gt;
+      &lt;div class="card-info"&gt;&lt;div class="product-name"&gt;Sản phẩm A&lt;/div&gt;&lt;div class="price-row"&gt;&lt;span class="price-new"&gt;140k&lt;/span&gt;&lt;span class="price-old"&gt;200k&lt;/span&gt;&lt;/div&gt;&lt;/div&gt;
+    &lt;/div&gt;
+    &lt;div class="product-card"&gt;
+      &lt;div class="card-image-wrap"&gt;
+        &lt;div class="card-img" style="background:linear-gradient(135deg,#2563eb,#1e40af)"&gt;&lt;/div&gt;
+        &lt;span class="badge"&gt;HOT -20%&lt;/span&gt;
+      &lt;/div&gt;
+      &lt;div class="card-info"&gt;&lt;div class="product-name"&gt;Sản phẩm B&lt;/div&gt;&lt;div class="price-row"&gt;&lt;span class="price-new"&gt;240k&lt;/span&gt;&lt;span class="price-old"&gt;300k&lt;/span&gt;&lt;/div&gt;&lt;/div&gt;
+    &lt;/div&gt;
+    &lt;div class="product-card"&gt;
+      &lt;div class="card-image-wrap"&gt;
+        &lt;div class="card-img" style="background:linear-gradient(135deg,#059669,#065f46)"&gt;&lt;/div&gt;
+        &lt;span class="badge"&gt;HOT -50%&lt;/span&gt;
+      &lt;/div&gt;
+      &lt;div class="card-info"&gt;&lt;div class="product-name"&gt;Sản phẩm C&lt;/div&gt;&lt;div class="price-row"&gt;&lt;span class="price-new"&gt;75k&lt;/span&gt;&lt;span class="price-old"&gt;150k&lt;/span&gt;&lt;/div&gt;&lt;/div&gt;
+    &lt;/div&gt;
+  &lt;/div&gt;
+&lt;/body&gt;
+&lt;/html&gt;</code></pre>
+          <div class="result-panel">
+            <div class="result-head"><h3>Kết quả bài giải</h3><span>Preview trực tiếp</span></div>
+            <iframe class="result-frame" title="Bài giải overlapping" srcdoc="&lt;!DOCTYPE html&gt;&lt;html&gt;&lt;head&gt;&lt;meta charset='UTF-8'&gt;&lt;style&gt;*{box-sizing:border-box;margin:0}body{font-family:sans-serif;padding:20px;background:#f4f7fb}.products{display:grid;grid-template-columns:repeat(3,1fr);gap:14px}.product-card{background:white;border-radius:10px;overflow:hidden;box-shadow:0 2px 8px rgba(0,0,0,.08)}.card-image-wrap{display:grid}.card-img{grid-area:1/1;height:130px}.badge{grid-area:1/1;align-self:start;justify-self:start;background:#e85d4f;color:white;font-size:.72rem;font-weight:700;padding:3px 8px;margin:6px;border-radius:4px;z-index:1}.card-info{padding:12px}.product-name{font-weight:700;margin-bottom:5px;font-size:.9rem}.price-row{display:flex;gap:7px;align-items:center}.price-new{font-weight:700;color:#e85d4f;font-size:1rem}.price-old{text-decoration:line-through;color:#94a3b8;font-size:.82rem}&lt;/style&gt;&lt;/head&gt;&lt;body&gt;&lt;div class='products'&gt;&lt;div class='product-card'&gt;&lt;div class='card-image-wrap'&gt;&lt;div class='card-img' style='background:linear-gradient(135deg,#7c3aed,#4c1d95)'&gt;&lt;/div&gt;&lt;span class='badge'&gt;HOT -30%&lt;/span&gt;&lt;/div&gt;&lt;div class='card-info'&gt;&lt;div class='product-name'&gt;Sản phẩm A&lt;/div&gt;&lt;div class='price-row'&gt;&lt;span class='price-new'&gt;140k&lt;/span&gt;&lt;span class='price-old'&gt;200k&lt;/span&gt;&lt;/div&gt;&lt;/div&gt;&lt;/div&gt;&lt;div class='product-card'&gt;&lt;div class='card-image-wrap'&gt;&lt;div class='card-img' style='background:linear-gradient(135deg,#2563eb,#1e40af)'&gt;&lt;/div&gt;&lt;span class='badge'&gt;HOT -20%&lt;/span&gt;&lt;/div&gt;&lt;div class='card-info'&gt;&lt;div class='product-name'&gt;Sản phẩm B&lt;/div&gt;&lt;div class='price-row'&gt;&lt;span class='price-new'&gt;240k&lt;/span&gt;&lt;span class='price-old'&gt;300k&lt;/span&gt;&lt;/div&gt;&lt;/div&gt;&lt;/div&gt;&lt;div class='product-card'&gt;&lt;div class='card-image-wrap'&gt;&lt;div class='card-img' style='background:linear-gradient(135deg,#059669,#065f46)'&gt;&lt;/div&gt;&lt;span class='badge'&gt;HOT -50%&lt;/span&gt;&lt;/div&gt;&lt;div class='card-info'&gt;&lt;div class='product-name'&gt;Sản phẩm C&lt;/div&gt;&lt;div class='price-row'&gt;&lt;span class='price-new'&gt;75k&lt;/span&gt;&lt;span class='price-old'&gt;150k&lt;/span&gt;&lt;/div&gt;&lt;/div&gt;&lt;/div&gt;&lt;/div&gt;&lt;/body&gt;&lt;/html&gt;"></iframe>
+          </div>
+        </section>
+        <div class="pager">
+          <a class="btn" href="../bai-01/index.html">← Bài trước</a>
+          <a class="btn primary" href="../bai-03/index.html">Bài tiếp theo →</a>
+        </div>
+      </article>
+    </div>
+  </main>
+  <footer class="footer"><p><a href="../index.html">Quay lại Module 4</a></p></footer>
+  <script type="module" src="../../app.js"></script>
+</body>
+</html>

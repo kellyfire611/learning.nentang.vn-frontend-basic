@@ -1,0 +1,214 @@
+<!DOCTYPE html>
+<html lang="vi">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <meta name="description" content="justify-self, align-self, place-self trong CSS Grid — căn chỉnh từng item riêng lẻ." />
+  <title>Bài 07 - justify-self, align-self | Module 1 CSS Grid | NenTang.vn</title>
+  <link rel="stylesheet" href="../../shared.css" />
+</head>
+<body>
+  <header class="topbar">
+    <div class="topbar-inner">
+      <a class="brand" href="../../index.html"><span class="brand-mark">G</span><span>CSS Grid</span></a>
+      <nav class="nav-links">
+        <a href="../../../index.html">Trang chủ</a>
+        <a href="../../index.html#modules">Module</a>
+      </nav>
+    </div>
+  </header>
+  <section class="module-hero m1">
+    <div class="container">
+      <div class="breadcrumb"><a href="../../index.html">CSS Grid</a><span>/</span><a href="../index.html">Module 1</a><span>/</span><span>Bài 07</span></div>
+      <h1>Bài 07: justify-self, align-self, place-self</h1>
+      <p>Ghi đè căn chỉnh cho từng grid item riêng lẻ, độc lập với cài đặt của container.</p>
+    </div>
+  </section>
+  <main class="section">
+    <div class="container lesson-layout">
+      <aside class="side-nav">
+        <a href="#goal">Mục tiêu</a>
+        <a href="#theory">Lý thuyết</a>
+        <a href="#demo">Minh họa</a>
+        <a href="#code">Code ví dụ</a>
+        <a href="#exercise">Thực hành</a>
+        <a href="#solution">Bài giải</a>
+      </aside>
+      <article class="module-article">
+        <section class="lesson" id="goal">
+          <h2>Mục tiêu bài học</h2>
+          <ul>
+            <li>Ghi đè căn chỉnh container bằng <code>justify-self</code> và <code>align-self</code> cho từng item.</li>
+            <li>Hiểu giá trị <code>start</code>, <code>end</code>, <code>center</code>, <code>stretch</code> áp dụng ra sao.</li>
+            <li>Dùng <code>place-self</code> shorthand để căn chỉnh cả hai trục cùng lúc trên một item.</li>
+          </ul>
+        </section>
+        <section class="lesson" id="theory">
+          <h2>Lý thuyết thực tế</h2>
+          <p><code>justify-self</code> và <code>align-self</code> hoạt động giống <code>justify-items</code>/<code>align-items</code> nhưng chỉ áp dụng cho một grid item cụ thể. Chúng ghi đè giá trị từ container. Ví dụ: container có <code>align-items: stretch</code>, nhưng một item có <code>align-self: end</code> sẽ nằm ở cuối ô thay vì kéo dài.</p>
+          <p><code>place-self: align-self justify-self</code> là shorthand tiện lợi. <code>place-self: center</code> căn giữa item cả hai chiều. Đây là kỹ thuật hay dùng khi bạn có một grid item "đặc biệt" cần xử lý khác với các items còn lại.</p>
+          <ol class="steps">
+            <li>Đặt căn chỉnh mặc định cho toàn bộ grid qua <code>align-items</code> trên container.</li>
+            <li>Ghi đè cho item đặc biệt bằng <code>align-self</code> hoặc <code>place-self</code> trên item đó.</li>
+            <li>Dùng <code>align-self: end</code> để đẩy nút "Thêm vào giỏ" xuống cuối card.</li>
+            <li>Dùng <code>place-self: center</code> để căn giữa badge hoặc icon.</li>
+          </ol>
+        </section>
+        <section class="lesson" id="demo">
+          <h2>Minh họa trực quan</h2>
+          <p>Grid với các items được căn ở góc khác nhau trong ô của chúng.</p>
+          <style>
+.self-demo { display: grid; grid-template-columns: repeat(3, 1fr); gap: 8px; min-height: 180px; background: #f3f4f6; padding: 12px; border-radius: 8px; }
+.self-demo div { width: 60px; height: 40px; background: #7c3aed; color: white; border-radius: 6px; display: grid; place-items: center; font-size: 0.75rem; font-weight: 700; }
+.self-demo .tl { justify-self: start; align-self: start; }
+.self-demo .tc { justify-self: center; align-self: start; }
+.self-demo .tr { justify-self: end; align-self: start; }
+.self-demo .ml { justify-self: start; align-self: center; }
+.self-demo .mc { place-self: center; background: #e85d4f; }
+.self-demo .mr { justify-self: end; align-self: center; }
+.self-demo .bl { justify-self: start; align-self: end; }
+.self-demo .bc { justify-self: center; align-self: end; }
+.self-demo .br { justify-self: end; align-self: end; }
+          </style>
+          <div class="demo-surface">
+            <div class="self-demo">
+              <div class="tl">start/start</div>
+              <div class="tc">center/start</div>
+              <div class="tr">end/start</div>
+              <div class="ml">start/mid</div>
+              <div class="mc">center</div>
+              <div class="mr">end/mid</div>
+              <div class="bl">start/end</div>
+              <div class="bc">center/end</div>
+              <div class="br">end/end</div>
+            </div>
+          </div>
+          <div class="demo-code">
+            <h3>Code tạo minh họa</h3>
+            <pre><code data-lang="css">.center-item {
+  place-self: center; /* shorthand */
+}
+.bottom-right {
+  justify-self: end;
+  align-self: end;
+}</code></pre>
+          </div>
+        </section>
+        <section class="lesson" id="code">
+          <h2>Code ví dụ</h2>
+          <p>Card với nút "Xem chi tiết" được đẩy xuống cuối bằng align-self: end.</p>
+          <div class="code-grid">
+            <div><h3>HTML</h3><pre><code data-lang="html">&lt;div class="card-grid"&gt;
+  &lt;div class="card"&gt;
+    &lt;h3&gt;Sản phẩm A&lt;/h3&gt;
+    &lt;p&gt;Mô tả ngắn&lt;/p&gt;
+    &lt;a class="btn-buy"&gt;Mua ngay&lt;/a&gt;
+  &lt;/div&gt;
+  &lt;div class="card"&gt;
+    &lt;h3&gt;Sản phẩm B&lt;/h3&gt;
+    &lt;p&gt;Mô tả dài hơn nhiều...&lt;/p&gt;
+    &lt;a class="btn-buy"&gt;Mua ngay&lt;/a&gt;
+  &lt;/div&gt;
+&lt;/div&gt;</code></pre></div>
+            <div><h3>CSS</h3><pre><code data-lang="css">.card-grid {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 16px;
+  align-items: stretch;
+}
+.card {
+  display: grid; /* nested grid */
+  align-content: start;
+}
+.btn-buy {
+  align-self: end; /* nút nằm cuối */
+  margin-top: auto;
+}</code></pre></div>
+          </div>
+          <div class="result-panel">
+            <div class="result-head"><h3>Kết quả</h3><span>Nút căn đều cuối card</span></div>
+            <iframe class="result-frame" title="align-self demo" srcdoc="&lt;!DOCTYPE html&gt;&lt;html&gt;&lt;head&gt;&lt;meta charset='UTF-8'&gt;&lt;style&gt;*{box-sizing:border-box;margin:0}body{font-family:sans-serif;padding:20px;background:#f4f7fb}.card-grid{display:grid;grid-template-columns:1fr 1fr;gap:16px;align-items:stretch}.card{display:flex;flex-direction:column;background:white;padding:20px;border-radius:8px;border:1px solid #e2e8f0}.card h3{margin-bottom:8px;color:#7c3aed}.card p{color:#64748b;font-size:.9rem;flex:1;margin-bottom:16px}.btn-buy{display:inline-block;padding:10px 16px;background:#7c3aed;color:white;border-radius:8px;font-weight:700;text-align:center;text-decoration:none;margin-top:auto}&lt;/style&gt;&lt;/head&gt;&lt;body&gt;&lt;div class='card-grid'&gt;&lt;div class='card'&gt;&lt;h3&gt;Sản phẩm A&lt;/h3&gt;&lt;p&gt;Mô tả ngắn&lt;/p&gt;&lt;a class='btn-buy'&gt;Mua ngay&lt;/a&gt;&lt;/div&gt;&lt;div class='card'&gt;&lt;h3&gt;Sản phẩm B&lt;/h3&gt;&lt;p&gt;Mô tả dài hơn nhiều, có nhiều thông tin cần đọc trước khi mua.&lt;/p&gt;&lt;a class='btn-buy'&gt;Mua ngay&lt;/a&gt;&lt;/div&gt;&lt;/div&gt;&lt;/body&gt;&lt;/html&gt;"></iframe>
+          </div>
+        </section>
+        <section class="exercise" id="exercise">
+          <span class="level">Bài tập thực hành</span>
+          <h2>Yêu cầu đề bài</h2>
+          <p>Tạo grid card sản phẩm với nút "Xem thêm" được căn về phía cuối ô bằng <code>align-self: end</code>. <em>Khác với ví dụ — dùng grid item trực tiếp thay vì flex.</em></p>
+          <ol class="steps">
+            <li>Tạo 4 cards trong grid 2 cột, mỗi card có tiêu đề, mô tả ngắn, và link "Xem thêm".</li>
+            <li>Grid container dùng <code>align-items: stretch</code>.</li>
+            <li>Mỗi card bên trong dùng <code>display: grid; align-content: start</code>.</li>
+            <li>Link "Xem thêm" dùng <code>margin-top: auto</code> để đẩy xuống cuối.</li>
+          </ol>
+          <h3>Tiêu chí chấm</h3>
+          <ul>
+            <li>2 cards trong cùng một hàng có chiều cao bằng nhau.</li>
+            <li>Nút "Xem thêm" của cả 2 cards căn ngang với nhau ở cuối.</li>
+          </ul>
+        </section>
+        <section class="lesson solution" id="solution">
+          <h2>Bài giải tham khảo</h2>
+          <pre><code data-lang="html">&lt;!DOCTYPE html&gt;
+&lt;html lang="vi"&gt;
+&lt;head&gt;
+  &lt;meta charset="UTF-8"&gt;
+  &lt;style&gt;
+    * { box-sizing: border-box; margin: 0; }
+    body { font-family: sans-serif; padding: 20px; background: #f4f7fb; }
+    .card-grid {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 16px;
+      align-items: stretch;
+    }
+    .card {
+      display: grid;
+      align-content: start;
+      gap: 8px;
+      background: white;
+      padding: 20px;
+      border-radius: 8px;
+      border: 1px solid #e2e8f0;
+    }
+    .card h3 { color: #7c3aed; }
+    .card p { color: #64748b; font-size: 0.9rem; }
+    .card .link {
+      margin-top: auto;
+      padding-top: 12px;
+      color: #7c3aed;
+      font-weight: 700;
+      text-decoration: none;
+    }
+  &lt;/style&gt;
+&lt;/head&gt;
+&lt;body&gt;
+  &lt;div class="card-grid"&gt;
+    &lt;div class="card"&gt;
+      &lt;h3&gt;Dịch vụ A&lt;/h3&gt;
+      &lt;p&gt;Mô tả ngắn.&lt;/p&gt;
+      &lt;a class="link"&gt;Xem thêm →&lt;/a&gt;
+    &lt;/div&gt;
+    &lt;div class="card"&gt;
+      &lt;h3&gt;Dịch vụ B&lt;/h3&gt;
+      &lt;p&gt;Mô tả dài hơn nhiều, giải thích chi tiết về tính năng và lợi ích.&lt;/p&gt;
+      &lt;a class="link"&gt;Xem thêm →&lt;/a&gt;
+    &lt;/div&gt;
+  &lt;/div&gt;
+&lt;/body&gt;
+&lt;/html&gt;</code></pre>
+          <div class="result-panel">
+            <div class="result-head"><h3>Kết quả bài giải</h3><span>Preview trực tiếp</span></div>
+            <iframe class="result-frame" title="Bài giải align-self" srcdoc="&lt;!DOCTYPE html&gt;&lt;html&gt;&lt;head&gt;&lt;meta charset='UTF-8'&gt;&lt;style&gt;*{box-sizing:border-box;margin:0}body{font-family:sans-serif;padding:20px;background:#f4f7fb}.card-grid{display:grid;grid-template-columns:1fr 1fr;gap:16px;align-items:stretch}.card{display:grid;align-content:start;gap:8px;background:white;padding:20px;border-radius:8px;border:1px solid #e2e8f0}.card h3{color:#7c3aed}.card p{color:#64748b;font-size:.9rem}.card .link{margin-top:auto;padding-top:12px;color:#7c3aed;font-weight:700;text-decoration:none}&lt;/style&gt;&lt;/head&gt;&lt;body&gt;&lt;div class='card-grid'&gt;&lt;div class='card'&gt;&lt;h3&gt;Dịch vụ A&lt;/h3&gt;&lt;p&gt;Mô tả ngắn.&lt;/p&gt;&lt;a class='link'&gt;Xem thêm →&lt;/a&gt;&lt;/div&gt;&lt;div class='card'&gt;&lt;h3&gt;Dịch vụ B&lt;/h3&gt;&lt;p&gt;Mô tả dài hơn nhiều, giải thích chi tiết về tính năng và lợi ích của dịch vụ.&lt;/p&gt;&lt;a class='link'&gt;Xem thêm →&lt;/a&gt;&lt;/div&gt;&lt;/div&gt;&lt;/body&gt;&lt;/html&gt;"></iframe>
+          </div>
+        </section>
+        <div class="pager">
+          <a class="btn" href="../bai-06/index.html">← Bài trước</a>
+          <a class="btn primary" href="../bai-08/index.html">Bài tiếp theo →</a>
+        </div>
+      </article>
+    </div>
+  </main>
+  <footer class="footer"><p><a href="../index.html">Quay lại Module 1</a></p></footer>
+  <script type="module" src="../../app.js"></script>
+</body>
+</html>

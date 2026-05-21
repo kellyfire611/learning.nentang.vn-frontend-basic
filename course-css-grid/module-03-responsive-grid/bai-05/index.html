@@ -1,0 +1,213 @@
+<!DOCTYPE html>
+<html lang="vi">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <meta name="description" content="Responsive CSS Grid với media queries — kết hợp grid và breakpoints." />
+  <title>Bài 05 - Responsive với media queries | Module 3 CSS Grid | NenTang.vn</title>
+  <link rel="stylesheet" href="../../shared.css" />
+</head>
+<body>
+  <header class="topbar">
+    <div class="topbar-inner">
+      <a class="brand" href="../../index.html"><span class="brand-mark">G</span><span>CSS Grid</span></a>
+      <nav class="nav-links">
+        <a href="../../../index.html">Trang chủ</a>
+        <a href="../../index.html#modules">Module</a>
+      </nav>
+    </div>
+  </header>
+  <section class="module-hero m3">
+    <div class="container">
+      <div class="breadcrumb"><a href="../../index.html">CSS Grid</a><span>/</span><a href="../index.html">Module 3</a><span>/</span><span>Bài 05</span></div>
+      <h1>Bài 05: Responsive với media queries</h1>
+      <p>Kết hợp CSS Grid với media queries để kiểm soát layout chính xác theo breakpoints.</p>
+    </div>
+  </section>
+  <main class="section">
+    <div class="container lesson-layout">
+      <aside class="side-nav">
+        <a href="#goal">Mục tiêu</a>
+        <a href="#theory">Lý thuyết</a>
+        <a href="#demo">Minh họa</a>
+        <a href="#code">Code ví dụ</a>
+        <a href="#exercise">Thực hành</a>
+        <a href="#solution">Bài giải</a>
+      </aside>
+      <article class="module-article">
+        <section class="lesson" id="goal">
+          <h2>Mục tiêu bài học</h2>
+          <ul>
+            <li>Thay đổi <code>grid-template-columns</code> và <code>grid-template-areas</code> theo breakpoints.</li>
+            <li>Mobile-first approach: bắt đầu với 1 cột, thêm cột ở màn hình lớn hơn.</li>
+            <li>Biết khi nào dùng auto-fit (không cần query) và khi nào cần media query cho kiểm soát chính xác hơn.</li>
+          </ul>
+        </section>
+        <section class="lesson" id="theory">
+          <h2>Lý thuyết thực tế</h2>
+          <p><strong>Mobile-first với Grid:</strong> Bắt đầu với layout 1 cột (mobile), dùng <code>@media (min-width: 768px)</code> để thêm cột tablet, <code>@media (min-width: 1024px)</code> cho desktop. Đây là approach chuẩn — CSS nhỏ nhất cho mobile, CSS thêm vào cho màn hình lớn.</p>
+          <p>Với Grid, thay đổi <code>grid-template-columns</code> trong media query cũng tự động điều chỉnh vị trí items nếu bạn không dùng explicit placement. Với <code>grid-template-areas</code>, thay đổi cả areas để cấu trúc layout thay đổi hoàn toàn giữa mobile và desktop — rất linh hoạt. Tên areas phải nhất quán giữa các breakpoints nếu bạn dùng cùng elements.</p>
+          <ol class="steps">
+            <li>Mặc định: <code>grid-template-columns: 1fr</code> (1 cột cho mobile).</li>
+            <li><code>@media (min-width: 640px)</code>: 2 cột.</li>
+            <li><code>@media (min-width: 1024px)</code>: 3 hoặc 4 cột.</li>
+            <li>Nếu dùng areas: định nghĩa lại areas cho mỗi breakpoint.</li>
+          </ol>
+        </section>
+        <section class="lesson" id="demo">
+          <h2>Minh họa trực quan</h2>
+          <p>Grid thay đổi từ 1 cột → 2 cột → 3 cột.</p>
+          <style>
+.bp-demo { display: grid; grid-template-columns: repeat(3, 1fr); gap: 8px; }
+.bp-item { background: #7c3aed; color: white; padding: 12px; border-radius: 6px; text-align: center; font-size: 0.8rem; font-weight: 700; }
+.bp-item:nth-child(even) { background: #2563eb; }
+.bp-note { font-size: .8rem; color: #64748b; margin-top: 8px; font-style: italic; }
+          </style>
+          <div class="demo-surface">
+            <div class="bp-demo">
+              <div class="bp-item">Item 1</div>
+              <div class="bp-item">Item 2</div>
+              <div class="bp-item">Item 3</div>
+              <div class="bp-item">Item 4</div>
+              <div class="bp-item">Item 5</div>
+              <div class="bp-item">Item 6</div>
+            </div>
+            <div class="bp-note">Preview này: 3 cột (desktop). Thu nhỏ cửa sổ để thấy responsive thực tế.</div>
+          </div>
+          <div class="demo-code">
+            <h3>Mobile-first pattern</h3>
+            <pre><code data-lang="css">/* Mobile: 1 cột */
+.grid { grid-template-columns: 1fr; }
+/* Tablet: 2 cột */
+@media (min-width: 640px) {
+  .grid { grid-template-columns: 1fr 1fr; }
+}
+/* Desktop: 3 cột */
+@media (min-width: 1024px) {
+  .grid { grid-template-columns: repeat(3, 1fr); }
+}</code></pre>
+          </div>
+        </section>
+        <section class="lesson" id="code">
+          <h2>Code ví dụ</h2>
+          <p>Layout thay đổi hoàn toàn giữa mobile và desktop với template areas.</p>
+          <div class="code-grid">
+            <div><h3>HTML</h3><pre><code data-lang="html">&lt;div class="page"&gt;
+  &lt;header&gt;Header&lt;/header&gt;
+  &lt;nav&gt;Navigation&lt;/nav&gt;
+  &lt;main&gt;Main Content&lt;/main&gt;
+  &lt;aside&gt;Sidebar&lt;/aside&gt;
+  &lt;footer&gt;Footer&lt;/footer&gt;
+&lt;/div&gt;</code></pre></div>
+            <div><h3>CSS</h3><pre><code data-lang="css">/* Mobile: 1 cột, stacked */
+.page {
+  display: grid;
+  grid-template-areas:
+    "header" "nav"
+    "main"   "sidebar"
+    "footer";
+}
+/* Desktop: multi-column */
+@media (min-width: 1024px) {
+  .page {
+    grid-template-columns: 200px 1fr 200px;
+    grid-template-areas:
+      "header  header  header"
+      "nav     main    sidebar"
+      "footer  footer  footer";
+  }
+}</code></pre></div>
+          </div>
+          <div class="result-panel">
+            <div class="result-head"><h3>Kết quả</h3><span>Preview trực tiếp</span></div>
+            <iframe class="result-frame" title="responsive media query demo" srcdoc="&lt;!DOCTYPE html&gt;&lt;html&gt;&lt;head&gt;&lt;meta charset='UTF-8'&gt;&lt;style&gt;*{box-sizing:border-box;margin:0}body{font-family:sans-serif;padding:0;background:#f4f7fb}.page{display:grid;grid-template-columns:1fr;grid-template-areas:'header' 'nav' 'main' 'sidebar' 'footer';gap:6px;padding:6px}header{grid-area:header;background:#7c3aed;color:white;padding:12px 16px;border-radius:6px;font-weight:700}nav{grid-area:nav;background:#ede9fe;padding:10px 16px;border-radius:6px;color:#4c1d95;font-weight:600;font-size:.85rem}main{grid-area:main;background:white;padding:14px;border-radius:6px;border:1px solid #e2e8f0;min-height:80px}aside{grid-area:sidebar;background:#fef3c7;padding:12px 16px;border-radius:6px;color:#78350f;font-size:.85rem}footer{grid-area:footer;background:#1e1b4b;color:#c4b5fd;padding:12px 16px;border-radius:6px;font-size:.85rem}@media(min-width:600px){.page{grid-template-columns:160px 1fr 160px;grid-template-areas:'header header header' 'nav main sidebar' 'footer footer footer'}}&lt;/style&gt;&lt;/head&gt;&lt;body&gt;&lt;div class='page'&gt;&lt;header&gt;Header&lt;/header&gt;&lt;nav&gt;Navigation&lt;/nav&gt;&lt;main&gt;&lt;strong&gt;Main Content&lt;/strong&gt;&lt;p style='font-size:.85rem;color:#64748b;margin-top:6px'&gt;Resize iframe để thấy responsive.&lt;/p&gt;&lt;/main&gt;&lt;aside&gt;Sidebar&lt;/aside&gt;&lt;footer&gt;Footer&lt;/footer&gt;&lt;/div&gt;&lt;/body&gt;&lt;/html&gt;"></iframe>
+          </div>
+        </section>
+        <section class="exercise" id="exercise">
+          <span class="level">Bài tập thực hành</span>
+          <h2>Yêu cầu đề bài</h2>
+          <p>Tạo pricing section responsive với 3 pricing tiers — 1 cột trên mobile, 3 cột trên desktop. <em>Khác với ví dụ — không dùng template-areas, dùng grid-template-columns thay đổi theo breakpoint.</em></p>
+          <ol class="steps">
+            <li>Mobile (mặc định): <code>grid-template-columns: 1fr</code>, cards stack dọc.</li>
+            <li>Tablet (≥640px): <code>grid-template-columns: 1fr 1fr</code>.</li>
+            <li>Desktop (≥1024px): <code>grid-template-columns: repeat(3, 1fr)</code>.</li>
+            <li>Card giữa (Pro) có style nổi bật hơn (màu đậm, scale lớn hơn).</li>
+          </ol>
+          <h3>Tiêu chí chấm</h3>
+          <ul>
+            <li>Layout thay đổi đúng theo breakpoints.</li>
+            <li>3 pricing cards với tên gói, giá, và 3-4 features.</li>
+            <li>Card giữa nổi bật hơn.</li>
+          </ul>
+        </section>
+        <section class="lesson solution" id="solution">
+          <h2>Bài giải tham khảo</h2>
+          <pre><code data-lang="html">&lt;!DOCTYPE html&gt;
+&lt;html lang="vi"&gt;
+&lt;head&gt;
+  &lt;meta charset="UTF-8"&gt;
+  &lt;style&gt;
+    * { box-sizing: border-box; margin: 0; }
+    body { font-family: sans-serif; padding: 24px; background: #f4f7fb; }
+    h1 { text-align: center; margin-bottom: 24px; color: #1e293b; }
+    .pricing-grid {
+      display: grid;
+      grid-template-columns: 1fr;
+      gap: 16px;
+    }
+    @media (min-width: 640px) {
+      .pricing-grid { grid-template-columns: 1fr 1fr; }
+    }
+    @media (min-width: 1024px) {
+      .pricing-grid { grid-template-columns: repeat(3, 1fr); }
+    }
+    .plan {
+      background: white;
+      padding: 28px 24px;
+      border-radius: 12px;
+      border: 1px solid #e2e8f0;
+      text-align: center;
+    }
+    .plan.featured {
+      background: #7c3aed;
+      color: white;
+      border-color: #7c3aed;
+      transform: scale(1.03);
+    }
+    .plan-name { font-weight: 700; font-size: 1.1rem; margin-bottom: 8px; }
+    .plan-price { font-size: 2rem; font-weight: 700; color: #7c3aed; margin-bottom: 4px; }
+    .featured .plan-price { color: white; }
+    .plan-period { font-size: .82rem; color: #94a3b8; margin-bottom: 20px; }
+    .featured .plan-period { color: #c4b5fd; }
+    .features { list-style: none; margin-bottom: 20px; }
+    .features li { padding: 6px 0; font-size: .88rem; color: #64748b; border-bottom: 1px solid #f1f5f9; }
+    .featured .features li { color: #e9d5ff; border-color: rgba(255,255,255,.1); }
+    .plan-btn { background: #7c3aed; color: white; border: none; padding: 10px 24px; border-radius: 8px; font-weight: 700; cursor: pointer; width: 100%; }
+    .featured .plan-btn { background: white; color: #7c3aed; }
+  &lt;/style&gt;
+&lt;/head&gt;
+&lt;body&gt;
+  &lt;h1&gt;Bảng giá&lt;/h1&gt;
+  &lt;div class="pricing-grid"&gt;
+    &lt;div class="plan"&gt;&lt;div class="plan-name"&gt;Basic&lt;/div&gt;&lt;div class="plan-price"&gt;0đ&lt;/div&gt;&lt;div class="plan-period"&gt;/ tháng&lt;/div&gt;&lt;ul class="features"&gt;&lt;li&gt;5 dự án&lt;/li&gt;&lt;li&gt;1GB storage&lt;/li&gt;&lt;li&gt;Email support&lt;/li&gt;&lt;li&gt;1 thành viên&lt;/li&gt;&lt;/ul&gt;&lt;button class="plan-btn"&gt;Bắt đầu miễn phí&lt;/button&gt;&lt;/div&gt;
+    &lt;div class="plan featured"&gt;&lt;div class="plan-name"&gt;Pro&lt;/div&gt;&lt;div class="plan-price"&gt;199k&lt;/div&gt;&lt;div class="plan-period"&gt;/ tháng&lt;/div&gt;&lt;ul class="features"&gt;&lt;li&gt;Không giới hạn dự án&lt;/li&gt;&lt;li&gt;20GB storage&lt;/li&gt;&lt;li&gt;Priority support&lt;/li&gt;&lt;li&gt;5 thành viên&lt;/li&gt;&lt;/ul&gt;&lt;button class="plan-btn"&gt;Nâng cấp Pro&lt;/button&gt;&lt;/div&gt;
+    &lt;div class="plan"&gt;&lt;div class="plan-name"&gt;Enterprise&lt;/div&gt;&lt;div class="plan-price"&gt;999k&lt;/div&gt;&lt;div class="plan-period"&gt;/ tháng&lt;/div&gt;&lt;ul class="features"&gt;&lt;li&gt;Không giới hạn dự án&lt;/li&gt;&lt;li&gt;Unlimited storage&lt;/li&gt;&lt;li&gt;24/7 support&lt;/li&gt;&lt;li&gt;Không giới hạn thành viên&lt;/li&gt;&lt;/ul&gt;&lt;button class="plan-btn"&gt;Liên hệ sales&lt;/button&gt;&lt;/div&gt;
+  &lt;/div&gt;
+&lt;/body&gt;
+&lt;/html&gt;</code></pre>
+          <div class="result-panel">
+            <div class="result-head"><h3>Kết quả bài giải</h3><span>Preview trực tiếp</span></div>
+            <iframe class="result-frame" title="Bài giải responsive pricing" srcdoc="&lt;!DOCTYPE html&gt;&lt;html&gt;&lt;head&gt;&lt;meta charset='UTF-8'&gt;&lt;style&gt;*{box-sizing:border-box;margin:0}body{font-family:sans-serif;padding:16px;background:#f4f7fb}h1{text-align:center;margin-bottom:16px;color:#1e293b;font-size:1.1rem}.pricing-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:12px}.plan{background:white;padding:20px 16px;border-radius:10px;border:1px solid #e2e8f0;text-align:center}.plan.featured{background:#7c3aed;color:white;border-color:#7c3aed}.plan-name{font-weight:700;font-size:.95rem;margin-bottom:6px}.plan-price{font-size:1.6rem;font-weight:700;color:#7c3aed;margin-bottom:2px}.featured .plan-price{color:white}.plan-period{font-size:.76rem;color:#94a3b8;margin-bottom:14px}.featured .plan-period{color:#c4b5fd}.features{list-style:none;margin-bottom:14px}.features li{padding:4px 0;font-size:.8rem;color:#64748b;border-bottom:1px solid #f1f5f9}.featured .features li{color:#e9d5ff;border-color:rgba(255,255,255,.1)}.plan-btn{background:#7c3aed;color:white;border:none;padding:8px;border-radius:6px;font-weight:700;cursor:pointer;width:100%;font-size:.8rem}.featured .plan-btn{background:white;color:#7c3aed}&lt;/style&gt;&lt;/head&gt;&lt;body&gt;&lt;h1&gt;Bảng giá&lt;/h1&gt;&lt;div class='pricing-grid'&gt;&lt;div class='plan'&gt;&lt;div class='plan-name'&gt;Basic&lt;/div&gt;&lt;div class='plan-price'&gt;0đ&lt;/div&gt;&lt;div class='plan-period'&gt;/ tháng&lt;/div&gt;&lt;ul class='features'&gt;&lt;li&gt;5 dự án&lt;/li&gt;&lt;li&gt;1GB storage&lt;/li&gt;&lt;li&gt;Email support&lt;/li&gt;&lt;/ul&gt;&lt;button class='plan-btn'&gt;Miễn phí&lt;/button&gt;&lt;/div&gt;&lt;div class='plan featured'&gt;&lt;div class='plan-name'&gt;Pro&lt;/div&gt;&lt;div class='plan-price'&gt;199k&lt;/div&gt;&lt;div class='plan-period'&gt;/ tháng&lt;/div&gt;&lt;ul class='features'&gt;&lt;li&gt;Không giới hạn&lt;/li&gt;&lt;li&gt;20GB storage&lt;/li&gt;&lt;li&gt;Priority support&lt;/li&gt;&lt;/ul&gt;&lt;button class='plan-btn'&gt;Nâng cấp&lt;/button&gt;&lt;/div&gt;&lt;div class='plan'&gt;&lt;div class='plan-name'&gt;Enterprise&lt;/div&gt;&lt;div class='plan-price'&gt;999k&lt;/div&gt;&lt;div class='plan-period'&gt;/ tháng&lt;/div&gt;&lt;ul class='features'&gt;&lt;li&gt;Không giới hạn&lt;/li&gt;&lt;li&gt;Unlimited&lt;/li&gt;&lt;li&gt;24/7 support&lt;/li&gt;&lt;/ul&gt;&lt;button class='plan-btn'&gt;Liên hệ&lt;/button&gt;&lt;/div&gt;&lt;/div&gt;&lt;/body&gt;&lt;/html&gt;"></iframe>
+          </div>
+        </section>
+        <div class="pager">
+          <a class="btn" href="../bai-04/index.html">← Bài trước</a>
+          <a class="btn primary" href="../bai-06/index.html">Bài tiếp theo →</a>
+        </div>
+      </article>
+    </div>
+  </main>
+  <footer class="footer"><p><a href="../index.html">Quay lại Module 3</a></p></footer>
+  <script type="module" src="../../app.js"></script>
+</body>
+</html>

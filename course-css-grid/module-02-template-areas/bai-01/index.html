@@ -1,0 +1,189 @@
+<!DOCTYPE html>
+<html lang="vi">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <meta name="description" content="grid-template-areas trong CSS Grid — đặt tên vùng để tạo layout trực quan." />
+  <title>Bài 01 - grid-template-areas | Module 2 CSS Grid | NenTang.vn</title>
+  <link rel="stylesheet" href="../../shared.css" />
+</head>
+<body>
+  <header class="topbar">
+    <div class="topbar-inner">
+      <a class="brand" href="../../index.html"><span class="brand-mark">G</span><span>CSS Grid</span></a>
+      <nav class="nav-links">
+        <a href="../../../index.html">Trang chủ</a>
+        <a href="../../index.html#modules">Module</a>
+      </nav>
+    </div>
+  </header>
+  <section class="module-hero m2">
+    <div class="container">
+      <div class="breadcrumb"><a href="../../index.html">CSS Grid</a><span>/</span><a href="../index.html">Module 2</a><span>/</span><span>Bài 01</span></div>
+      <h1>Bài 01: grid-template-areas — đặt tên vùng</h1>
+      <p>Tạo layout trực quan như ASCII art bằng cách đặt tên cho từng vùng trong grid.</p>
+    </div>
+  </section>
+  <main class="section">
+    <div class="container lesson-layout">
+      <aside class="side-nav">
+        <a href="#goal">Mục tiêu</a>
+        <a href="#theory">Lý thuyết</a>
+        <a href="#demo">Minh họa</a>
+        <a href="#code">Code ví dụ</a>
+        <a href="#exercise">Thực hành</a>
+        <a href="#solution">Bài giải</a>
+      </aside>
+      <article class="module-article">
+        <section class="lesson" id="goal">
+          <h2>Mục tiêu bài học</h2>
+          <ul>
+            <li>Dùng <code>grid-template-areas</code> để định nghĩa layout bằng tên vùng trực quan.</li>
+            <li>Gán grid item vào vùng bằng thuộc tính <code>grid-area</code> trên item.</li>
+            <li>Dùng dấu <code>.</code> để để trống một ô trong grid-template-areas.</li>
+          </ul>
+        </section>
+        <section class="lesson" id="theory">
+          <h2>Lý thuyết thực tế</h2>
+          <p><code>grid-template-areas</code> cho phép bạn mô tả layout bằng chuỗi ký tự giống ASCII art. Mỗi chuỗi trong nháy kép là một hàng, mỗi từ trong chuỗi là tên của một ô. Tên giống nhau trên nhiều ô nghĩa là item đó sẽ chiếm toàn bộ vùng đó — đây là cách dễ nhất để tạo spanning items.</p>
+          <p>Để gán item vào vùng, dùng <code>grid-area: tên-vùng</code> trên grid item. Tên vùng phải khớp với tên trong <code>grid-template-areas</code>. Dấu <code>.</code> (dấu chấm) đại diện cho ô trống — khi không có item nào được gán vào đó.</p>
+          <ol class="steps">
+            <li>Vẽ layout mong muốn trong đầu, sau đó chuyển thành <code>grid-template-areas</code>.</li>
+            <li>Đặt tên ngắn gọn, có nghĩa: <code>header</code>, <code>sidebar</code>, <code>main</code>, <code>footer</code>.</li>
+            <li>Mỗi hàng trong <code>grid-template-areas</code> phải có cùng số cột.</li>
+            <li>Thêm <code>grid-area: tên</code> vào từng item tương ứng.</li>
+          </ol>
+        </section>
+        <section class="lesson" id="demo">
+          <h2>Minh họa trực quan</h2>
+          <p>Layout 3 vùng: header full width, sidebar + main, footer full width.</p>
+          <style>
+.areas-demo { display: grid; grid-template-columns: 200px 1fr; grid-template-rows: auto 1fr auto; grid-template-areas: "header header" "sidebar main" "footer footer"; gap: 8px; min-height: 220px; }
+.areas-demo .ah { grid-area: header; background: #e85d4f; color: white; padding: 12px; border-radius: 6px; text-align: center; font-weight: 700; }
+.areas-demo .as { grid-area: sidebar; background: #fef3c7; color: #78350f; padding: 12px; border-radius: 6px; font-weight: 700; }
+.areas-demo .am { grid-area: main; background: #f3f4f6; padding: 12px; border-radius: 6px; font-weight: 700; }
+.areas-demo .af { grid-area: footer; background: #1e1b4b; color: white; padding: 12px; border-radius: 6px; text-align: center; font-weight: 700; }
+          </style>
+          <div class="demo-surface">
+            <div class="areas-demo">
+              <div class="ah">header</div>
+              <div class="as">sidebar</div>
+              <div class="am">main</div>
+              <div class="af">footer</div>
+            </div>
+          </div>
+          <div class="demo-code">
+            <h3>Code tạo minh họa</h3>
+            <pre><code data-lang="css">.layout {
+  display: grid;
+  grid-template-columns: 200px 1fr;
+  grid-template-areas:
+    "header  header"
+    "sidebar main"
+    "footer  footer";
+}
+.header  { grid-area: header; }
+.sidebar { grid-area: sidebar; }
+.main    { grid-area: main; }
+.footer  { grid-area: footer; }</code></pre>
+          </div>
+        </section>
+        <section class="lesson" id="code">
+          <h2>Code ví dụ</h2>
+          <p>App layout hoàn chỉnh với grid-template-areas.</p>
+          <div class="code-grid">
+            <div><h3>HTML</h3><pre><code data-lang="html">&lt;div class="app"&gt;
+  &lt;header class="app-head"&gt;Header&lt;/header&gt;
+  &lt;nav class="app-side"&gt;Sidebar&lt;/nav&gt;
+  &lt;main class="app-main"&gt;Main&lt;/main&gt;
+  &lt;footer class="app-foot"&gt;Footer&lt;/footer&gt;
+&lt;/div&gt;</code></pre></div>
+            <div><h3>CSS</h3><pre><code data-lang="css">.app {
+  display: grid;
+  grid-template-columns: 240px 1fr;
+  grid-template-areas:
+    "head head"
+    "side main"
+    "foot foot";
+  gap: 12px;
+  min-height: 100vh;
+}
+.app-head { grid-area: head; }
+.app-side { grid-area: side; }
+.app-main { grid-area: main; }
+.app-foot { grid-area: foot; }</code></pre></div>
+          </div>
+          <div class="result-panel">
+            <div class="result-head"><h3>Kết quả</h3><span>Preview trực tiếp</span></div>
+            <iframe class="result-frame" title="grid-template-areas demo" srcdoc="&lt;!DOCTYPE html&gt;&lt;html&gt;&lt;head&gt;&lt;meta charset='UTF-8'&gt;&lt;style&gt;*{box-sizing:border-box;margin:0}body{font-family:sans-serif;padding:16px;background:#f4f7fb}.app{display:grid;grid-template-columns:200px 1fr;grid-template-areas:'head head' 'side main' 'foot foot';gap:12px;min-height:320px}.app-head{grid-area:head;background:#e85d4f;color:white;padding:14px;border-radius:8px;font-weight:700;text-align:center}.app-side{grid-area:side;background:#fef3c7;color:#78350f;padding:14px;border-radius:8px;font-weight:700}.app-main{grid-area:main;background:white;padding:14px;border-radius:8px;border:1px solid #e2e8f0}.app-foot{grid-area:foot;background:#1e1b4b;color:white;padding:14px;border-radius:8px;font-weight:700;text-align:center}&lt;/style&gt;&lt;/head&gt;&lt;body&gt;&lt;div class='app'&gt;&lt;header class='app-head'&gt;Header&lt;/header&gt;&lt;nav class='app-side'&gt;Sidebar Nav&lt;/nav&gt;&lt;main class='app-main'&gt;Main Content&lt;/main&gt;&lt;footer class='app-foot'&gt;Footer&lt;/footer&gt;&lt;/div&gt;&lt;/body&gt;&lt;/html&gt;"></iframe>
+          </div>
+        </section>
+        <section class="exercise" id="exercise">
+          <span class="level">Bài tập thực hành</span>
+          <h2>Yêu cầu đề bài</h2>
+          <p>Tạo layout trang blog: header, nav bên trái, article chính, aside bên phải, footer. <em>Khác với ví dụ — thêm aside bên phải, tổng 3 cột.</em></p>
+          <ol class="steps">
+            <li>Tạo container với 3 cột: <code>200px 1fr 180px</code>.</li>
+            <li>Định nghĩa areas: <code>"head head head"</code>, <code>"nav article aside"</code>, <code>"foot foot foot"</code>.</li>
+            <li>Tạo các phần tử HTML và gán <code>grid-area</code> tương ứng.</li>
+            <li>Đặt min-height cho container để layout trông rõ ràng.</li>
+          </ol>
+          <h3>Tiêu chí chấm</h3>
+          <ul>
+            <li>Header và footer chiếm full width (3 cột).</li>
+            <li>Nav, article, aside nằm đúng thứ tự trên cùng hàng giữa.</li>
+            <li>Mỗi vùng có màu nền phân biệt.</li>
+          </ul>
+        </section>
+        <section class="lesson solution" id="solution">
+          <h2>Bài giải tham khảo</h2>
+          <pre><code data-lang="html">&lt;!DOCTYPE html&gt;
+&lt;html lang="vi"&gt;
+&lt;head&gt;
+  &lt;meta charset="UTF-8"&gt;
+  &lt;style&gt;
+    * { box-sizing: border-box; margin: 0; }
+    body { font-family: sans-serif; padding: 20px; background: #f4f7fb; }
+    .blog {
+      display: grid;
+      grid-template-columns: 200px 1fr 180px;
+      grid-template-areas:
+        "head    head    head"
+        "nav     article aside"
+        "foot    foot    foot";
+      gap: 12px;
+      min-height: 400px;
+    }
+    .blog-head { grid-area: head; background: #e85d4f; color: white; padding: 16px; border-radius: 8px; font-weight: 700; text-align: center; }
+    .blog-nav  { grid-area: nav; background: #fef3c7; color: #78350f; padding: 16px; border-radius: 8px; font-weight: 700; }
+    .blog-article { grid-area: article; background: white; padding: 16px; border-radius: 8px; border: 1px solid #e2e8f0; }
+    .blog-aside { grid-area: aside; background: #f0fdf4; color: #065f46; padding: 16px; border-radius: 8px; font-weight: 700; }
+    .blog-foot { grid-area: foot; background: #1e1b4b; color: white; padding: 16px; border-radius: 8px; font-weight: 700; text-align: center; }
+  &lt;/style&gt;
+&lt;/head&gt;
+&lt;body&gt;
+  &lt;div class="blog"&gt;
+    &lt;header class="blog-head"&gt;Header Blog&lt;/header&gt;
+    &lt;nav class="blog-nav"&gt;Navigation&lt;/nav&gt;
+    &lt;article class="blog-article"&gt;Nội dung bài viết chính&lt;/article&gt;
+    &lt;aside class="blog-aside"&gt;Widget&lt;/aside&gt;
+    &lt;footer class="blog-foot"&gt;Footer&lt;/footer&gt;
+  &lt;/div&gt;
+&lt;/body&gt;
+&lt;/html&gt;</code></pre>
+          <div class="result-panel">
+            <div class="result-head"><h3>Kết quả bài giải</h3><span>Preview trực tiếp</span></div>
+            <iframe class="result-frame" title="Bài giải areas" srcdoc="&lt;!DOCTYPE html&gt;&lt;html&gt;&lt;head&gt;&lt;meta charset='UTF-8'&gt;&lt;style&gt;*{box-sizing:border-box;margin:0}body{font-family:sans-serif;padding:20px;background:#f4f7fb}.blog{display:grid;grid-template-columns:180px 1fr 160px;grid-template-areas:'head head head' 'nav article aside' 'foot foot foot';gap:12px;min-height:360px}.blog-head{grid-area:head;background:#e85d4f;color:white;padding:16px;border-radius:8px;font-weight:700;text-align:center}.blog-nav{grid-area:nav;background:#fef3c7;color:#78350f;padding:16px;border-radius:8px;font-weight:700}.blog-article{grid-area:article;background:white;padding:16px;border-radius:8px;border:1px solid #e2e8f0}.blog-aside{grid-area:aside;background:#f0fdf4;color:#065f46;padding:16px;border-radius:8px;font-weight:700}.blog-foot{grid-area:foot;background:#1e1b4b;color:white;padding:16px;border-radius:8px;font-weight:700;text-align:center}&lt;/style&gt;&lt;/head&gt;&lt;body&gt;&lt;div class='blog'&gt;&lt;header class='blog-head'&gt;Header Blog&lt;/header&gt;&lt;nav class='blog-nav'&gt;Nav&lt;/nav&gt;&lt;article class='blog-article'&gt;Nội dung bài viết&lt;/article&gt;&lt;aside class='blog-aside'&gt;Widget&lt;/aside&gt;&lt;footer class='blog-foot'&gt;Footer&lt;/footer&gt;&lt;/div&gt;&lt;/body&gt;&lt;/html&gt;"></iframe>
+          </div>
+        </section>
+        <div class="pager">
+          <a class="btn" href="../../module-01-nen-tang-grid/bai-08/index.html">← Bài trước</a>
+          <a class="btn primary" href="../bai-02/index.html">Bài tiếp theo →</a>
+        </div>
+      </article>
+    </div>
+  </main>
+  <footer class="footer"><p><a href="../index.html">Quay lại Module 2</a></p></footer>
+  <script type="module" src="../../app.js"></script>
+</body>
+</html>

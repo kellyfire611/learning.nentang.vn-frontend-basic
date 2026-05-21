@@ -1,0 +1,187 @@
+<!DOCTYPE html>
+<html lang="vi">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <meta name="description" content="Explicit vs Implicit grid trong CSS Grid — phân biệt và kiểm soát implicit tracks." />
+  <title>Bài 05 - Explicit vs Implicit grid | Module 2 CSS Grid | NenTang.vn</title>
+  <link rel="stylesheet" href="../../shared.css" />
+</head>
+<body>
+  <header class="topbar">
+    <div class="topbar-inner">
+      <a class="brand" href="../../index.html"><span class="brand-mark">G</span><span>CSS Grid</span></a>
+      <nav class="nav-links">
+        <a href="../../../index.html">Trang chủ</a>
+        <a href="../../index.html#modules">Module</a>
+      </nav>
+    </div>
+  </header>
+  <section class="module-hero m2">
+    <div class="container">
+      <div class="breadcrumb"><a href="../../index.html">CSS Grid</a><span>/</span><a href="../index.html">Module 2</a><span>/</span><span>Bài 05</span></div>
+      <h1>Bài 05: Explicit vs Implicit grid</h1>
+      <p>Hiểu rõ sự khác nhau giữa explicit grid (bạn định nghĩa) và implicit grid (tự tạo khi tràn).</p>
+    </div>
+  </section>
+  <main class="section">
+    <div class="container lesson-layout">
+      <aside class="side-nav">
+        <a href="#goal">Mục tiêu</a>
+        <a href="#theory">Lý thuyết</a>
+        <a href="#demo">Minh họa</a>
+        <a href="#code">Code ví dụ</a>
+        <a href="#exercise">Thực hành</a>
+        <a href="#solution">Bài giải</a>
+      </aside>
+      <article class="module-article">
+        <section class="lesson" id="goal">
+          <h2>Mục tiêu bài học</h2>
+          <ul>
+            <li>Phân biệt explicit grid (định nghĩa bằng <code>grid-template-*</code>) và implicit grid (tự tạo).</li>
+            <li>Kiểm soát kích thước implicit tracks bằng <code>grid-auto-rows</code> và <code>grid-auto-columns</code>.</li>
+            <li>Dùng <code>minmax()</code> cho implicit tracks để track đủ cao nhưng vẫn co giãn.</li>
+          </ul>
+        </section>
+        <section class="lesson" id="theory">
+          <h2>Lý thuyết thực tế</h2>
+          <p><strong>Explicit grid</strong> là phần bạn định nghĩa rõ ràng bằng <code>grid-template-columns</code>, <code>grid-template-rows</code>, và <code>grid-template-areas</code>. Explicit grid có boundaries rõ ràng — bạn biết chính xác grid có bao nhiêu hàng và cột. <strong>Implicit grid</strong> là các tracks tự động tạo thêm khi items tràn ra ngoài explicit grid.</p>
+          <p>Explicit tracks có kích thước theo định nghĩa của bạn. Implicit tracks mặc định có kích thước <code>auto</code> (co theo nội dung). Dùng <code>grid-auto-rows: minmax(80px, auto)</code> để implicit rows có chiều cao tối thiểu 80px nhưng vẫn co giãn theo nội dung. Đây là pattern phổ biến cho content grids.</p>
+          <ol class="steps">
+            <li>Định nghĩa explicit grid với số cột cần thiết qua <code>grid-template-columns</code>.</li>
+            <li>Không cần định nghĩa rows — để implicit grid xử lý.</li>
+            <li>Thêm <code>grid-auto-rows: minmax(min, auto)</code> để kiểm soát chiều cao implicit rows.</li>
+            <li>Thêm bao nhiêu items tùy ý — grid luôn đủ chỗ chứa.</li>
+          </ol>
+        </section>
+        <section class="lesson" id="demo">
+          <h2>Minh họa trực quan</h2>
+          <p>Explicit grid 2x2 với 6 items — 2 items rơi vào implicit rows.</p>
+          <style>
+.explicit-demo { display: grid; grid-template-columns: 1fr 1fr; grid-template-rows: 70px 70px; grid-auto-rows: 70px; gap: 8px; }
+.explicit-demo div { border-radius: 6px; display: grid; place-items: center; font-weight: 700; color: white; font-size: 0.8rem; text-align: center; }
+.explicit-demo .exp { background: #7c3aed; }
+.explicit-demo .imp { background: #5b21b6; border: 2px dashed #c4b5fd; }
+          </style>
+          <div class="demo-surface">
+            <div class="explicit-demo">
+              <div class="exp">1 (explicit)</div>
+              <div class="exp">2 (explicit)</div>
+              <div class="exp">3 (explicit)</div>
+              <div class="exp">4 (explicit)</div>
+              <div class="imp">5 (implicit)</div>
+              <div class="imp">6 (implicit)</div>
+            </div>
+          </div>
+          <div class="demo-code">
+            <h3>Phân biệt explicit/implicit</h3>
+            <pre><code data-lang="css">.grid {
+  /* Explicit: 2 cột × 2 hàng */
+  grid-template-columns: 1fr 1fr;
+  grid-template-rows: 70px 70px;
+  /* Implicit: khi có thêm items */
+  grid-auto-rows: 70px;
+}</code></pre>
+          </div>
+        </section>
+        <section class="lesson" id="code">
+          <h2>Code ví dụ</h2>
+          <p>Blog grid với explicit 3 cột và implicit rows tự cao theo nội dung.</p>
+          <div class="code-grid">
+            <div><h3>HTML</h3><pre><code data-lang="html">&lt;div class="blog-grid"&gt;
+  &lt;!-- Explicit rows xử lý 3 items đầu --&gt;
+  &lt;article&gt;Bài viết ngắn&lt;/article&gt;
+  &lt;article&gt;Bài viết dài hơn nhiều...&lt;/article&gt;
+  &lt;article&gt;Bài viết bình thường&lt;/article&gt;
+  &lt;!-- Implicit rows tiếp theo --&gt;
+  &lt;article&gt;Bài viết 4&lt;/article&gt;
+  &lt;article&gt;Bài viết 5&lt;/article&gt;
+&lt;/div&gt;</code></pre></div>
+            <div><h3>CSS</h3><pre><code data-lang="css">.blog-grid {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  /* implicit rows: tối thiểu 100px */
+  grid-auto-rows: minmax(100px, auto);
+  gap: 16px;
+}</code></pre></div>
+          </div>
+          <div class="result-panel">
+            <div class="result-head"><h3>Kết quả</h3><span>Implicit rows tự co giãn</span></div>
+            <iframe class="result-frame" title="explicit implicit demo" srcdoc="&lt;!DOCTYPE html&gt;&lt;html&gt;&lt;head&gt;&lt;meta charset='UTF-8'&gt;&lt;style&gt;*{box-sizing:border-box;margin:0}body{font-family:sans-serif;padding:20px;background:#f4f7fb}.blog-grid{display:grid;grid-template-columns:repeat(3,1fr);grid-auto-rows:minmax(100px,auto);gap:16px}article{background:white;padding:16px;border-radius:8px;border:1px solid #e2e8f0}article h3{color:#7c3aed;margin-bottom:6px}article p{color:#64748b;font-size:.88rem}&lt;/style&gt;&lt;/head&gt;&lt;body&gt;&lt;div class='blog-grid'&gt;&lt;article&gt;&lt;h3&gt;Bài viết 1&lt;/h3&gt;&lt;p&gt;Nội dung ngắn.&lt;/p&gt;&lt;/article&gt;&lt;article&gt;&lt;h3&gt;Bài viết 2&lt;/h3&gt;&lt;p&gt;Bài viết này có nội dung dài hơn nhiều để test xem implicit row co giãn đúng không.&lt;/p&gt;&lt;/article&gt;&lt;article&gt;&lt;h3&gt;Bài viết 3&lt;/h3&gt;&lt;p&gt;Nội dung bình thường.&lt;/p&gt;&lt;/article&gt;&lt;article&gt;&lt;h3&gt;Bài viết 4&lt;/h3&gt;&lt;p&gt;Implicit row.&lt;/p&gt;&lt;/article&gt;&lt;article&gt;&lt;h3&gt;Bài viết 5&lt;/h3&gt;&lt;p&gt;Implicit row.&lt;/p&gt;&lt;/article&gt;&lt;/div&gt;&lt;/body&gt;&lt;/html&gt;"></iframe>
+          </div>
+        </section>
+        <section class="exercise" id="exercise">
+          <span class="level">Bài tập thực hành</span>
+          <h2>Yêu cầu đề bài</h2>
+          <p>Tạo grid sản phẩm dynamic với implicit rows hợp lý — grid hoạt động tốt dù có ít hay nhiều sản phẩm. <em>Khác với ví dụ — product cards với hình ảnh (div màu) và nội dung.</em></p>
+          <ol class="steps">
+            <li>Tạo grid 3 cột với <code>grid-auto-rows: minmax(200px, auto)</code>.</li>
+            <li>Thêm 7 product cards (số lẻ để test implicit row).</li>
+            <li>Mỗi card có ảnh placeholder (div màu cao 120px), tên sản phẩm và giá.</li>
+            <li>Không định nghĩa số rows — implicit grid xử lý tự động.</li>
+          </ol>
+          <h3>Tiêu chí chấm</h3>
+          <ul>
+            <li>Grid hoạt động đúng với 7 products (hàng cuối có 1 item trống là bình thường).</li>
+            <li>Chiều cao tối thiểu 200px cho mỗi card.</li>
+            <li>Cards đồng đều trong cùng hàng.</li>
+          </ul>
+        </section>
+        <section class="lesson solution" id="solution">
+          <h2>Bài giải tham khảo</h2>
+          <pre><code data-lang="html">&lt;!DOCTYPE html&gt;
+&lt;html lang="vi"&gt;
+&lt;head&gt;
+  &lt;meta charset="UTF-8"&gt;
+  &lt;style&gt;
+    * { box-sizing: border-box; margin: 0; }
+    body { font-family: sans-serif; padding: 20px; background: #f4f7fb; }
+    .products {
+      display: grid;
+      grid-template-columns: repeat(3, 1fr);
+      grid-auto-rows: minmax(200px, auto);
+      gap: 16px;
+    }
+    .product {
+      background: white;
+      border-radius: 8px;
+      overflow: hidden;
+      border: 1px solid #e2e8f0;
+    }
+    .product-img {
+      height: 120px;
+      background: linear-gradient(135deg, #7c3aed, #4c1d95);
+    }
+    .product-info { padding: 14px; }
+    .product-name { font-weight: 700; margin-bottom: 4px; }
+    .product-price { color: #7c3aed; font-weight: 700; }
+  &lt;/style&gt;
+&lt;/head&gt;
+&lt;body&gt;
+  &lt;div class="products"&gt;
+    &lt;div class="product"&gt;&lt;div class="product-img"&gt;&lt;/div&gt;&lt;div class="product-info"&gt;&lt;div class="product-name"&gt;Sản phẩm 1&lt;/div&gt;&lt;div class="product-price"&gt;150,000đ&lt;/div&gt;&lt;/div&gt;&lt;/div&gt;
+    &lt;div class="product"&gt;&lt;div class="product-img" style="background:linear-gradient(135deg,#2563eb,#1e40af)"&gt;&lt;/div&gt;&lt;div class="product-info"&gt;&lt;div class="product-name"&gt;Sản phẩm 2&lt;/div&gt;&lt;div class="product-price"&gt;200,000đ&lt;/div&gt;&lt;/div&gt;&lt;/div&gt;
+    &lt;div class="product"&gt;&lt;div class="product-img" style="background:linear-gradient(135deg,#e85d4f,#9f1239)"&gt;&lt;/div&gt;&lt;div class="product-info"&gt;&lt;div class="product-name"&gt;Sản phẩm 3&lt;/div&gt;&lt;div class="product-price"&gt;99,000đ&lt;/div&gt;&lt;/div&gt;&lt;/div&gt;
+    &lt;div class="product"&gt;&lt;div class="product-img" style="background:linear-gradient(135deg,#059669,#065f46)"&gt;&lt;/div&gt;&lt;div class="product-info"&gt;&lt;div class="product-name"&gt;Sản phẩm 4&lt;/div&gt;&lt;div class="product-price"&gt;350,000đ&lt;/div&gt;&lt;/div&gt;&lt;/div&gt;
+    &lt;div class="product"&gt;&lt;div class="product-img" style="background:linear-gradient(135deg,#d97706,#92400e)"&gt;&lt;/div&gt;&lt;div class="product-info"&gt;&lt;div class="product-name"&gt;Sản phẩm 5&lt;/div&gt;&lt;div class="product-price"&gt;180,000đ&lt;/div&gt;&lt;/div&gt;&lt;/div&gt;
+    &lt;div class="product"&gt;&lt;div class="product-img" style="background:linear-gradient(135deg,#7c3aed,#2563eb)"&gt;&lt;/div&gt;&lt;div class="product-info"&gt;&lt;div class="product-name"&gt;Sản phẩm 6&lt;/div&gt;&lt;div class="product-price"&gt;450,000đ&lt;/div&gt;&lt;/div&gt;&lt;/div&gt;
+    &lt;div class="product"&gt;&lt;div class="product-img" style="background:linear-gradient(135deg,#e85d4f,#d97706)"&gt;&lt;/div&gt;&lt;div class="product-info"&gt;&lt;div class="product-name"&gt;Sản phẩm 7&lt;/div&gt;&lt;div class="product-price"&gt;120,000đ&lt;/div&gt;&lt;/div&gt;&lt;/div&gt;
+  &lt;/div&gt;
+&lt;/body&gt;
+&lt;/html&gt;</code></pre>
+          <div class="result-panel">
+            <div class="result-head"><h3>Kết quả bài giải</h3><span>Preview trực tiếp</span></div>
+            <iframe class="result-frame" title="Bài giải explicit implicit" srcdoc="&lt;!DOCTYPE html&gt;&lt;html&gt;&lt;head&gt;&lt;meta charset='UTF-8'&gt;&lt;style&gt;*{box-sizing:border-box;margin:0}body{font-family:sans-serif;padding:20px;background:#f4f7fb}.products{display:grid;grid-template-columns:repeat(3,1fr);grid-auto-rows:minmax(200px,auto);gap:16px}.product{background:white;border-radius:8px;overflow:hidden;border:1px solid #e2e8f0}.product-img{height:120px;background:linear-gradient(135deg,#7c3aed,#4c1d95)}.product-info{padding:14px}.product-name{font-weight:700;margin-bottom:4px}.product-price{color:#7c3aed;font-weight:700}&lt;/style&gt;&lt;/head&gt;&lt;body&gt;&lt;div class='products'&gt;&lt;div class='product'&gt;&lt;div class='product-img'&gt;&lt;/div&gt;&lt;div class='product-info'&gt;&lt;div class='product-name'&gt;SP 1&lt;/div&gt;&lt;div class='product-price'&gt;150,000đ&lt;/div&gt;&lt;/div&gt;&lt;/div&gt;&lt;div class='product'&gt;&lt;div class='product-img' style='background:linear-gradient(135deg,#2563eb,#1e40af)'&gt;&lt;/div&gt;&lt;div class='product-info'&gt;&lt;div class='product-name'&gt;SP 2&lt;/div&gt;&lt;div class='product-price'&gt;200,000đ&lt;/div&gt;&lt;/div&gt;&lt;/div&gt;&lt;div class='product'&gt;&lt;div class='product-img' style='background:linear-gradient(135deg,#e85d4f,#9f1239)'&gt;&lt;/div&gt;&lt;div class='product-info'&gt;&lt;div class='product-name'&gt;SP 3&lt;/div&gt;&lt;div class='product-price'&gt;99,000đ&lt;/div&gt;&lt;/div&gt;&lt;/div&gt;&lt;div class='product'&gt;&lt;div class='product-img' style='background:linear-gradient(135deg,#059669,#065f46)'&gt;&lt;/div&gt;&lt;div class='product-info'&gt;&lt;div class='product-name'&gt;SP 4&lt;/div&gt;&lt;div class='product-price'&gt;350,000đ&lt;/div&gt;&lt;/div&gt;&lt;/div&gt;&lt;div class='product'&gt;&lt;div class='product-img' style='background:linear-gradient(135deg,#d97706,#92400e)'&gt;&lt;/div&gt;&lt;div class='product-info'&gt;&lt;div class='product-name'&gt;SP 5&lt;/div&gt;&lt;div class='product-price'&gt;180,000đ&lt;/div&gt;&lt;/div&gt;&lt;/div&gt;&lt;div class='product'&gt;&lt;div class='product-img' style='background:linear-gradient(135deg,#7c3aed,#2563eb)'&gt;&lt;/div&gt;&lt;div class='product-info'&gt;&lt;div class='product-name'&gt;SP 6&lt;/div&gt;&lt;div class='product-price'&gt;450,000đ&lt;/div&gt;&lt;/div&gt;&lt;/div&gt;&lt;div class='product'&gt;&lt;div class='product-img' style='background:linear-gradient(135deg,#e85d4f,#d97706)'&gt;&lt;/div&gt;&lt;div class='product-info'&gt;&lt;div class='product-name'&gt;SP 7&lt;/div&gt;&lt;div class='product-price'&gt;120,000đ&lt;/div&gt;&lt;/div&gt;&lt;/div&gt;&lt;/div&gt;&lt;/body&gt;&lt;/html&gt;"></iframe>
+          </div>
+        </section>
+        <div class="pager">
+          <a class="btn" href="../bai-04/index.html">← Bài trước</a>
+          <a class="btn primary" href="../bai-06/index.html">Bài tiếp theo →</a>
+        </div>
+      </article>
+    </div>
+  </main>
+  <footer class="footer"><p><a href="../index.html">Quay lại Module 2</a></p></footer>
+  <script type="module" src="../../app.js"></script>
+</body>
+</html>

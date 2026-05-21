@@ -1,0 +1,210 @@
+<!DOCTYPE html>
+<html lang="vi">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <meta name="description" content="Grid animation với CSS transitions — animate grid-template-columns và các grid properties." />
+  <title>Bài 05 - Grid animation | Module 4 CSS Grid | NenTang.vn</title>
+  <link rel="stylesheet" href="../../shared.css" />
+</head>
+<body>
+  <header class="topbar">
+    <div class="topbar-inner">
+      <a class="brand" href="../../index.html"><span class="brand-mark">G</span><span>CSS Grid</span></a>
+      <nav class="nav-links">
+        <a href="../../../index.html">Trang chủ</a>
+        <a href="../../index.html#modules">Module</a>
+      </nav>
+    </div>
+  </header>
+  <section class="module-hero m4">
+    <div class="container">
+      <div class="breadcrumb"><a href="../../index.html">CSS Grid</a><span>/</span><a href="../index.html">Module 4</a><span>/</span><span>Bài 05</span></div>
+      <h1>Bài 05: Grid animation</h1>
+      <p>Tạo animations với CSS Grid — animate grid tracks, items, và tạo interactive grid UI.</p>
+    </div>
+  </section>
+  <main class="section">
+    <div class="container lesson-layout">
+      <aside class="side-nav">
+        <a href="#goal">Mục tiêu</a>
+        <a href="#theory">Lý thuyết</a>
+        <a href="#demo">Minh họa</a>
+        <a href="#code">Code ví dụ</a>
+        <a href="#exercise">Thực hành</a>
+        <a href="#solution">Bài giải</a>
+      </aside>
+      <article class="module-article">
+        <section class="lesson" id="goal">
+          <h2>Mục tiêu bài học</h2>
+          <ul>
+            <li>Animate <code>grid-template-columns</code> để sidebar expand/collapse mượt mà.</li>
+            <li>Dùng CSS transitions trên grid items để tạo hover effects.</li>
+            <li>Tạo interactive card grid với expand-on-click effect.</li>
+          </ul>
+        </section>
+        <section class="lesson" id="theory">
+          <h2>Lý thuyết thực tế</h2>
+          <p>CSS Grid hỗ trợ animation cho nhiều properties: <code>grid-template-columns</code> (animate track sizes), <code>gap</code> (animate spacing), và các item properties như <code>grid-column</code>, <code>grid-row</code>. Tuy nhiên, không phải tất cả browser đều support animating <code>grid-template-columns</code> — Chrome 107+ và Firefox 66+ hỗ trợ.</p>
+          <p>Pattern phổ biến nhất: collapsible sidebar. Khi click toggle, thay đổi <code>grid-template-columns</code> từ <code>240px 1fr</code> sang <code>60px 1fr</code> với transition. Sidebar thu nhỏ mượt mà. Kỹ thuật khác: dùng CSS custom properties (CSS variables) làm intermediate — animate variable, rồi dùng variable trong grid-template-columns. Fallback: JavaScript + CSS transitions trên individual items.</p>
+          <ol class="steps">
+            <li>Đặt <code>transition: grid-template-columns .3s ease</code> trên grid container.</li>
+            <li>Khi cần collapse: thay đổi class để grid-template-columns thay đổi.</li>
+            <li>Browser animate transition từ giá trị cũ sang giá trị mới.</li>
+            <li>Nếu không dùng được: animate với JavaScript và requestAnimationFrame.</li>
+          </ol>
+        </section>
+        <section class="lesson" id="demo">
+          <h2>Minh họa trực quan</h2>
+          <p>Card expand on hover — animate grid item.</p>
+          <style>
+.anim-grid { display: grid; grid-template-columns: repeat(4, 1fr); gap: 8px; }
+.anim-card { background: #7c3aed; height: 80px; border-radius: 8px; cursor: pointer; display: grid; place-items: center; color: white; font-weight: 700; font-size: .8rem; transition: transform .2s ease, box-shadow .2s ease, background .2s ease; }
+.anim-card:hover { transform: scale(1.05); box-shadow: 0 8px 20px rgba(124,58,237,.4); background: #6d28d9; }
+.anim-card:nth-child(even) { background: #2563eb; }
+.anim-card:nth-child(even):hover { background: #1d4ed8; box-shadow: 0 8px 20px rgba(37,99,235,.4); }
+          </style>
+          <div class="demo-surface">
+            <p style="font-size:.78rem;color:#5e6b7a;margin-bottom:8px">Di chuột vào card để thấy animation:</p>
+            <div class="anim-grid">
+              <div class="anim-card">Card 1</div>
+              <div class="anim-card">Card 2</div>
+              <div class="anim-card">Card 3</div>
+              <div class="anim-card">Card 4</div>
+            </div>
+          </div>
+          <div class="demo-code">
+            <h3>Animate grid item on hover</h3>
+            <pre><code data-lang="css">.card {
+  transition: transform .2s ease, box-shadow .2s;
+}
+.card:hover {
+  transform: scale(1.05);
+  box-shadow: 0 8px 20px rgba(0,0,0,.2);
+}</code></pre>
+          </div>
+        </section>
+        <section class="lesson" id="code">
+          <h2>Code ví dụ</h2>
+          <p>Collapsible sidebar với animated grid-template-columns.</p>
+          <div class="code-grid">
+            <div><h3>HTML</h3><pre><code data-lang="html">&lt;div class="app" id="app"&gt;
+  &lt;aside class="sidebar"&gt;
+    &lt;button id="toggle"&gt;☰&lt;/button&gt;
+    &lt;nav class="nav"&gt;
+      &lt;a href="#"&gt;Dashboard&lt;/a&gt;
+      &lt;a href="#"&gt;Settings&lt;/a&gt;
+    &lt;/nav&gt;
+  &lt;/aside&gt;
+  &lt;main&gt;Content&lt;/main&gt;
+&lt;/div&gt;</code></pre></div>
+            <div><h3>CSS + JS</h3><pre><code data-lang="css">.app {
+  display: grid;
+  grid-template-columns: 240px 1fr;
+  transition: grid-template-columns .3s ease;
+}
+.app.collapsed {
+  grid-template-columns: 60px 1fr;
+}
+.nav { overflow: hidden; }
+.collapsed .nav span { display: none; }</code></pre></div>
+          </div>
+          <div class="result-panel">
+            <div class="result-head"><h3>Kết quả</h3><span>Click button để toggle sidebar</span></div>
+            <iframe class="result-frame" title="grid animation demo" srcdoc="&lt;!DOCTYPE html&gt;&lt;html&gt;&lt;head&gt;&lt;meta charset='UTF-8'&gt;&lt;style&gt;*{box-sizing:border-box;margin:0}body{font-family:sans-serif}.app{display:grid;grid-template-columns:220px 1fr;min-height:280px;transition:grid-template-columns .35s ease}.app.collapsed{grid-template-columns:56px 1fr}.sidebar{background:#1e1b4b;padding:12px;overflow:hidden;transition:all .35s ease}.toggle-btn{background:#7c3aed;color:white;border:none;border-radius:6px;padding:8px 12px;cursor:pointer;font-size:1rem;margin-bottom:16px;display:block;width:100%}.nav a{display:flex;align-items:center;gap:8px;color:#c4b5fd;text-decoration:none;padding:8px;border-radius:6px;margin-bottom:4px;font-size:.85rem;white-space:nowrap;overflow:hidden}.nav a:hover{background:rgba(255,255,255,.1)}.icon{font-size:1rem;flex-shrink:0}.label{transition:opacity .3s;overflow:hidden}.collapsed .label{opacity:0;width:0}.main{padding:20px;background:#f8f9fc}.main h2{margin-bottom:8px}.main p{color:#64748b;font-size:.88rem}&lt;/style&gt;&lt;/head&gt;&lt;body&gt;&lt;div class='app' id='app'&gt;&lt;aside class='sidebar'&gt;&lt;button class='toggle-btn' id='toggle'&gt;☰&lt;/button&gt;&lt;nav class='nav'&gt;&lt;a href='#'&gt;&lt;span class='icon'&gt;📊&lt;/span&gt;&lt;span class='label'&gt;Dashboard&lt;/span&gt;&lt;/a&gt;&lt;a href='#'&gt;&lt;span class='icon'&gt;📦&lt;/span&gt;&lt;span class='label'&gt;Products&lt;/span&gt;&lt;/a&gt;&lt;a href='#'&gt;&lt;span class='icon'&gt;👥&lt;/span&gt;&lt;span class='label'&gt;Customers&lt;/span&gt;&lt;/a&gt;&lt;a href='#'&gt;&lt;span class='icon'&gt;⚙️&lt;/span&gt;&lt;span class='label'&gt;Settings&lt;/span&gt;&lt;/a&gt;&lt;/nav&gt;&lt;/aside&gt;&lt;main class='main'&gt;&lt;h2&gt;Main Content&lt;/h2&gt;&lt;p&gt;Click ☰ để toggle sidebar. Grid-template-columns animate mượt mà!&lt;/p&gt;&lt;/main&gt;&lt;/div&gt;&lt;script&gt;document.getElementById('toggle').addEventListener('click',()=&gt;{document.getElementById('app').classList.toggle('collapsed')})&lt;/script&gt;&lt;/body&gt;&lt;/html&gt;"></iframe>
+          </div>
+        </section>
+        <section class="exercise" id="exercise">
+          <span class="level">Bài tập thực hành</span>
+          <h2>Yêu cầu đề bài</h2>
+          <p>Tạo gallery grid với card expand animation khi click. <em>Click card → card span 2 cột và 2 rows, click lại → thu về.</em></p>
+          <ol class="steps">
+            <li>Grid 4 cột với <code>grid-auto-rows: 120px</code>.</li>
+            <li>Click card: thêm class <code>expanded</code> với <code>grid-column: span 2; grid-row: span 2</code>.</li>
+            <li>Dùng JavaScript để toggle class.</li>
+            <li>Thêm <code>transition: all .3s ease</code> vào card.</li>
+          </ol>
+          <h3>Tiêu chí chấm</h3>
+          <ul>
+            <li>Click card để expand/collapse.</li>
+            <li>Animation mượt mà.</li>
+            <li>Chỉ 1 card expanded tại một thời điểm (click card khác = collapse cái cũ).</li>
+          </ul>
+        </section>
+        <section class="lesson solution" id="solution">
+          <h2>Bài giải tham khảo</h2>
+          <pre><code data-lang="html">&lt;!DOCTYPE html&gt;
+&lt;html lang="vi"&gt;
+&lt;head&gt;
+  &lt;meta charset="UTF-8"&gt;
+  &lt;style&gt;
+    * { box-sizing: border-box; margin: 0; }
+    body { font-family: sans-serif; padding: 20px; background: #f4f7fb; }
+    h1 { margin-bottom: 16px; font-size: 1rem; color: #1e293b; }
+    p { margin-bottom: 16px; font-size: .85rem; color: #64748b; }
+    .gallery {
+      display: grid;
+      grid-template-columns: repeat(4, 1fr);
+      grid-auto-rows: 120px;
+      gap: 8px;
+    }
+    .photo {
+      border-radius: 8px;
+      cursor: pointer;
+      display: grid;
+      place-items: center;
+      font-weight: 700;
+      color: white;
+      font-size: .85rem;
+      transition: all .3s ease;
+    }
+    .photo.expanded {
+      grid-column: span 2;
+      grid-row: span 2;
+      font-size: 1.1rem;
+    }
+  &lt;/style&gt;
+&lt;/head&gt;
+&lt;body&gt;
+  &lt;h1&gt;Gallery — Click để expand&lt;/h1&gt;
+  &lt;p&gt;Click một ảnh để phóng to, click lại để thu về.&lt;/p&gt;
+  &lt;div class="gallery"&gt;
+    &lt;div class="photo" style="background:linear-gradient(135deg,#7c3aed,#4c1d95)"&gt;Photo 1&lt;/div&gt;
+    &lt;div class="photo" style="background:linear-gradient(135deg,#2563eb,#1e40af)"&gt;Photo 2&lt;/div&gt;
+    &lt;div class="photo" style="background:linear-gradient(135deg,#e85d4f,#9f1239)"&gt;Photo 3&lt;/div&gt;
+    &lt;div class="photo" style="background:linear-gradient(135deg,#059669,#065f46)"&gt;Photo 4&lt;/div&gt;
+    &lt;div class="photo" style="background:linear-gradient(135deg,#d97706,#92400e)"&gt;Photo 5&lt;/div&gt;
+    &lt;div class="photo" style="background:linear-gradient(135deg,#7c3aed,#2563eb)"&gt;Photo 6&lt;/div&gt;
+    &lt;div class="photo" style="background:linear-gradient(135deg,#e85d4f,#d97706)"&gt;Photo 7&lt;/div&gt;
+    &lt;div class="photo" style="background:linear-gradient(135deg,#059669,#7c3aed)"&gt;Photo 8&lt;/div&gt;
+  &lt;/div&gt;
+  &lt;script&gt;
+    const photos = document.querySelectorAll('.photo');
+    photos.forEach(photo =&gt; {
+      photo.addEventListener('click', () =&gt; {
+        const isExpanded = photo.classList.contains('expanded');
+        // Collapse all
+        photos.forEach(p =&gt; p.classList.remove('expanded'));
+        // Expand clicked if it wasn't expanded
+        if (!isExpanded) photo.classList.add('expanded');
+      });
+    });
+  &lt;/script&gt;
+&lt;/body&gt;
+&lt;/html&gt;</code></pre>
+          <div class="result-panel">
+            <div class="result-head"><h3>Kết quả bài giải</h3><span>Click để expand</span></div>
+            <iframe class="result-frame" title="Bài giải grid animation" srcdoc="&lt;!DOCTYPE html&gt;&lt;html&gt;&lt;head&gt;&lt;meta charset='UTF-8'&gt;&lt;style&gt;*{box-sizing:border-box;margin:0}body{font-family:sans-serif;padding:16px;background:#f4f7fb}h1{margin-bottom:6px;font-size:.95rem}p{margin-bottom:12px;font-size:.8rem;color:#64748b}.gallery{display:grid;grid-template-columns:repeat(4,1fr);grid-auto-rows:90px;gap:6px}.photo{border-radius:7px;cursor:pointer;display:grid;place-items:center;font-weight:700;color:white;font-size:.78rem;transition:all .3s ease}.photo.expanded{grid-column:span 2;grid-row:span 2;font-size:1rem}&lt;/style&gt;&lt;/head&gt;&lt;body&gt;&lt;h1&gt;Click để expand&lt;/h1&gt;&lt;p&gt;Click ảnh để phóng to, click lại để thu về.&lt;/p&gt;&lt;div class='gallery'&gt;&lt;div class='photo' style='background:linear-gradient(135deg,#7c3aed,#4c1d95)'&gt;1&lt;/div&gt;&lt;div class='photo' style='background:linear-gradient(135deg,#2563eb,#1e40af)'&gt;2&lt;/div&gt;&lt;div class='photo' style='background:linear-gradient(135deg,#e85d4f,#9f1239)'&gt;3&lt;/div&gt;&lt;div class='photo' style='background:linear-gradient(135deg,#059669,#065f46)'&gt;4&lt;/div&gt;&lt;div class='photo' style='background:linear-gradient(135deg,#d97706,#92400e)'&gt;5&lt;/div&gt;&lt;div class='photo' style='background:linear-gradient(135deg,#7c3aed,#2563eb)'&gt;6&lt;/div&gt;&lt;div class='photo' style='background:linear-gradient(135deg,#e85d4f,#d97706)'&gt;7&lt;/div&gt;&lt;div class='photo' style='background:linear-gradient(135deg,#059669,#7c3aed)'&gt;8&lt;/div&gt;&lt;/div&gt;&lt;script&gt;const photos=document.querySelectorAll('.photo');photos.forEach(p=&gt;{p.addEventListener('click',()=&gt;{const e=p.classList.contains('expanded');photos.forEach(x=&gt;x.classList.remove('expanded'));if(!e)p.classList.add('expanded')})})&lt;/script&gt;&lt;/body&gt;&lt;/html&gt;"></iframe>
+          </div>
+        </section>
+        <div class="pager">
+          <a class="btn" href="../bai-04/index.html">← Bài trước</a>
+          <a class="btn primary" href="../bai-06/index.html">Bài tiếp theo →</a>
+        </div>
+      </article>
+    </div>
+  </main>
+  <footer class="footer"><p><a href="../index.html">Quay lại Module 4</a></p></footer>
+  <script type="module" src="../../app.js"></script>
+</body>
+</html>

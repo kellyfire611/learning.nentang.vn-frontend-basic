@@ -1,0 +1,192 @@
+<!DOCTYPE html>
+<html lang="vi">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <meta name="description" content="auto-fill vs auto-fit trong CSS Grid — tạo responsive grid không cần media query." />
+  <title>Bài 01 - auto-fill vs auto-fit | Module 3 CSS Grid | NenTang.vn</title>
+  <link rel="stylesheet" href="../../shared.css" />
+</head>
+<body>
+  <header class="topbar">
+    <div class="topbar-inner">
+      <a class="brand" href="../../index.html"><span class="brand-mark">G</span><span>CSS Grid</span></a>
+      <nav class="nav-links">
+        <a href="../../../index.html">Trang chủ</a>
+        <a href="../../index.html#modules">Module</a>
+      </nav>
+    </div>
+  </header>
+  <section class="module-hero m3">
+    <div class="container">
+      <div class="breadcrumb"><a href="../../index.html">CSS Grid</a><span>/</span><a href="../index.html">Module 3</a><span>/</span><span>Bài 01</span></div>
+      <h1>Bài 01: auto-fill vs auto-fit</h1>
+      <p>Hiểu sự khác biệt giữa auto-fill và auto-fit để tạo responsive grid không cần media query.</p>
+    </div>
+  </section>
+  <main class="section">
+    <div class="container lesson-layout">
+      <aside class="side-nav">
+        <a href="#goal">Mục tiêu</a>
+        <a href="#theory">Lý thuyết</a>
+        <a href="#demo">Minh họa</a>
+        <a href="#code">Code ví dụ</a>
+        <a href="#exercise">Thực hành</a>
+        <a href="#solution">Bài giải</a>
+      </aside>
+      <article class="module-article">
+        <section class="lesson" id="goal">
+          <h2>Mục tiêu bài học</h2>
+          <ul>
+            <li>Dùng <code>repeat(auto-fill, minmax(...))</code> để grid tự điều chỉnh số cột theo chiều rộng.</li>
+            <li>Hiểu sự khác biệt: auto-fill giữ empty tracks, auto-fit collapse empty tracks.</li>
+            <li>Biết khi nào dùng auto-fill và khi nào dùng auto-fit.</li>
+          </ul>
+        </section>
+        <section class="lesson" id="theory">
+          <h2>Lý thuyết thực tế</h2>
+          <p><code>repeat(auto-fill, minmax(200px, 1fr))</code> tạo ra càng nhiều cột 200px càng tốt, sau đó các cột chia đều không gian còn lại (tối đa 1fr). Grid tự động có thêm/bớt cột khi viewport thay đổi — không cần media query. Đây là technique "responsive grid" phổ biến nhất.</p>
+          <p><strong>auto-fill vs auto-fit:</strong> Cả hai đều tạo số cột tối đa có thể. Sự khác biệt chỉ thể hiện khi số items ít hơn số cột có thể chứa. Với <code>auto-fill</code>: empty columns vẫn tồn tại, items không stretch sang chúng. Với <code>auto-fit</code>: empty columns bị collapse về 0, items stretch để lấp đầy hàng. Với ít items: auto-fit cho layout rộng hơn, auto-fill cho layout co vào.</p>
+          <ol class="steps">
+            <li>Thêm <code>grid-template-columns: repeat(auto-fill, minmax(200px, 1fr))</code> vào container.</li>
+            <li>Resize cửa sổ để thấy số cột thay đổi tự động.</li>
+            <li>Thử thay auto-fill bằng auto-fit để thấy sự khác biệt với ít items.</li>
+          </ol>
+        </section>
+        <section class="lesson" id="demo">
+          <h2>Minh họa trực quan</h2>
+          <p>Hai grid cạnh nhau: 3 items trong container rộng — auto-fit stretch, auto-fill không stretch.</p>
+          <style>
+.autofill-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(80px, 1fr)); gap: 6px; margin-bottom: 8px; }
+.autofit-grid  { display: grid; grid-template-columns: repeat(auto-fit, minmax(80px, 1fr)); gap: 6px; }
+.ag-item { background: #2563eb; color: white; border-radius: 6px; padding: 10px; text-align: center; font-weight: 700; font-size: 0.75rem; }
+.autofit-grid .ag-item { background: #7c3aed; }
+.compare-label { font-size: 0.8rem; font-weight: 700; color: #5e6b7a; margin-bottom: 4px; }
+          </style>
+          <div class="demo-surface">
+            <div class="compare-label">auto-fill (empty tracks giữ nguyên, items không stretch):</div>
+            <div class="autofill-grid">
+              <div class="ag-item">A</div>
+              <div class="ag-item">B</div>
+              <div class="ag-item">C</div>
+            </div>
+            <div class="compare-label" style="margin-top:12px">auto-fit (empty tracks collapse, items stretch lấp đầy):</div>
+            <div class="autofit-grid">
+              <div class="ag-item">A</div>
+              <div class="ag-item">B</div>
+              <div class="ag-item">C</div>
+            </div>
+          </div>
+          <div class="demo-code">
+            <h3>auto-fill vs auto-fit</h3>
+            <pre><code data-lang="css">/* auto-fill: giữ empty tracks */
+.grid-fill { grid-template-columns: repeat(auto-fill, minmax(80px, 1fr)); }
+/* auto-fit: collapse empty tracks */
+.grid-fit  { grid-template-columns: repeat(auto-fit, minmax(80px, 1fr)); }</code></pre>
+          </div>
+        </section>
+        <section class="lesson" id="code">
+          <h2>Code ví dụ</h2>
+          <p>Responsive card grid với auto-fit — phổ biến nhất cho galleries và product lists.</p>
+          <div class="code-grid">
+            <div><h3>HTML</h3><pre><code data-lang="html">&lt;div class="card-grid"&gt;
+  &lt;div class="card"&gt;Card 1&lt;/div&gt;
+  &lt;div class="card"&gt;Card 2&lt;/div&gt;
+  &lt;div class="card"&gt;Card 3&lt;/div&gt;
+  &lt;div class="card"&gt;Card 4&lt;/div&gt;
+  &lt;div class="card"&gt;Card 5&lt;/div&gt;
+&lt;/div&gt;</code></pre></div>
+            <div><h3>CSS</h3><pre><code data-lang="css">.card-grid {
+  display: grid;
+  grid-template-columns:
+    repeat(auto-fit, minmax(200px, 1fr));
+  gap: 16px;
+}
+/* Mobile: 1 cột (container < 200px? không xảy ra)
+   Tablet: 2-3 cột tự động
+   Desktop: 3-5 cột tự động */</code></pre></div>
+          </div>
+          <div class="result-panel">
+            <div class="result-head"><h3>Kết quả</h3><span>Preview trực tiếp</span></div>
+            <iframe class="result-frame" title="auto-fit demo" srcdoc="&lt;!DOCTYPE html&gt;&lt;html&gt;&lt;head&gt;&lt;meta charset='UTF-8'&gt;&lt;style&gt;*{box-sizing:border-box;margin:0}body{font-family:sans-serif;padding:20px;background:#f4f7fb}.card-grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(150px,1fr));gap:16px}.card{background:white;padding:20px;border-radius:8px;border:1px solid #e2e8f0;text-align:center;font-weight:700;color:#7c3aed;border-top:3px solid #7c3aed}&lt;/style&gt;&lt;/head&gt;&lt;body&gt;&lt;div class='card-grid'&gt;&lt;div class='card'&gt;Card 1&lt;/div&gt;&lt;div class='card'&gt;Card 2&lt;/div&gt;&lt;div class='card'&gt;Card 3&lt;/div&gt;&lt;div class='card'&gt;Card 4&lt;/div&gt;&lt;div class='card'&gt;Card 5&lt;/div&gt;&lt;/div&gt;&lt;/body&gt;&lt;/html&gt;"></iframe>
+          </div>
+        </section>
+        <section class="exercise" id="exercise">
+          <span class="level">Bài tập thực hành</span>
+          <h2>Yêu cầu đề bài</h2>
+          <p>Tạo responsive team member grid dùng auto-fit với min-width 220px. <em>Khác với ví dụ — team member cards với avatar (circle div), tên và role.</em></p>
+          <ol class="steps">
+            <li>Dùng <code>repeat(auto-fit, minmax(220px, 1fr))</code>.</li>
+            <li>Tạo 6 team member cards, mỗi card có: avatar (div tròn), tên, và role.</li>
+            <li>Avatar dùng initial của tên, màu nền khác nhau.</li>
+            <li>Cards có bóng nhẹ và bo góc.</li>
+          </ol>
+          <h3>Tiêu chí chấm</h3>
+          <ul>
+            <li>Grid tự động điều chỉnh số cột.</li>
+            <li>Cards đẹp với avatar tròn.</li>
+            <li>Không hardcode số cột.</li>
+          </ul>
+        </section>
+        <section class="lesson solution" id="solution">
+          <h2>Bài giải tham khảo</h2>
+          <pre><code data-lang="html">&lt;!DOCTYPE html&gt;
+&lt;html lang="vi"&gt;
+&lt;head&gt;
+  &lt;meta charset="UTF-8"&gt;
+  &lt;style&gt;
+    * { box-sizing: border-box; margin: 0; }
+    body { font-family: sans-serif; padding: 20px; background: #f4f7fb; }
+    .team-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
+      gap: 16px;
+    }
+    .member {
+      background: white;
+      padding: 24px;
+      border-radius: 12px;
+      text-align: center;
+      box-shadow: 0 1px 3px rgba(0,0,0,.1);
+    }
+    .avatar {
+      width: 64px; height: 64px;
+      border-radius: 50%;
+      display: grid;
+      place-items: center;
+      font-size: 1.5rem;
+      font-weight: 700;
+      color: white;
+      margin: 0 auto 12px;
+    }
+    .name { font-weight: 700; margin-bottom: 4px; }
+    .role { font-size: 0.85rem; color: #64748b; }
+  &lt;/style&gt;
+&lt;/head&gt;
+&lt;body&gt;
+  &lt;div class="team-grid"&gt;
+    &lt;div class="member"&gt;&lt;div class="avatar" style="background:#7c3aed"&gt;A&lt;/div&gt;&lt;div class="name"&gt;An Nguyễn&lt;/div&gt;&lt;div class="role"&gt;Frontend Dev&lt;/div&gt;&lt;/div&gt;
+    &lt;div class="member"&gt;&lt;div class="avatar" style="background:#2563eb"&gt;B&lt;/div&gt;&lt;div class="name"&gt;Bình Trần&lt;/div&gt;&lt;div class="role"&gt;Backend Dev&lt;/div&gt;&lt;/div&gt;
+    &lt;div class="member"&gt;&lt;div class="avatar" style="background:#e85d4f"&gt;C&lt;/div&gt;&lt;div class="name"&gt;Châu Lê&lt;/div&gt;&lt;div class="role"&gt;UI/UX Designer&lt;/div&gt;&lt;/div&gt;
+    &lt;div class="member"&gt;&lt;div class="avatar" style="background:#059669"&gt;D&lt;/div&gt;&lt;div class="name"&gt;Dũng Phạm&lt;/div&gt;&lt;div class="role"&gt;DevOps&lt;/div&gt;&lt;/div&gt;
+    &lt;div class="member"&gt;&lt;div class="avatar" style="background:#d97706"&gt;E&lt;/div&gt;&lt;div class="name"&gt;Em Hoàng&lt;/div&gt;&lt;div class="role"&gt;QA Engineer&lt;/div&gt;&lt;/div&gt;
+    &lt;div class="member"&gt;&lt;div class="avatar" style="background:#7c3aed"&gt;G&lt;/div&gt;&lt;div class="name"&gt;Giang Vũ&lt;/div&gt;&lt;div class="role"&gt;Product Manager&lt;/div&gt;&lt;/div&gt;
+  &lt;/div&gt;
+&lt;/body&gt;
+&lt;/html&gt;</code></pre>
+          <div class="result-panel">
+            <div class="result-head"><h3>Kết quả bài giải</h3><span>Preview trực tiếp</span></div>
+            <iframe class="result-frame" title="Bài giải auto-fit" srcdoc="&lt;!DOCTYPE html&gt;&lt;html&gt;&lt;head&gt;&lt;meta charset='UTF-8'&gt;&lt;style&gt;*{box-sizing:border-box;margin:0}body{font-family:sans-serif;padding:20px;background:#f4f7fb}.team-grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(160px,1fr));gap:16px}.member{background:white;padding:20px;border-radius:12px;text-align:center;box-shadow:0 1px 3px rgba(0,0,0,.1)}.avatar{width:52px;height:52px;border-radius:50%;display:grid;place-items:center;font-size:1.2rem;font-weight:700;color:white;margin:0 auto 10px}.name{font-weight:700;margin-bottom:4px}.role{font-size:.8rem;color:#64748b}&lt;/style&gt;&lt;/head&gt;&lt;body&gt;&lt;div class='team-grid'&gt;&lt;div class='member'&gt;&lt;div class='avatar' style='background:#7c3aed'&gt;A&lt;/div&gt;&lt;div class='name'&gt;An Nguyễn&lt;/div&gt;&lt;div class='role'&gt;Frontend Dev&lt;/div&gt;&lt;/div&gt;&lt;div class='member'&gt;&lt;div class='avatar' style='background:#2563eb'&gt;B&lt;/div&gt;&lt;div class='name'&gt;Bình Trần&lt;/div&gt;&lt;div class='role'&gt;Backend Dev&lt;/div&gt;&lt;/div&gt;&lt;div class='member'&gt;&lt;div class='avatar' style='background:#e85d4f'&gt;C&lt;/div&gt;&lt;div class='name'&gt;Châu Lê&lt;/div&gt;&lt;div class='role'&gt;Designer&lt;/div&gt;&lt;/div&gt;&lt;div class='member'&gt;&lt;div class='avatar' style='background:#059669'&gt;D&lt;/div&gt;&lt;div class='name'&gt;Dũng Phạm&lt;/div&gt;&lt;div class='role'&gt;DevOps&lt;/div&gt;&lt;/div&gt;&lt;div class='member'&gt;&lt;div class='avatar' style='background:#d97706'&gt;E&lt;/div&gt;&lt;div class='name'&gt;Em Hoàng&lt;/div&gt;&lt;div class='role'&gt;QA Engineer&lt;/div&gt;&lt;/div&gt;&lt;div class='member'&gt;&lt;div class='avatar' style='background:#7c3aed'&gt;G&lt;/div&gt;&lt;div class='name'&gt;Giang Vũ&lt;/div&gt;&lt;div class='role'&gt;Product Manager&lt;/div&gt;&lt;/div&gt;&lt;/div&gt;&lt;/body&gt;&lt;/html&gt;"></iframe>
+          </div>
+        </section>
+        <div class="pager">
+          <a class="btn" href="../../module-02-template-areas/bai-06/index.html">← Module trước</a>
+          <a class="btn primary" href="../bai-02/index.html">Bài tiếp theo →</a>
+        </div>
+      </article>
+    </div>
+  </main>
+  <footer class="footer"><p><a href="../index.html">Quay lại Module 3</a></p></footer>
+  <script type="module" src="../../app.js"></script>
+</body>
+</html>

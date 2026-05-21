@@ -1,0 +1,218 @@
+<!DOCTYPE html>
+<html lang="vi">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <meta name="description" content="Holy grail layout với CSS Grid — header, footer, main, 2 sidebar." />
+  <title>Bài 03 - Holy grail layout | Module 3 CSS Grid | NenTang.vn</title>
+  <link rel="stylesheet" href="../../shared.css" />
+</head>
+<body>
+  <header class="topbar">
+    <div class="topbar-inner">
+      <a class="brand" href="../../index.html"><span class="brand-mark">G</span><span>CSS Grid</span></a>
+      <nav class="nav-links">
+        <a href="../../../index.html">Trang chủ</a>
+        <a href="../../index.html#modules">Module</a>
+      </nav>
+    </div>
+  </header>
+  <section class="module-hero m3">
+    <div class="container">
+      <div class="breadcrumb"><a href="../../index.html">CSS Grid</a><span>/</span><a href="../index.html">Module 3</a><span>/</span><span>Bài 03</span></div>
+      <h1>Bài 03: Holy grail layout</h1>
+      <p>Xây dựng holy grail layout (header, footer, main, 2 sidebar) — layout kinh điển nay dễ dàng với CSS Grid.</p>
+    </div>
+  </section>
+  <main class="section">
+    <div class="container lesson-layout">
+      <aside class="side-nav">
+        <a href="#goal">Mục tiêu</a>
+        <a href="#theory">Lý thuyết</a>
+        <a href="#demo">Minh họa</a>
+        <a href="#code">Code ví dụ</a>
+        <a href="#exercise">Thực hành</a>
+        <a href="#solution">Bài giải</a>
+      </aside>
+      <article class="module-article">
+        <section class="lesson" id="goal">
+          <h2>Mục tiêu bài học</h2>
+          <ul>
+            <li>Tạo holy grail layout với grid-template-areas: header span full, footer span full, main ở giữa, sidebar trái + phải.</li>
+            <li>Dùng <code>grid-template-rows: auto 1fr auto</code> để main area chiếm hết không gian còn lại.</li>
+            <li>Responsive: sidebar ẩn đi trên mobile với <code>display: none</code> kết hợp media query.</li>
+          </ul>
+        </section>
+        <section class="lesson" id="theory">
+          <h2>Lý thuyết thực tế</h2>
+          <p>Holy grail layout là layout web cổ điển có header + footer toàn chiều rộng, và 3 cột ở giữa (sidebar-trái, main-content, sidebar-phải). Trước CSS Grid, layout này rất khó tạo. Với Grid + template-areas, chỉ cần vài dòng.</p>
+          <p>Key insight: <code>grid-template-rows: auto 1fr auto</code> — header và footer chiều cao <code>auto</code> (co theo nội dung), phần giữa là <code>1fr</code> chiếm toàn bộ không gian còn lại của viewport. Kết hợp với <code>min-height: 100vh</code> cho container, layout tự điền đầy màn hình. Đây là pattern cực kỳ hữu ích cho web app layouts.</p>
+          <ol class="steps">
+            <li>Tạo container: <code>display: grid; min-height: 100vh; grid-template-rows: auto 1fr auto</code>.</li>
+            <li>Dùng <code>grid-template-areas</code> để đặt tên vùng.</li>
+            <li>Assign mỗi element vào area tương ứng với <code>grid-area</code>.</li>
+            <li>Cột sidebar dùng <code>grid-template-columns: 200px 1fr 200px</code>.</li>
+          </ol>
+        </section>
+        <section class="lesson" id="demo">
+          <h2>Minh họa trực quan</h2>
+          <p>Holy grail layout thu nhỏ.</p>
+          <style>
+.holy { display: grid; grid-template-columns: 100px 1fr 100px; grid-template-rows: 40px 120px 40px; grid-template-areas: "hd hd hd" "ls main rs" "ft ft ft"; gap: 6px; }
+.hg-hd { grid-area: hd; background: #7c3aed; color: white; border-radius: 6px; display: grid; place-items: center; font-weight: 700; font-size: .8rem; }
+.hg-ls { grid-area: ls; background: #ede9fe; border-radius: 6px; display: grid; place-items: center; font-size: .75rem; color: #4c1d95; font-weight: 600; }
+.hg-main { grid-area: main; background: white; border: 2px solid #e2e8f0; border-radius: 6px; display: grid; place-items: center; font-size: .75rem; font-weight: 700; color: #1e293b; }
+.hg-rs { grid-area: rs; background: #ede9fe; border-radius: 6px; display: grid; place-items: center; font-size: .75rem; color: #4c1d95; font-weight: 600; }
+.hg-ft { grid-area: ft; background: #1e1b4b; color: white; border-radius: 6px; display: grid; place-items: center; font-weight: 700; font-size: .8rem; }
+          </style>
+          <div class="demo-surface">
+            <div class="holy">
+              <div class="hg-hd">Header</div>
+              <div class="hg-ls">Left<br>Sidebar</div>
+              <div class="hg-main">Main Content</div>
+              <div class="hg-rs">Right<br>Sidebar</div>
+              <div class="hg-ft">Footer</div>
+            </div>
+          </div>
+          <div class="demo-code">
+            <h3>Template areas cho holy grail</h3>
+            <pre><code data-lang="css">.page {
+  grid-template-areas:
+    "hd hd hd"
+    "ls main rs"
+    "ft ft ft";
+}</code></pre>
+          </div>
+        </section>
+        <section class="lesson" id="code">
+          <h2>Code ví dụ</h2>
+          <p>Holy grail layout responsive hoàn chỉnh.</p>
+          <div class="code-grid">
+            <div><h3>HTML</h3><pre><code data-lang="html">&lt;div class="page"&gt;
+  &lt;header class="header"&gt;Header&lt;/header&gt;
+  &lt;aside class="left-sb"&gt;Left Sidebar&lt;/aside&gt;
+  &lt;main class="content"&gt;Main Content&lt;/main&gt;
+  &lt;aside class="right-sb"&gt;Right Sidebar&lt;/aside&gt;
+  &lt;footer class="footer"&gt;Footer&lt;/footer&gt;
+&lt;/div&gt;</code></pre></div>
+            <div><h3>CSS</h3><pre><code data-lang="css">.page {
+  display: grid;
+  min-height: 100vh;
+  grid-template-columns: 200px 1fr 200px;
+  grid-template-rows: auto 1fr auto;
+  grid-template-areas:
+    "header header header"
+    "left   main   right"
+    "footer footer footer";
+}
+.header { grid-area: header; }
+.left-sb { grid-area: left; }
+.content { grid-area: main; }
+.right-sb { grid-area: right; }
+.footer  { grid-area: footer; }
+@media (max-width: 768px) {
+  .page {
+    grid-template-columns: 1fr;
+    grid-template-areas:
+      "header" "main" "footer";
+  }
+  .left-sb, .right-sb { display: none; }
+}</code></pre></div>
+          </div>
+          <div class="result-panel">
+            <div class="result-head"><h3>Kết quả</h3><span>Preview trực tiếp</span></div>
+            <iframe class="result-frame" title="holy grail demo" srcdoc="&lt;!DOCTYPE html&gt;&lt;html&gt;&lt;head&gt;&lt;meta charset='UTF-8'&gt;&lt;style&gt;*{box-sizing:border-box;margin:0}body{font-family:sans-serif;padding:0;background:#f4f7fb}.page{display:grid;grid-template-columns:150px 1fr 150px;grid-template-rows:auto 1fr auto;grid-template-areas:'header header header' 'left main right' 'footer footer footer';min-height:300px;gap:6px;padding:6px}.header{grid-area:header;background:#7c3aed;color:white;padding:12px 20px;border-radius:6px;font-weight:700}.left-sb{grid-area:left;background:#ede9fe;padding:12px;border-radius:6px;font-size:.85rem;color:#4c1d95;font-weight:600}.content{grid-area:main;background:white;padding:16px;border-radius:6px;border:1px solid #e2e8f0}.right-sb{grid-area:right;background:#ede9fe;padding:12px;border-radius:6px;font-size:.85rem;color:#4c1d95;font-weight:600}.footer{grid-area:footer;background:#1e1b4b;color:white;padding:12px 20px;border-radius:6px;font-weight:700}&lt;/style&gt;&lt;/head&gt;&lt;body&gt;&lt;div class='page'&gt;&lt;header class='header'&gt;🔷 Header&lt;/header&gt;&lt;aside class='left-sb'&gt;Left Sidebar&lt;/aside&gt;&lt;main class='content'&gt;&lt;h3 style='margin-bottom:8px'&gt;Main Content&lt;/h3&gt;&lt;p style='color:#64748b;font-size:.88rem'&gt;Đây là khu vực main content — chiếm hết không gian còn lại giữa header và footer.&lt;/p&gt;&lt;/main&gt;&lt;aside class='right-sb'&gt;Right Sidebar&lt;/aside&gt;&lt;footer class='footer'&gt;© 2024 Footer&lt;/footer&gt;&lt;/div&gt;&lt;/body&gt;&lt;/html&gt;"></iframe>
+          </div>
+        </section>
+        <section class="exercise" id="exercise">
+          <span class="level">Bài tập thực hành</span>
+          <h2>Yêu cầu đề bài</h2>
+          <p>Tạo holy grail layout cho blog với navigation links trong left sidebar và recent posts trong right sidebar. <em>Khác với ví dụ — sidebar có nội dung thực tế.</em></p>
+          <ol class="steps">
+            <li>Tạo page container với holy grail grid areas.</li>
+            <li>Left sidebar: danh sách menu navigation links (5 links).</li>
+            <li>Right sidebar: "Bài viết gần đây" (3-4 post titles).</li>
+            <li>Main content: bài viết với h1, đoạn văn, và một quote.</li>
+            <li>Header: logo + nav, Footer: copyright.</li>
+          </ol>
+          <h3>Tiêu chí chấm</h3>
+          <ul>
+            <li>Layout đúng cấu trúc holy grail.</li>
+            <li>Sidebar có nội dung thực tế.</li>
+            <li>Main content đọc được.</li>
+          </ul>
+        </section>
+        <section class="lesson solution" id="solution">
+          <h2>Bài giải tham khảo</h2>
+          <pre><code data-lang="html">&lt;!DOCTYPE html&gt;
+&lt;html lang="vi"&gt;
+&lt;head&gt;
+  &lt;meta charset="UTF-8"&gt;
+  &lt;style&gt;
+    * { box-sizing: border-box; margin: 0; }
+    body { font-family: sans-serif; background: #f4f7fb; }
+    .page {
+      display: grid;
+      grid-template-columns: 200px 1fr 200px;
+      grid-template-rows: auto 1fr auto;
+      grid-template-areas:
+        "header header header"
+        "left   main   right"
+        "footer footer footer";
+      min-height: 100vh; gap: 12px; padding: 12px;
+    }
+    .hdr { grid-area: header; background: #7c3aed; color: white; padding: 14px 20px; border-radius: 8px; font-weight: 700; font-size: 1.1rem; }
+    .lsb { grid-area: left; background: white; padding: 16px; border-radius: 8px; }
+    .lsb h3 { color: #7c3aed; margin-bottom: 12px; font-size: .9rem; }
+    .lsb a { display: block; padding: 6px 0; color: #475569; font-size: .88rem; text-decoration: none; border-bottom: 1px solid #f1f5f9; }
+    .lsb a:hover { color: #7c3aed; }
+    .main { grid-area: main; background: white; padding: 24px; border-radius: 8px; }
+    .main h1 { color: #1e293b; margin-bottom: 12px; }
+    .main p { color: #475569; line-height: 1.7; margin-bottom: 12px; }
+    blockquote { border-left: 3px solid #7c3aed; padding-left: 16px; color: #64748b; font-style: italic; }
+    .rsb { grid-area: right; background: white; padding: 16px; border-radius: 8px; }
+    .rsb h3 { color: #7c3aed; margin-bottom: 12px; font-size: .9rem; }
+    .recent-post { font-size: .84rem; color: #475569; padding: 6px 0; border-bottom: 1px solid #f1f5f9; line-height: 1.4; }
+    .ftr { grid-area: footer; background: #1e1b4b; color: #c4b5fd; padding: 14px 20px; border-radius: 8px; font-size: .88rem; }
+  &lt;/style&gt;
+&lt;/head&gt;
+&lt;body&gt;
+  &lt;div class="page"&gt;
+    &lt;header class="hdr"&gt;📝 Blog CSS Grid&lt;/header&gt;
+    &lt;aside class="lsb"&gt;
+      &lt;h3&gt;Danh mục&lt;/h3&gt;
+      &lt;a href="#"&gt;CSS Grid&lt;/a&gt;&lt;a href="#"&gt;CSS Flexbox&lt;/a&gt;
+      &lt;a href="#"&gt;Responsive Design&lt;/a&gt;&lt;a href="#"&gt;CSS Animation&lt;/a&gt;
+      &lt;a href="#"&gt;Web Performance&lt;/a&gt;
+    &lt;/aside&gt;
+    &lt;main class="main"&gt;
+      &lt;h1&gt;Holy Grail Layout Với CSS Grid&lt;/h1&gt;
+      &lt;p&gt;Holy grail layout là layout web kinh điển với header toàn chiều rộng ở trên, footer ở dưới, và 3 cột ở giữa...&lt;/p&gt;
+      &lt;blockquote&gt;"CSS Grid biến holy grail layout thành chuyện đơn giản."&lt;/blockquote&gt;
+    &lt;/main&gt;
+    &lt;aside class="rsb"&gt;
+      &lt;h3&gt;Bài viết gần đây&lt;/h3&gt;
+      &lt;div class="recent-post"&gt;Hướng dẫn CSS Grid 2024&lt;/div&gt;
+      &lt;div class="recent-post"&gt;auto-fit vs auto-fill&lt;/div&gt;
+      &lt;div class="recent-post"&gt;Responsive không media query&lt;/div&gt;
+    &lt;/aside&gt;
+    &lt;footer class="ftr"&gt;© 2024 Blog CSS Grid. All rights reserved.&lt;/footer&gt;
+  &lt;/div&gt;
+&lt;/body&gt;
+&lt;/html&gt;</code></pre>
+          <div class="result-panel">
+            <div class="result-head"><h3>Kết quả bài giải</h3><span>Preview trực tiếp</span></div>
+            <iframe class="result-frame" title="Bài giải holy grail" srcdoc="&lt;!DOCTYPE html&gt;&lt;html&gt;&lt;head&gt;&lt;meta charset='UTF-8'&gt;&lt;style&gt;*{box-sizing:border-box;margin:0}body{font-family:sans-serif;background:#f4f7fb}.page{display:grid;grid-template-columns:160px 1fr 160px;grid-template-rows:auto 1fr auto;grid-template-areas:'header header header' 'left main right' 'footer footer footer';min-height:300px;gap:8px;padding:8px}.hdr{grid-area:header;background:#7c3aed;color:white;padding:12px 16px;border-radius:6px;font-weight:700}.lsb{grid-area:left;background:white;padding:12px;border-radius:6px}.lsb h3{color:#7c3aed;margin-bottom:10px;font-size:.85rem}.lsb a{display:block;padding:5px 0;color:#475569;font-size:.82rem;text-decoration:none;border-bottom:1px solid #f1f5f9}.main{grid-area:main;background:white;padding:16px;border-radius:6px}.main h1{color:#1e293b;margin-bottom:10px;font-size:1.1rem}.main p{color:#475569;line-height:1.6;margin-bottom:10px;font-size:.88rem}blockquote{border-left:3px solid #7c3aed;padding-left:12px;color:#64748b;font-style:italic;font-size:.85rem}.rsb{grid-area:right;background:white;padding:12px;border-radius:6px}.rsb h3{color:#7c3aed;margin-bottom:10px;font-size:.85rem}.recent-post{font-size:.8rem;color:#475569;padding:5px 0;border-bottom:1px solid #f1f5f9;line-height:1.4}.ftr{grid-area:footer;background:#1e1b4b;color:#c4b5fd;padding:12px 16px;border-radius:6px;font-size:.82rem}&lt;/style&gt;&lt;/head&gt;&lt;body&gt;&lt;div class='page'&gt;&lt;header class='hdr'&gt;📝 Blog CSS Grid&lt;/header&gt;&lt;aside class='lsb'&gt;&lt;h3&gt;Danh mục&lt;/h3&gt;&lt;a href='#'&gt;CSS Grid&lt;/a&gt;&lt;a href='#'&gt;Flexbox&lt;/a&gt;&lt;a href='#'&gt;Responsive&lt;/a&gt;&lt;a href='#'&gt;Animation&lt;/a&gt;&lt;/aside&gt;&lt;main class='main'&gt;&lt;h1&gt;Holy Grail Layout&lt;/h1&gt;&lt;p&gt;Layout web kinh điển với header, footer, và 3 cột ở giữa. CSS Grid giúp xây dựng layout này cực kỳ đơn giản.&lt;/p&gt;&lt;blockquote&gt;CSS Grid biến holy grail thành chuyện đơn giản.&lt;/blockquote&gt;&lt;/main&gt;&lt;aside class='rsb'&gt;&lt;h3&gt;Bài gần đây&lt;/h3&gt;&lt;div class='recent-post'&gt;CSS Grid 2024&lt;/div&gt;&lt;div class='recent-post'&gt;auto-fit vs auto-fill&lt;/div&gt;&lt;div class='recent-post'&gt;Responsive Grid&lt;/div&gt;&lt;/aside&gt;&lt;footer class='ftr'&gt;© 2024 Blog CSS Grid&lt;/footer&gt;&lt;/div&gt;&lt;/body&gt;&lt;/html&gt;"></iframe>
+          </div>
+        </section>
+        <div class="pager">
+          <a class="btn" href="../bai-02/index.html">← Bài trước</a>
+          <a class="btn primary" href="../bai-04/index.html">Bài tiếp theo →</a>
+        </div>
+      </article>
+    </div>
+  </main>
+  <footer class="footer"><p><a href="../index.html">Quay lại Module 3</a></p></footer>
+  <script type="module" src="../../app.js"></script>
+</body>
+</html>

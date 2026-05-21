@@ -1,0 +1,225 @@
+<!DOCTYPE html>
+<html lang="vi">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <meta name="description" content="Magazine layout với CSS Grid — featured article + grid ảnh + sidebar." />
+  <title>Bài 06 - Magazine layout | Module 3 CSS Grid | NenTang.vn</title>
+  <link rel="stylesheet" href="../../shared.css" />
+</head>
+<body>
+  <header class="topbar">
+    <div class="topbar-inner">
+      <a class="brand" href="../../index.html"><span class="brand-mark">G</span><span>CSS Grid</span></a>
+      <nav class="nav-links">
+        <a href="../../../index.html">Trang chủ</a>
+        <a href="../../index.html#modules">Module</a>
+      </nav>
+    </div>
+  </header>
+  <section class="module-hero m3">
+    <div class="container">
+      <div class="breadcrumb"><a href="../../index.html">CSS Grid</a><span>/</span><a href="../index.html">Module 3</a><span>/</span><span>Bài 06</span></div>
+      <h1>Bài 06: Magazine layout</h1>
+      <p>Xây dựng magazine layout phức tạp với featured article, grid bài viết, và sidebar — tất cả bằng CSS Grid.</p>
+    </div>
+  </section>
+  <main class="section">
+    <div class="container lesson-layout">
+      <aside class="side-nav">
+        <a href="#goal">Mục tiêu</a>
+        <a href="#theory">Lý thuyết</a>
+        <a href="#demo">Minh họa</a>
+        <a href="#code">Code ví dụ</a>
+        <a href="#exercise">Thực hành</a>
+        <a href="#solution">Bài giải</a>
+      </aside>
+      <article class="module-article">
+        <section class="lesson" id="goal">
+          <h2>Mục tiêu bài học</h2>
+          <ul>
+            <li>Tạo magazine layout nhiều vùng với nested grid.</li>
+            <li>Featured article chiếm 2/3 chiều rộng, sidebar chiếm 1/3.</li>
+            <li>Grid bài viết bên dưới với auto-fit để fill các posts nhỏ.</li>
+          </ul>
+        </section>
+        <section class="lesson" id="theory">
+          <h2>Lý thuyết thực tế</h2>
+          <p>Magazine layout thường có 2 cấp: layout tổng thể (outer grid) và grid bài viết (inner grid). Outer grid chia trang thành vùng lớn. Inner grid xử lý danh sách bài viết nhỏ. Nested grid là tính năng mạnh của CSS Grid — mỗi grid element có thể là grid container cho children của nó.</p>
+          <p>Pattern phổ biến: outer grid 3 cột, featured article span 2 cột, sidebar chiếm 1 cột. Bên dưới featured, có grid bài viết nhỏ với auto-fit. Tất cả trong cùng document flow, CSS Grid xử lý toàn bộ layout mà không cần float hay positioning phức tạp.</p>
+          <ol class="steps">
+            <li>Outer container: <code>grid-template-columns: 2fr 1fr</code>.</li>
+            <li>Featured article: column 1, sidebar: column 2.</li>
+            <li>Posts grid bên dưới: <code>grid-column: 1 / -1</code> để span toàn chiều rộng.</li>
+            <li>Posts grid là nested grid với <code>auto-fit minmax(200px, 1fr)</code>.</li>
+          </ol>
+        </section>
+        <section class="lesson" id="demo">
+          <h2>Minh họa trực quan</h2>
+          <p>Magazine layout thu nhỏ.</p>
+          <style>
+.mag-outer { display: grid; grid-template-columns: 2fr 1fr; gap: 10px; }
+.mag-featured { background: linear-gradient(135deg, #7c3aed, #4c1d95); border-radius: 8px; padding: 16px; color: white; min-height: 140px; display: flex; flex-direction: column; justify-content: flex-end; }
+.mag-featured h3 { font-size: .95rem; margin-bottom: 6px; }
+.mag-featured p { font-size: .75rem; opacity: .85; }
+.mag-sidebar { display: flex; flex-direction: column; gap: 8px; }
+.mag-side-item { background: white; border: 1px solid #e2e8f0; border-radius: 6px; padding: 8px 10px; display: flex; gap: 8px; align-items: center; }
+.side-thumb { width: 36px; height: 36px; border-radius: 4px; flex-shrink: 0; }
+.side-title { font-size: .75rem; font-weight: 700; color: #1e293b; }
+.mag-posts { grid-column: 1 / -1; display: grid; grid-template-columns: repeat(4, 1fr); gap: 8px; }
+.mag-post { background: white; border: 1px solid #e2e8f0; border-radius: 6px; overflow: hidden; }
+.post-thumb { height: 50px; }
+.post-info { padding: 7px; font-size: .72rem; font-weight: 700; color: #334155; }
+          </style>
+          <div class="demo-surface">
+            <div class="mag-outer">
+              <div class="mag-featured">
+                <h3>Bài viết nổi bật</h3>
+                <p>Nội dung bài viết featured article chiếm 2/3 chiều rộng.</p>
+              </div>
+              <div class="mag-sidebar">
+                <div class="mag-side-item"><div class="side-thumb" style="background:#2563eb"></div><div class="side-title">Bài viết sidebar 1</div></div>
+                <div class="mag-side-item"><div class="side-thumb" style="background:#e85d4f"></div><div class="side-title">Bài viết sidebar 2</div></div>
+                <div class="mag-side-item"><div class="side-thumb" style="background:#059669"></div><div class="side-title">Bài viết sidebar 3</div></div>
+              </div>
+              <div class="mag-posts">
+                <div class="mag-post"><div class="post-thumb" style="background:#7c3aed"></div><div class="post-info">Post 1</div></div>
+                <div class="mag-post"><div class="post-thumb" style="background:#2563eb"></div><div class="post-info">Post 2</div></div>
+                <div class="mag-post"><div class="post-thumb" style="background:#e85d4f"></div><div class="post-info">Post 3</div></div>
+                <div class="mag-post"><div class="post-thumb" style="background:#059669"></div><div class="post-info">Post 4</div></div>
+              </div>
+            </div>
+          </div>
+          <div class="demo-code">
+            <h3>Nested grid pattern</h3>
+            <pre><code data-lang="css">.mag { display: grid; grid-template-columns: 2fr 1fr; }
+/* Posts span full width */
+.posts { grid-column: 1 / -1; display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(200px, 1fr)); }</code></pre>
+          </div>
+        </section>
+        <section class="lesson" id="code">
+          <h2>Code ví dụ</h2>
+          <p>Magazine layout hoàn chỉnh với featured, sidebar và posts.</p>
+          <div class="code-grid">
+            <div><h3>HTML</h3><pre><code data-lang="html">&lt;div class="magazine"&gt;
+  &lt;article class="featured"&gt;
+    &lt;h2&gt;Featured Article&lt;/h2&gt;
+    &lt;p&gt;Excerpt...&lt;/p&gt;
+  &lt;/article&gt;
+  &lt;aside class="sidebar"&gt;
+    &lt;div class="side-post"&gt;...&lt;/div&gt;
+    &lt;div class="side-post"&gt;...&lt;/div&gt;
+  &lt;/aside&gt;
+  &lt;section class="posts-grid"&gt;
+    &lt;article&gt;Post 1&lt;/article&gt;
+    &lt;article&gt;Post 2&lt;/article&gt;
+  &lt;/section&gt;
+&lt;/div&gt;</code></pre></div>
+            <div><h3>CSS</h3><pre><code data-lang="css">.magazine {
+  display: grid;
+  grid-template-columns: 2fr 1fr;
+  grid-template-areas:
+    "featured sidebar"
+    "posts    posts";
+  gap: 20px;
+}
+.featured  { grid-area: featured; }
+.sidebar   { grid-area: sidebar; }
+.posts-grid {
+  grid-area: posts;
+  display: grid;
+  grid-template-columns:
+    repeat(auto-fit, minmax(220px, 1fr));
+  gap: 16px;
+}</code></pre></div>
+          </div>
+          <div class="result-panel">
+            <div class="result-head"><h3>Kết quả</h3><span>Preview trực tiếp</span></div>
+            <iframe class="result-frame" title="magazine layout demo" srcdoc="&lt;!DOCTYPE html&gt;&lt;html&gt;&lt;head&gt;&lt;meta charset='UTF-8'&gt;&lt;style&gt;*{box-sizing:border-box;margin:0}body{font-family:sans-serif;padding:16px;background:#f4f7fb}.magazine{display:grid;grid-template-columns:2fr 1fr;grid-template-areas:'featured sidebar' 'posts posts';gap:14px}.featured{grid-area:featured;background:linear-gradient(135deg,#7c3aed,#4c1d95);border-radius:10px;padding:24px;color:white;min-height:200px;display:flex;flex-direction:column;justify-content:flex-end}.featured h2{margin-bottom:8px}.featured p{font-size:.88rem;opacity:.85}.sidebar{grid-area:sidebar;display:flex;flex-direction:column;gap:10px}.side-post{background:white;border-radius:8px;padding:10px 12px;display:flex;gap:10px;align-items:center}.side-thumb{width:50px;height:50px;border-radius:6px;flex-shrink:0}.side-post h3{font-size:.82rem;margin-bottom:3px}.side-post p{font-size:.75rem;color:#94a3b8}.posts-grid{grid-area:posts;display:grid;grid-template-columns:repeat(auto-fit,minmax(150px,1fr));gap:10px}.post{background:white;border-radius:8px;overflow:hidden}.post-cover{height:80px}.post-body{padding:10px;font-size:.8rem;font-weight:700;color:#334155}&lt;/style&gt;&lt;/head&gt;&lt;body&gt;&lt;div class='magazine'&gt;&lt;article class='featured'&gt;&lt;h2&gt;CSS Grid Magazine Layout&lt;/h2&gt;&lt;p&gt;Xây dựng magazine layout phức tạp chỉ với CSS Grid, không cần thư viện hay framework.&lt;/p&gt;&lt;/article&gt;&lt;aside class='sidebar'&gt;&lt;div class='side-post'&gt;&lt;div class='side-thumb' style='background:#2563eb'&gt;&lt;/div&gt;&lt;div&gt;&lt;h3&gt;Bài viết 2&lt;/h3&gt;&lt;p&gt;Mô tả ngắn&lt;/p&gt;&lt;/div&gt;&lt;/div&gt;&lt;div class='side-post'&gt;&lt;div class='side-thumb' style='background:#e85d4f'&gt;&lt;/div&gt;&lt;div&gt;&lt;h3&gt;Bài viết 3&lt;/h3&gt;&lt;p&gt;Mô tả ngắn&lt;/p&gt;&lt;/div&gt;&lt;/div&gt;&lt;div class='side-post'&gt;&lt;div class='side-thumb' style='background:#059669'&gt;&lt;/div&gt;&lt;div&gt;&lt;h3&gt;Bài viết 4&lt;/h3&gt;&lt;p&gt;Mô tả ngắn&lt;/p&gt;&lt;/div&gt;&lt;/div&gt;&lt;/aside&gt;&lt;section class='posts-grid'&gt;&lt;div class='post'&gt;&lt;div class='post-cover' style='background:linear-gradient(135deg,#7c3aed,#2563eb)'&gt;&lt;/div&gt;&lt;div class='post-body'&gt;Post 5&lt;/div&gt;&lt;/div&gt;&lt;div class='post'&gt;&lt;div class='post-cover' style='background:linear-gradient(135deg,#e85d4f,#d97706)'&gt;&lt;/div&gt;&lt;div class='post-body'&gt;Post 6&lt;/div&gt;&lt;/div&gt;&lt;div class='post'&gt;&lt;div class='post-cover' style='background:linear-gradient(135deg,#059669,#2563eb)'&gt;&lt;/div&gt;&lt;div class='post-body'&gt;Post 7&lt;/div&gt;&lt;/div&gt;&lt;div class='post'&gt;&lt;div class='post-cover' style='background:linear-gradient(135deg,#d97706,#7c3aed)'&gt;&lt;/div&gt;&lt;div class='post-body'&gt;Post 8&lt;/div&gt;&lt;/div&gt;&lt;/section&gt;&lt;/div&gt;&lt;/body&gt;&lt;/html&gt;"></iframe>
+          </div>
+        </section>
+        <section class="exercise" id="exercise">
+          <span class="level">Bài tập thực hành</span>
+          <h2>Yêu cầu đề bài</h2>
+          <p>Tạo magazine layout cho trang tin tức tech với 5 bài viết. <em>Khác với ví dụ — không có sidebar, thay bằng featured article lớn (span full width) + 4 bài nhỏ bên dưới.</em></p>
+          <ol class="steps">
+            <li>Featured article: span toàn bộ chiều rộng (grid-column: 1 / -1), chiều cao 280px, gradient background.</li>
+            <li>Bên dưới: 4 bài viết nhỏ trong grid 4 cột.</li>
+            <li>Mỗi bài nhỏ có: ảnh placeholder, tag, tiêu đề, và thời gian.</li>
+            <li>Featured có tiêu đề lớn + tag + excerpt ở góc dưới trái trên nền tối.</li>
+          </ol>
+          <h3>Tiêu chí chấm</h3>
+          <ul>
+            <li>Featured article ấn tượng, chiếm toàn chiều rộng.</li>
+            <li>4 bài nhỏ bên dưới đều đặn.</li>
+            <li>Layout tổng thể trông như trang tin tức thật.</li>
+          </ul>
+        </section>
+        <section class="lesson solution" id="solution">
+          <h2>Bài giải tham khảo</h2>
+          <pre><code data-lang="html">&lt;!DOCTYPE html&gt;
+&lt;html lang="vi"&gt;
+&lt;head&gt;
+  &lt;meta charset="UTF-8"&gt;
+  &lt;style&gt;
+    * { box-sizing: border-box; margin: 0; }
+    body { font-family: sans-serif; padding: 20px; background: #f4f7fb; }
+    .news-grid {
+      display: grid;
+      grid-template-columns: repeat(4, 1fr);
+      gap: 16px;
+    }
+    .featured {
+      grid-column: 1 / -1;
+      background: linear-gradient(to bottom, transparent 40%, rgba(0,0,0,.85)),
+                  linear-gradient(135deg, #7c3aed, #1e1b4b);
+      border-radius: 12px;
+      padding: 32px;
+      min-height: 280px;
+      display: flex;
+      flex-direction: column;
+      justify-content: flex-end;
+      color: white;
+    }
+    .tag { display: inline-block; background: #7c3aed; color: white; padding: 3px 10px; border-radius: 4px; font-size: .75rem; font-weight: 700; margin-bottom: 10px; }
+    .featured .tag { background: white; color: #7c3aed; }
+    .featured h1 { font-size: 1.6rem; margin-bottom: 10px; }
+    .featured p { opacity: .85; max-width: 600px; }
+    .news-card { background: white; border-radius: 10px; overflow: hidden; }
+    .news-cover { height: 110px; }
+    .news-body { padding: 12px; }
+    .news-title { font-size: .88rem; font-weight: 700; margin-bottom: 6px; color: #1e293b; }
+    .news-time { font-size: .75rem; color: #94a3b8; }
+  &lt;/style&gt;
+&lt;/head&gt;
+&lt;body&gt;
+  &lt;div class="news-grid"&gt;
+    &lt;div class="featured"&gt;
+      &lt;span class="tag"&gt;BREAKING&lt;/span&gt;
+      &lt;h1&gt;CSS Grid Thay Đổi Cách Chúng Ta Xây Dựng Web&lt;/h1&gt;
+      &lt;p&gt;Từ năm 2017 đến nay, CSS Grid đã trở thành công cụ không thể thiếu cho frontend developers...&lt;/p&gt;
+    &lt;/div&gt;
+    &lt;div class="news-card"&gt;&lt;div class="news-cover" style="background:linear-gradient(135deg,#2563eb,#1e40af)"&gt;&lt;/div&gt;&lt;div class="news-body"&gt;&lt;span class="tag"&gt;CSS&lt;/span&gt;&lt;h3 class="news-title"&gt;auto-fit và auto-fill&lt;/h3&gt;&lt;p class="news-time"&gt;2 giờ trước&lt;/p&gt;&lt;/div&gt;&lt;/div&gt;
+    &lt;div class="news-card"&gt;&lt;div class="news-cover" style="background:linear-gradient(135deg,#e85d4f,#9f1239)"&gt;&lt;/div&gt;&lt;div class="news-body"&gt;&lt;span class="tag"&gt;Layout&lt;/span&gt;&lt;h3 class="news-title"&gt;Holy Grail Layout&lt;/h3&gt;&lt;p class="news-time"&gt;5 giờ trước&lt;/p&gt;&lt;/div&gt;&lt;/div&gt;
+    &lt;div class="news-card"&gt;&lt;div class="news-cover" style="background:linear-gradient(135deg,#059669,#065f46)"&gt;&lt;/div&gt;&lt;div class="news-body"&gt;&lt;span class="tag"&gt;Tips&lt;/span&gt;&lt;h3 class="news-title"&gt;Debug CSS Grid&lt;/h3&gt;&lt;p class="news-time"&gt;1 ngày trước&lt;/p&gt;&lt;/div&gt;&lt;/div&gt;
+    &lt;div class="news-card"&gt;&lt;div class="news-cover" style="background:linear-gradient(135deg,#d97706,#92400e)"&gt;&lt;/div&gt;&lt;div class="news-body"&gt;&lt;span class="tag"&gt;Tools&lt;/span&gt;&lt;h3 class="news-title"&gt;Grid DevTools 2024&lt;/h3&gt;&lt;p class="news-time"&gt;2 ngày trước&lt;/p&gt;&lt;/div&gt;&lt;/div&gt;
+  &lt;/div&gt;
+&lt;/body&gt;
+&lt;/html&gt;</code></pre>
+          <div class="result-panel">
+            <div class="result-head"><h3>Kết quả bài giải</h3><span>Preview trực tiếp</span></div>
+            <iframe class="result-frame" title="Bài giải magazine layout" srcdoc="&lt;!DOCTYPE html&gt;&lt;html&gt;&lt;head&gt;&lt;meta charset='UTF-8'&gt;&lt;style&gt;*{box-sizing:border-box;margin:0}body{font-family:sans-serif;padding:14px;background:#f4f7fb}.news-grid{display:grid;grid-template-columns:repeat(4,1fr);gap:12px}.featured{grid-column:1/-1;background:linear-gradient(to bottom,transparent 40%,rgba(0,0,0,.85)),linear-gradient(135deg,#7c3aed,#1e1b4b);border-radius:10px;padding:24px;min-height:200px;display:flex;flex-direction:column;justify-content:flex-end;color:white}.tag{display:inline-block;background:#7c3aed;color:white;padding:2px 8px;border-radius:4px;font-size:.72rem;font-weight:700;margin-bottom:8px}.featured .tag{background:white;color:#7c3aed}.featured h1{font-size:1.2rem;margin-bottom:6px}.featured p{opacity:.85;font-size:.83rem}.news-card{background:white;border-radius:8px;overflow:hidden}.news-cover{height:90px}.news-body{padding:10px}.news-title{font-size:.82rem;font-weight:700;margin-bottom:4px;color:#1e293b}.news-time{font-size:.72rem;color:#94a3b8}&lt;/style&gt;&lt;/head&gt;&lt;body&gt;&lt;div class='news-grid'&gt;&lt;div class='featured'&gt;&lt;span class='tag'&gt;BREAKING&lt;/span&gt;&lt;h1&gt;CSS Grid Thay Đổi Cách Xây Dựng Web&lt;/h1&gt;&lt;p&gt;CSS Grid đã trở thành công cụ không thể thiếu từ 2017...&lt;/p&gt;&lt;/div&gt;&lt;div class='news-card'&gt;&lt;div class='news-cover' style='background:linear-gradient(135deg,#2563eb,#1e40af)'&gt;&lt;/div&gt;&lt;div class='news-body'&gt;&lt;span class='tag'&gt;CSS&lt;/span&gt;&lt;h3 class='news-title'&gt;auto-fit và auto-fill&lt;/h3&gt;&lt;p class='news-time'&gt;2h trước&lt;/p&gt;&lt;/div&gt;&lt;/div&gt;&lt;div class='news-card'&gt;&lt;div class='news-cover' style='background:linear-gradient(135deg,#e85d4f,#9f1239)'&gt;&lt;/div&gt;&lt;div class='news-body'&gt;&lt;span class='tag'&gt;Layout&lt;/span&gt;&lt;h3 class='news-title'&gt;Holy Grail Layout&lt;/h3&gt;&lt;p class='news-time'&gt;5h trước&lt;/p&gt;&lt;/div&gt;&lt;/div&gt;&lt;div class='news-card'&gt;&lt;div class='news-cover' style='background:linear-gradient(135deg,#059669,#065f46)'&gt;&lt;/div&gt;&lt;div class='news-body'&gt;&lt;span class='tag'&gt;Tips&lt;/span&gt;&lt;h3 class='news-title'&gt;Debug CSS Grid&lt;/h3&gt;&lt;p class='news-time'&gt;1 ngày trước&lt;/p&gt;&lt;/div&gt;&lt;/div&gt;&lt;div class='news-card'&gt;&lt;div class='news-cover' style='background:linear-gradient(135deg,#d97706,#92400e)'&gt;&lt;/div&gt;&lt;div class='news-body'&gt;&lt;span class='tag'&gt;Tools&lt;/span&gt;&lt;h3 class='news-title'&gt;Grid DevTools&lt;/h3&gt;&lt;p class='news-time'&gt;2 ngày trước&lt;/p&gt;&lt;/div&gt;&lt;/div&gt;&lt;/div&gt;&lt;/body&gt;&lt;/html&gt;"></iframe>
+          </div>
+        </section>
+        <div class="pager">
+          <a class="btn" href="../bai-05/index.html">← Bài trước</a>
+          <a class="btn primary" href="../../module-04-grid-nang-cao/bai-01/index.html">Module tiếp theo →</a>
+        </div>
+      </article>
+    </div>
+  </main>
+  <footer class="footer"><p><a href="../index.html">Quay lại Module 3</a></p></footer>
+  <script type="module" src="../../app.js"></script>
+</body>
+</html>
