@@ -1,0 +1,130 @@
+<!DOCTYPE html>
+<html lang="vi">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <meta name="description" content="Test pyramid, chiến lược shift-left testing, CI/CD là gì và AI hỗ trợ kiểm thử ở đâu trong quy trình." />
+  <meta name="keywords" content="test pyramid, shift-left testing, CI/CD, AI testing, NenTang.vn" />
+  <meta name="author" content="NenTang.vn" />
+  <meta property="og:locale" content="vi_VN" />
+  <meta property="og:type" content="website" />
+  <meta property="og:title" content="Bài 2: Test pyramid, CI/CD & AI | Module 1 | NenTang.vn" />
+  <meta property="og:description" content="Test pyramid, chiến lược shift-left testing, CI/CD là gì và AI hỗ trợ kiểm thử ở đâu trong quy trình." />
+  <meta property="og:url" content="https://nentang.vn/course-kiem-thu-tu-dong-voi-ai-va-ci-cd/module-01-nen-tang-kiem-thu/bai-02/" />
+  <meta property="og:site_name" content="Nền tảng Kiến thức" />
+  <title>Bài 2: Test pyramid, CI/CD & AI | Module 1 | NenTang.vn</title>
+  <link rel="stylesheet" href="../../shared.css" />
+</head>
+<body>
+  <header class="topbar">
+    <div class="container topbar-inner">
+      <a class="brand" href="../../index.html"><span class="brand-mark">T</span>&nbsp;AI Testing &amp; CI/CD</a>
+      <nav class="nav-links" aria-label="Điều hướng khóa học">
+        <a href="../../../index.html">Trang chủ</a>
+        <a href="../../index.html#modules">Module</a>
+        <a href="../index.html">Module 1</a>
+      </nav>
+    </div>
+  </header>
+
+  <section class="module-hero m1">
+    <div class="container">
+      <div class="breadcrumb">
+        <a href="../../index.html">AI Testing &amp; CI/CD</a>
+        <span>/</span>
+        <a href="../index.html">Module 1</a>
+        <span>/</span>
+        <span>Bài 2</span>
+      </div>
+      <h1>Bài 2: Test pyramid, shift-left, CI/CD &amp; AI</h1>
+      <p>Hiểu cách cân bằng các loại test, tích hợp sớm và vai trò của AI trong quy trình kiểm thử.</p>
+    </div>
+  </section>
+
+  <main class="section">
+    <div class="container lesson-layout">
+      <aside class="side-nav">
+        <h3>Module 1</h3>
+        <ul>
+          <li><a href="../bai-01/index.html">Bài 1: Kiểm thử phần mềm là gì?</a></li>
+          <li class="active"><a href="index.html">Bài 2: Test pyramid, CI/CD &amp; AI</a></li>
+        </ul>
+      </aside>
+
+      <article class="module-article">
+        <section id="test-pyramid" class="lesson">
+          <h2>1.3 Test pyramid (Kim tự tháp kiểm thử)</h2>
+          <p>
+            Test pyramid là mô hình phân lớp test theo chi phí và tốc độ, giúp team cân bằng
+            độ bao phủ mà không tốn quá nhiều thời gian chờ đợi.
+          </p>
+          <ul>
+            <li><strong>Tầng đáy — Unit test:</strong> Nhiều nhất (&gt;70%), nhanh nhất, rẻ nhất, chạy trong mili-giây.</li>
+            <li><strong>Tầng giữa — Integration test:</strong> Ít hơn, kiểm tra sự phối hợp giữa các module.</li>
+            <li><strong>Đỉnh — E2E test:</strong> Ít nhất, chậm và tốn kém nhất, chỉ test các luồng nghiệp vụ chính.</li>
+          </ul>
+          <div class="callout">
+            <strong>Anti-pattern cần tránh:</strong> "Ice-cream cone" — nhiều E2E, ít unit test.
+            Hệ quả là pipeline chậm, test không ổn định (flaky), khó debug.
+          </div>
+        </section>
+
+        <section id="shift-left" class="lesson">
+          <h2>1.4 Shift-left testing</h2>
+          <p>
+            <strong>Shift-left</strong> nghĩa là đẩy việc kiểm thử sang <em>trái</em> trong dòng thời gian phát triển —
+            tức là bắt đầu test sớm nhất có thể, ngay từ lúc viết code, thay vì chờ đến giai đoạn QA cuối.
+          </p>
+          <p>
+            Lợi ích: lỗi phát hiện khi còn rẻ để sửa; developer hiểu sâu hơn yêu cầu;
+            QA tập trung vào exploratory thay vì regression thủ công lặp đi lặp lại.
+          </p>
+        </section>
+
+        <section id="ci-cd" class="lesson">
+          <h2>1.5 CI/CD là gì và test liên quan thế nào?</h2>
+          <p>
+            <strong>CI (Continuous Integration)</strong> là thực hành merge code vào nhánh chính thường xuyên,
+            mỗi lần merge đều chạy build và test tự động.
+          </p>
+          <p>
+            <strong>CD (Continuous Delivery / Deployment)</strong> là tự động đưa code đã pass CI ra môi trường staging
+            hoặc production.
+          </p>
+          <p>
+            Test tự động là <em>điều kiện tiên quyết</em> để CI/CD hoạt động hiệu quả.
+            Không có test, pipeline chỉ là "auto-deploy" — bạn vẫn có thể ship lỗi lên production.
+          </p>
+        </section>
+
+        <section id="ai-testing" class="lesson">
+          <h2>1.6 AI hỗ trợ kiểm thử ở đâu?</h2>
+          <p>AI (ChatGPT, GitHub Copilot, v.v.) có thể giúp:</p>
+          <ul>
+            <li>Sinh test case từ mô tả yêu cầu nghiệp vụ.</li>
+            <li>Sinh unit test cho hàm có sẵn.</li>
+            <li>Gợi ý edge case mà dev thường bỏ qua.</li>
+            <li>Review và giải thích test thất bại.</li>
+          </ul>
+          <div class="callout">
+            <strong>Quan trọng:</strong> AI sinh test nhanh nhưng <strong>bạn phải review kỹ</strong>.
+            AI không biết logic nghiệp vụ thực tế của dự án bạn — nó chỉ đoán từ ngữ cảnh bạn cung cấp.
+          </div>
+        </section>
+
+        <nav class="pager">
+          <a href="../bai-01/index.html" class="btn">← Bài 1: Kiểm thử phần mềm là gì?</a>
+          <a href="../../module-02-setup-va-test-case/bai-01/index.html" class="btn primary">Module 2: Setup dự án →</a>
+        </nav>
+      </article>
+    </div>
+  </main>
+
+  <footer class="footer">
+    <div class="container">
+      <p><a href="../index.html">Quay lại Module 1</a></p>
+    </div>
+  </footer>
+  <script type="module" src="../../app.js"></script>
+</body>
+</html>

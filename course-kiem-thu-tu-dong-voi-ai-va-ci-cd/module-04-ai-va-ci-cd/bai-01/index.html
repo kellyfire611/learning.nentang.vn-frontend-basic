@@ -1,0 +1,119 @@
+<!DOCTYPE html>
+<html lang="vi">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <meta name="description" content="Dùng AI để tăng tốc kiểm thử: prompt sinh test case, sinh unit test, checklist review kết quả AI an toàn." />
+  <meta name="keywords" content="AI testing, ChatGPT test case, GitHub Copilot, prompt engineering, NenTang.vn" />
+  <meta name="author" content="NenTang.vn" />
+  <meta property="og:locale" content="vi_VN" />
+  <meta property="og:type" content="website" />
+  <meta property="og:title" content="Bài 1: Dùng AI để tăng tốc kiểm thử | Module 4 | NenTang.vn" />
+  <meta property="og:description" content="Dùng AI để tăng tốc kiểm thử: prompt sinh test case, sinh unit test, checklist review kết quả AI an toàn." />
+  <meta property="og:url" content="https://nentang.vn/course-kiem-thu-tu-dong-voi-ai-va-ci-cd/module-04-ai-va-ci-cd/bai-01/" />
+  <meta property="og:site_name" content="Nền tảng Kiến thức" />
+  <title>Bài 1: Dùng AI để tăng tốc kiểm thử | Module 4 | NenTang.vn</title>
+  <link rel="stylesheet" href="../../shared.css" />
+</head>
+<body>
+  <header class="topbar">
+    <div class="container topbar-inner">
+      <a class="brand" href="../../index.html"><span class="brand-mark">T</span>&nbsp;AI Testing &amp; CI/CD</a>
+      <nav class="nav-links" aria-label="Điều hướng khóa học">
+        <a href="../../../index.html">Trang chủ</a>
+        <a href="../../index.html#modules">Module</a>
+        <a href="../index.html">Module 4</a>
+      </nav>
+    </div>
+  </header>
+
+  <section class="module-hero m4">
+    <div class="container">
+      <div class="breadcrumb">
+        <a href="../../index.html">AI Testing &amp; CI/CD</a>
+        <span>/</span>
+        <a href="../index.html">Module 4</a>
+        <span>/</span>
+        <span>Bài 1</span>
+      </div>
+      <h1>Bài 1: Dùng AI để tăng tốc kiểm thử</h1>
+      <p>Prompt đúng cách để AI sinh test case và unit test nhanh, rồi review kỹ trước khi dùng.</p>
+    </div>
+  </section>
+
+  <main class="section">
+    <div class="container lesson-layout">
+      <aside class="side-nav">
+        <h3>Module 4</h3>
+        <ul>
+          <li class="active"><a href="index.html">Bài 1: AI tăng tốc kiểm thử</a></li>
+          <li><a href="../bai-02/index.html">Bài 2: CI/CD với GitHub Actions</a></li>
+        </ul>
+      </aside>
+
+      <article class="module-article">
+        <section id="ai-sinh-test-case" class="lesson">
+          <h2>7.1 Prompt sinh test case từ yêu cầu nghiệp vụ</h2>
+          <p>Cung cấp cho AI đủ ngữ cảnh — quy tắc nghiệp vụ cụ thể, không chỉ "viết test cho tôi".</p>
+          <pre><code data-lang="text">Prompt mẫu:
+---
+Tôi có yêu cầu nghiệp vụ sau:
+- Giỏ hàng tính phí vận chuyển 30,000đ nếu tổng đơn &lt; 500,000đ.
+- Miễn phí vận chuyển nếu tổng &gt;= 500,000đ.
+- Áp dụng voucher SALE10 giảm thêm 10% trên giá sau phí ship.
+
+Hãy liệt kê các test case cần viết, bao gồm:
+happy path, negative case và boundary case.
+Định dạng: ID | Tình huống | Input | Kết quả kỳ vọng | Loại
+---</code></pre>
+        </section>
+
+        <section id="ai-sinh-unit-test" class="lesson">
+          <h2>7.2 Prompt sinh unit test từ code có sẵn</h2>
+          <pre><code data-lang="text">Prompt mẫu:
+---
+Đây là hàm JavaScript của tôi:
+
+export function getShippingFee(subtotal) {
+  return subtotal &gt;= 500000 ? 0 : 30000;
+}
+
+Viết unit test đầy đủ bằng Vitest cho hàm này.
+Bao gồm: happy path, boundary case (đúng 500,000) và dưới ngưỡng.
+Dùng describe/it/expect. Import từ '../../src/js/pricing.js'.
+---</code></pre>
+        </section>
+
+        <section id="checklist-review-ai" class="lesson">
+          <h2>7.3 Checklist review kết quả AI</h2>
+          <p>AI sinh test nhanh nhưng có thể sai hoặc thiếu. Dùng checklist này trước khi commit:</p>
+          <ul>
+            <li>✅ Test có import đúng đường dẫn module?</li>
+            <li>✅ Tên test mô tả đúng tình huống nghiệp vụ?</li>
+            <li>✅ Có đủ boundary case ở các ngưỡng điều kiện?</li>
+            <li>✅ Negative case có kiểm tra đúng loại lỗi ném ra?</li>
+            <li>✅ Test có bị coupled với implementation (kiểm tra internal state)?</li>
+            <li>✅ Chạy thử thấy pass — không phải pass vì assert sai?</li>
+          </ul>
+          <div class="callout">
+            <strong>Bẫy phổ biến:</strong> AI thường sinh <code>expect(result).toBeDefined()</code> —
+            điều kiện này luôn pass kể cả khi logic sai. Hãy đổi thành <code>toBe(expectedValue)</code> cụ thể.
+          </div>
+        </section>
+
+        <nav class="pager">
+          <a href="../../module-03-viet-test/bai-03/index.html" class="btn">← Module 3 Bài 3</a>
+          <a href="../bai-02/index.html" class="btn primary">Bài 2: CI/CD với GitHub Actions →</a>
+        </nav>
+      </article>
+    </div>
+  </main>
+
+  <footer class="footer">
+    <div class="container">
+      <p><a href="../index.html">Quay lại Module 4</a></p>
+    </div>
+  </footer>
+  <script type="module" src="../../app.js"></script>
+</body>
+</html>

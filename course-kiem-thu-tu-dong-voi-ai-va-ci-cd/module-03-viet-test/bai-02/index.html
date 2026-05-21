@@ -1,0 +1,145 @@
+<!DOCTYPE html>
+<html lang="vi">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <meta name="description" content="Kiểm thử quy tắc nghiệp vụ phức tạp: giảm giá, phí vận chuyển, voucher — đảm bảo logic đúng với mọi điều kiện." />
+  <meta name="keywords" content="business test, nghiệp vụ, giảm giá, phí vận chuyển, Vitest, NenTang.vn" />
+  <meta name="author" content="NenTang.vn" />
+  <meta property="og:locale" content="vi_VN" />
+  <meta property="og:type" content="website" />
+  <meta property="og:title" content="Bài 2: Business test (nghiệp vụ) | Module 3 | NenTang.vn" />
+  <meta property="og:description" content="Kiểm thử quy tắc nghiệp vụ phức tạp: giảm giá, phí vận chuyển, voucher — đảm bảo logic đúng với mọi điều kiện." />
+  <meta property="og:url" content="https://nentang.vn/course-kiem-thu-tu-dong-voi-ai-va-ci-cd/module-03-viet-test/bai-02/" />
+  <meta property="og:site_name" content="Nền tảng Kiến thức" />
+  <title>Bài 2: Business test (nghiệp vụ) | Module 3 | NenTang.vn</title>
+  <link rel="stylesheet" href="../../shared.css" />
+</head>
+<body>
+  <header class="topbar">
+    <div class="container topbar-inner">
+      <a class="brand" href="../../index.html"><span class="brand-mark">T</span>&nbsp;AI Testing &amp; CI/CD</a>
+      <nav class="nav-links" aria-label="Điều hướng khóa học">
+        <a href="../../../index.html">Trang chủ</a>
+        <a href="../../index.html#modules">Module</a>
+        <a href="../index.html">Module 3</a>
+      </nav>
+    </div>
+  </header>
+
+  <section class="module-hero m3">
+    <div class="container">
+      <div class="breadcrumb">
+        <a href="../../index.html">AI Testing &amp; CI/CD</a>
+        <span>/</span>
+        <a href="../index.html">Module 3</a>
+        <span>/</span>
+        <span>Bài 2</span>
+      </div>
+      <h1>Bài 2: Business test (kiểm thử nghiệp vụ)</h1>
+      <p>Kiểm tra các quy tắc nghiệp vụ quan trọng: giảm giá, phí vận chuyển và voucher.</p>
+    </div>
+  </section>
+
+  <main class="section">
+    <div class="container lesson-layout">
+      <aside class="side-nav">
+        <h3>Module 3</h3>
+        <ul>
+          <li><a href="../bai-01/index.html">Bài 1: Unit test với Vitest</a></li>
+          <li class="active"><a href="index.html">Bài 2: Business test</a></li>
+          <li><a href="../bai-03/index.html">Bài 3: E2E test với Playwright</a></li>
+        </ul>
+      </aside>
+
+      <article class="module-article">
+        <section id="business-test-la-gi" class="lesson">
+          <h2>5.1 Business test là gì?</h2>
+          <p>
+            <strong>Business test</strong> (hay <em>domain test</em>) kiểm tra các <em>quy tắc nghiệp vụ</em>:
+            giảm giá theo cấp độ, tính phí vận chuyển, áp dụng voucher, kiểm tra điều kiện mua hàng…
+          </p>
+          <p>
+            Khác với unit test kiểm tra hàm thuần túy, business test kiểm tra logic thể hiện
+            <strong>yêu cầu từ phía business</strong> — thay đổi yêu cầu thì test phải cập nhật theo.
+          </p>
+        </section>
+
+        <section id="vi-du-giam-gia" class="lesson">
+          <h2>5.2 Ví dụ: Hàm tính giảm giá theo bậc</h2>
+          <pre><code data-lang="javascript">// src/js/pricing.js
+export function calculateDiscount(subtotal) {
+  if (subtotal &gt;= 1000000) return subtotal * 0.15;
+  if (subtotal &gt;= 500000)  return subtotal * 0.10;
+  if (subtotal &gt;= 200000)  return subtotal * 0.05;
+  return 0;
+}
+
+export function getShippingFee(subtotal) {
+  return subtotal &gt;= 500000 ? 0 : 30000;
+}</code></pre>
+        </section>
+
+        <section id="viet-business-test" class="lesson">
+          <h2>5.3 Viết business test</h2>
+          <pre><code data-lang="javascript">// tests/business/pricing.test.js
+import { describe, it, expect } from 'vitest';
+import { calculateDiscount, getShippingFee } from '../../src/js/pricing.js';
+
+describe('calculateDiscount — quy tắc giảm giá', () =&gt; {
+  it('giảm 15% khi tổng &gt;= 1,000,000', () =&gt; {
+    expect(calculateDiscount(1000000)).toBe(150000);
+  });
+
+  it('giảm 10% khi tổng &gt;= 500,000', () =&gt; {
+    expect(calculateDiscount(500000)).toBe(50000);
+  });
+
+  it('giảm 5% khi tổng &gt;= 200,000', () =&gt; {
+    expect(calculateDiscount(200000)).toBe(10000);
+  });
+
+  it('không giảm khi tổng &lt; 200,000', () =&gt; {
+    expect(calculateDiscount(199999)).toBe(0);
+  });
+
+  // Boundary cases
+  it('đúng ngưỡng 500,000: áp dụng mức 10% chứ không phải 15%', () =&gt; {
+    expect(calculateDiscount(500000)).toBe(50000);
+    expect(calculateDiscount(999999)).toBe(99999.9);
+  });
+});
+
+describe('getShippingFee — phí vận chuyển', () =&gt; {
+  it('miễn phí khi tổng &gt;= 500,000', () =&gt; {
+    expect(getShippingFee(500000)).toBe(0);
+    expect(getShippingFee(600000)).toBe(0);
+  });
+
+  it('tính phí 30,000 khi tổng &lt; 500,000', () =&gt; {
+    expect(getShippingFee(499999)).toBe(30000);
+    expect(getShippingFee(0)).toBe(30000);
+  });
+});</code></pre>
+          <div class="callout">
+            <strong>Best practice:</strong> Đặt tên test bằng tiếng Việt rõ ràng theo quy tắc nghiệp vụ.
+            Khi test fail, chỉ cần đọc tên là biết ngay quy tắc nào bị vi phạm.
+          </div>
+        </section>
+
+        <nav class="pager">
+          <a href="../bai-01/index.html" class="btn">← Bài 1: Unit test</a>
+          <a href="../bai-03/index.html" class="btn primary">Bài 3: E2E test →</a>
+        </nav>
+      </article>
+    </div>
+  </main>
+
+  <footer class="footer">
+    <div class="container">
+      <p><a href="../index.html">Quay lại Module 3</a></p>
+    </div>
+  </footer>
+  <script type="module" src="../../app.js"></script>
+</body>
+</html>

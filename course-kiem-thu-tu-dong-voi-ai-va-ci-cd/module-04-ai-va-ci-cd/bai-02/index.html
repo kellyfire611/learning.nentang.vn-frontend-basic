@@ -1,0 +1,146 @@
+<!DOCTYPE html>
+<html lang="vi">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <meta name="description" content="Thiết lập GitHub Actions workflow chạy unit test, business test và E2E test tự động mỗi lần push hoặc tạo PR." />
+  <meta name="keywords" content="GitHub Actions, CI/CD pipeline, workflow YAML, automated test, NenTang.vn" />
+  <meta name="author" content="NenTang.vn" />
+  <meta property="og:locale" content="vi_VN" />
+  <meta property="og:type" content="website" />
+  <meta property="og:title" content="Bài 2: Thiết lập CI/CD với GitHub Actions | Module 4 | NenTang.vn" />
+  <meta property="og:description" content="Thiết lập GitHub Actions workflow chạy unit test, business test và E2E test tự động mỗi lần push hoặc tạo PR." />
+  <meta property="og:url" content="https://nentang.vn/course-kiem-thu-tu-dong-voi-ai-va-ci-cd/module-04-ai-va-ci-cd/bai-02/" />
+  <meta property="og:site_name" content="Nền tảng Kiến thức" />
+  <title>Bài 2: Thiết lập CI/CD với GitHub Actions | Module 4 | NenTang.vn</title>
+  <link rel="stylesheet" href="../../shared.css" />
+</head>
+<body>
+  <header class="topbar">
+    <div class="container topbar-inner">
+      <a class="brand" href="../../index.html"><span class="brand-mark">T</span>&nbsp;AI Testing &amp; CI/CD</a>
+      <nav class="nav-links" aria-label="Điều hướng khóa học">
+        <a href="../../../index.html">Trang chủ</a>
+        <a href="../../index.html#modules">Module</a>
+        <a href="../index.html">Module 4</a>
+      </nav>
+    </div>
+  </header>
+
+  <section class="module-hero m4">
+    <div class="container">
+      <div class="breadcrumb">
+        <a href="../../index.html">AI Testing &amp; CI/CD</a>
+        <span>/</span>
+        <a href="../index.html">Module 4</a>
+        <span>/</span>
+        <span>Bài 2</span>
+      </div>
+      <h1>Bài 2: Thiết lập CI/CD với GitHub Actions</h1>
+      <p>Pipeline tự động chạy test mỗi lần push — không cần nhớ chạy tay nữa.</p>
+    </div>
+  </section>
+
+  <main class="section">
+    <div class="container lesson-layout">
+      <aside class="side-nav">
+        <h3>Module 4</h3>
+        <ul>
+          <li><a href="../bai-01/index.html">Bài 1: AI tăng tốc kiểm thử</a></li>
+          <li class="active"><a href="index.html">Bài 2: CI/CD với GitHub Actions</a></li>
+        </ul>
+      </aside>
+
+      <article class="module-article">
+        <section id="github-actions-la-gi" class="lesson">
+          <h2>8.1 GitHub Actions là gì?</h2>
+          <p>
+            GitHub Actions là dịch vụ CI/CD tích hợp sẵn trong GitHub.
+            Mỗi khi bạn push code hoặc tạo Pull Request, GitHub tự động chạy workflow bạn định nghĩa
+            trong file YAML ở thư mục <code>.github/workflows/</code>.
+          </p>
+          <p>Ưu điểm: miễn phí cho repo public, dễ cấu hình, tích hợp sẵn với GitHub ecosystem.</p>
+        </section>
+
+        <section id="workflow-mau" class="lesson">
+          <h2>8.2 Workflow mẫu — chạy đầy đủ 3 loại test</h2>
+          <pre><code data-lang="yaml"># .github/workflows/ci.yml
+name: CI — Automated Tests
+
+on:
+  push:
+    branches: [main, develop]
+  pull_request:
+    branches: [main]
+
+jobs:
+  test:
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v4
+
+      - name: Setup Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: '20'
+          cache: 'npm'
+
+      - name: Install dependencies
+        run: npm ci
+
+      - name: Run unit &amp; business tests
+        run: npm test
+
+      - name: Install Playwright browsers
+        run: npx playwright install --with-deps chromium
+
+      - name: Run E2E tests
+        run: npm run test:e2e</code></pre>
+        </section>
+
+        <section id="tao-file-workflow" class="lesson">
+          <h2>8.3 Tạo file workflow trong dự án</h2>
+          <ol class="steps">
+            <li>Tạo thư mục <code>.github/workflows/</code> ở root dự án.</li>
+            <li>Tạo file <code>ci.yml</code> với nội dung ở trên.</li>
+            <li>Commit và push lên GitHub.</li>
+            <li>Vào tab <strong>Actions</strong> trên GitHub repo để xem workflow chạy.</li>
+          </ol>
+          <pre><code data-lang="bash">mkdir -p .github/workflows
+# Tạo file ci.yml rồi:
+git add .github/workflows/ci.yml
+git commit -m "chore: thêm CI workflow chạy automated tests"
+git push</code></pre>
+        </section>
+
+        <section id="doc-ket-qua-ci" class="lesson">
+          <h2>8.4 Đọc kết quả CI</h2>
+          <ul>
+            <li>✅ <strong>Xanh (pass):</strong> Tất cả test đều pass — an toàn để merge PR.</li>
+            <li>❌ <strong>Đỏ (fail):</strong> Có ít nhất 1 test fail — cần sửa trước khi merge.</li>
+            <li>Nhấn vào job để xem log chi tiết từng bước, tìm test nào fail và vì sao.</li>
+          </ul>
+          <div class="callout">
+            <strong>Thực hành tốt:</strong> Đặt rule "require status checks to pass" trên branch
+            <code>main</code> — không ai có thể merge PR khi CI đang fail.
+          </div>
+        </section>
+
+        <nav class="pager">
+          <a href="../bai-01/index.html" class="btn">← Bài 1: AI tăng tốc kiểm thử</a>
+          <a href="../../module-05-nang-cao-va-bai-tap/bai-01/index.html" class="btn primary">Module 5: Nâng cao →</a>
+        </nav>
+      </article>
+    </div>
+  </main>
+
+  <footer class="footer">
+    <div class="container">
+      <p><a href="../index.html">Quay lại Module 4</a></p>
+    </div>
+  </footer>
+  <script type="module" src="../../app.js"></script>
+</body>
+</html>
