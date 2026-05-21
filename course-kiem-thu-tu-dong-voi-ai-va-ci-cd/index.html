@@ -1,0 +1,653 @@
+<!DOCTYPE html>
+<html lang="vi">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <meta name="description" content="Khóa học nhập môn đến nâng cao về kiểm thử tự động với AI và quy trình CI/CD cho dự án HTML CSS JS." />
+  <meta name="keywords" content="kiểm thử tự động, AI testing, CI/CD, HTML CSS JS, Playwright, Vitest, test case, GitHub Actions" />
+  <meta name="author" content="NenTang.vn" />
+  <title>Kiểm thử tự động với AI và quy trình CI/CD | NenTang.vn</title>
+  <link rel="stylesheet" href="shared.css" />
+</head>
+<body>
+  <header class="topbar">
+    <div class="container topbar-inner">
+      <a class="brand" href="index.html">AI Testing &amp; CI/CD</a>
+      <nav class="nav-links" aria-label="Điều hướng">
+        <a href="../index.html">Trang chủ</a>
+        <a href="#lo-trinh">Lộ trình</a>
+        <a href="#thuc-hanh">Thực hành</a>
+        <a href="#ci-cd">CI/CD</a>
+      </nav>
+    </div>
+  </header>
+
+  <main>
+    <section class="hero">
+      <div class="container hero-grid">
+        <div>
+          <p class="eyebrow">Khóa học mới cho người mới bắt đầu</p>
+          <h1>Kiểm thử tự động với AI và quy trình CI/CD</h1>
+          <p class="lead">
+            Đi từ nền tảng kiểm thử phần mềm, cách setup dự án HTML CSS JS, viết tài liệu test case,
+            viết unit test, test nghiệp vụ, test E2E, đến cách đưa mọi thứ vào pipeline CI/CD.
+          </p>
+          <div class="hero-actions">
+            <a class="btn primary" href="#tong-quan">Bắt đầu học</a>
+            <a class="btn" href="#bai-tap">Xem bài tập</a>
+          </div>
+        </div>
+        <div class="hero-card">
+          <h2>Bạn sẽ làm được gì sau khóa này?</h2>
+          <ul>
+            <li>Hiểu đúng testing là gì, tại sao phải test.</li>
+            <li>Tự setup dự án HTML CSS JS có test tự động.</li>
+            <li>Viết test case, unit test, business test và E2E test.</li>
+            <li>Dùng AI để tăng tốc viết test nhưng vẫn kiểm soát chất lượng.</li>
+            <li>Tạo pipeline CI/CD chạy test tự động mỗi lần push code.</li>
+          </ul>
+        </div>
+      </div>
+    </section>
+
+    <section class="section alt">
+      <div class="container">
+        <div class="stats-grid">
+          <div class="stat"><strong>10</strong><span>phần học</span></div>
+          <div class="stat"><strong>4</strong><span>nhóm test chính</span></div>
+          <div class="stat"><strong>1</strong><span>pipeline CI/CD mẫu</span></div>
+          <div class="stat"><strong>Nhiều</strong><span>ví dụ &amp; bài tập</span></div>
+        </div>
+      </div>
+    </section>
+
+    <section class="section" id="lo-trinh">
+      <div class="container">
+        <div class="section-head">
+          <h2>Lộ trình học đề xuất</h2>
+          <p>Học theo đúng thứ tự dưới đây để tránh bị ngợp và hiểu mọi khái niệm từ gốc.</p>
+        </div>
+        <div class="roadmap">
+          <article class="card">
+            <h3>1. Tổng quan testing</h3>
+            <p>Kiểm thử là gì, bug là gì, chất lượng phần mềm là gì, test pyramid, shift-left, CI/CD.</p>
+          </article>
+          <article class="card">
+            <h3>2. Setup dự án nền</h3>
+            <p>Tạo source HTML CSS JS sạch, cấu trúc thư mục rõ ràng, thêm npm để chạy test.</p>
+          </article>
+          <article class="card">
+            <h3>3. Thiết kế test case</h3>
+            <p>Phân tích yêu cầu, viết test scenario, test case, dữ liệu kiểm thử, expected result.</p>
+          </article>
+          <article class="card">
+            <h3>4. Unit test &amp; business test</h3>
+            <p>Tách logic ra khỏi giao diện, test hàm nhỏ, test quy tắc nghiệp vụ, test validation.</p>
+          </article>
+          <article class="card">
+            <h3>5. E2E &amp; CI/CD</h3>
+            <p>Mô phỏng thao tác người dùng, chạy test tự động trên GitHub Actions, tự động triển khai.</p>
+          </article>
+        </div>
+      </div>
+    </section>
+
+    <section class="section alt" id="tong-quan">
+      <div class="container article">
+        <h2>Phần 1: Nền tảng kiểm thử tự động</h2>
+        <h3>1.1. Kiểm thử phần mềm là gì?</h3>
+        <p>
+          Kiểm thử phần mềm là quá trình xác minh rằng phần mềm hoạt động đúng như mong đợi và phát hiện lỗi
+          trước khi người dùng thật gặp lỗi đó.
+        </p>
+        <div class="callout">
+          <strong>Hiểu đơn giản:</strong> code là xây nhà, testing là kiểm tra cửa có đóng được không,
+          điện có chập không, nước có rò không, trước khi bàn giao cho khách.
+        </div>
+
+        <h3>1.2. Có những loại test nào?</h3>
+        <ul>
+          <li><strong>Manual test:</strong> con người tự click, nhập, kiểm tra kết quả.</li>
+          <li><strong>Automated test:</strong> dùng code để tự kiểm tra phần mềm.</li>
+          <li><strong>Unit test:</strong> test đơn vị nhỏ nhất như hàm, module.</li>
+          <li><strong>Integration/Business test:</strong> test các phần phối hợp với nhau, test quy tắc nghiệp vụ.</li>
+          <li><strong>E2E test:</strong> test luồng hoàn chỉnh như người dùng thật.</li>
+          <li><strong>Smoke test:</strong> test nhanh các chức năng sống còn sau mỗi bản build.</li>
+          <li><strong>Regression test:</strong> test lại để chắc rằng sửa chỗ này không làm hỏng chỗ khác.</li>
+        </ul>
+
+        <h3>1.3. Test pyramid là gì?</h3>
+        <p>Test pyramid là cách cân bằng số lượng test:</p>
+        <ul>
+          <li>Nhiều <strong>unit test</strong> ở đáy vì nhanh, rẻ, dễ bảo trì.</li>
+          <li>Ít hơn ở <strong>integration/business test</strong>.</li>
+          <li>Ít nhất ở <strong>E2E test</strong> vì chậm và dễ flaky.</li>
+        </ul>
+
+        <h3>1.4. CI là gì? CD là gì?</h3>
+        <ul>
+          <li><strong>CI - Continuous Integration:</strong> mỗi lần push code, hệ thống tự chạy build, lint, test.</li>
+          <li><strong>CD - Continuous Delivery/Deployment:</strong> sau khi qua kiểm tra, hệ thống chuẩn bị hoặc tự động deploy.</li>
+        </ul>
+
+        <h3>1.5. AI giúp gì trong testing?</h3>
+        <ul>
+          <li>Gợi ý test case từ user story.</li>
+          <li>Sinh khung unit test, E2E test.</li>
+          <li>Phân tích lỗ hổng coverage còn thiếu.</li>
+          <li>Tóm tắt log lỗi CI để debug nhanh hơn.</li>
+        </ul>
+        <p>
+          Nhưng AI <strong>không thay thế</strong> tư duy kiểm thử. Bạn vẫn phải tự kiểm tra yêu cầu, dữ liệu biên,
+          luật nghiệp vụ, độ đúng sai của test.
+        </p>
+      </div>
+    </section>
+
+    <section class="section" id="setup">
+      <div class="container article">
+        <h2>Phần 2: Setup source HTML CSS JS ban đầu</h2>
+        <h3>2.1. Mục tiêu</h3>
+        <p>Ta sẽ tạo một dự án nhỏ: form đặt hàng đơn giản. Từ dự án này, ta sẽ viết mọi loại test.</p>
+
+        <h3>2.2. Cấu trúc thư mục đề xuất</h3>
+        <pre><code>shop-demo/
+├─ src/
+│  ├─ index.html
+│  ├─ css/
+│  │  └─ app.css
+│  ├─ js/
+│  │  ├─ app.js
+│  │  ├─ validation.js
+│  │  └─ pricing.js
+│  └─ data/
+│     └─ products.js
+├─ docs/
+│  ├─ test-plan.md
+│  └─ test-cases.md
+├─ tests/
+│  ├─ unit/
+│  │  ├─ validation.test.js
+│  │  └─ pricing.test.js
+│  ├─ business/
+│  │  └─ checkout.test.js
+│  └─ e2e/
+│     └─ checkout.spec.js
+├─ package.json
+├─ vitest.config.js
+└─ playwright.config.js</code></pre>
+
+        <h3>2.3. Tạo source cơ bản</h3>
+        <pre><code>&lt;!-- src/index.html --&gt;
+&lt;!DOCTYPE html&gt;
+&lt;html lang="vi"&gt;
+&lt;head&gt;
+  &lt;meta charset="UTF-8" /&gt;
+  &lt;meta name="viewport" content="width=device-width, initial-scale=1.0" /&gt;
+  &lt;title&gt;Shop Demo&lt;/title&gt;
+  &lt;link rel="stylesheet" href="./css/app.css" /&gt;
+&lt;/head&gt;
+&lt;body&gt;
+  &lt;main class="container"&gt;
+    &lt;h1&gt;Đặt hàng nhanh&lt;/h1&gt;
+    &lt;form id="checkout-form"&gt;
+      &lt;label&gt;Họ tên&lt;/label&gt;
+      &lt;input id="customerName" /&gt;
+
+      &lt;label&gt;Số lượng&lt;/label&gt;
+      &lt;input id="quantity" type="number" min="1" value="1" /&gt;
+
+      &lt;label&gt;Mã giảm giá&lt;/label&gt;
+      &lt;input id="coupon" /&gt;
+
+      &lt;button type="submit"&gt;Tính tiền&lt;/button&gt;
+    &lt;/form&gt;
+
+    &lt;div id="result"&gt;&lt;/div&gt;
+  &lt;/main&gt;
+  &lt;script type="module" src="./js/app.js"&gt;&lt;/script&gt;
+&lt;/body&gt;
+&lt;/html&gt;</code></pre>
+
+        <h3>2.4. Cài công cụ test</h3>
+        <pre><code>npm init -y
+npm install -D vitest @playwright/test http-server
+npx playwright install</code></pre>
+
+        <p>Giải thích nhanh:</p>
+        <ul>
+          <li><strong>vitest:</strong> chạy unit test và business test nhanh.</li>
+          <li><strong>@playwright/test:</strong> chạy E2E test trên trình duyệt thật.</li>
+          <li><strong>http-server:</strong> mở local server để Playwright test được giao diện.</li>
+        </ul>
+
+        <h3>2.5. Thêm script vào package.json</h3>
+        <pre><code>{
+  "scripts": {
+    "start": "http-server ./src -p 3000",
+    "test:unit": "vitest run tests/unit",
+    "test:business": "vitest run tests/business",
+    "test:e2e": "playwright test",
+    "test": "npm run test:unit &amp;&amp; npm run test:business &amp;&amp; npm run test:e2e"
+  }
+}</code></pre>
+
+        <h3>2.6. Nguyên tắc setup dễ test</h3>
+        <ul>
+          <li>Tách logic tính toán khỏi code thao tác DOM.</li>
+          <li>Hàm nên nhận input rõ ràng và trả output rõ ràng.</li>
+          <li>Đặt selector ổn định cho E2E, ví dụ <code>data-testid</code>.</li>
+          <li>Không nhét toàn bộ logic vào một file <code>app.js</code>.</li>
+        </ul>
+      </div>
+    </section>
+
+    <section class="section alt" id="test-case">
+      <div class="container article">
+        <h2>Phần 3: Viết tài liệu test plan và test case</h2>
+        <h3>3.1. Trước khi viết code test, hãy viết test case</h3>
+        <p>
+          Test case giúp bạn biết mình cần kiểm cái gì. Nếu chưa có test case, bạn rất dễ viết test theo cảm tính
+          và bỏ sót tình huống quan trọng.
+        </p>
+
+        <h3>3.2. Một test case thường gồm gì?</h3>
+        <ul>
+          <li>Mã test case.</li>
+          <li>Mục tiêu kiểm thử.</li>
+          <li>Điều kiện đầu vào.</li>
+          <li>Các bước thực hiện.</li>
+          <li>Kết quả mong đợi.</li>
+          <li>Mức độ ưu tiên.</li>
+        </ul>
+
+        <h3>3.3. Ví dụ test case cho form đặt hàng</h3>
+        <div class="table-wrap">
+          <table>
+            <thead>
+              <tr>
+                <th>ID</th>
+                <th>Tình huống</th>
+                <th>Bước thực hiện</th>
+                <th>Kết quả mong đợi</th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr>
+                <td>TC-01</td>
+                <td>Nhập hợp lệ toàn bộ form</td>
+                <td>Nhập tên, số lượng = 2, coupon = SALE10, bấm Tính tiền</td>
+                <td>Hiển thị tổng tiền sau giảm giá chính xác</td>
+              </tr>
+              <tr>
+                <td>TC-02</td>
+                <td>Bỏ trống họ tên</td>
+                <td>Không nhập tên, bấm Tính tiền</td>
+                <td>Hiển thị lỗi "Họ tên là bắt buộc"</td>
+              </tr>
+              <tr>
+                <td>TC-03</td>
+                <td>Số lượng bằng 0</td>
+                <td>Nhập quantity = 0</td>
+                <td>Không cho submit, báo lỗi số lượng phải lớn hơn 0</td>
+              </tr>
+              <tr>
+                <td>TC-04</td>
+                <td>Mã giảm giá không hợp lệ</td>
+                <td>Nhập coupon = FAKE999</td>
+                <td>Không áp giảm giá, có thông báo coupon không hợp lệ</td>
+              </tr>
+              <tr>
+                <td>TC-05</td>
+                <td>Kiểm thử dữ liệu biên</td>
+                <td>Nhập quantity = 999</td>
+                <td>Hệ thống xử lý đúng hoặc chặn theo rule đã định</td>
+              </tr>
+            </tbody>
+          </table>
+        </div>
+
+        <h3>3.4. Kỹ thuật thiết kế test case cần biết</h3>
+        <ul>
+          <li><strong>Happy path:</strong> luồng đúng, người dùng nhập chuẩn.</li>
+          <li><strong>Negative case:</strong> nhập sai, thiếu dữ liệu, dữ liệu lạ.</li>
+          <li><strong>Boundary value:</strong> min, max, ngay sát min/max.</li>
+          <li><strong>Equivalence partitioning:</strong> chia input thành nhóm hợp lệ/không hợp lệ.</li>
+          <li><strong>Error guessing:</strong> đoán lỗi từ kinh nghiệm thực tế.</li>
+        </ul>
+      </div>
+    </section>
+
+    <section class="section" id="thuc-hanh">
+      <div class="container article">
+        <h2>Phần 4: Viết unit test</h2>
+        <h3>4.1. Tách hàm để dễ test</h3>
+        <pre><code>// src/js/validation.js
+export function validateCheckoutForm({ customerName, quantity }) {
+  const errors = [];
+
+  if (!customerName || customerName.trim() === "") {
+    errors.push("Họ tên là bắt buộc");
+  }
+
+  if (!Number.isInteger(quantity) || quantity &lt;= 0) {
+    errors.push("Số lượng phải lớn hơn 0");
+  }
+
+  return errors;
+}</code></pre>
+
+        <h3>4.2. Viết unit test bằng Vitest</h3>
+        <pre><code>// tests/unit/validation.test.js
+import { describe, expect, it } from "vitest";
+import { validateCheckoutForm } from "../../src/js/validation.js";
+
+describe("validateCheckoutForm", () =&gt; {
+  it("trả về lỗi khi thiếu họ tên", () =&gt; {
+    const errors = validateCheckoutForm({ customerName: "", quantity: 1 });
+    expect(errors).toContain("Họ tên là bắt buộc");
+  });
+
+  it("trả về lỗi khi số lượng không hợp lệ", () =&gt; {
+    const errors = validateCheckoutForm({ customerName: "An", quantity: 0 });
+    expect(errors).toContain("Số lượng phải lớn hơn 0");
+  });
+
+  it("không có lỗi khi dữ liệu hợp lệ", () =&gt; {
+    const errors = validateCheckoutForm({ customerName: "An", quantity: 2 });
+    expect(errors).toEqual([]);
+  });
+});</code></pre>
+
+        <h3>4.3. Test coverage nên nhìn thế nào?</h3>
+        <ul>
+          <li>Không chạy theo 100% coverage một cách mù quáng.</li>
+          <li>Ưu tiên test các hàm có nghiệp vụ, tính toán, điều kiện rẽ nhánh.</li>
+          <li>Các file chỉ chứa hằng số hoặc wiring mỏng có thể ít quan trọng hơn.</li>
+        </ul>
+
+        <h3>4.4. Lỗi người mới hay gặp</h3>
+        <ul>
+          <li>Test cả DOM phức tạp trong unit test.</li>
+          <li>Viết test phụ thuộc thứ tự chạy.</li>
+          <li>Dùng dữ liệu test khó hiểu, không nói lên mục tiêu kiểm thử.</li>
+          <li>Không test case biên.</li>
+        </ul>
+      </div>
+    </section>
+
+    <section class="section alt">
+      <div class="container article">
+        <h2>Phần 5: Viết test nghiệp vụ (business test)</h2>
+        <h3>5.1. Business test là gì?</h3>
+        <p>
+          Đây là loại test tập trung vào quy tắc nghiệp vụ, ví dụ:
+          giảm giá 10% cho đơn từ 2 sản phẩm, miễn phí vận chuyển từ 500.000đ, không cho dùng đồng thời 2 coupon.
+        </p>
+
+        <h3>5.2. Ví dụ hàm nghiệp vụ</h3>
+        <pre><code>// src/js/pricing.js
+export function calculateTotal({ quantity, unitPrice, couponCode }) {
+  const subtotal = quantity * unitPrice;
+  let discount = 0;
+
+  if (couponCode === "SALE10") {
+    discount = subtotal * 0.1;
+  }
+
+  return subtotal - discount;
+}</code></pre>
+
+        <h3>5.3. Business test</h3>
+        <pre><code>// tests/business/checkout.test.js
+import { describe, expect, it } from "vitest";
+import { calculateTotal } from "../../src/js/pricing.js";
+
+describe("calculateTotal", () =&gt; {
+  it("giảm 10% khi dùng mã SALE10", () =&gt; {
+    const total = calculateTotal({ quantity: 2, unitPrice: 100000, couponCode: "SALE10" });
+    expect(total).toBe(180000);
+  });
+
+  it("không giảm giá khi coupon không hợp lệ", () =&gt; {
+    const total = calculateTotal({ quantity: 2, unitPrice: 100000, couponCode: "ABC" });
+    expect(total).toBe(200000);
+  });
+});</code></pre>
+
+        <h3>5.4. Khác nhau giữa unit test và business test</h3>
+        <ul>
+          <li><strong>Unit test:</strong> tập trung vào một hàm/đơn vị nhỏ.</li>
+          <li><strong>Business test:</strong> tập trung kiểm tra đúng sai của luật nghiệp vụ.</li>
+        </ul>
+        <p>Trong dự án nhỏ, hai loại này có thể dùng chung framework nhưng khác mục tiêu.</p>
+      </div>
+    </section>
+
+    <section class="section" id="e2e">
+      <div class="container article">
+        <h2>Phần 6: Viết test E2E với Playwright</h2>
+        <h3>6.1. Khi nào cần E2E?</h3>
+        <ul>
+          <li>Khi muốn test luồng người dùng thật từ đầu đến cuối.</li>
+          <li>Khi cần chắc rằng HTML + CSS + JS + API + điều hướng hoạt động cùng nhau.</li>
+          <li>Khi muốn bảo vệ các luồng quan trọng như đăng nhập, thanh toán, đặt hàng.</li>
+        </ul>
+
+        <h3>6.2. Cấu hình Playwright tối thiểu</h3>
+        <pre><code>// playwright.config.js
+import { defineConfig } from "@playwright/test";
+
+export default defineConfig({
+  testDir: "./tests/e2e",
+  use: {
+    baseURL: "http://127.0.0.1:3000",
+    headless: true
+  },
+  webServer: {
+    command: "npm run start",
+    url: "http://127.0.0.1:3000",
+    reuseExistingServer: true
+  }
+});</code></pre>
+
+        <h3>6.3. Ví dụ E2E test</h3>
+        <pre><code>// tests/e2e/checkout.spec.js
+import { expect, test } from "@playwright/test";
+
+test("người dùng nhập hợp lệ và xem được tổng tiền", async ({ page }) =&gt; {
+  await page.goto("/");
+  await page.getByLabel("Họ tên").fill("Nguyễn Văn A");
+  await page.getByLabel("Số lượng").fill("2");
+  await page.getByLabel("Mã giảm giá").fill("SALE10");
+  await page.getByRole("button", { name: "Tính tiền" }).click();
+
+  await expect(page.locator("#result")).toContainText("180000");
+});</code></pre>
+
+        <h3>6.4. Mẹo viết E2E ổn định</h3>
+        <ul>
+          <li>Dùng selector có ý nghĩa như label, role, test id.</li>
+          <li>Không phụ thuộc vào CSS selector quá dài.</li>
+          <li>Tránh <code>waitForTimeout</code> nếu không cần thiết.</li>
+          <li>Dữ liệu test phải dễ reset, độc lập giữa các test.</li>
+        </ul>
+      </div>
+    </section>
+
+    <section class="section alt">
+      <div class="container article">
+        <h2>Phần 7: Dùng AI để tăng tốc kiểm thử</h2>
+        <h3>7.1. AI nên được dùng ở đâu?</h3>
+        <ul>
+          <li>Phân rã yêu cầu thành test scenario.</li>
+          <li>Tạo khung test code ban đầu.</li>
+          <li>Đề xuất dữ liệu biên và negative case.</li>
+          <li>Review những case còn thiếu trong file test hiện tại.</li>
+        </ul>
+
+        <h3>7.2. Prompt mẫu để sinh test case</h3>
+        <pre><code>Hãy đóng vai QA Engineer senior.
+Phân tích form đặt hàng gồm: họ tên bắt buộc, số lượng &gt; 0, coupon SALE10 giảm 10%.
+Hãy liệt kê:
+1. Happy path
+2. Negative case
+3. Boundary case
+4. Risk cần chú ý
+Trình bày theo bảng test case.</code></pre>
+
+        <h3>7.3. Prompt mẫu để sinh unit test</h3>
+        <pre><code>Hãy viết unit test Vitest cho hàm calculateTotal.
+Yêu cầu:
+- Bao phủ coupon hợp lệ và không hợp lệ
+- Có case quantity = 1, 2, 999
+- Không mock gì cả
+- Trả lời bằng code hoàn chỉnh</code></pre>
+
+        <h3>7.4. Checklist khi dùng AI</h3>
+        <ul>
+          <li>AI có hiểu đúng yêu cầu nghiệp vụ không?</li>
+          <li>Test sinh ra có assert đúng điều cần kiểm không?</li>
+          <li>Có bỏ sót case biên hoặc luồng lỗi không?</li>
+          <li>Tên test có mô tả rõ mục tiêu không?</li>
+          <li>Selector trong E2E có ổn định không?</li>
+        </ul>
+      </div>
+    </section>
+
+    <section class="section" id="ci-cd">
+      <div class="container article">
+        <h2>Phần 8: Thiết lập CI/CD với GitHub Actions</h2>
+        <h3>8.1. Mục tiêu pipeline</h3>
+        <ol>
+          <li>Mỗi lần push hoặc tạo pull request, hệ thống tự cài dependency.</li>
+          <li>Tự chạy unit test và business test.</li>
+          <li>Tự chạy E2E test.</li>
+          <li>Nếu tất cả đều xanh, mới cho phép merge hoặc deploy.</li>
+        </ol>
+
+        <h3>8.2. Workflow mẫu</h3>
+        <pre><code>name: frontend-testing
+
+on:
+  push:
+    branches: [main]
+  pull_request:
+
+jobs:
+  test:
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout source
+        uses: actions/checkout@v4
+
+      - name: Setup Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: 20
+          cache: npm
+
+      - name: Install dependencies
+        run: npm ci
+
+      - name: Install Playwright browsers
+        run: npx playwright install --with-deps
+
+      - name: Run unit tests
+        run: npm run test:unit
+
+      - name: Run business tests
+        run: npm run test:business
+
+      - name: Run E2E tests
+        run: npm run test:e2e</code></pre>
+
+        <h3>8.3. CD đơn giản nên hiểu thế nào?</h3>
+        <ul>
+          <li><strong>Continuous Delivery:</strong> hệ thống chuẩn bị sẵn bản build, chờ người bấm deploy.</li>
+          <li><strong>Continuous Deployment:</strong> qua test là tự deploy luôn.</li>
+        </ul>
+
+        <h3>8.4. Gợi ý pipeline nâng cao</h3>
+        <ul>
+          <li>Thêm lint và format check.</li>
+          <li>Chạy test matrix nhiều phiên bản Node.js.</li>
+          <li>Upload Playwright report làm artifact.</li>
+          <li>Tách job theo mức độ: lint - unit - business - e2e - deploy.</li>
+        </ul>
+      </div>
+    </section>
+
+    <section class="section alt">
+      <div class="container article">
+        <h2>Phần 9: Kiến thức nâng cao cần học tiếp</h2>
+        <ul>
+          <li><strong>Mocking:</strong> giả lập API hoặc dependency ngoài để test nhanh và ổn định.</li>
+          <li><strong>Test doubles:</strong> stub, spy, mock, fake.</li>
+          <li><strong>Flaky test:</strong> test lúc pass lúc fail, cần tìm nguyên nhân timing hoặc dữ liệu.</li>
+          <li><strong>Coverage report:</strong> xem phần nào của code chưa được chạm tới.</li>
+          <li><strong>Visual regression:</strong> so sánh ảnh chụp giao diện trước/sau.</li>
+          <li><strong>Performance testing:</strong> đo tốc độ phản hồi và tải trang.</li>
+          <li><strong>Security testing:</strong> kiểm tra XSS, CSRF, input injection, secret leak.</li>
+        </ul>
+      </div>
+    </section>
+
+    <section class="section" id="bai-tap">
+      <div class="container article">
+        <h2>Phần 10: Bài tập thực hành</h2>
+        <h3>Bài tập 1 - Cơ bản</h3>
+        <ul>
+          <li>Tạo form đăng ký học viên bằng HTML CSS JS.</li>
+          <li>Viết tối thiểu 10 test case manual.</li>
+          <li>Viết unit test cho hàm validate email, validate số điện thoại.</li>
+        </ul>
+
+        <h3>Bài tập 2 - Trung cấp</h3>
+        <ul>
+          <li>Tạo trang giỏ hàng với subtotal, discount, shipping fee.</li>
+          <li>Viết business test cho các rule giảm giá.</li>
+          <li>Viết 3 E2E test cho luồng thêm sản phẩm, cập nhật số lượng, thanh toán.</li>
+        </ul>
+
+        <h3>Bài tập 3 - Nâng cao</h3>
+        <ul>
+          <li>Tự cấu hình GitHub Actions để chạy toàn bộ test khi push code.</li>
+          <li>Dùng AI để đề xuất thêm test case bị thiếu.</li>
+          <li>So sánh đề xuất của AI với test case do bạn tự nghĩ ra.</li>
+        </ul>
+
+        <h3>Đề bài review cuối khóa</h3>
+        <ol>
+          <li>Source có tách logic đủ để unit test chưa?</li>
+          <li>Test case có bao phủ happy path, negative, boundary chưa?</li>
+          <li>E2E có tập trung vào luồng quan trọng nhất chưa?</li>
+          <li>CI có chặn merge khi test fail chưa?</li>
+          <li>AI đang hỗ trợ bạn hay đang làm bạn chủ quan?</li>
+        </ol>
+      </div>
+    </section>
+
+    <section class="section alt">
+      <div class="container article">
+        <h2>Tóm tắt cách học hiệu quả</h2>
+        <ol class="summary-list">
+          <li>Hiểu yêu cầu nghiệp vụ trước, đừng nhảy vào viết test ngay.</li>
+          <li>Viết test case giấy/trên tài liệu trước khi viết code test.</li>
+          <li>Tách logic nhỏ để unit test dễ.</li>
+          <li>Chỉ chọn vài luồng E2E thật quan trọng để giảm chi phí bảo trì.</li>
+          <li>Dùng AI để tăng tốc, nhưng luôn review lại bằng tư duy của chính bạn.</li>
+          <li>Đưa tất cả vào CI/CD để team nào cũng được hưởng lợi từ tự động hóa.</li>
+        </ol>
+      </div>
+    </section>
+  </main>
+
+  <footer class="footer">
+    <div class="container">
+      <p>NenTang.vn - Khóa học Kiểm thử tự động với AI và quy trình CI/CD</p>
+    </div>
+  </footer>
+</body>
+</html>

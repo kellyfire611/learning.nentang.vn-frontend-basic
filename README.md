@@ -7,6 +7,8 @@
 # Học là phải THỰC HÀNH ❤🧡💛💚💙💜🤎
 
 # Danh sách các bài học
+- Học về Kiểm thử tự động với AI và quy trình CI/CD
+  - [Khóa học - Kiểm thử tự động với AI và quy trình CI/CD](./course-kiem-thu-tu-dong-voi-ai-va-ci-cd/readme.md)
 - Học về Bootstrap Framework
   - [Bài học 1 - Tạo bố cục sử dụng Bootstrap](./course-bootstrap/lesson1-tao-bo-cuc-su-dung-bootstrap/readme.md)
   - [Bài học 2 - Tạo trang chủ bán hàng đơn giản](./course-bootstrap/lesson2-tao-trang-chu-ban-hang-don-gian/readme.md)
