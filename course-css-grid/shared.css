@@ -444,9 +444,12 @@ pre code {
   min-width: 0;
 }
 
-.lesson-layout > *,
-.code-grid > *,
-.module-article > *,
+.lesson-layout > .side-nav,
+.lesson-layout > .module-article,
+.code-grid > div,
+.module-article > .lesson,
+.module-article > .exercise,
+.module-article > .callout,
 .result-panel,
 .demo-code {
   min-width: 0;
