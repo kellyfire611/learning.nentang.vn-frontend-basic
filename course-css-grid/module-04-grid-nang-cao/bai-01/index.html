@@ -1,0 +1,224 @@
+<!DOCTYPE html>
+<html lang="vi">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <meta name="description" content="Grid vs Flexbox — khi nào dùng cái nào trong CSS layout." />
+  <title>Bài 01 - Grid vs Flexbox | Module 4 CSS Grid | NenTang.vn</title>
+  <link rel="stylesheet" href="../../shared.css" />
+</head>
+<body>
+  <header class="topbar">
+    <div class="topbar-inner">
+      <a class="brand" href="../../index.html"><span class="brand-mark">G</span><span>CSS Grid</span></a>
+      <nav class="nav-links">
+        <a href="../../../index.html">Trang chủ</a>
+        <a href="../../index.html#modules">Module</a>
+      </nav>
+    </div>
+  </header>
+  <section class="module-hero m4">
+    <div class="container">
+      <div class="breadcrumb"><a href="../../index.html">CSS Grid</a><span>/</span><a href="../index.html">Module 4</a><span>/</span><span>Bài 01</span></div>
+      <h1>Bài 01: Grid vs Flexbox</h1>
+      <p>Hiểu rõ khi nào dùng Grid và khi nào dùng Flexbox — không phải cạnh tranh mà bổ sung nhau.</p>
+    </div>
+  </section>
+  <main class="section">
+    <div class="container lesson-layout">
+      <aside class="side-nav">
+        <a href="#goal">Mục tiêu</a>
+        <a href="#theory">Lý thuyết</a>
+        <a href="#demo">Minh họa</a>
+        <a href="#code">Code ví dụ</a>
+        <a href="#exercise">Thực hành</a>
+        <a href="#solution">Bài giải</a>
+      </aside>
+      <article class="module-article">
+        <section class="lesson" id="goal">
+          <h2>Mục tiêu bài học</h2>
+          <ul>
+            <li>Phân biệt Grid (2D layout) với Flexbox (1D layout).</li>
+            <li>Biết khi nào Grid tốt hơn, khi nào Flexbox tốt hơn.</li>
+            <li>Kết hợp Grid (layout tổng thể) và Flexbox (layout bên trong component).</li>
+          </ul>
+        </section>
+        <section class="lesson" id="theory">
+          <h2>Lý thuyết thực tế</h2>
+          <p><strong>CSS Grid:</strong> Layout 2 chiều — kiểm soát cả hàng và cột cùng lúc. Dùng cho page layout, dashboard, gallery. Mạnh nhất khi layout cần kiểm soát vị trí items trong 2 chiều. <strong>CSS Flexbox:</strong> Layout 1 chiều — hoặc hàng hoặc cột. Dùng cho navigation bars, button groups, centering, card internals. Mạnh nhất khi items cần wrap và align trong một hướng.</p>
+          <p><strong>Rule of thumb:</strong> Grid cho "item placement" — bạn muốn item nằm ở đâu trong một lưới 2D. Flexbox cho "item alignment" — bạn muốn items căn chỉnh với nhau trong một hướng. Thực tế: dùng cả hai, Grid cho outer layout, Flexbox cho inner components. Đây là pattern chuẩn của mọi website hiện đại.</p>
+          <ol class="steps">
+            <li>Nhận diện: layout cần 2 chiều → Grid; 1 chiều → Flexbox.</li>
+            <li>Dùng Grid cho page/section layout.</li>
+            <li>Dùng Flexbox bên trong mỗi card/component.</li>
+            <li>Đừng cố dùng chỉ một công cụ — kết hợp là tốt nhất.</li>
+          </ol>
+        </section>
+        <section class="lesson" id="demo">
+          <h2>Minh họa trực quan</h2>
+          <p>Grid cho outer layout, Flexbox cho inner navigation.</p>
+          <style>
+.gvf-page { display: grid; grid-template-columns: 180px 1fr; gap: 12px; min-height: 160px; }
+.gvf-nav { background: #1e1b4b; padding: 12px; border-radius: 8px; }
+.gvf-nav p { color: #c4b5fd; font-size: .72rem; margin-bottom: 10px; font-weight: 700; text-transform: uppercase; }
+.gvf-nav a { display: flex; align-items: center; gap: 6px; color: #a78bfa; font-size: .78rem; padding: 6px 8px; border-radius: 4px; text-decoration: none; margin-bottom: 2px; }
+.gvf-nav a.act { background: #7c3aed; color: white; }
+.gvf-content { background: #f8f9fc; padding: 12px; border-radius: 8px; }
+.gvf-content p { font-size: .8rem; color: #5e6b7a; margin-bottom: 8px; font-weight: 700; }
+.gvf-toolbar { display: flex; gap: 8px; align-items: center; }
+.gvf-btn { background: #7c3aed; color: white; border: none; padding: 6px 12px; border-radius: 6px; font-size: .75rem; font-weight: 700; cursor: pointer; }
+.gvf-btn.sec { background: white; color: #7c3aed; border: 1px solid #7c3aed; }
+.gvf-tag { background: #ede9fe; color: #4c1d95; font-size: .7rem; padding: 3px 8px; border-radius: 99px; font-weight: 700; }
+          </style>
+          <div class="demo-surface">
+            <div class="gvf-page">
+              <nav class="gvf-nav">
+                <p>Grid → Sidebar</p>
+                <a href="#" class="act">📊 Dashboard</a>
+                <a href="#">📦 Products</a>
+                <a href="#">👥 Customers</a>
+              </nav>
+              <div class="gvf-content">
+                <p>Flexbox → Toolbar (1 chiều)</p>
+                <div class="gvf-toolbar">
+                  <button class="gvf-btn">Thêm mới</button>
+                  <button class="gvf-btn sec">Xuất file</button>
+                  <span class="gvf-tag">12 items</span>
+                </div>
+              </div>
+            </div>
+          </div>
+          <div class="demo-code">
+            <h3>Kết hợp Grid + Flexbox</h3>
+            <pre><code data-lang="css">/* Grid: layout tổng thể */
+.page { display: grid; grid-template-columns: 200px 1fr; }
+/* Flexbox: toolbar trong content */
+.toolbar { display: flex; gap: 8px; align-items: center; }</code></pre>
+          </div>
+        </section>
+        <section class="lesson" id="code">
+          <h2>Code ví dụ</h2>
+          <p>So sánh trực tiếp: dùng Grid khi cần, Flexbox khi cần.</p>
+          <div class="code-grid">
+            <div><h3>Dùng Grid (2D)</h3><pre><code data-lang="css">/* Dashboard layout */
+.dashboard {
+  display: grid;
+  grid-template-columns: 250px 1fr;
+  grid-template-rows: 60px 1fr;
+  grid-template-areas:
+    "sidebar topbar"
+    "sidebar main";
+}
+/* Photo gallery */
+.gallery {
+  display: grid;
+  grid-template-columns:
+    repeat(auto-fit, minmax(200px, 1fr));
+}</code></pre></div>
+            <div><h3>Dùng Flexbox (1D)</h3><pre><code data-lang="css">/* Navigation */
+.nav { display: flex; align-items: center; gap: 16px; }
+/* Card footer */
+.card-footer {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+/* Button group */
+.btn-group {
+  display: flex;
+  gap: 8px;
+  flex-wrap: wrap;
+}</code></pre></div>
+          </div>
+          <div class="result-panel">
+            <div class="result-head"><h3>Kết quả</h3><span>Grid outer + Flex inner</span></div>
+            <iframe class="result-frame" title="grid vs flexbox demo" srcdoc="&lt;!DOCTYPE html&gt;&lt;html&gt;&lt;head&gt;&lt;meta charset='UTF-8'&gt;&lt;style&gt;*{box-sizing:border-box;margin:0}body{font-family:sans-serif;background:#f4f7fb}.app{display:grid;grid-template-columns:180px 1fr;min-height:280px}.sidebar{background:#1e1b4b;padding:16px}.logo{color:white;font-weight:700;font-size:1rem;margin-bottom:20px;padding-bottom:12px;border-bottom:1px solid rgba(255,255,255,.1)}.sidebar a{display:block;color:#c4b5fd;text-decoration:none;padding:8px 12px;border-radius:6px;font-size:.85rem;margin-bottom:4px;font-weight:600}.sidebar a.active{background:#7c3aed;color:white}.main{padding:0}.topbar{background:white;padding:12px 20px;border-bottom:1px solid #e2e8f0;display:flex;justify-content:space-between;align-items:center}.topbar h1{font-size:1rem;color:#1e293b}.topbar-right{display:flex;gap:8px;align-items:center}.badge{background:#ede9fe;color:#4c1d95;padding:4px 10px;border-radius:99px;font-size:.8rem;font-weight:700}.content{padding:20px}.grid-stats{display:grid;grid-template-columns:repeat(3,1fr);gap:12px}.stat{background:white;padding:16px;border-radius:8px;border:1px solid #e2e8f0}.stat .val{font-size:1.4rem;font-weight:700;color:#7c3aed}.stat .lbl{font-size:.78rem;color:#94a3b8}&lt;/style&gt;&lt;/head&gt;&lt;body&gt;&lt;div class='app'&gt;&lt;nav class='sidebar'&gt;&lt;div class='logo'&gt;⚡ Grid App&lt;/div&gt;&lt;a href='#' class='active'&gt;Dashboard&lt;/a&gt;&lt;a href='#'&gt;Sản phẩm&lt;/a&gt;&lt;a href='#'&gt;Đơn hàng&lt;/a&gt;&lt;a href='#'&gt;Cài đặt&lt;/a&gt;&lt;/nav&gt;&lt;div class='main'&gt;&lt;div class='topbar'&gt;&lt;h1&gt;Dashboard&lt;/h1&gt;&lt;div class='topbar-right'&gt;&lt;span class='badge'&gt;Grid + Flex&lt;/span&gt;&lt;/div&gt;&lt;/div&gt;&lt;div class='content'&gt;&lt;div class='grid-stats'&gt;&lt;div class='stat'&gt;&lt;div class='val'&gt;1,234&lt;/div&gt;&lt;div class='lbl'&gt;Đơn hàng&lt;/div&gt;&lt;/div&gt;&lt;div class='stat'&gt;&lt;div class='val'&gt;56M&lt;/div&gt;&lt;div class='lbl'&gt;Doanh thu&lt;/div&gt;&lt;/div&gt;&lt;div class='stat'&gt;&lt;div class='val'&gt;892&lt;/div&gt;&lt;div class='lbl'&gt;Khách hàng&lt;/div&gt;&lt;/div&gt;&lt;/div&gt;&lt;/div&gt;&lt;/div&gt;&lt;/div&gt;&lt;/body&gt;&lt;/html&gt;"></iframe>
+          </div>
+        </section>
+        <section class="exercise" id="exercise">
+          <span class="level">Bài tập thực hành</span>
+          <h2>Yêu cầu đề bài</h2>
+          <p>Tái tạo layout portfolio: Grid cho trang tổng thể, Flexbox cho navigation bar và skill tags. <em>Dùng cả hai kỹ thuật trong cùng một trang.</em></p>
+          <ol class="steps">
+            <li>Nav bar: Flexbox, logo bên trái + links bên phải.</li>
+            <li>Main section: Grid 2 cột (về tôi + ảnh).</li>
+            <li>Phần skills bên dưới: Grid 3 cột cho skill categories, Flexbox cho các tags trong mỗi category.</li>
+            <li>Sử dụng màu sắc nhất quán.</li>
+          </ol>
+          <h3>Tiêu chí chấm</h3>
+          <ul>
+            <li>Nav dùng Flexbox đúng cách.</li>
+            <li>Layout chính dùng Grid 2 cột.</li>
+            <li>Skills section kết hợp Grid + Flex.</li>
+          </ul>
+        </section>
+        <section class="lesson solution" id="solution">
+          <h2>Bài giải tham khảo</h2>
+          <pre><code data-lang="html">&lt;!DOCTYPE html&gt;
+&lt;html lang="vi"&gt;
+&lt;head&gt;
+  &lt;meta charset="UTF-8"&gt;
+  &lt;style&gt;
+    * { box-sizing: border-box; margin: 0; }
+    body { font-family: sans-serif; background: #f8f9fc; }
+    /* Flexbox: navigation */
+    nav { display: flex; justify-content: space-between; align-items: center; padding: 16px 24px; background: #1e1b4b; }
+    .logo { color: white; font-weight: 700; font-size: 1.2rem; }
+    .nav-links { display: flex; gap: 20px; }
+    .nav-links a { color: #c4b5fd; text-decoration: none; font-size: .9rem; }
+    /* Grid: hero section */
+    .hero { display: grid; grid-template-columns: 1fr 1fr; gap: 32px; padding: 48px 24px; max-width: 900px; margin: 0 auto; align-items: center; }
+    .hero-text h1 { color: #1e293b; margin-bottom: 12px; }
+    .hero-text p { color: #64748b; line-height: 1.7; }
+    .hero-img { height: 200px; background: linear-gradient(135deg, #7c3aed, #4c1d95); border-radius: 12px; }
+    /* Grid: skills */
+    .skills { padding: 32px 24px; max-width: 900px; margin: 0 auto; }
+    .skills h2 { margin-bottom: 20px; }
+    .skills-grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 16px; }
+    .skill-cat { background: white; padding: 16px; border-radius: 8px; border: 1px solid #e2e8f0; }
+    .skill-cat h3 { color: #7c3aed; margin-bottom: 10px; font-size: .9rem; }
+    /* Flexbox: tags bên trong mỗi category */
+    .skill-tags { display: flex; flex-wrap: wrap; gap: 6px; }
+    .tag { background: #ede9fe; color: #4c1d95; padding: 3px 10px; border-radius: 99px; font-size: .78rem; font-weight: 600; }
+  &lt;/style&gt;
+&lt;/head&gt;
+&lt;body&gt;
+  &lt;nav&gt;
+    &lt;div class="logo"&gt;Portfolio&lt;/div&gt;
+    &lt;div class="nav-links"&gt;
+      &lt;a href="#"&gt;About&lt;/a&gt;&lt;a href="#"&gt;Skills&lt;/a&gt;&lt;a href="#"&gt;Projects&lt;/a&gt;&lt;a href="#"&gt;Contact&lt;/a&gt;
+    &lt;/div&gt;
+  &lt;/nav&gt;
+  &lt;section class="hero"&gt;
+    &lt;div class="hero-text"&gt;
+      &lt;h1&gt;Xin chào, tôi là An&lt;/h1&gt;
+      &lt;p&gt;Frontend Developer với 3 năm kinh nghiệm. Tôi xây dựng web đẹp và hiệu quả với CSS Grid và Flexbox.&lt;/p&gt;
+    &lt;/div&gt;
+    &lt;div class="hero-img"&gt;&lt;/div&gt;
+  &lt;/section&gt;
+  &lt;section class="skills"&gt;
+    &lt;h2&gt;Kỹ năng&lt;/h2&gt;
+    &lt;div class="skills-grid"&gt;
+      &lt;div class="skill-cat"&gt;&lt;h3&gt;Frontend&lt;/h3&gt;&lt;div class="skill-tags"&gt;&lt;span class="tag"&gt;HTML&lt;/span&gt;&lt;span class="tag"&gt;CSS&lt;/span&gt;&lt;span class="tag"&gt;JavaScript&lt;/span&gt;&lt;span class="tag"&gt;React&lt;/span&gt;&lt;/div&gt;&lt;/div&gt;
+      &lt;div class="skill-cat"&gt;&lt;h3&gt;CSS Layout&lt;/h3&gt;&lt;div class="skill-tags"&gt;&lt;span class="tag"&gt;Grid&lt;/span&gt;&lt;span class="tag"&gt;Flexbox&lt;/span&gt;&lt;span class="tag"&gt;Responsive&lt;/span&gt;&lt;/div&gt;&lt;/div&gt;
+      &lt;div class="skill-cat"&gt;&lt;h3&gt;Tools&lt;/h3&gt;&lt;div class="skill-tags"&gt;&lt;span class="tag"&gt;Git&lt;/span&gt;&lt;span class="tag"&gt;Figma&lt;/span&gt;&lt;span class="tag"&gt;VS Code&lt;/span&gt;&lt;/div&gt;&lt;/div&gt;
+    &lt;/div&gt;
+  &lt;/section&gt;
+&lt;/body&gt;
+&lt;/html&gt;</code></pre>
+          <div class="result-panel">
+            <div class="result-head"><h3>Kết quả bài giải</h3><span>Preview trực tiếp</span></div>
+            <iframe class="result-frame" title="Bài giải grid vs flexbox" srcdoc="&lt;!DOCTYPE html&gt;&lt;html&gt;&lt;head&gt;&lt;meta charset='UTF-8'&gt;&lt;style&gt;*{box-sizing:border-box;margin:0}body{font-family:sans-serif;background:#f8f9fc}nav{display:flex;justify-content:space-between;align-items:center;padding:12px 20px;background:#1e1b4b}.logo{color:white;font-weight:700;font-size:1rem}.nav-links{display:flex;gap:16px}.nav-links a{color:#c4b5fd;text-decoration:none;font-size:.85rem}.hero{display:grid;grid-template-columns:1fr 1fr;gap:24px;padding:28px 20px;align-items:center}.hero-text h1{color:#1e293b;margin-bottom:8px;font-size:1.1rem}.hero-text p{color:#64748b;line-height:1.6;font-size:.85rem}.hero-img{height:140px;background:linear-gradient(135deg,#7c3aed,#4c1d95);border-radius:10px}.skills{padding:20px}.skills h2{margin-bottom:14px;font-size:1rem}.skills-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:12px}.skill-cat{background:white;padding:12px;border-radius:8px;border:1px solid #e2e8f0}.skill-cat h3{color:#7c3aed;margin-bottom:8px;font-size:.85rem}.skill-tags{display:flex;flex-wrap:wrap;gap:5px}.tag{background:#ede9fe;color:#4c1d95;padding:2px 8px;border-radius:99px;font-size:.74rem;font-weight:600}&lt;/style&gt;&lt;/head&gt;&lt;body&gt;&lt;nav&gt;&lt;div class='logo'&gt;Portfolio&lt;/div&gt;&lt;div class='nav-links'&gt;&lt;a href='#'&gt;About&lt;/a&gt;&lt;a href='#'&gt;Skills&lt;/a&gt;&lt;a href='#'&gt;Projects&lt;/a&gt;&lt;/div&gt;&lt;/nav&gt;&lt;section class='hero'&gt;&lt;div class='hero-text'&gt;&lt;h1&gt;Xin chào, tôi là An&lt;/h1&gt;&lt;p&gt;Frontend Developer với 3 năm kinh nghiệm xây dựng web với CSS Grid và Flexbox.&lt;/p&gt;&lt;/div&gt;&lt;div class='hero-img'&gt;&lt;/div&gt;&lt;/section&gt;&lt;section class='skills'&gt;&lt;h2&gt;Kỹ năng&lt;/h2&gt;&lt;div class='skills-grid'&gt;&lt;div class='skill-cat'&gt;&lt;h3&gt;Frontend&lt;/h3&gt;&lt;div class='skill-tags'&gt;&lt;span class='tag'&gt;HTML&lt;/span&gt;&lt;span class='tag'&gt;CSS&lt;/span&gt;&lt;span class='tag'&gt;JavaScript&lt;/span&gt;&lt;/div&gt;&lt;/div&gt;&lt;div class='skill-cat'&gt;&lt;h3&gt;Layout&lt;/h3&gt;&lt;div class='skill-tags'&gt;&lt;span class='tag'&gt;Grid&lt;/span&gt;&lt;span class='tag'&gt;Flexbox&lt;/span&gt;&lt;/div&gt;&lt;/div&gt;&lt;div class='skill-cat'&gt;&lt;h3&gt;Tools&lt;/h3&gt;&lt;div class='skill-tags'&gt;&lt;span class='tag'&gt;Git&lt;/span&gt;&lt;span class='tag'&gt;Figma&lt;/span&gt;&lt;/div&gt;&lt;/div&gt;&lt;/div&gt;&lt;/section&gt;&lt;/body&gt;&lt;/html&gt;"></iframe>
+          </div>
+        </section>
+        <div class="pager">
+          <a class="btn" href="../../module-03-responsive-grid/bai-06/index.html">← Module trước</a>
+          <a class="btn primary" href="../bai-02/index.html">Bài tiếp theo →</a>
+        </div>
+      </article>
+    </div>
+  </main>
+  <footer class="footer"><p><a href="../index.html">Quay lại Module 4</a></p></footer>
+  <script type="module" src="../../app.js"></script>
+</body>
+</html>

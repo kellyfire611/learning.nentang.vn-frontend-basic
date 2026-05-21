@@ -1,0 +1,198 @@
+<!DOCTYPE html>
+<html lang="vi">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <meta name="description" content="Named grid lines trong CSS Grid — đặt tên cho các đường grid." />
+  <title>Bài 02 - Named grid lines | Module 2 CSS Grid | NenTang.vn</title>
+  <link rel="stylesheet" href="../../shared.css" />
+</head>
+<body>
+  <header class="topbar">
+    <div class="topbar-inner">
+      <a class="brand" href="../../index.html"><span class="brand-mark">G</span><span>CSS Grid</span></a>
+      <nav class="nav-links">
+        <a href="../../../index.html">Trang chủ</a>
+        <a href="../../index.html#modules">Module</a>
+      </nav>
+    </div>
+  </header>
+  <section class="module-hero m2">
+    <div class="container">
+      <div class="breadcrumb"><a href="../../index.html">CSS Grid</a><span>/</span><a href="../index.html">Module 2</a><span>/</span><span>Bài 02</span></div>
+      <h1>Bài 02: Named grid lines</h1>
+      <p>Đặt tên cho các đường grid để placement trở nên rõ ràng và dễ bảo trì hơn.</p>
+    </div>
+  </section>
+  <main class="section">
+    <div class="container lesson-layout">
+      <aside class="side-nav">
+        <a href="#goal">Mục tiêu</a>
+        <a href="#theory">Lý thuyết</a>
+        <a href="#demo">Minh họa</a>
+        <a href="#code">Code ví dụ</a>
+        <a href="#exercise">Thực hành</a>
+        <a href="#solution">Bài giải</a>
+      </aside>
+      <article class="module-article">
+        <section class="lesson" id="goal">
+          <h2>Mục tiêu bài học</h2>
+          <ul>
+            <li>Đặt tên cho grid lines bằng cú pháp <code>[tên-line]</code> trong <code>grid-template-columns/rows</code>.</li>
+            <li>Tham chiếu named lines khi đặt items thay vì dùng số.</li>
+            <li>Hiểu cách grid-template-areas tự tạo named lines ngầm định.</li>
+          </ul>
+        </section>
+        <section class="lesson" id="theory">
+          <h2>Lý thuyết thực tế</h2>
+          <p>Named grid lines được khai báo trong dấu ngoặc vuông bên trong <code>grid-template-columns</code> hoặc <code>grid-template-rows</code>. Ví dụ: <code>grid-template-columns: [sidebar-start] 220px [sidebar-end content-start] 1fr [content-end]</code>. Một line có thể có nhiều tên (cách nhau bằng dấu cách trong cùng một cặp ngoặc vuông).</p>
+          <p>Khi bạn đặt tên vùng trong <code>grid-template-areas</code>, CSS tự động tạo ra named lines với format <code>tên-vùng-start</code> và <code>tên-vùng-end</code>. Đây là lý do đôi khi bạn thấy selector như <code>grid-column: sidebar-start / sidebar-end</code> hoạt động mà không cần khai báo thêm.</p>
+          <ol class="steps">
+            <li>Đặt tên cho lines trong <code>grid-template-columns</code> bằng cú pháp <code>[tên]</code>.</li>
+            <li>Một line có thể có nhiều tên: <code>[sidebar-end content-start]</code>.</li>
+            <li>Dùng tên line thay số khi đặt item: <code>grid-column: sidebar-start / content-end</code>.</li>
+            <li>Code dễ đọc hơn và dễ refactor khi thay đổi số cột.</li>
+          </ol>
+        </section>
+        <section class="lesson" id="demo">
+          <h2>Minh họa trực quan</h2>
+          <p>Layout với named lines rõ ràng cho sidebar và content area.</p>
+          <style>
+.named-demo {
+  display: grid;
+  grid-template-columns: [sb-start] 180px [sb-end ct-start] 1fr [ct-end];
+  grid-template-rows: [hd-start] 50px [hd-end bd-start] 120px [bd-end];
+  gap: 8px;
+}
+.named-demo .nd-header { grid-column: sb-start / ct-end; grid-row: hd-start / hd-end; background: #e85d4f; color: white; padding: 12px; border-radius: 6px; font-weight: 700; text-align: center; }
+.named-demo .nd-sidebar { grid-column: sb-start / sb-end; grid-row: bd-start / bd-end; background: #fef3c7; color: #78350f; padding: 12px; border-radius: 6px; font-weight: 700; }
+.named-demo .nd-content { grid-column: ct-start / ct-end; grid-row: bd-start / bd-end; background: #f3f4f6; padding: 12px; border-radius: 6px; font-weight: 700; }
+          </style>
+          <div class="demo-surface">
+            <div class="named-demo">
+              <div class="nd-header">Header (sb-start / ct-end)</div>
+              <div class="nd-sidebar">Sidebar (sb-start / sb-end)</div>
+              <div class="nd-content">Content (ct-start / ct-end)</div>
+            </div>
+          </div>
+          <div class="demo-code">
+            <h3>Code tạo minh họa</h3>
+            <pre><code data-lang="css">.grid {
+  grid-template-columns:
+    [sb-start] 180px [sb-end ct-start] 1fr [ct-end];
+}
+.header  { grid-column: sb-start / ct-end; }
+.sidebar { grid-column: sb-start / sb-end; }
+.content { grid-column: ct-start / ct-end; }</code></pre>
+          </div>
+        </section>
+        <section class="lesson" id="code">
+          <h2>Code ví dụ</h2>
+          <p>Layout dùng named lines thay vì số để dễ bảo trì.</p>
+          <div class="code-grid">
+            <div><h3>CSS với số (khó bảo trì)</h3><pre><code data-lang="css">.layout {
+  grid-template-columns: 220px 1fr 200px;
+}
+.main { grid-column: 2 / 3; }
+/* Nếu thêm cột, phải sửa số */</code></pre></div>
+            <div><h3>CSS với named lines (dễ bảo trì)</h3><pre><code data-lang="css">.layout {
+  grid-template-columns:
+    [nav-start] 220px [nav-end main-start]
+    1fr [main-end aside-start]
+    200px [aside-end];
+}
+.main { grid-column: main-start / main-end; }
+/* Tên rõ ràng, không cần sửa khi thêm cột */</code></pre></div>
+          </div>
+          <div class="result-panel">
+            <div class="result-head"><h3>Kết quả</h3><span>Preview trực tiếp</span></div>
+            <iframe class="result-frame" title="named lines demo" srcdoc="&lt;!DOCTYPE html&gt;&lt;html&gt;&lt;head&gt;&lt;meta charset='UTF-8'&gt;&lt;style&gt;*{box-sizing:border-box;margin:0}body{font-family:sans-serif;padding:16px;background:#f4f7fb}.layout{display:grid;grid-template-columns:[nav-start]180px[nav-end main-start]1fr[main-end aside-start]160px[aside-end];gap:12px;min-height:240px}.nav-area{grid-column:nav-start/nav-end;background:#fef3c7;color:#78350f;padding:16px;border-radius:8px;font-weight:700}.main-area{grid-column:main-start/main-end;background:white;padding:16px;border-radius:8px;border:1px solid #e2e8f0;font-weight:700}.aside-area{grid-column:aside-start/aside-end;background:#f0fdf4;color:#065f46;padding:16px;border-radius:8px;font-weight:700}&lt;/style&gt;&lt;/head&gt;&lt;body&gt;&lt;div class='layout'&gt;&lt;div class='nav-area'&gt;Nav (nav-start/nav-end)&lt;/div&gt;&lt;div class='main-area'&gt;Main (main-start/main-end)&lt;/div&gt;&lt;div class='aside-area'&gt;Aside (aside-start/aside-end)&lt;/div&gt;&lt;/div&gt;&lt;/body&gt;&lt;/html&gt;"></iframe>
+          </div>
+        </section>
+        <section class="exercise" id="exercise">
+          <span class="level">Bài tập thực hành</span>
+          <h2>Yêu cầu đề bài</h2>
+          <p>Tạo grid với named lines cho header-area, content-area và footer-area theo chiều dọc. <em>Khác với ví dụ — named lines cho rows (chiều dọc), không phải columns.</em></p>
+          <ol class="steps">
+            <li>Định nghĩa <code>grid-template-rows: [hd-s] 60px [hd-e ct-s] 1fr [ct-e ft-s] 50px [ft-e]</code>.</li>
+            <li>Tạo 3 div và đặt chúng vào đúng vùng bằng named lines.</li>
+            <li>Header: <code>grid-row: hd-s / hd-e</code>.</li>
+            <li>Content và Footer tương tự.</li>
+          </ol>
+          <h3>Tiêu chí chấm</h3>
+          <ul>
+            <li>Header, content, footer xếp theo chiều dọc đúng thứ tự.</li>
+            <li>Dùng named lines (không dùng số) để đặt items.</li>
+            <li>Container có <code>min-height: 400px</code>.</li>
+          </ul>
+        </section>
+        <section class="lesson solution" id="solution">
+          <h2>Bài giải tham khảo</h2>
+          <pre><code data-lang="html">&lt;!DOCTYPE html&gt;
+&lt;html lang="vi"&gt;
+&lt;head&gt;
+  &lt;meta charset="UTF-8"&gt;
+  &lt;style&gt;
+    * { box-sizing: border-box; margin: 0; }
+    body { font-family: sans-serif; padding: 20px; background: #f4f7fb; }
+    .page {
+      display: grid;
+      grid-template-columns: 1fr;
+      grid-template-rows:
+        [hd-s] 60px [hd-e ct-s] 1fr [ct-e ft-s] 50px [ft-e];
+      gap: 12px;
+      min-height: 400px;
+    }
+    .page-header {
+      grid-row: hd-s / hd-e;
+      background: #e85d4f;
+      color: white;
+      padding: 16px;
+      border-radius: 8px;
+      font-weight: 700;
+      display: grid;
+      place-items: center;
+    }
+    .page-content {
+      grid-row: ct-s / ct-e;
+      background: white;
+      padding: 16px;
+      border-radius: 8px;
+      border: 1px solid #e2e8f0;
+    }
+    .page-footer {
+      grid-row: ft-s / ft-e;
+      background: #1e1b4b;
+      color: white;
+      padding: 16px;
+      border-radius: 8px;
+      font-weight: 700;
+      display: grid;
+      place-items: center;
+    }
+  &lt;/style&gt;
+&lt;/head&gt;
+&lt;body&gt;
+  &lt;div class="page"&gt;
+    &lt;div class="page-header"&gt;Header (hd-s / hd-e)&lt;/div&gt;
+    &lt;div class="page-content"&gt;Content (ct-s / ct-e)&lt;/div&gt;
+    &lt;div class="page-footer"&gt;Footer (ft-s / ft-e)&lt;/div&gt;
+  &lt;/div&gt;
+&lt;/body&gt;
+&lt;/html&gt;</code></pre>
+          <div class="result-panel">
+            <div class="result-head"><h3>Kết quả bài giải</h3><span>Preview trực tiếp</span></div>
+            <iframe class="result-frame" title="Bài giải named lines" srcdoc="&lt;!DOCTYPE html&gt;&lt;html&gt;&lt;head&gt;&lt;meta charset='UTF-8'&gt;&lt;style&gt;*{box-sizing:border-box;margin:0}body{font-family:sans-serif;padding:20px;background:#f4f7fb}.page{display:grid;grid-template-columns:1fr;grid-template-rows:[hd-s]60px[hd-e ct-s]1fr[ct-e ft-s]50px[ft-e];gap:12px;min-height:380px}.page-header{grid-row:hd-s/hd-e;background:#e85d4f;color:white;padding:16px;border-radius:8px;font-weight:700;display:grid;place-items:center}.page-content{grid-row:ct-s/ct-e;background:white;padding:16px;border-radius:8px;border:1px solid #e2e8f0}.page-footer{grid-row:ft-s/ft-e;background:#1e1b4b;color:white;padding:16px;border-radius:8px;font-weight:700;display:grid;place-items:center}&lt;/style&gt;&lt;/head&gt;&lt;body&gt;&lt;div class='page'&gt;&lt;div class='page-header'&gt;Header (hd-s / hd-e)&lt;/div&gt;&lt;div class='page-content'&gt;Content Area (ct-s / ct-e)&lt;/div&gt;&lt;div class='page-footer'&gt;Footer (ft-s / ft-e)&lt;/div&gt;&lt;/div&gt;&lt;/body&gt;&lt;/html&gt;"></iframe>
+          </div>
+        </section>
+        <div class="pager">
+          <a class="btn" href="../bai-01/index.html">← Bài trước</a>
+          <a class="btn primary" href="../bai-03/index.html">Bài tiếp theo →</a>
+        </div>
+      </article>
+    </div>
+  </main>
+  <footer class="footer"><p><a href="../index.html">Quay lại Module 2</a></p></footer>
+  <script type="module" src="../../app.js"></script>
+</body>
+</html>

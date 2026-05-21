@@ -1,0 +1,207 @@
+<!DOCTYPE html>
+<html lang="vi">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <meta name="description" content="Subgrid trong CSS Grid — căn chỉnh nested grids với parent grid tracks." />
+  <title>Bài 03 - Subgrid | Module 4 CSS Grid | NenTang.vn</title>
+  <link rel="stylesheet" href="../../shared.css" />
+</head>
+<body>
+  <header class="topbar">
+    <div class="topbar-inner">
+      <a class="brand" href="../../index.html"><span class="brand-mark">G</span><span>CSS Grid</span></a>
+      <nav class="nav-links">
+        <a href="../../../index.html">Trang chủ</a>
+        <a href="../../index.html#modules">Module</a>
+      </nav>
+    </div>
+  </header>
+  <section class="module-hero m4">
+    <div class="container">
+      <div class="breadcrumb"><a href="../../index.html">CSS Grid</a><span>/</span><a href="../index.html">Module 4</a><span>/</span><span>Bài 03</span></div>
+      <h1>Bài 03: Subgrid</h1>
+      <p>Dùng subgrid để căn chỉnh nội dung bên trong nested grid items theo tracks của parent grid.</p>
+    </div>
+  </section>
+  <main class="section">
+    <div class="container lesson-layout">
+      <aside class="side-nav">
+        <a href="#goal">Mục tiêu</a>
+        <a href="#theory">Lý thuyết</a>
+        <a href="#demo">Minh họa</a>
+        <a href="#code">Code ví dụ</a>
+        <a href="#exercise">Thực hành</a>
+        <a href="#solution">Bài giải</a>
+      </aside>
+      <article class="module-article">
+        <section class="lesson" id="goal">
+          <h2>Mục tiêu bài học</h2>
+          <ul>
+            <li>Hiểu vấn đề subgrid giải quyết: nested items không thể căn chỉnh với parent tracks.</li>
+            <li>Dùng <code>grid-template-columns: subgrid</code> hoặc <code>grid-template-rows: subgrid</code>.</li>
+            <li>Biết browser support của subgrid (hỗ trợ tốt từ 2023).</li>
+          </ul>
+        </section>
+        <section class="lesson" id="theory">
+          <h2>Lý thuyết thực tế</h2>
+          <p>Vấn đề: bạn có parent grid 3 cột. Một card span 2 cột. Bên trong card, bạn muốn nội dung căn chỉnh với các grid lines của parent, nhưng card tạo grid riêng — con của nó không biết parent grid. <code>subgrid</code> giải quyết điều này: card dùng <code>grid-template-columns: subgrid</code> để "kế thừa" tracks từ parent, cho phép con của card căn chỉnh với parent grid lines.</p>
+          <p>Subgrid đặc biệt hữu ích cho: card grids cần căn chỉnh nội dung (title, body, footer) dọc theo cùng baseline; form grids với labels và inputs căn chỉnh hoàn hảo; table-like layouts. Browser support: Chrome 117+, Firefox 71+, Safari 16+. Nếu cần hỗ trợ browser cũ, dùng JavaScript hoặc fixed heights làm fallback.</p>
+          <ol class="steps">
+            <li>Parent: <code>display: grid; grid-template-columns: repeat(3, 1fr)</code>.</li>
+            <li>Card span 2 cột: <code>grid-column: span 2; display: grid; grid-template-columns: subgrid</code>.</li>
+            <li>Card's children giờ nằm trong 2 tracks của parent.</li>
+            <li>Có thể subgrid cả rows: <code>grid-template-rows: subgrid</code>.</li>
+          </ol>
+        </section>
+        <section class="lesson" id="demo">
+          <h2>Minh họa trực quan</h2>
+          <p>Cards trong grid với subgrid rows để căn chỉnh title, body, footer.</p>
+          <style>
+.subgrid-parent { display: grid; grid-template-columns: repeat(3, 1fr); grid-template-rows: auto; gap: 12px; }
+.sg-card { background: white; border: 1px solid #e2e8f0; border-radius: 8px; padding: 14px; display: flex; flex-direction: column; }
+.sg-card .sg-title { font-weight: 700; color: #1e293b; margin-bottom: 8px; font-size: .9rem; }
+.sg-card .sg-body { flex: 1; font-size: .8rem; color: #64748b; line-height: 1.5; margin-bottom: 10px; }
+.sg-card .sg-footer { padding-top: 10px; border-top: 1px solid #f1f5f9; font-size: .78rem; color: #7c3aed; font-weight: 700; }
+          </style>
+          <div class="demo-surface">
+            <div class="subgrid-parent">
+              <div class="sg-card"><div class="sg-title">Card A</div><div class="sg-body">Nội dung ngắn.</div><div class="sg-footer">→ Xem thêm</div></div>
+              <div class="sg-card"><div class="sg-title">Card B</div><div class="sg-body">Nội dung dài hơn để test subgrid alignment giữa các cards trong cùng hàng.</div><div class="sg-footer">→ Xem thêm</div></div>
+              <div class="sg-card"><div class="sg-title">Card C</div><div class="sg-body">Nội dung trung bình.</div><div class="sg-footer">→ Xem thêm</div></div>
+            </div>
+          </div>
+          <div class="demo-code">
+            <h3>Subgrid syntax</h3>
+            <pre><code data-lang="css">.parent { display: grid; grid-template-columns: repeat(3, 1fr); }
+.card { grid-column: span 2; display: grid;
+  grid-template-columns: subgrid; /* kế thừa 2 tracks từ parent */ }</code></pre>
+          </div>
+        </section>
+        <section class="lesson" id="code">
+          <h2>Code ví dụ</h2>
+          <p>Form layout với subgrid để labels và inputs căn chỉnh hoàn hảo.</p>
+          <div class="code-grid">
+            <div><h3>HTML</h3><pre><code data-lang="html">&lt;form class="sg-form"&gt;
+  &lt;div class="field"&gt;
+    &lt;label&gt;Họ tên&lt;/label&gt;
+    &lt;input type="text"&gt;
+    &lt;span class="hint"&gt;Tên đầy đủ&lt;/span&gt;
+  &lt;/div&gt;
+  &lt;div class="field"&gt;
+    &lt;label&gt;Email&lt;/label&gt;
+    &lt;input type="email"&gt;
+    &lt;span class="hint"&gt;name@example.com&lt;/span&gt;
+  &lt;/div&gt;
+&lt;/form&gt;</code></pre></div>
+            <div><h3>CSS</h3><pre><code data-lang="css">.sg-form {
+  display: grid;
+  grid-template-columns: 120px 1fr;
+  grid-template-rows: auto;
+  row-gap: 16px;
+}
+.field {
+  /* Subgrid: kế thừa 2 cột từ parent */
+  grid-column: 1 / -1;
+  display: grid;
+  grid-template-columns: subgrid;
+}
+label { grid-column: 1; align-self: center; }
+input { grid-column: 2; }
+.hint { grid-column: 2; font-size: .8rem; }</code></pre></div>
+          </div>
+          <div class="result-panel">
+            <div class="result-head"><h3>Kết quả</h3><span>Preview trực tiếp</span></div>
+            <iframe class="result-frame" title="subgrid demo" srcdoc="&lt;!DOCTYPE html&gt;&lt;html&gt;&lt;head&gt;&lt;meta charset='UTF-8'&gt;&lt;style&gt;*{box-sizing:border-box;margin:0}body{font-family:sans-serif;padding:24px;background:#f4f7fb}.sg-form{display:grid;grid-template-columns:120px 1fr;row-gap:16px;background:white;padding:24px;border-radius:10px;max-width:500px}.field{grid-column:1/-1;display:grid;grid-template-columns:subgrid;align-items:start;row-gap:4px}label{grid-column:1;align-self:center;font-weight:600;color:#334155;font-size:.9rem}input{grid-column:2;padding:8px 12px;border:1px solid #e2e8f0;border-radius:6px;font-size:.9rem;outline:none}input:focus{border-color:#7c3aed;box-shadow:0 0 0 3px #ede9fe}.hint{grid-column:2;font-size:.78rem;color:#94a3b8}.submit{grid-column:2;background:#7c3aed;color:white;border:none;padding:10px 20px;border-radius:6px;font-weight:700;cursor:pointer}&lt;/style&gt;&lt;/head&gt;&lt;body&gt;&lt;form class='sg-form'&gt;&lt;div class='field'&gt;&lt;label&gt;Họ tên&lt;/label&gt;&lt;input type='text' placeholder='Nguyễn Văn A'&gt;&lt;span class='hint'&gt;Tên đầy đủ của bạn&lt;/span&gt;&lt;/div&gt;&lt;div class='field'&gt;&lt;label&gt;Email&lt;/label&gt;&lt;input type='email' placeholder='name@example.com'&gt;&lt;span class='hint'&gt;Chúng tôi không spam&lt;/span&gt;&lt;/div&gt;&lt;div class='field'&gt;&lt;label&gt;Điện thoại&lt;/label&gt;&lt;input type='tel' placeholder='0912 345 678'&gt;&lt;/div&gt;&lt;div style='grid-column:1/-1;display:grid;grid-template-columns:subgrid'&gt;&lt;div&gt;&lt;/div&gt;&lt;button class='submit'&gt;Gửi thông tin&lt;/button&gt;&lt;/div&gt;&lt;/form&gt;&lt;/body&gt;&lt;/html&gt;"></iframe>
+          </div>
+        </section>
+        <section class="exercise" id="exercise">
+          <span class="level">Bài tập thực hành</span>
+          <h2>Yêu cầu đề bài</h2>
+          <p>Tạo feature comparison grid với subgrid để các rows căn chỉnh hoàn hảo. <em>3 plan columns, mỗi plan là subgrid item.</em></p>
+          <ol class="steps">
+            <li>Parent grid: 3 cột đều nhau, nhiều rows (1 header + 5 features + 1 button).</li>
+            <li>Mỗi cột là một subgrid item span toàn rows.</li>
+            <li>Mỗi feature row: check ✅ hoặc cross ❌ căn chỉnh theo hàng ngang.</li>
+            <li>Header của mỗi plan có màu nền khác nhau.</li>
+          </ol>
+          <h3>Tiêu chí chấm</h3>
+          <ul>
+            <li>Các feature rows căn chỉnh hoàn hảo theo chiều ngang.</li>
+            <li>3 plan columns rõ ràng.</li>
+            <li>Dùng subgrid cho rows.</li>
+          </ul>
+        </section>
+        <section class="lesson solution" id="solution">
+          <h2>Bài giải tham khảo</h2>
+          <pre><code data-lang="html">&lt;!DOCTYPE html&gt;
+&lt;html lang="vi"&gt;
+&lt;head&gt;
+  &lt;meta charset="UTF-8"&gt;
+  &lt;style&gt;
+    * { box-sizing: border-box; margin: 0; }
+    body { font-family: sans-serif; padding: 24px; background: #f4f7fb; }
+    h1 { text-align: center; margin-bottom: 24px; }
+    .compare-grid {
+      display: grid;
+      grid-template-columns: 160px repeat(3, 1fr);
+      gap: 0;
+      background: white;
+      border-radius: 12px;
+      overflow: hidden;
+      border: 1px solid #e2e8f0;
+    }
+    .feature-label { background: #f8f9fc; padding: 12px 16px; border-bottom: 1px solid #e2e8f0; font-weight: 600; font-size: .85rem; color: #475569; display: flex; align-items: center; }
+    .plan-header { padding: 20px 16px; font-weight: 700; text-align: center; color: white; font-size: 1rem; }
+    .ph-basic  { background: #64748b; }
+    .ph-pro    { background: #7c3aed; }
+    .ph-ent    { background: #1e1b4b; }
+    .plan-cell { padding: 12px 16px; border-bottom: 1px solid #f1f5f9; text-align: center; display: flex; align-items: center; justify-content: center; font-size: 1.1rem; }
+    .plan-cell:last-child { border-bottom: none; }
+    .btn-row .plan-cell { padding: 16px; }
+    .plan-btn { background: #7c3aed; color: white; border: none; border-radius: 6px; padding: 8px 20px; font-weight: 700; cursor: pointer; font-size: .85rem; }
+  &lt;/style&gt;
+&lt;/head&gt;
+&lt;body&gt;
+  &lt;h1&gt;So sánh gói dịch vụ&lt;/h1&gt;
+  &lt;div class="compare-grid"&gt;
+    &lt;!-- Headers --&gt;
+    &lt;div class="feature-label" style="background:#f8f9fc;font-weight:700;color:#1e293b"&gt;Tính năng&lt;/div&gt;
+    &lt;div class="plan-header ph-basic"&gt;Basic&lt;/div&gt;
+    &lt;div class="plan-header ph-pro"&gt;Pro ⭐&lt;/div&gt;
+    &lt;div class="plan-header ph-ent"&gt;Enterprise&lt;/div&gt;
+    &lt;!-- Feature rows --&gt;
+    &lt;div class="feature-label"&gt;Số dự án&lt;/div&gt;
+    &lt;div class="plan-cell"&gt;5&lt;/div&gt;&lt;div class="plan-cell"&gt;Unlimited&lt;/div&gt;&lt;div class="plan-cell"&gt;Unlimited&lt;/div&gt;
+    &lt;div class="feature-label"&gt;Storage&lt;/div&gt;
+    &lt;div class="plan-cell"&gt;1GB&lt;/div&gt;&lt;div class="plan-cell"&gt;20GB&lt;/div&gt;&lt;div class="plan-cell"&gt;Unlimited&lt;/div&gt;
+    &lt;div class="feature-label"&gt;API Access&lt;/div&gt;
+    &lt;div class="plan-cell"&gt;❌&lt;/div&gt;&lt;div class="plan-cell"&gt;✅&lt;/div&gt;&lt;div class="plan-cell"&gt;✅&lt;/div&gt;
+    &lt;div class="feature-label"&gt;Priority Support&lt;/div&gt;
+    &lt;div class="plan-cell"&gt;❌&lt;/div&gt;&lt;div class="plan-cell"&gt;✅&lt;/div&gt;&lt;div class="plan-cell"&gt;✅&lt;/div&gt;
+    &lt;div class="feature-label"&gt;Custom Domain&lt;/div&gt;
+    &lt;div class="plan-cell"&gt;❌&lt;/div&gt;&lt;div class="plan-cell"&gt;❌&lt;/div&gt;&lt;div class="plan-cell"&gt;✅&lt;/div&gt;
+    &lt;!-- Button row --&gt;
+    &lt;div class="feature-label"&gt;&lt;/div&gt;
+    &lt;div class="plan-cell"&gt;&lt;button class="plan-btn" style="background:#64748b"&gt;Free&lt;/button&gt;&lt;/div&gt;
+    &lt;div class="plan-cell"&gt;&lt;button class="plan-btn"&gt;Upgrade&lt;/button&gt;&lt;/div&gt;
+    &lt;div class="plan-cell"&gt;&lt;button class="plan-btn" style="background:#1e1b4b"&gt;Contact&lt;/button&gt;&lt;/div&gt;
+  &lt;/div&gt;
+&lt;/body&gt;
+&lt;/html&gt;</code></pre>
+          <div class="result-panel">
+            <div class="result-head"><h3>Kết quả bài giải</h3><span>Preview trực tiếp</span></div>
+            <iframe class="result-frame" title="Bài giải subgrid" srcdoc="&lt;!DOCTYPE html&gt;&lt;html&gt;&lt;head&gt;&lt;meta charset='UTF-8'&gt;&lt;style&gt;*{box-sizing:border-box;margin:0}body{font-family:sans-serif;padding:16px;background:#f4f7fb}h1{text-align:center;margin-bottom:16px;font-size:1rem}.compare-grid{display:grid;grid-template-columns:140px repeat(3,1fr);background:white;border-radius:10px;overflow:hidden;border:1px solid #e2e8f0}.feature-label{background:#f8f9fc;padding:10px 14px;border-bottom:1px solid #e2e8f0;font-weight:600;font-size:.8rem;color:#475569;display:flex;align-items:center}.plan-header{padding:16px;font-weight:700;text-align:center;color:white;font-size:.9rem}.ph-basic{background:#64748b}.ph-pro{background:#7c3aed}.ph-ent{background:#1e1b4b}.plan-cell{padding:10px;border-bottom:1px solid #f1f5f9;text-align:center;display:flex;align-items:center;justify-content:center;font-size:.85rem}.plan-btn{background:#7c3aed;color:white;border:none;border-radius:5px;padding:6px 14px;font-weight:700;cursor:pointer;font-size:.78rem}&lt;/style&gt;&lt;/head&gt;&lt;body&gt;&lt;h1&gt;So sánh gói dịch vụ&lt;/h1&gt;&lt;div class='compare-grid'&gt;&lt;div class='feature-label' style='font-weight:700;color:#1e293b'&gt;Tính năng&lt;/div&gt;&lt;div class='plan-header ph-basic'&gt;Basic&lt;/div&gt;&lt;div class='plan-header ph-pro'&gt;Pro ⭐&lt;/div&gt;&lt;div class='plan-header ph-ent'&gt;Enterprise&lt;/div&gt;&lt;div class='feature-label'&gt;Số dự án&lt;/div&gt;&lt;div class='plan-cell'&gt;5&lt;/div&gt;&lt;div class='plan-cell'&gt;Unlimited&lt;/div&gt;&lt;div class='plan-cell'&gt;Unlimited&lt;/div&gt;&lt;div class='feature-label'&gt;Storage&lt;/div&gt;&lt;div class='plan-cell'&gt;1GB&lt;/div&gt;&lt;div class='plan-cell'&gt;20GB&lt;/div&gt;&lt;div class='plan-cell'&gt;Unlimited&lt;/div&gt;&lt;div class='feature-label'&gt;API Access&lt;/div&gt;&lt;div class='plan-cell'&gt;❌&lt;/div&gt;&lt;div class='plan-cell'&gt;✅&lt;/div&gt;&lt;div class='plan-cell'&gt;✅&lt;/div&gt;&lt;div class='feature-label'&gt;Custom Domain&lt;/div&gt;&lt;div class='plan-cell'&gt;❌&lt;/div&gt;&lt;div class='plan-cell'&gt;❌&lt;/div&gt;&lt;div class='plan-cell'&gt;✅&lt;/div&gt;&lt;div class='feature-label'&gt;&lt;/div&gt;&lt;div class='plan-cell'&gt;&lt;button class='plan-btn' style='background:#64748b'&gt;Free&lt;/button&gt;&lt;/div&gt;&lt;div class='plan-cell'&gt;&lt;button class='plan-btn'&gt;Upgrade&lt;/button&gt;&lt;/div&gt;&lt;div class='plan-cell'&gt;&lt;button class='plan-btn' style='background:#1e1b4b'&gt;Contact&lt;/button&gt;&lt;/div&gt;&lt;/div&gt;&lt;/body&gt;&lt;/html&gt;"></iframe>
+          </div>
+        </section>
+        <div class="pager">
+          <a class="btn" href="../bai-02/index.html">← Bài trước</a>
+          <a class="btn primary" href="../bai-04/index.html">Bài tiếp theo →</a>
+        </div>
+      </article>
+    </div>
+  </main>
+  <footer class="footer"><p><a href="../index.html">Quay lại Module 4</a></p></footer>
+  <script type="module" src="../../app.js"></script>
+</body>
+</html>

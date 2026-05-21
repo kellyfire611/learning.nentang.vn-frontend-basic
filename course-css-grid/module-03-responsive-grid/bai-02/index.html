@@ -1,0 +1,207 @@
+<!DOCTYPE html>
+<html lang="vi">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <meta name="description" content="Tạo Responsive card grid với CSS Grid — không cần media query." />
+  <title>Bài 02 - Responsive card grid | Module 3 CSS Grid | NenTang.vn</title>
+  <link rel="stylesheet" href="../../shared.css" />
+</head>
+<body>
+  <header class="topbar">
+    <div class="topbar-inner">
+      <a class="brand" href="../../index.html"><span class="brand-mark">G</span><span>CSS Grid</span></a>
+      <nav class="nav-links">
+        <a href="../../../index.html">Trang chủ</a>
+        <a href="../../index.html#modules">Module</a>
+      </nav>
+    </div>
+  </header>
+  <section class="module-hero m3">
+    <div class="container">
+      <div class="breadcrumb"><a href="../../index.html">CSS Grid</a><span>/</span><a href="../index.html">Module 3</a><span>/</span><span>Bài 02</span></div>
+      <h1>Bài 02: Responsive card grid</h1>
+      <p>Xây dựng responsive card grid hoàn chỉnh với CSS Grid — tự động co giãn không cần media query.</p>
+    </div>
+  </section>
+  <main class="section">
+    <div class="container lesson-layout">
+      <aside class="side-nav">
+        <a href="#goal">Mục tiêu</a>
+        <a href="#theory">Lý thuyết</a>
+        <a href="#demo">Minh họa</a>
+        <a href="#code">Code ví dụ</a>
+        <a href="#exercise">Thực hành</a>
+        <a href="#solution">Bài giải</a>
+      </aside>
+      <article class="module-article">
+        <section class="lesson" id="goal">
+          <h2>Mục tiêu bài học</h2>
+          <ul>
+            <li>Xây dựng card grid hoàn chỉnh với ảnh, tiêu đề, mô tả, và action buttons.</li>
+            <li>Dùng <code>repeat(auto-fit, minmax(280px, 1fr))</code> cho responsive layout.</li>
+            <li>Đảm bảo cards có chiều cao đồng đều trong cùng hàng với <code>align-items: stretch</code>.</li>
+          </ul>
+        </section>
+        <section class="lesson" id="theory">
+          <h2>Lý thuyết thực tế</h2>
+          <p>Responsive card grid là pattern UI phổ biến nhất với CSS Grid. Technique cốt lõi: <code>repeat(auto-fit, minmax(MIN, 1fr))</code>. Giá trị <code>MIN</code> quyết định card rộng tối thiểu bao nhiêu trước khi grid giảm cột. Ví dụ: card rộng tối thiểu 280px → 3 cột trên desktop, 2 trên tablet, 1 trên mobile — hoàn toàn tự động.</p>
+          <p>Để cards trong cùng hàng có chiều cao bằng nhau, dùng Flexbox bên trong card: <code>display: flex; flex-direction: column</code> rồi cho phần nội dung chính <code>flex: 1</code> để đẩy button xuống đáy. Kết hợp Grid (layout tổng thể) + Flexbox (layout bên trong card) là pattern cực kỳ hiệu quả.</p>
+          <ol class="steps">
+            <li>Container: <code>display: grid</code> với <code>auto-fit minmax(280px, 1fr)</code>.</li>
+            <li>Mỗi card: <code>display: flex; flex-direction: column</code> để căn chỉnh nội dung dọc.</li>
+            <li>Phần body card: <code>flex: 1</code> để chiếm không gian còn lại.</li>
+            <li>Button ở cuối card sẽ tự align xuống đáy.</li>
+          </ol>
+        </section>
+        <section class="lesson" id="demo">
+          <h2>Minh họa trực quan</h2>
+          <p>Cards với chiều cao đồng đều, button align đáy.</p>
+          <style>
+.card-showcase { display: grid; grid-template-columns: repeat(auto-fit, minmax(180px, 1fr)); gap: 12px; }
+.showcase-card { background: white; border-radius: 8px; border: 1px solid #e2e8f0; overflow: hidden; display: flex; flex-direction: column; }
+.sc-img { height: 80px; }
+.sc-body { padding: 12px; flex: 1; }
+.sc-title { font-weight: 700; margin-bottom: 4px; font-size: 0.9rem; }
+.sc-desc { font-size: 0.75rem; color: #64748b; }
+.sc-footer { padding: 10px 12px; border-top: 1px solid #f1f5f9; }
+.sc-btn { background: #7c3aed; color: white; border: none; border-radius: 4px; padding: 6px 12px; font-size: 0.75rem; font-weight: 700; cursor: pointer; width: 100%; }
+          </style>
+          <div class="demo-surface">
+            <div class="card-showcase">
+              <div class="showcase-card"><div class="sc-img" style="background:linear-gradient(135deg,#7c3aed,#4c1d95)"></div><div class="sc-body"><div class="sc-title">Card A</div><div class="sc-desc">Nội dung ngắn.</div></div><div class="sc-footer"><button class="sc-btn">Xem thêm</button></div></div>
+              <div class="showcase-card"><div class="sc-img" style="background:linear-gradient(135deg,#2563eb,#1e40af)"></div><div class="sc-body"><div class="sc-title">Card B</div><div class="sc-desc">Nội dung dài hơn nhiều để test chiều cao card đồng đều.</div></div><div class="sc-footer"><button class="sc-btn">Xem thêm</button></div></div>
+              <div class="showcase-card"><div class="sc-img" style="background:linear-gradient(135deg,#e85d4f,#9f1239)"></div><div class="sc-body"><div class="sc-title">Card C</div><div class="sc-desc">Nội dung bình thường.</div></div><div class="sc-footer"><button class="sc-btn">Xem thêm</button></div></div>
+            </div>
+          </div>
+          <div class="demo-code">
+            <h3>Cards đồng đều chiều cao</h3>
+            <pre><code data-lang="css">.card {
+  display: flex;
+  flex-direction: column;
+}
+.card-body { flex: 1; }
+/* button tự xuống đáy */</code></pre>
+          </div>
+        </section>
+        <section class="lesson" id="code">
+          <h2>Code ví dụ</h2>
+          <p>Product card grid hoàn chỉnh, responsive.</p>
+          <div class="code-grid">
+            <div><h3>HTML</h3><pre><code data-lang="html">&lt;div class="product-grid"&gt;
+  &lt;div class="product-card"&gt;
+    &lt;div class="card-img"&gt;&lt;/div&gt;
+    &lt;div class="card-body"&gt;
+      &lt;h3&gt;Tên sản phẩm&lt;/h3&gt;
+      &lt;p&gt;Mô tả sản phẩm...&lt;/p&gt;
+    &lt;/div&gt;
+    &lt;div class="card-footer"&gt;
+      &lt;span class="price"&gt;199,000đ&lt;/span&gt;
+      &lt;button&gt;Mua ngay&lt;/button&gt;
+    &lt;/div&gt;
+  &lt;/div&gt;
+&lt;/div&gt;</code></pre></div>
+            <div><h3>CSS</h3><pre><code data-lang="css">.product-grid {
+  display: grid;
+  grid-template-columns:
+    repeat(auto-fit, minmax(260px, 1fr));
+  gap: 20px;
+}
+.product-card {
+  display: flex;
+  flex-direction: column;
+  background: white;
+  border-radius: 12px;
+  overflow: hidden;
+  box-shadow: 0 2px 8px rgba(0,0,0,.08);
+}
+.card-body { flex: 1; padding: 16px; }
+.card-footer {
+  padding: 12px 16px;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  border-top: 1px solid #f1f5f9;
+}</code></pre></div>
+          </div>
+          <div class="result-panel">
+            <div class="result-head"><h3>Kết quả</h3><span>Preview trực tiếp</span></div>
+            <iframe class="result-frame" title="responsive card grid demo" srcdoc="&lt;!DOCTYPE html&gt;&lt;html&gt;&lt;head&gt;&lt;meta charset='UTF-8'&gt;&lt;style&gt;*{box-sizing:border-box;margin:0}body{font-family:sans-serif;padding:20px;background:#f4f7fb}.product-grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(200px,1fr));gap:16px}.product-card{display:flex;flex-direction:column;background:white;border-radius:12px;overflow:hidden;box-shadow:0 2px 8px rgba(0,0,0,.08)}.card-img{height:120px}.card-body{flex:1;padding:14px}.card-body h3{margin-bottom:6px;color:#1e293b;font-size:.95rem}.card-body p{font-size:.8rem;color:#64748b}.card-footer{padding:10px 14px;display:flex;justify-content:space-between;align-items:center;border-top:1px solid #f1f5f9}.price{font-weight:700;color:#7c3aed}.card-footer button{background:#7c3aed;color:white;border:none;border-radius:6px;padding:6px 12px;font-size:.8rem;font-weight:700;cursor:pointer}&lt;/style&gt;&lt;/head&gt;&lt;body&gt;&lt;div class='product-grid'&gt;&lt;div class='product-card'&gt;&lt;div class='card-img' style='background:linear-gradient(135deg,#7c3aed,#4c1d95)'&gt;&lt;/div&gt;&lt;div class='card-body'&gt;&lt;h3&gt;SP Tím Cao Cấp&lt;/h3&gt;&lt;p&gt;Mô tả sản phẩm ngắn.&lt;/p&gt;&lt;/div&gt;&lt;div class='card-footer'&gt;&lt;span class='price'&gt;199k&lt;/span&gt;&lt;button&gt;Mua&lt;/button&gt;&lt;/div&gt;&lt;/div&gt;&lt;div class='product-card'&gt;&lt;div class='card-img' style='background:linear-gradient(135deg,#2563eb,#1e40af)'&gt;&lt;/div&gt;&lt;div class='card-body'&gt;&lt;h3&gt;SP Xanh Biển&lt;/h3&gt;&lt;p&gt;Mô tả dài hơn để test chiều cao đồng đều trong grid.&lt;/p&gt;&lt;/div&gt;&lt;div class='card-footer'&gt;&lt;span class='price'&gt;350k&lt;/span&gt;&lt;button&gt;Mua&lt;/button&gt;&lt;/div&gt;&lt;/div&gt;&lt;div class='product-card'&gt;&lt;div class='card-img' style='background:linear-gradient(135deg,#059669,#065f46)'&gt;&lt;/div&gt;&lt;div class='card-body'&gt;&lt;h3&gt;SP Xanh Lá&lt;/h3&gt;&lt;p&gt;Mô tả bình thường.&lt;/p&gt;&lt;/div&gt;&lt;div class='card-footer'&gt;&lt;span class='price'&gt;120k&lt;/span&gt;&lt;button&gt;Mua&lt;/button&gt;&lt;/div&gt;&lt;/div&gt;&lt;/div&gt;&lt;/body&gt;&lt;/html&gt;"></iframe>
+          </div>
+        </section>
+        <section class="exercise" id="exercise">
+          <span class="level">Bài tập thực hành</span>
+          <h2>Yêu cầu đề bài</h2>
+          <p>Tạo blog post card grid responsive với 5 posts. <em>Khác với ví dụ — blog cards có tag, tiêu đề, excerpt, và author info.</em></p>
+          <ol class="steps">
+            <li>Dùng <code>repeat(auto-fit, minmax(280px, 1fr))</code>.</li>
+            <li>Mỗi card có: tag (badge màu), tiêu đề (h3), excerpt text, dòng author (avatar + tên + ngày).</li>
+            <li>Flex column cho card để author info luôn ở đáy.</li>
+            <li>Hover effect: nhẹ raise với box-shadow và translateY(-2px).</li>
+          </ol>
+          <h3>Tiêu chí chấm</h3>
+          <ul>
+            <li>Cards responsive với auto-fit.</li>
+            <li>Chiều cao đồng đều, author info ở đáy.</li>
+            <li>Hover effect mượt mà.</li>
+          </ul>
+        </section>
+        <section class="lesson solution" id="solution">
+          <h2>Bài giải tham khảo</h2>
+          <pre><code data-lang="html">&lt;!DOCTYPE html&gt;
+&lt;html lang="vi"&gt;
+&lt;head&gt;
+  &lt;meta charset="UTF-8"&gt;
+  &lt;style&gt;
+    * { box-sizing: border-box; margin: 0; }
+    body { font-family: sans-serif; padding: 20px; background: #f4f7fb; }
+    .blog-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(260px, 1fr));
+      gap: 20px;
+    }
+    .blog-card {
+      background: white; border-radius: 12px;
+      box-shadow: 0 1px 4px rgba(0,0,0,.08);
+      display: flex; flex-direction: column;
+      transition: transform .2s, box-shadow .2s;
+      overflow: hidden;
+    }
+    .blog-card:hover { transform: translateY(-3px); box-shadow: 0 6px 20px rgba(0,0,0,.12); }
+    .card-cover { height: 140px; }
+    .card-content { padding: 16px; flex: 1; }
+    .tag { display: inline-block; background: #ede9fe; color: #4c1d95; padding: 2px 8px; border-radius: 4px; font-size: .72rem; font-weight: 700; margin-bottom: 8px; }
+    .post-title { font-size: 1rem; font-weight: 700; margin-bottom: 8px; }
+    .excerpt { font-size: .85rem; color: #64748b; line-height: 1.5; }
+    .author { padding: 12px 16px; border-top: 1px solid #f1f5f9; display: flex; align-items: center; gap: 8px; }
+    .ava { width: 28px; height: 28px; border-radius: 50%; display: grid; place-items: center; font-weight: 700; color: white; font-size: .75rem; }
+    .author-name { font-size: .8rem; font-weight: 600; }
+    .author-date { font-size: .75rem; color: #94a3b8; }
+  &lt;/style&gt;
+&lt;/head&gt;
+&lt;body&gt;
+  &lt;div class="blog-grid"&gt;
+    &lt;div class="blog-card"&gt;&lt;div class="card-cover" style="background:linear-gradient(135deg,#7c3aed,#4c1d95)"&gt;&lt;/div&gt;&lt;div class="card-content"&gt;&lt;span class="tag"&gt;CSS Grid&lt;/span&gt;&lt;h3 class="post-title"&gt;Hướng dẫn CSS Grid 2024&lt;/h3&gt;&lt;p class="excerpt"&gt;Tổng hợp các kỹ thuật CSS Grid hiện đại nhất, từ cơ bản đến nâng cao.&lt;/p&gt;&lt;/div&gt;&lt;div class="author"&gt;&lt;div class="ava" style="background:#7c3aed"&gt;A&lt;/div&gt;&lt;div&gt;&lt;div class="author-name"&gt;An Nguyễn&lt;/div&gt;&lt;div class="author-date"&gt;1 tháng 6, 2024&lt;/div&gt;&lt;/div&gt;&lt;/div&gt;&lt;/div&gt;
+    &lt;div class="blog-card"&gt;&lt;div class="card-cover" style="background:linear-gradient(135deg,#2563eb,#1e40af)"&gt;&lt;/div&gt;&lt;div class="card-content"&gt;&lt;span class="tag"&gt;Responsive&lt;/span&gt;&lt;h3 class="post-title"&gt;Responsive Design Không Media Query&lt;/h3&gt;&lt;p class="excerpt"&gt;Dùng auto-fit và minmax() để layout tự responsive hoàn toàn tự động.&lt;/p&gt;&lt;/div&gt;&lt;div class="author"&gt;&lt;div class="ava" style="background:#2563eb"&gt;B&lt;/div&gt;&lt;div&gt;&lt;div class="author-name"&gt;Bình Trần&lt;/div&gt;&lt;div class="author-date"&gt;15 tháng 5, 2024&lt;/div&gt;&lt;/div&gt;&lt;/div&gt;&lt;/div&gt;
+    &lt;div class="blog-card"&gt;&lt;div class="card-cover" style="background:linear-gradient(135deg,#e85d4f,#9f1239)"&gt;&lt;/div&gt;&lt;div class="card-content"&gt;&lt;span class="tag"&gt;Layout&lt;/span&gt;&lt;h3 class="post-title"&gt;Holy Grail Layout Với CSS Grid&lt;/h3&gt;&lt;p class="excerpt"&gt;Xây dựng holy grail layout hoàn hảo chỉ với vài dòng CSS Grid.&lt;/p&gt;&lt;/div&gt;&lt;div class="author"&gt;&lt;div class="ava" style="background:#e85d4f"&gt;C&lt;/div&gt;&lt;div&gt;&lt;div class="author-name"&gt;Châu Lê&lt;/div&gt;&lt;div class="author-date"&gt;3 tháng 5, 2024&lt;/div&gt;&lt;/div&gt;&lt;/div&gt;&lt;/div&gt;
+    &lt;div class="blog-card"&gt;&lt;div class="card-cover" style="background:linear-gradient(135deg,#059669,#065f46)"&gt;&lt;/div&gt;&lt;div class="card-content"&gt;&lt;span class="tag"&gt;Tips&lt;/span&gt;&lt;h3 class="post-title"&gt;10 Mẹo CSS Grid Hay&lt;/h3&gt;&lt;p class="excerpt"&gt;Những mẹo CSS Grid giúp code nhanh hơn và layout đẹp hơn.&lt;/p&gt;&lt;/div&gt;&lt;div class="author"&gt;&lt;div class="ava" style="background:#059669"&gt;D&lt;/div&gt;&lt;div&gt;&lt;div class="author-name"&gt;Dũng Phạm&lt;/div&gt;&lt;div class="author-date"&gt;20 tháng 4, 2024&lt;/div&gt;&lt;/div&gt;&lt;/div&gt;&lt;/div&gt;
+    &lt;div class="blog-card"&gt;&lt;div class="card-cover" style="background:linear-gradient(135deg,#d97706,#92400e)"&gt;&lt;/div&gt;&lt;div class="card-content"&gt;&lt;span class="tag"&gt;Debug&lt;/span&gt;&lt;h3 class="post-title"&gt;Debug CSS Grid với DevTools&lt;/h3&gt;&lt;p class="excerpt"&gt;Hướng dẫn dùng Chrome DevTools để debug CSS Grid layout hiệu quả.&lt;/p&gt;&lt;/div&gt;&lt;div class="author"&gt;&lt;div class="ava" style="background:#d97706"&gt;E&lt;/div&gt;&lt;div&gt;&lt;div class="author-name"&gt;Em Hoàng&lt;/div&gt;&lt;div class="author-date"&gt;10 tháng 4, 2024&lt;/div&gt;&lt;/div&gt;&lt;/div&gt;&lt;/div&gt;
+  &lt;/div&gt;
+&lt;/body&gt;
+&lt;/html&gt;</code></pre>
+          <div class="result-panel">
+            <div class="result-head"><h3>Kết quả bài giải</h3><span>Preview trực tiếp</span></div>
+            <iframe class="result-frame" title="Bài giải blog grid" srcdoc="&lt;!DOCTYPE html&gt;&lt;html&gt;&lt;head&gt;&lt;meta charset='UTF-8'&gt;&lt;style&gt;*{box-sizing:border-box;margin:0}body{font-family:sans-serif;padding:12px;background:#f4f7fb}.blog-grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(200px,1fr));gap:14px}.blog-card{background:white;border-radius:10px;box-shadow:0 1px 4px rgba(0,0,0,.08);display:flex;flex-direction:column;overflow:hidden}.card-cover{height:100px}.card-content{padding:12px;flex:1}.tag{display:inline-block;background:#ede9fe;color:#4c1d95;padding:2px 7px;border-radius:4px;font-size:.7rem;font-weight:700;margin-bottom:6px}.post-title{font-size:.9rem;font-weight:700;margin-bottom:6px}.excerpt{font-size:.78rem;color:#64748b;line-height:1.5}.author{padding:10px 12px;border-top:1px solid #f1f5f9;display:flex;align-items:center;gap:7px}.ava{width:24px;height:24px;border-radius:50%;display:grid;place-items:center;font-weight:700;color:white;font-size:.7rem}.author-name{font-size:.76rem;font-weight:600}.author-date{font-size:.72rem;color:#94a3b8}&lt;/style&gt;&lt;/head&gt;&lt;body&gt;&lt;div class='blog-grid'&gt;&lt;div class='blog-card'&gt;&lt;div class='card-cover' style='background:linear-gradient(135deg,#7c3aed,#4c1d95)'&gt;&lt;/div&gt;&lt;div class='card-content'&gt;&lt;span class='tag'&gt;CSS Grid&lt;/span&gt;&lt;h3 class='post-title'&gt;Hướng dẫn CSS Grid&lt;/h3&gt;&lt;p class='excerpt'&gt;Tổng hợp kỹ thuật CSS Grid hiện đại.&lt;/p&gt;&lt;/div&gt;&lt;div class='author'&gt;&lt;div class='ava' style='background:#7c3aed'&gt;A&lt;/div&gt;&lt;div&gt;&lt;div class='author-name'&gt;An Nguyễn&lt;/div&gt;&lt;div class='author-date'&gt;1/6/2024&lt;/div&gt;&lt;/div&gt;&lt;/div&gt;&lt;/div&gt;&lt;div class='blog-card'&gt;&lt;div class='card-cover' style='background:linear-gradient(135deg,#2563eb,#1e40af)'&gt;&lt;/div&gt;&lt;div class='card-content'&gt;&lt;span class='tag'&gt;Responsive&lt;/span&gt;&lt;h3 class='post-title'&gt;Responsive Không Media Query&lt;/h3&gt;&lt;p class='excerpt'&gt;auto-fit và minmax() cho responsive tự động.&lt;/p&gt;&lt;/div&gt;&lt;div class='author'&gt;&lt;div class='ava' style='background:#2563eb'&gt;B&lt;/div&gt;&lt;div&gt;&lt;div class='author-name'&gt;Bình Trần&lt;/div&gt;&lt;div class='author-date'&gt;15/5/2024&lt;/div&gt;&lt;/div&gt;&lt;/div&gt;&lt;/div&gt;&lt;div class='blog-card'&gt;&lt;div class='card-cover' style='background:linear-gradient(135deg,#e85d4f,#9f1239)'&gt;&lt;/div&gt;&lt;div class='card-content'&gt;&lt;span class='tag'&gt;Layout&lt;/span&gt;&lt;h3 class='post-title'&gt;Holy Grail Layout&lt;/h3&gt;&lt;p class='excerpt'&gt;Holy grail với vài dòng CSS Grid.&lt;/p&gt;&lt;/div&gt;&lt;div class='author'&gt;&lt;div class='ava' style='background:#e85d4f'&gt;C&lt;/div&gt;&lt;div&gt;&lt;div class='author-name'&gt;Châu Lê&lt;/div&gt;&lt;div class='author-date'&gt;3/5/2024&lt;/div&gt;&lt;/div&gt;&lt;/div&gt;&lt;/div&gt;&lt;/div&gt;&lt;/body&gt;&lt;/html&gt;"></iframe>
+          </div>
+        </section>
+        <div class="pager">
+          <a class="btn" href="../bai-01/index.html">← Bài trước</a>
+          <a class="btn primary" href="../bai-03/index.html">Bài tiếp theo →</a>
+        </div>
+      </article>
+    </div>
+  </main>
+  <footer class="footer"><p><a href="../index.html">Quay lại Module 3</a></p></footer>
+  <script type="module" src="../../app.js"></script>
+</body>
+</html>

@@ -1,0 +1,211 @@
+<!DOCTYPE html>
+<html lang="vi">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <meta name="description" content="Dense packing với grid-auto-flow: dense trong CSS Grid." />
+  <title>Bài 04 - Dense packing | Module 2 CSS Grid | NenTang.vn</title>
+  <link rel="stylesheet" href="../../shared.css" />
+</head>
+<body>
+  <header class="topbar">
+    <div class="topbar-inner">
+      <a class="brand" href="../../index.html"><span class="brand-mark">G</span><span>CSS Grid</span></a>
+      <nav class="nav-links">
+        <a href="../../../index.html">Trang chủ</a>
+        <a href="../../index.html#modules">Module</a>
+      </nav>
+    </div>
+  </header>
+  <section class="module-hero m2">
+    <div class="container">
+      <div class="breadcrumb"><a href="../../index.html">CSS Grid</a><span>/</span><a href="../index.html">Module 2</a><span>/</span><span>Bài 04</span></div>
+      <h1>Bài 04: Dense packing — grid-auto-flow: dense</h1>
+      <p>Lấp đầy khoảng trống trong grid tự động bằng thuật toán dense packing.</p>
+    </div>
+  </section>
+  <main class="section">
+    <div class="container lesson-layout">
+      <aside class="side-nav">
+        <a href="#goal">Mục tiêu</a>
+        <a href="#theory">Lý thuyết</a>
+        <a href="#demo">Minh họa</a>
+        <a href="#code">Code ví dụ</a>
+        <a href="#exercise">Thực hành</a>
+        <a href="#solution">Bài giải</a>
+      </aside>
+      <article class="module-article">
+        <section class="lesson" id="goal">
+          <h2>Mục tiêu bài học</h2>
+          <ul>
+            <li>Hiểu tại sao grid để lại khoảng trống khi có items với kích thước khác nhau.</li>
+            <li>Dùng <code>grid-auto-flow: dense</code> để lấp đầy khoảng trống.</li>
+            <li>Biết khi nào nên và không nên dùng dense (vấn đề với accessibility).</li>
+          </ul>
+        </section>
+        <section class="lesson" id="theory">
+          <h2>Lý thuyết thực tế</h2>
+          <p>Mặc định, grid đặt items theo thứ tự DOM nghiêm ngặt. Khi một item span 2 cột nhưng chỉ còn 1 ô trống trong hàng, grid bỏ trống hàng đó và chuyển sang hàng mới. Kết quả: có khoảng trống xấu. <code>grid-auto-flow: dense</code> bảo grid thử đặt items nhỏ hơn vào khoảng trống đó, thay đổi thứ tự visual của items.</p>
+          <p><strong>Lưu ý accessibility:</strong> Dense có thể thay đổi thứ tự visual so với DOM order. Screen reader và keyboard navigation theo DOM order, không theo visual order. Tránh dùng dense nếu thứ tự đọc của nội dung quan trọng (như news articles). Dense phù hợp hơn cho gallery ảnh thuần túy.</p>
+          <ol class="steps">
+            <li>Tạo grid với items có kích thước span khác nhau.</li>
+            <li>Không có dense: thấy khoảng trống khi items lớn không vừa ô.</li>
+            <li>Thêm <code>grid-auto-flow: row dense</code> vào container.</li>
+            <li>Grid tự lấp đầy khoảng trống bằng items nhỏ hơn phía sau.</li>
+          </ol>
+        </section>
+        <section class="lesson" id="demo">
+          <h2>Minh họa trực quan</h2>
+          <p>So sánh: trên (không dense) có khoảng trống, dưới (dense) lấp đầy.</p>
+          <style>
+.dense-compare { display: grid; grid-template-columns: 1fr 1fr; gap: 16px; margin-top: 8px; }
+.dense-grid, .nodense-grid { display: grid; grid-template-columns: repeat(3, 1fr); grid-auto-rows: 60px; gap: 6px; }
+.dense-grid { grid-auto-flow: row dense; }
+.dense-compare .gi { background: #7c3aed; color: white; border-radius: 6px; display: grid; place-items: center; font-weight: 700; font-size: 0.75rem; }
+.dense-compare .wide { grid-column: span 2; background: #e85d4f; }
+.dense-compare label { display: block; font-weight: 700; margin-bottom: 6px; font-size: 0.85rem; color: #5e6b7a; }
+          </style>
+          <div class="demo-surface">
+            <div class="dense-compare">
+              <div>
+                <label>Không dense (khoảng trống):</label>
+                <div class="nodense-grid">
+                  <div class="gi wide">A (span 2)</div>
+                  <div class="gi">B</div>
+                  <div class="gi wide">C (span 2)</div>
+                  <div class="gi">D</div>
+                  <div class="gi">E</div>
+                </div>
+              </div>
+              <div>
+                <label>Có dense (lấp đầy):</label>
+                <div class="dense-grid">
+                  <div class="gi wide">A (span 2)</div>
+                  <div class="gi">B</div>
+                  <div class="gi wide">C (span 2)</div>
+                  <div class="gi">D</div>
+                  <div class="gi">E</div>
+                </div>
+              </div>
+            </div>
+          </div>
+          <div class="demo-code">
+            <h3>Sự khác biệt</h3>
+            <pre><code data-lang="css">/* Không dense */
+.grid { grid-auto-flow: row; }
+
+/* Có dense */
+.grid { grid-auto-flow: row dense; }</code></pre>
+          </div>
+        </section>
+        <section class="lesson" id="code">
+          <h2>Code ví dụ</h2>
+          <p>Masonry-like grid với dense packing cho gallery ảnh.</p>
+          <div class="code-grid">
+            <div><h3>HTML</h3><pre><code data-lang="html">&lt;div class="gallery"&gt;
+  &lt;div class="photo wide"&gt;Ảnh ngang&lt;/div&gt;
+  &lt;div class="photo"&gt;Ảnh vuông&lt;/div&gt;
+  &lt;div class="photo tall"&gt;Ảnh dọc&lt;/div&gt;
+  &lt;div class="photo"&gt;Ảnh vuông&lt;/div&gt;
+  &lt;div class="photo wide"&gt;Ảnh ngang&lt;/div&gt;
+&lt;/div&gt;</code></pre></div>
+            <div><h3>CSS</h3><pre><code data-lang="css">.gallery {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  grid-auto-rows: 120px;
+  grid-auto-flow: row dense;
+  gap: 8px;
+}
+.wide { grid-column: span 2; }
+.tall { grid-row: span 2; }</code></pre></div>
+          </div>
+          <div class="result-panel">
+            <div class="result-head"><h3>Kết quả</h3><span>Dense gallery</span></div>
+            <iframe class="result-frame" title="dense packing demo" srcdoc="&lt;!DOCTYPE html&gt;&lt;html&gt;&lt;head&gt;&lt;meta charset='UTF-8'&gt;&lt;style&gt;*{box-sizing:border-box;margin:0}body{font-family:sans-serif;padding:20px;background:#f4f7fb}.gallery{display:grid;grid-template-columns:repeat(3,1fr);grid-auto-rows:120px;grid-auto-flow:row dense;gap:8px}.photo{border-radius:8px;display:grid;place-items:center;font-weight:700;color:white;font-size:.85rem}.photo:nth-child(1){background:#7c3aed}.photo:nth-child(2){background:#2563eb}.photo:nth-child(3){background:#e85d4f}.photo:nth-child(4){background:#059669}.photo:nth-child(5){background:#d97706}.photo:nth-child(6){background:#7c3aed}.wide{grid-column:span 2}.tall{grid-row:span 2}&lt;/style&gt;&lt;/head&gt;&lt;body&gt;&lt;div class='gallery'&gt;&lt;div class='photo wide'&gt;Ngang (span 2)&lt;/div&gt;&lt;div class='photo tall'&gt;Dọc (span 2 rows)&lt;/div&gt;&lt;div class='photo'&gt;Vuông&lt;/div&gt;&lt;div class='photo wide'&gt;Ngang (span 2)&lt;/div&gt;&lt;div class='photo'&gt;Vuông&lt;/div&gt;&lt;div class='photo'&gt;Vuông&lt;/div&gt;&lt;/div&gt;&lt;/body&gt;&lt;/html&gt;"></iframe>
+          </div>
+        </section>
+        <section class="exercise" id="exercise">
+          <span class="level">Bài tập thực hành</span>
+          <h2>Yêu cầu đề bài</h2>
+          <p>Tạo grid ảnh 4 cột với dense để không có khoảng trống. Một số ảnh span 2 cột. <em>Khác với ví dụ — 4 cột, không có tall items.</em></p>
+          <ol class="steps">
+            <li>Tạo grid 4 cột với <code>grid-auto-rows: 100px</code>.</li>
+            <li>Thêm <code>grid-auto-flow: row dense</code> vào container.</li>
+            <li>Một số items (item thứ 2, 5, 7) dùng <code>grid-column: span 2</code>.</li>
+            <li>Dùng 8-10 items tổng cộng để thấy rõ dense packing.</li>
+          </ol>
+          <h3>Tiêu chí chấm</h3>
+          <ul>
+            <li>Không có khoảng trống trong grid.</li>
+            <li>Items span 2 cột xen kẽ với items 1 cột.</li>
+            <li>Màu sắc đa dạng để phân biệt items.</li>
+          </ul>
+        </section>
+        <section class="lesson solution" id="solution">
+          <h2>Bài giải tham khảo</h2>
+          <pre><code data-lang="html">&lt;!DOCTYPE html&gt;
+&lt;html lang="vi"&gt;
+&lt;head&gt;
+  &lt;meta charset="UTF-8"&gt;
+  &lt;style&gt;
+    * { box-sizing: border-box; margin: 0; }
+    body { font-family: sans-serif; padding: 20px; background: #f4f7fb; }
+    .gallery {
+      display: grid;
+      grid-template-columns: repeat(4, 1fr);
+      grid-auto-rows: 100px;
+      grid-auto-flow: row dense;
+      gap: 8px;
+    }
+    .photo {
+      border-radius: 8px;
+      display: grid;
+      place-items: center;
+      font-weight: 700;
+      color: white;
+      font-size: 0.8rem;
+    }
+    .wide { grid-column: span 2; }
+    .photo:nth-child(1)  { background: #7c3aed; }
+    .photo:nth-child(2)  { background: #e85d4f; }
+    .photo:nth-child(3)  { background: #2563eb; }
+    .photo:nth-child(4)  { background: #059669; }
+    .photo:nth-child(5)  { background: #d97706; }
+    .photo:nth-child(6)  { background: #7c3aed; }
+    .photo:nth-child(7)  { background: #e85d4f; }
+    .photo:nth-child(8)  { background: #2563eb; }
+    .photo:nth-child(9)  { background: #059669; }
+    .photo:nth-child(10) { background: #d97706; }
+  &lt;/style&gt;
+&lt;/head&gt;
+&lt;body&gt;
+  &lt;div class="gallery"&gt;
+    &lt;div class="photo"&gt;1&lt;/div&gt;
+    &lt;div class="photo wide"&gt;2 (span 2)&lt;/div&gt;
+    &lt;div class="photo"&gt;3&lt;/div&gt;
+    &lt;div class="photo"&gt;4&lt;/div&gt;
+    &lt;div class="photo wide"&gt;5 (span 2)&lt;/div&gt;
+    &lt;div class="photo"&gt;6&lt;/div&gt;
+    &lt;div class="photo wide"&gt;7 (span 2)&lt;/div&gt;
+    &lt;div class="photo"&gt;8&lt;/div&gt;
+    &lt;div class="photo"&gt;9&lt;/div&gt;
+    &lt;div class="photo wide"&gt;10 (span 2)&lt;/div&gt;
+  &lt;/div&gt;
+&lt;/body&gt;
+&lt;/html&gt;</code></pre>
+          <div class="result-panel">
+            <div class="result-head"><h3>Kết quả bài giải</h3><span>Preview trực tiếp</span></div>
+            <iframe class="result-frame" title="Bài giải dense" srcdoc="&lt;!DOCTYPE html&gt;&lt;html&gt;&lt;head&gt;&lt;meta charset='UTF-8'&gt;&lt;style&gt;*{box-sizing:border-box;margin:0}body{font-family:sans-serif;padding:20px;background:#f4f7fb}.gallery{display:grid;grid-template-columns:repeat(4,1fr);grid-auto-rows:100px;grid-auto-flow:row dense;gap:8px}.photo{border-radius:8px;display:grid;place-items:center;font-weight:700;color:white;font-size:.8rem}.wide{grid-column:span 2}.photo:nth-child(1){background:#7c3aed}.photo:nth-child(2){background:#e85d4f}.photo:nth-child(3){background:#2563eb}.photo:nth-child(4){background:#059669}.photo:nth-child(5){background:#d97706}.photo:nth-child(6){background:#7c3aed}.photo:nth-child(7){background:#e85d4f}.photo:nth-child(8){background:#2563eb}.photo:nth-child(9){background:#059669}.photo:nth-child(10){background:#d97706}&lt;/style&gt;&lt;/head&gt;&lt;body&gt;&lt;div class='gallery'&gt;&lt;div class='photo'&gt;1&lt;/div&gt;&lt;div class='photo wide'&gt;2 (span 2)&lt;/div&gt;&lt;div class='photo'&gt;3&lt;/div&gt;&lt;div class='photo'&gt;4&lt;/div&gt;&lt;div class='photo wide'&gt;5 (span 2)&lt;/div&gt;&lt;div class='photo'&gt;6&lt;/div&gt;&lt;div class='photo wide'&gt;7 (span 2)&lt;/div&gt;&lt;div class='photo'&gt;8&lt;/div&gt;&lt;div class='photo'&gt;9&lt;/div&gt;&lt;div class='photo wide'&gt;10 (span 2)&lt;/div&gt;&lt;/div&gt;&lt;/body&gt;&lt;/html&gt;"></iframe>
+          </div>
+        </section>
+        <div class="pager">
+          <a class="btn" href="../bai-03/index.html">← Bài trước</a>
+          <a class="btn primary" href="../bai-05/index.html">Bài tiếp theo →</a>
+        </div>
+      </article>
+    </div>
+  </main>
+  <footer class="footer"><p><a href="../index.html">Quay lại Module 2</a></p></footer>
+  <script type="module" src="../../app.js"></script>
+</body>
+</html>

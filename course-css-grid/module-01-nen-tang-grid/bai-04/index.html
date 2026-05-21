@@ -1,0 +1,171 @@
+<!DOCTYPE html>
+<html lang="vi">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <meta name="description" content="gap, column-gap, row-gap trong CSS Grid — tạo khoảng cách giữa các ô." />
+  <title>Bài 04 - gap, column-gap, row-gap | Module 1 CSS Grid | NenTang.vn</title>
+  <link rel="stylesheet" href="../../shared.css" />
+</head>
+<body>
+  <header class="topbar">
+    <div class="topbar-inner">
+      <a class="brand" href="../../index.html"><span class="brand-mark">G</span><span>CSS Grid</span></a>
+      <nav class="nav-links">
+        <a href="../../../index.html">Trang chủ</a>
+        <a href="../../index.html#modules">Module</a>
+      </nav>
+    </div>
+  </header>
+  <section class="module-hero m1">
+    <div class="container">
+      <div class="breadcrumb"><a href="../../index.html">CSS Grid</a><span>/</span><a href="../index.html">Module 1</a><span>/</span><span>Bài 04</span></div>
+      <h1>Bài 04: gap, column-gap, row-gap</h1>
+      <p>Tạo khoảng cách giữa các ô grid một cách sạch sẽ, không cần dùng margin.</p>
+    </div>
+  </section>
+  <main class="section">
+    <div class="container lesson-layout">
+      <aside class="side-nav">
+        <a href="#goal">Mục tiêu</a>
+        <a href="#theory">Lý thuyết</a>
+        <a href="#demo">Minh họa</a>
+        <a href="#code">Code ví dụ</a>
+        <a href="#exercise">Thực hành</a>
+        <a href="#solution">Bài giải</a>
+      </aside>
+      <article class="module-article">
+        <section class="lesson" id="goal">
+          <h2>Mục tiêu bài học</h2>
+          <ul>
+            <li>Dùng <code>gap</code> để tạo khoảng cách đều giữa tất cả các ô grid.</li>
+            <li>Phân biệt <code>column-gap</code> (khoảng cách theo chiều ngang) và <code>row-gap</code> (chiều dọc).</li>
+            <li>Hiểu tại sao nên dùng <code>gap</code> thay vì <code>margin</code> trong grid.</li>
+          </ul>
+        </section>
+        <section class="lesson" id="theory">
+          <h2>Lý thuyết thực tế</h2>
+          <p><code>gap</code> là shorthand cho <code>row-gap</code> và <code>column-gap</code>. Khi bạn viết <code>gap: 16px</code>, cả hai đều là 16px. Khi viết <code>gap: 16px 24px</code>, row-gap là 16px và column-gap là 24px. Gap chỉ tạo khoảng cách <em>giữa</em> các ô, không tạo khoảng cách ở cạnh ngoài cùng của grid.</p>
+          <p>Lý do nên dùng gap thay margin: margin trên grid item có thể làm vỡ layout (item không vừa vào track), còn gap được grid tính toán tự động và không ảnh hưởng đến kích thước track. Đây là cách chuẩn để tạo khoảng cách trong CSS Grid và Flexbox.</p>
+          <ol class="steps">
+            <li>Thêm <code>gap: 16px</code> vào grid container để tạo khoảng cách đều.</li>
+            <li>Dùng <code>column-gap: 24px; row-gap: 12px</code> nếu muốn khoảng cách ngang/dọc khác nhau.</li>
+            <li>Hoặc shorthand: <code>gap: 12px 24px</code> (row first, column second).</li>
+            <li>Không dùng margin trên grid items để tạo khoảng cách.</li>
+          </ol>
+        </section>
+        <section class="lesson" id="demo">
+          <h2>Minh họa trực quan</h2>
+          <p>Grid 3x3 với gap khác nhau giữa hàng và cột.</p>
+          <style>
+.gap-demo { display: grid; grid-template-columns: repeat(3, 1fr); gap: 12px 24px; background: #f3f4f6; padding: 12px; border-radius: 8px; }
+.gap-demo div { background: #7c3aed; color: white; padding: 16px; border-radius: 6px; text-align: center; font-weight: 700; }
+          </style>
+          <div class="demo-surface">
+            <div class="gap-demo">
+              <div>1</div><div>2</div><div>3</div>
+              <div>4</div><div>5</div><div>6</div>
+              <div>7</div><div>8</div><div>9</div>
+            </div>
+          </div>
+          <div class="demo-code">
+            <h3>Code tạo minh họa</h3>
+            <pre><code data-lang="css">.grid {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 12px 24px; /* row-gap: 12px, column-gap: 24px */
+}</code></pre>
+          </div>
+        </section>
+        <section class="lesson" id="code">
+          <h2>Code ví dụ</h2>
+          <p>Card grid sản phẩm với gap khác nhau hàng và cột.</p>
+          <div class="code-grid">
+            <div><h3>HTML</h3><pre><code data-lang="html">&lt;div class="card-grid"&gt;
+  &lt;div class="card"&gt;Sản phẩm 1&lt;/div&gt;
+  &lt;div class="card"&gt;Sản phẩm 2&lt;/div&gt;
+  &lt;div class="card"&gt;Sản phẩm 3&lt;/div&gt;
+  &lt;div class="card"&gt;Sản phẩm 4&lt;/div&gt;
+&lt;/div&gt;</code></pre></div>
+            <div><h3>CSS</h3><pre><code data-lang="css">.card-grid {
+  display: grid;
+  grid-template-columns: repeat(2, 1fr);
+  column-gap: 24px;
+  row-gap: 16px;
+}
+/* hoặc shorthand: gap: 16px 24px */</code></pre></div>
+          </div>
+          <div class="result-panel">
+            <div class="result-head"><h3>Kết quả</h3><span>Preview trực tiếp</span></div>
+            <iframe class="result-frame" title="gap demo" srcdoc="&lt;!DOCTYPE html&gt;&lt;html&gt;&lt;head&gt;&lt;meta charset='UTF-8'&gt;&lt;style&gt;*{box-sizing:border-box;margin:0}body{font-family:sans-serif;padding:20px;background:#f4f7fb}.card-grid{display:grid;grid-template-columns:repeat(2,1fr);column-gap:24px;row-gap:16px}.card{background:white;border:1px solid #e2e8f0;border-radius:8px;padding:20px;font-weight:700;color:#1e293b}p.note{margin-top:12px;color:#64748b;font-size:.9rem}&lt;/style&gt;&lt;/head&gt;&lt;body&gt;&lt;div class='card-grid'&gt;&lt;div class='card'&gt;Sản phẩm 1&lt;br&gt;&lt;small style='color:#64748b;font-weight:400'&gt;column-gap: 24px&lt;/small&gt;&lt;/div&gt;&lt;div class='card'&gt;Sản phẩm 2&lt;br&gt;&lt;small style='color:#64748b;font-weight:400'&gt;row-gap: 16px&lt;/small&gt;&lt;/div&gt;&lt;div class='card'&gt;Sản phẩm 3&lt;/div&gt;&lt;div class='card'&gt;Sản phẩm 4&lt;/div&gt;&lt;/div&gt;&lt;/body&gt;&lt;/html&gt;"></iframe>
+          </div>
+        </section>
+        <section class="exercise" id="exercise">
+          <span class="level">Bài tập thực hành</span>
+          <h2>Yêu cầu đề bài</h2>
+          <p>Tạo grid sản phẩm 3 cột với <code>row-gap: 24px</code> và <code>column-gap: 16px</code>. <em>Khác với ví dụ — 3 cột, gap khác nhau hàng/cột.</em></p>
+          <ol class="steps">
+            <li>Tạo <code>div.products</code> chứa 6 <code>div.product</code>.</li>
+            <li>Dùng <code>grid-template-columns: repeat(3, 1fr)</code> để tạo 3 cột.</li>
+            <li>Thêm <code>row-gap: 24px</code> và <code>column-gap: 16px</code> riêng biệt.</li>
+            <li>Mỗi product có padding 20px, background trắng, border-radius 8px.</li>
+          </ol>
+          <h3>Tiêu chí chấm</h3>
+          <ul>
+            <li>3 cột đều nhau.</li>
+            <li>Khoảng cách dọc (row-gap) lớn hơn khoảng cách ngang (column-gap).</li>
+            <li>Không dùng margin trên các product item.</li>
+          </ul>
+        </section>
+        <section class="lesson solution" id="solution">
+          <h2>Bài giải tham khảo</h2>
+          <pre><code data-lang="html">&lt;!DOCTYPE html&gt;
+&lt;html lang="vi"&gt;
+&lt;head&gt;
+  &lt;meta charset="UTF-8"&gt;
+  &lt;style&gt;
+    * { box-sizing: border-box; margin: 0; }
+    body { font-family: sans-serif; padding: 20px; background: #f4f7fb; }
+    .products {
+      display: grid;
+      grid-template-columns: repeat(3, 1fr);
+      row-gap: 24px;
+      column-gap: 16px;
+    }
+    .product {
+      background: white;
+      padding: 20px;
+      border-radius: 8px;
+      border: 1px solid #e2e8f0;
+    }
+    .product h3 { margin-bottom: 8px; color: #7c3aed; }
+    .product p { color: #64748b; font-size: 0.88rem; }
+  &lt;/style&gt;
+&lt;/head&gt;
+&lt;body&gt;
+  &lt;div class="products"&gt;
+    &lt;div class="product"&gt;&lt;h3&gt;Sản phẩm 1&lt;/h3&gt;&lt;p&gt;Mô tả sản phẩm&lt;/p&gt;&lt;/div&gt;
+    &lt;div class="product"&gt;&lt;h3&gt;Sản phẩm 2&lt;/h3&gt;&lt;p&gt;Mô tả sản phẩm&lt;/p&gt;&lt;/div&gt;
+    &lt;div class="product"&gt;&lt;h3&gt;Sản phẩm 3&lt;/h3&gt;&lt;p&gt;Mô tả sản phẩm&lt;/p&gt;&lt;/div&gt;
+    &lt;div class="product"&gt;&lt;h3&gt;Sản phẩm 4&lt;/h3&gt;&lt;p&gt;Mô tả sản phẩm&lt;/p&gt;&lt;/div&gt;
+    &lt;div class="product"&gt;&lt;h3&gt;Sản phẩm 5&lt;/h3&gt;&lt;p&gt;Mô tả sản phẩm&lt;/p&gt;&lt;/div&gt;
+    &lt;div class="product"&gt;&lt;h3&gt;Sản phẩm 6&lt;/h3&gt;&lt;p&gt;Mô tả sản phẩm&lt;/p&gt;&lt;/div&gt;
+  &lt;/div&gt;
+&lt;/body&gt;
+&lt;/html&gt;</code></pre>
+          <div class="result-panel">
+            <div class="result-head"><h3>Kết quả bài giải</h3><span>Preview trực tiếp</span></div>
+            <iframe class="result-frame" title="Bài giải gap" srcdoc="&lt;!DOCTYPE html&gt;&lt;html&gt;&lt;head&gt;&lt;meta charset='UTF-8'&gt;&lt;style&gt;*{box-sizing:border-box;margin:0}body{font-family:sans-serif;padding:20px;background:#f4f7fb}.products{display:grid;grid-template-columns:repeat(3,1fr);row-gap:24px;column-gap:16px}.product{background:white;padding:20px;border-radius:8px;border:1px solid #e2e8f0}.product h3{margin-bottom:8px;color:#7c3aed}.product p{color:#64748b;font-size:.88rem}&lt;/style&gt;&lt;/head&gt;&lt;body&gt;&lt;div class='products'&gt;&lt;div class='product'&gt;&lt;h3&gt;Sản phẩm 1&lt;/h3&gt;&lt;p&gt;Mô tả sản phẩm&lt;/p&gt;&lt;/div&gt;&lt;div class='product'&gt;&lt;h3&gt;Sản phẩm 2&lt;/h3&gt;&lt;p&gt;Mô tả sản phẩm&lt;/p&gt;&lt;/div&gt;&lt;div class='product'&gt;&lt;h3&gt;Sản phẩm 3&lt;/h3&gt;&lt;p&gt;Mô tả sản phẩm&lt;/p&gt;&lt;/div&gt;&lt;div class='product'&gt;&lt;h3&gt;Sản phẩm 4&lt;/h3&gt;&lt;p&gt;Mô tả sản phẩm&lt;/p&gt;&lt;/div&gt;&lt;div class='product'&gt;&lt;h3&gt;Sản phẩm 5&lt;/h3&gt;&lt;p&gt;Mô tả sản phẩm&lt;/p&gt;&lt;/div&gt;&lt;div class='product'&gt;&lt;h3&gt;Sản phẩm 6&lt;/h3&gt;&lt;p&gt;Mô tả sản phẩm&lt;/p&gt;&lt;/div&gt;&lt;/div&gt;&lt;/body&gt;&lt;/html&gt;"></iframe>
+          </div>
+        </section>
+        <div class="pager">
+          <a class="btn" href="../bai-03/index.html">← Bài trước</a>
+          <a class="btn primary" href="../bai-05/index.html">Bài tiếp theo →</a>
+        </div>
+      </article>
+    </div>
+  </main>
+  <footer class="footer"><p><a href="../index.html">Quay lại Module 1</a></p></footer>
+  <script type="module" src="../../app.js"></script>
+</body>
+</html>

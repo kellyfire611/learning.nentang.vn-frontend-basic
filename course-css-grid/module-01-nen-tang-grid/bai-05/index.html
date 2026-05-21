@@ -1,0 +1,179 @@
+<!DOCTYPE html>
+<html lang="vi">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <meta name="description" content="Placing items trong CSS Grid: grid-column, grid-row, line numbers và span." />
+  <title>Bài 05 - Placing items | Module 1 CSS Grid | NenTang.vn</title>
+  <link rel="stylesheet" href="../../shared.css" />
+</head>
+<body>
+  <header class="topbar">
+    <div class="topbar-inner">
+      <a class="brand" href="../../index.html"><span class="brand-mark">G</span><span>CSS Grid</span></a>
+      <nav class="nav-links">
+        <a href="../../../index.html">Trang chủ</a>
+        <a href="../../index.html#modules">Module</a>
+      </nav>
+    </div>
+  </header>
+  <section class="module-hero m1">
+    <div class="container">
+      <div class="breadcrumb"><a href="../../index.html">CSS Grid</a><span>/</span><a href="../index.html">Module 1</a><span>/</span><span>Bài 05</span></div>
+      <h1>Bài 05: Placing items — grid-column và grid-row</h1>
+      <p>Đặt item vào vị trí cụ thể trong grid bằng line numbers và span keyword.</p>
+    </div>
+  </section>
+  <main class="section">
+    <div class="container lesson-layout">
+      <aside class="side-nav">
+        <a href="#goal">Mục tiêu</a>
+        <a href="#theory">Lý thuyết</a>
+        <a href="#demo">Minh họa</a>
+        <a href="#code">Code ví dụ</a>
+        <a href="#exercise">Thực hành</a>
+        <a href="#solution">Bài giải</a>
+      </aside>
+      <article class="module-article">
+        <section class="lesson" id="goal">
+          <h2>Mục tiêu bài học</h2>
+          <ul>
+            <li>Dùng <code>grid-column</code> và <code>grid-row</code> để đặt item vào vị trí cụ thể.</li>
+            <li>Hiểu hệ thống đánh số line (bắt đầu từ 1, âm từ -1 là line cuối).</li>
+            <li>Dùng cú pháp <code>span N</code> để item chiếm N tracks liên tiếp.</li>
+          </ul>
+        </section>
+        <section class="lesson" id="theory">
+          <h2>Lý thuyết thực tế</h2>
+          <p>Mỗi đường phân cách trong grid được đánh số, bắt đầu từ 1 ở bên trái/trên cùng. <code>grid-column: 1 / 3</code> nghĩa là item bắt đầu từ line 1 và kết thúc ở line 3, chiếm 2 cột. <code>grid-column: 1 / -1</code> dùng line âm: -1 là line cuối cùng, nên item chiếm toàn bộ chiều ngang.</p>
+          <p>Cú pháp <code>span</code>: <code>grid-column: 2 / span 3</code> nghĩa là bắt đầu từ line 2 và chiếm 3 cột. <code>grid-column: span 2</code> (thiếu start line) nghĩa là auto placement sẽ chọn start line, nhưng item vẫn chiếm 2 cột. Grid row hoạt động tương tự theo chiều dọc.</p>
+          <ol class="steps">
+            <li>Xác định vị trí line bắt đầu và kết thúc của item trong grid.</li>
+            <li>Dùng <code>grid-column: start / end</code> với số line thực tế.</li>
+            <li>Hoặc dùng <code>grid-column: start / span N</code> nếu biết số cột cần chiếm.</li>
+            <li>Dùng <code>grid-column: 1 / -1</code> để item chiếm full width bất kể grid có bao nhiêu cột.</li>
+          </ol>
+        </section>
+        <section class="lesson" id="demo">
+          <h2>Minh họa trực quan</h2>
+          <p>Layout với header chiếm 3 cột, sidebar cột 1, main cột 2-3.</p>
+          <style>
+.place-demo { display: grid; grid-template-columns: 1fr 1fr 1fr; gap: 8px; }
+.place-demo .ph { grid-column: 1 / -1; background: #7c3aed; color: white; padding: 12px; border-radius: 6px; text-align: center; font-weight: 700; }
+.place-demo .ps { grid-column: 1; background: #ede9fe; color: #4c1d95; padding: 12px; border-radius: 6px; font-weight: 700; min-height: 80px; }
+.place-demo .pm { grid-column: 2 / 4; background: #f3f4f6; padding: 12px; border-radius: 6px; font-weight: 700; }
+          </style>
+          <div class="demo-surface">
+            <div class="place-demo">
+              <div class="ph">Header (grid-column: 1 / -1)</div>
+              <div class="ps">Sidebar (col 1)</div>
+              <div class="pm">Main (grid-column: 2 / 4)</div>
+            </div>
+          </div>
+          <div class="demo-code">
+            <h3>Code tạo minh họa</h3>
+            <pre><code data-lang="css">.header { grid-column: 1 / -1; }   /* full width */
+.sidebar { grid-column: 1; }        /* cột 1 */
+.main { grid-column: 2 / 4; }       /* cột 2 đến 4 */</code></pre>
+          </div>
+        </section>
+        <section class="lesson" id="code">
+          <h2>Code ví dụ</h2>
+          <p>News grid với featured article chiếm 2 cột.</p>
+          <div class="code-grid">
+            <div><h3>HTML</h3><pre><code data-lang="html">&lt;div class="news-grid"&gt;
+  &lt;article class="featured"&gt;Featured&lt;/article&gt;
+  &lt;article class="regular"&gt;Bài 2&lt;/article&gt;
+  &lt;article class="regular"&gt;Bài 3&lt;/article&gt;
+  &lt;article class="regular"&gt;Bài 4&lt;/article&gt;
+&lt;/div&gt;</code></pre></div>
+            <div><h3>CSS</h3><pre><code data-lang="css">.news-grid {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 16px;
+}
+.featured {
+  grid-column: 1 / span 2;
+  /* chiếm 2 cột từ line 1 */
+}</code></pre></div>
+          </div>
+          <div class="result-panel">
+            <div class="result-head"><h3>Kết quả</h3><span>Preview trực tiếp</span></div>
+            <iframe class="result-frame" title="grid placement demo" srcdoc="&lt;!DOCTYPE html&gt;&lt;html&gt;&lt;head&gt;&lt;meta charset='UTF-8'&gt;&lt;style&gt;*{box-sizing:border-box;margin:0}body{font-family:sans-serif;padding:20px;background:#f4f7fb}.news-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:16px}.featured{grid-column:1/span 2;background:#7c3aed;color:white;padding:24px;border-radius:8px;font-weight:700;font-size:1.1rem}.regular{background:white;padding:18px;border-radius:8px;border:1px solid #e2e8f0;font-weight:700}&lt;/style&gt;&lt;/head&gt;&lt;body&gt;&lt;div class='news-grid'&gt;&lt;article class='featured'&gt;Featured Article (span 2)&lt;/article&gt;&lt;article class='regular'&gt;Bài 2&lt;/article&gt;&lt;article class='regular'&gt;Bài 3&lt;/article&gt;&lt;article class='regular'&gt;Bài 4&lt;/article&gt;&lt;/div&gt;&lt;/body&gt;&lt;/html&gt;"></iframe>
+          </div>
+        </section>
+        <section class="exercise" id="exercise">
+          <span class="level">Bài tập thực hành</span>
+          <h2>Yêu cầu đề bài</h2>
+          <p>Tạo grid 3 cột với 1 hero item chiếm full width và 3 items nhỏ bên dưới. <em>Khác với ví dụ — hero chiếm 3 cột (full), không phải 2.</em></p>
+          <ol class="steps">
+            <li>Tạo <code>div.hero-grid</code> chứa <code>.hero</code> và 3 <code>.card</code>.</li>
+            <li>Dùng <code>grid-template-columns: repeat(3, 1fr)</code>.</li>
+            <li>Đặt <code>.hero</code> với <code>grid-column: 1 / -1</code> để chiếm toàn bộ 3 cột.</li>
+            <li>3 card còn lại tự fill vào hàng tiếp theo, mỗi card 1 cột.</li>
+          </ol>
+          <h3>Tiêu chí chấm</h3>
+          <ul>
+            <li>Hero item chiếm toàn bộ chiều ngang (3 cột).</li>
+            <li>3 card nhỏ nằm đều nhau bên dưới.</li>
+            <li>Khoảng cách đều giữa các phần tử.</li>
+          </ul>
+        </section>
+        <section class="lesson solution" id="solution">
+          <h2>Bài giải tham khảo</h2>
+          <pre><code data-lang="html">&lt;!DOCTYPE html&gt;
+&lt;html lang="vi"&gt;
+&lt;head&gt;
+  &lt;meta charset="UTF-8"&gt;
+  &lt;style&gt;
+    * { box-sizing: border-box; margin: 0; }
+    body { font-family: sans-serif; padding: 20px; background: #f4f7fb; }
+    .hero-grid {
+      display: grid;
+      grid-template-columns: repeat(3, 1fr);
+      gap: 16px;
+    }
+    .hero {
+      grid-column: 1 / -1;
+      background: #7c3aed;
+      color: white;
+      padding: 32px;
+      border-radius: 8px;
+      font-weight: 700;
+      font-size: 1.4rem;
+      text-align: center;
+    }
+    .card {
+      background: white;
+      padding: 20px;
+      border-radius: 8px;
+      border: 1px solid #e2e8f0;
+      font-weight: 700;
+    }
+  &lt;/style&gt;
+&lt;/head&gt;
+&lt;body&gt;
+  &lt;div class="hero-grid"&gt;
+    &lt;div class="hero"&gt;Hero (grid-column: 1 / -1)&lt;/div&gt;
+    &lt;div class="card"&gt;Card 1&lt;/div&gt;
+    &lt;div class="card"&gt;Card 2&lt;/div&gt;
+    &lt;div class="card"&gt;Card 3&lt;/div&gt;
+  &lt;/div&gt;
+&lt;/body&gt;
+&lt;/html&gt;</code></pre>
+          <div class="result-panel">
+            <div class="result-head"><h3>Kết quả bài giải</h3><span>Preview trực tiếp</span></div>
+            <iframe class="result-frame" title="Bài giải placing" srcdoc="&lt;!DOCTYPE html&gt;&lt;html&gt;&lt;head&gt;&lt;meta charset='UTF-8'&gt;&lt;style&gt;*{box-sizing:border-box;margin:0}body{font-family:sans-serif;padding:20px;background:#f4f7fb}.hero-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:16px}.hero{grid-column:1/-1;background:#7c3aed;color:white;padding:32px;border-radius:8px;font-weight:700;font-size:1.3rem;text-align:center}.card{background:white;padding:20px;border-radius:8px;border:1px solid #e2e8f0;font-weight:700}&lt;/style&gt;&lt;/head&gt;&lt;body&gt;&lt;div class='hero-grid'&gt;&lt;div class='hero'&gt;Hero (grid-column: 1 / -1)&lt;/div&gt;&lt;div class='card'&gt;Card 1&lt;/div&gt;&lt;div class='card'&gt;Card 2&lt;/div&gt;&lt;div class='card'&gt;Card 3&lt;/div&gt;&lt;/div&gt;&lt;/body&gt;&lt;/html&gt;"></iframe>
+          </div>
+        </section>
+        <div class="pager">
+          <a class="btn" href="../bai-04/index.html">← Bài trước</a>
+          <a class="btn primary" href="../bai-06/index.html">Bài tiếp theo →</a>
+        </div>
+      </article>
+    </div>
+  </main>
+  <footer class="footer"><p><a href="../index.html">Quay lại Module 1</a></p></footer>
+  <script type="module" src="../../app.js"></script>
+</body>
+</html>

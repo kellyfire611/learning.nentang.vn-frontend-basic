@@ -1,0 +1,180 @@
+<!DOCTYPE html>
+<html lang="vi">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <meta name="description" content="justify-items, align-items, place-items trong CSS Grid — căn chỉnh tất cả items." />
+  <title>Bài 06 - justify-items, align-items | Module 1 CSS Grid | NenTang.vn</title>
+  <link rel="stylesheet" href="../../shared.css" />
+</head>
+<body>
+  <header class="topbar">
+    <div class="topbar-inner">
+      <a class="brand" href="../../index.html"><span class="brand-mark">G</span><span>CSS Grid</span></a>
+      <nav class="nav-links">
+        <a href="../../../index.html">Trang chủ</a>
+        <a href="../../index.html#modules">Module</a>
+      </nav>
+    </div>
+  </header>
+  <section class="module-hero m1">
+    <div class="container">
+      <div class="breadcrumb"><a href="../../index.html">CSS Grid</a><span>/</span><a href="../index.html">Module 1</a><span>/</span><span>Bài 06</span></div>
+      <h1>Bài 06: justify-items, align-items, place-items</h1>
+      <p>Căn chỉnh tất cả grid items cùng lúc trong các ô grid theo trục ngang và dọc.</p>
+    </div>
+  </section>
+  <main class="section">
+    <div class="container lesson-layout">
+      <aside class="side-nav">
+        <a href="#goal">Mục tiêu</a>
+        <a href="#theory">Lý thuyết</a>
+        <a href="#demo">Minh họa</a>
+        <a href="#code">Code ví dụ</a>
+        <a href="#exercise">Thực hành</a>
+        <a href="#solution">Bài giải</a>
+      </aside>
+      <article class="module-article">
+        <section class="lesson" id="goal">
+          <h2>Mục tiêu bài học</h2>
+          <ul>
+            <li>Dùng <code>justify-items</code> để căn chỉnh tất cả items theo trục inline (ngang).</li>
+            <li>Dùng <code>align-items</code> để căn chỉnh tất cả items theo trục block (dọc).</li>
+            <li>Dùng <code>place-items</code> shorthand để căn chỉnh cả hai trục cùng lúc.</li>
+          </ul>
+        </section>
+        <section class="lesson" id="theory">
+          <h2>Lý thuyết thực tế</h2>
+          <p><code>justify-items</code> căn chỉnh items trong ô grid theo chiều ngang. Giá trị mặc định là <code>stretch</code> — item lấp đầy chiều rộng ô. Các giá trị khác: <code>start</code>, <code>end</code>, <code>center</code>. Khi dùng <code>start</code>, item co lại theo nội dung và nằm bên trái ô.</p>
+          <p><code>align-items</code> căn chỉnh items theo chiều dọc. Mặc định cũng là <code>stretch</code> — item lấp đầy chiều cao hàng. <code>place-items: center</code> là shorthand để căn giữa cả hai chiều, rất hữu ích khi muốn icon hoặc nội dung ngắn nằm chính giữa ô. Cú pháp: <code>place-items: align-items justify-items</code>.</p>
+          <ol class="steps">
+            <li>Thêm <code>place-items: center</code> vào grid container để căn giữa tất cả items.</li>
+            <li>Dùng <code>align-items: start</code> để items dán lên đầu ô (thường dùng cho card grid).</li>
+            <li>Giữ mặc định <code>stretch</code> khi muốn items lấp đầy ô (thường là hành vi mong muốn).</li>
+            <li>Kết hợp với <code>min-height</code> trên container để thấy rõ hiệu ứng.</li>
+          </ol>
+        </section>
+        <section class="lesson" id="demo">
+          <h2>Minh họa trực quan</h2>
+          <p>Grid 3x3 với place-items: center — items nhỏ được căn giữa trong ô lớn hơn.</p>
+          <style>
+.align-demo { display: grid; grid-template-columns: repeat(3, 1fr); gap: 8px; place-items: center; background: #f3f4f6; padding: 12px; border-radius: 8px; }
+.align-demo div { width: 60px; height: 60px; background: #7c3aed; color: white; border-radius: 8px; display: grid; place-items: center; font-weight: 700; }
+          </style>
+          <div class="demo-surface">
+            <div class="align-demo" style="min-height: 240px;">
+              <div>1</div><div>2</div><div>3</div>
+              <div>4</div><div>5</div><div>6</div>
+              <div>7</div><div>8</div><div>9</div>
+            </div>
+          </div>
+          <div class="demo-code">
+            <h3>Code tạo minh họa</h3>
+            <pre><code data-lang="css">.grid {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  place-items: center; /* căn giữa cả hai trục */
+  min-height: 240px;
+}</code></pre>
+          </div>
+        </section>
+        <section class="lesson" id="code">
+          <h2>Code ví dụ</h2>
+          <p>So sánh stretch (mặc định) vs align-items: start cho card grid.</p>
+          <div class="code-grid">
+            <div><h3>HTML</h3><pre><code data-lang="html">&lt;div class="card-grid"&gt;
+  &lt;div class="card"&gt;
+    &lt;h3&gt;Tiêu đề ngắn&lt;/h3&gt;
+  &lt;/div&gt;
+  &lt;div class="card"&gt;
+    &lt;h3&gt;Tiêu đề dài hơn nhiều&lt;/h3&gt;
+    &lt;p&gt;Mô tả thêm&lt;/p&gt;
+  &lt;/div&gt;
+&lt;/div&gt;</code></pre></div>
+            <div><h3>CSS</h3><pre><code data-lang="css">.card-grid {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 16px;
+  align-items: start; /* dán lên đầu ô */
+}
+/* mặc định stretch: cả 2 card cao bằng nhau */</code></pre></div>
+          </div>
+          <div class="result-panel">
+            <div class="result-head"><h3>Kết quả</h3><span>align-items: start</span></div>
+            <iframe class="result-frame" title="align-items demo" srcdoc="&lt;!DOCTYPE html&gt;&lt;html&gt;&lt;head&gt;&lt;meta charset='UTF-8'&gt;&lt;style&gt;*{box-sizing:border-box;margin:0}body{font-family:sans-serif;padding:20px;background:#f4f7fb}.card-grid{display:grid;grid-template-columns:1fr 1fr;gap:16px;align-items:start}.card{background:white;padding:20px;border-radius:8px;border:1px solid #e2e8f0}.card h3{margin-bottom:8px;color:#7c3aed}.card p{color:#64748b;font-size:.9rem}.label{margin-bottom:8px;font-size:.85rem;color:#94a3b8;font-weight:700}&lt;/style&gt;&lt;/head&gt;&lt;body&gt;&lt;p class='label'&gt;align-items: start — cards tự cao theo nội dung&lt;/p&gt;&lt;div class='card-grid'&gt;&lt;div class='card'&gt;&lt;h3&gt;Tiêu đề ngắn&lt;/h3&gt;&lt;/div&gt;&lt;div class='card'&gt;&lt;h3&gt;Tiêu đề dài hơn nhiều&lt;/h3&gt;&lt;p&gt;Có thêm mô tả ở đây&lt;/p&gt;&lt;/div&gt;&lt;/div&gt;&lt;/body&gt;&lt;/html&gt;"></iframe>
+          </div>
+        </section>
+        <section class="exercise" id="exercise">
+          <span class="level">Bài tập thực hành</span>
+          <h2>Yêu cầu đề bài</h2>
+          <p>Tạo grid 9 ô (3x3) với các icon (dùng emoji) được căn giữa mỗi ô. <em>Khác với ví dụ — dùng emoji thay text, ô lớn hơn.</em></p>
+          <ol class="steps">
+            <li>Tạo <code>div.icon-grid</code> chứa 9 <code>div.icon-cell</code> với emoji bên trong.</li>
+            <li>Dùng <code>grid-template-columns: repeat(3, 120px)</code> — ô 120px.</li>
+            <li>Dùng <code>place-items: center</code> trên grid container.</li>
+            <li>Đặt <code>height: 120px</code> cho mỗi <code>.icon-cell</code> để thấy căn giữa.</li>
+          </ol>
+          <h3>Tiêu chí chấm</h3>
+          <ul>
+            <li>Icon nằm chính giữa mỗi ô cả ngang lẫn dọc.</li>
+            <li>9 ô hiển thị đúng dạng 3x3.</li>
+            <li>Font-size emoji đủ lớn để thấy rõ.</li>
+          </ul>
+        </section>
+        <section class="lesson solution" id="solution">
+          <h2>Bài giải tham khảo</h2>
+          <pre><code data-lang="html">&lt;!DOCTYPE html&gt;
+&lt;html lang="vi"&gt;
+&lt;head&gt;
+  &lt;meta charset="UTF-8"&gt;
+  &lt;style&gt;
+    * { box-sizing: border-box; margin: 0; }
+    body { font-family: sans-serif; padding: 20px; background: #f4f7fb; }
+    .icon-grid {
+      display: grid;
+      grid-template-columns: repeat(3, 120px);
+      place-items: center;
+      gap: 8px;
+    }
+    .icon-cell {
+      width: 120px;
+      height: 120px;
+      background: white;
+      border: 1px solid #e2e8f0;
+      border-radius: 12px;
+      display: grid;
+      place-items: center;
+      font-size: 2.5rem;
+    }
+  &lt;/style&gt;
+&lt;/head&gt;
+&lt;body&gt;
+  &lt;div class="icon-grid"&gt;
+    &lt;div class="icon-cell"&gt;🎨&lt;/div&gt;
+    &lt;div class="icon-cell"&gt;🚀&lt;/div&gt;
+    &lt;div class="icon-cell"&gt;💡&lt;/div&gt;
+    &lt;div class="icon-cell"&gt;🌟&lt;/div&gt;
+    &lt;div class="icon-cell"&gt;🔥&lt;/div&gt;
+    &lt;div class="icon-cell"&gt;💎&lt;/div&gt;
+    &lt;div class="icon-cell"&gt;🎯&lt;/div&gt;
+    &lt;div class="icon-cell"&gt;🏆&lt;/div&gt;
+    &lt;div class="icon-cell"&gt;⚡&lt;/div&gt;
+  &lt;/div&gt;
+&lt;/body&gt;
+&lt;/html&gt;</code></pre>
+          <div class="result-panel">
+            <div class="result-head"><h3>Kết quả bài giải</h3><span>Preview trực tiếp</span></div>
+            <iframe class="result-frame" title="Bài giải icon grid" srcdoc="&lt;!DOCTYPE html&gt;&lt;html&gt;&lt;head&gt;&lt;meta charset='UTF-8'&gt;&lt;style&gt;*{box-sizing:border-box;margin:0}body{font-family:sans-serif;padding:20px;background:#f4f7fb}.icon-grid{display:grid;grid-template-columns:repeat(3,120px);place-items:center;gap:8px}.icon-cell{width:120px;height:120px;background:white;border:1px solid #e2e8f0;border-radius:12px;display:grid;place-items:center;font-size:2.5rem}&lt;/style&gt;&lt;/head&gt;&lt;body&gt;&lt;div class='icon-grid'&gt;&lt;div class='icon-cell'&gt;🎨&lt;/div&gt;&lt;div class='icon-cell'&gt;🚀&lt;/div&gt;&lt;div class='icon-cell'&gt;💡&lt;/div&gt;&lt;div class='icon-cell'&gt;🌟&lt;/div&gt;&lt;div class='icon-cell'&gt;🔥&lt;/div&gt;&lt;div class='icon-cell'&gt;💎&lt;/div&gt;&lt;div class='icon-cell'&gt;🎯&lt;/div&gt;&lt;div class='icon-cell'&gt;🏆&lt;/div&gt;&lt;div class='icon-cell'&gt;⚡&lt;/div&gt;&lt;/div&gt;&lt;/body&gt;&lt;/html&gt;"></iframe>
+          </div>
+        </section>
+        <div class="pager">
+          <a class="btn" href="../bai-05/index.html">← Bài trước</a>
+          <a class="btn primary" href="../bai-07/index.html">Bài tiếp theo →</a>
+        </div>
+      </article>
+    </div>
+  </main>
+  <footer class="footer"><p><a href="../index.html">Quay lại Module 1</a></p></footer>
+  <script type="module" src="../../app.js"></script>
+</body>
+</html>

@@ -1,0 +1,213 @@
+<!DOCTYPE html>
+<html lang="vi">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <meta name="description" content="CSS Grid là gì và khi nào nên dùng Grid thay vì Flexbox." />
+  <title>Bài 01 - CSS Grid là gì | Module 1 CSS Grid | NenTang.vn</title>
+  <link rel="stylesheet" href="../../shared.css" />
+</head>
+<body>
+  <header class="topbar">
+    <div class="topbar-inner">
+      <a class="brand" href="../../index.html"><span class="brand-mark">G</span><span>CSS Grid</span></a>
+      <nav class="nav-links">
+        <a href="../../../index.html">Trang chủ</a>
+        <a href="../../index.html#modules">Module</a>
+      </nav>
+    </div>
+  </header>
+  <section class="module-hero m1">
+    <div class="container">
+      <div class="breadcrumb"><a href="../../index.html">CSS Grid</a><span>/</span><a href="../index.html">Module 1</a><span>/</span><span>Bài 01</span></div>
+      <h1>Bài 01: CSS Grid là gì và khi nào nên dùng</h1>
+      <p>Hiểu CSS Grid là hệ thống bố cục hai chiều mạnh nhất trong CSS, biết khi nào nên dùng Grid thay vì Flexbox.</p>
+    </div>
+  </section>
+  <main class="section">
+    <div class="container lesson-layout">
+      <aside class="side-nav">
+        <a href="#goal">Mục tiêu</a>
+        <a href="#theory">Lý thuyết</a>
+        <a href="#demo">Minh họa</a>
+        <a href="#code">Code ví dụ</a>
+        <a href="#exercise">Thực hành</a>
+        <a href="#solution">Bài giải</a>
+      </aside>
+      <article class="module-article">
+        <section class="lesson" id="goal">
+          <h2>Mục tiêu bài học</h2>
+          <ul>
+            <li>Nhận ra CSS Grid là hệ thống bố cục hai chiều (hàng và cột cùng lúc).</li>
+            <li>Phân biệt khi nào dùng Grid (layout tổng thể trang) và khi nào dùng Flexbox (một hàng/cột).</li>
+            <li>Biết cách nhìn vào một thiết kế và xác định đâu là vùng nên dùng Grid.</li>
+          </ul>
+        </section>
+        <section class="lesson" id="theory">
+          <h2>Lý thuyết thực tế</h2>
+          <p>CSS Grid Layout là mô hình bố cục hai chiều của CSS, cho phép bạn kiểm soát cả hàng (rows) và cột (columns) cùng một lúc. Đây là điểm khác biệt lớn nhất so với Flexbox — một mô hình một chiều chỉ làm việc tốt trên một trục tại một thời điểm.</p>
+          <p>Grid phù hợp nhất khi bạn cần: layout tổng thể của trang (header, sidebar, main, footer), bảng ảnh đều nhau, dashboard với nhiều widget, hoặc bất kỳ layout nào cần kiểm soát cả hai chiều. Flexbox tốt hơn cho các thành phần nhỏ như navbar, hàng nút, hoặc một danh sách item.</p>
+          <ol class="steps">
+            <li>Nhìn vào thiết kế và tìm các vùng có layout hai chiều rõ ràng (header/sidebar/content/footer).</li>
+            <li>Xác định phần tử cha chứa toàn bộ layout đó.</li>
+            <li>Bật <code>display: grid</code> trên phần tử cha đó.</li>
+            <li>Định nghĩa columns và rows để các vùng tự vào đúng chỗ.</li>
+          </ol>
+        </section>
+        <section class="lesson" id="demo">
+          <h2>Minh họa trực quan</h2>
+          <p>Layout trang web cơ bản với header, sidebar, main content và footer sử dụng CSS Grid.</p>
+          <style>
+.grid-demo { display: grid; grid-template-columns: 200px 1fr; grid-template-rows: auto 1fr auto; grid-template-areas: "header header" "sidebar main" "footer footer"; gap: 8px; min-height: 200px; }
+.grid-demo .g-header { grid-area: header; background: #7c3aed; color: white; padding: 12px; border-radius: 6px; text-align: center; font-weight: 700; }
+.grid-demo .g-sidebar { grid-area: sidebar; background: #ede9fe; color: #4c1d95; padding: 12px; border-radius: 6px; font-weight: 700; }
+.grid-demo .g-main { grid-area: main; background: #f3f4f6; padding: 12px; border-radius: 6px; font-weight: 700; }
+.grid-demo .g-footer { grid-area: footer; background: #1e1b4b; color: white; padding: 12px; border-radius: 6px; text-align: center; font-weight: 700; }
+          </style>
+          <div class="demo-surface">
+            <div class="grid-demo">
+              <div class="g-header">Header</div>
+              <div class="g-sidebar">Sidebar</div>
+              <div class="g-main">Main Content</div>
+              <div class="g-footer">Footer</div>
+            </div>
+          </div>
+          <div class="demo-code">
+            <h3>Code tạo minh họa</h3>
+            <pre><code data-lang="css">.layout {
+  display: grid;
+  grid-template-columns: 200px 1fr;
+  grid-template-areas:
+    "header header"
+    "sidebar main"
+    "footer footer";
+  gap: 8px;
+}</code></pre>
+          </div>
+        </section>
+        <section class="lesson" id="code">
+          <h2>Code ví dụ</h2>
+          <p>Layout dashboard đơn giản với CSS Grid.</p>
+          <div class="code-grid">
+            <div><h3>HTML</h3><pre><code data-lang="html">&lt;div class="dashboard"&gt;
+  &lt;header class="dash-header"&gt;Header&lt;/header&gt;
+  &lt;nav class="dash-nav"&gt;Sidebar&lt;/nav&gt;
+  &lt;main class="dash-main"&gt;Content&lt;/main&gt;
+  &lt;footer class="dash-footer"&gt;Footer&lt;/footer&gt;
+&lt;/div&gt;</code></pre></div>
+            <div><h3>CSS</h3><pre><code data-lang="css">.dashboard {
+  display: grid;
+  grid-template-columns: 220px 1fr;
+  grid-template-areas:
+    "header header"
+    "nav    main"
+    "footer footer";
+  gap: 12px;
+  min-height: 100vh;
+}</code></pre></div>
+          </div>
+          <div class="result-panel">
+            <div class="result-head"><h3>Kết quả</h3><span>Preview trực tiếp</span></div>
+            <iframe class="result-frame" title="CSS Grid dashboard demo" srcdoc="&lt;!DOCTYPE html&gt;&lt;html&gt;&lt;head&gt;&lt;meta charset='UTF-8'&gt;&lt;style&gt;*{box-sizing:border-box;margin:0}body{font-family:sans-serif;padding:16px;background:#f4f7fb}.dashboard{display:grid;grid-template-columns:200px 1fr;grid-template-areas:'header header' 'nav main' 'footer footer';gap:10px;min-height:300px}.dash-header{grid-area:header;background:#7c3aed;color:white;padding:14px;border-radius:8px;font-weight:700;text-align:center}.dash-nav{grid-area:nav;background:#ede9fe;color:#4c1d95;padding:14px;border-radius:8px;font-weight:700}.dash-main{grid-area:main;background:white;padding:14px;border-radius:8px;border:1px solid #e2e8f0}.dash-footer{grid-area:footer;background:#1e1b4b;color:white;padding:14px;border-radius:8px;font-weight:700;text-align:center}&lt;/style&gt;&lt;/head&gt;&lt;body&gt;&lt;div class='dashboard'&gt;&lt;header class='dash-header'&gt;Header&lt;/header&gt;&lt;nav class='dash-nav'&gt;Sidebar&lt;/nav&gt;&lt;main class='dash-main'&gt;Main Content Area&lt;/main&gt;&lt;footer class='dash-footer'&gt;Footer&lt;/footer&gt;&lt;/div&gt;&lt;/body&gt;&lt;/html&gt;"></iframe>
+          </div>
+        </section>
+        <section class="exercise" id="exercise">
+          <span class="level">Bài tập thực hành</span>
+          <h2>Yêu cầu đề bài</h2>
+          <p>Tạo layout trang tin tức đơn giản với CSS Grid gồm: banner trên cùng, 3 cột bài viết ở giữa, và footer. <em>Khác với ví dụ trên — không có sidebar.</em></p>
+          <ol class="steps">
+            <li>Tạo <code>div.news-layout</code> chứa <code>.banner</code>, <code>.articles</code> và <code>.footer</code>.</li>
+            <li>Bật <code>display: grid</code> trên <code>.news-layout</code> với <code>grid-template-rows: auto 1fr auto</code>.</li>
+            <li>Bên trong <code>.articles</code>, tạo thêm grid 3 cột bằng <code>grid-template-columns: repeat(3, 1fr)</code>.</li>
+            <li>Mỗi cột chứa một bài viết ngắn với tiêu đề và mô tả.</li>
+          </ol>
+          <h3>Tiêu chí chấm</h3>
+          <ul>
+            <li>Banner chiếm toàn chiều ngang.</li>
+            <li>3 cột bài viết đều nhau ở giữa.</li>
+            <li>Footer chiếm toàn chiều ngang phía dưới.</li>
+          </ul>
+        </section>
+        <section class="lesson solution" id="solution">
+          <h2>Bài giải tham khảo</h2>
+          <pre><code data-lang="html">&lt;!DOCTYPE html&gt;
+&lt;html lang="vi"&gt;
+&lt;head&gt;
+  &lt;meta charset="UTF-8"&gt;
+  &lt;style&gt;
+    * { box-sizing: border-box; margin: 0; }
+    body { font-family: sans-serif; padding: 20px; background: #f4f7fb; }
+    .news-layout {
+      display: grid;
+      grid-template-rows: auto 1fr auto;
+      gap: 16px;
+      min-height: 400px;
+    }
+    .banner {
+      background: #7c3aed;
+      color: white;
+      padding: 20px;
+      border-radius: 8px;
+      font-size: 1.4rem;
+      font-weight: 700;
+      text-align: center;
+    }
+    .articles {
+      display: grid;
+      grid-template-columns: repeat(3, 1fr);
+      gap: 16px;
+    }
+    .article-card {
+      background: white;
+      padding: 18px;
+      border-radius: 8px;
+      border: 1px solid #e2e8f0;
+    }
+    .article-card h3 { margin-bottom: 8px; color: #1e293b; }
+    .article-card p { color: #64748b; font-size: 0.9rem; }
+    .site-footer {
+      background: #1e1b4b;
+      color: white;
+      padding: 16px;
+      border-radius: 8px;
+      text-align: center;
+    }
+  &lt;/style&gt;
+&lt;/head&gt;
+&lt;body&gt;
+  &lt;div class="news-layout"&gt;
+    &lt;div class="banner"&gt;Tin tức hôm nay&lt;/div&gt;
+    &lt;div class="articles"&gt;
+      &lt;div class="article-card"&gt;
+        &lt;h3&gt;Bài viết 1&lt;/h3&gt;
+        &lt;p&gt;Mô tả ngắn về bài viết số một.&lt;/p&gt;
+      &lt;/div&gt;
+      &lt;div class="article-card"&gt;
+        &lt;h3&gt;Bài viết 2&lt;/h3&gt;
+        &lt;p&gt;Mô tả ngắn về bài viết số hai.&lt;/p&gt;
+      &lt;/div&gt;
+      &lt;div class="article-card"&gt;
+        &lt;h3&gt;Bài viết 3&lt;/h3&gt;
+        &lt;p&gt;Mô tả ngắn về bài viết số ba.&lt;/p&gt;
+      &lt;/div&gt;
+    &lt;/div&gt;
+    &lt;div class="site-footer"&gt;© 2024 NenTang.vn&lt;/div&gt;
+  &lt;/div&gt;
+&lt;/body&gt;
+&lt;/html&gt;</code></pre>
+          <div class="result-panel">
+            <div class="result-head"><h3>Kết quả bài giải</h3><span>Preview trực tiếp</span></div>
+            <iframe class="result-frame" title="Bài giải" srcdoc="&lt;!DOCTYPE html&gt;&lt;html&gt;&lt;head&gt;&lt;meta charset='UTF-8'&gt;&lt;style&gt;*{box-sizing:border-box;margin:0}body{font-family:sans-serif;padding:20px;background:#f4f7fb}.news-layout{display:grid;grid-template-rows:auto 1fr auto;gap:16px;min-height:380px}.banner{background:#7c3aed;color:white;padding:20px;border-radius:8px;font-size:1.3rem;font-weight:700;text-align:center}.articles{display:grid;grid-template-columns:repeat(3,1fr);gap:16px}.article-card{background:white;padding:18px;border-radius:8px;border:1px solid #e2e8f0}.article-card h3{margin-bottom:8px;color:#1e293b}.article-card p{color:#64748b;font-size:.9rem}.site-footer{background:#1e1b4b;color:white;padding:16px;border-radius:8px;text-align:center}&lt;/style&gt;&lt;/head&gt;&lt;body&gt;&lt;div class='news-layout'&gt;&lt;div class='banner'&gt;Tin tức hôm nay&lt;/div&gt;&lt;div class='articles'&gt;&lt;div class='article-card'&gt;&lt;h3&gt;Bài viết 1&lt;/h3&gt;&lt;p&gt;Mô tả ngắn bài viết số một.&lt;/p&gt;&lt;/div&gt;&lt;div class='article-card'&gt;&lt;h3&gt;Bài viết 2&lt;/h3&gt;&lt;p&gt;Mô tả ngắn bài viết số hai.&lt;/p&gt;&lt;/div&gt;&lt;div class='article-card'&gt;&lt;h3&gt;Bài viết 3&lt;/h3&gt;&lt;p&gt;Mô tả ngắn bài viết số ba.&lt;/p&gt;&lt;/div&gt;&lt;/div&gt;&lt;div class='site-footer'&gt;© 2024 NenTang.vn&lt;/div&gt;&lt;/div&gt;&lt;/body&gt;&lt;/html&gt;"></iframe>
+          </div>
+        </section>
+        <div class="pager">
+          <a class="btn" href="../index.html">← Module 1</a>
+          <a class="btn primary" href="../bai-02/index.html">Bài tiếp theo →</a>
+        </div>
+      </article>
+    </div>
+  </main>
+  <footer class="footer"><p><a href="../index.html">Quay lại Module 1</a></p></footer>
+  <script type="module" src="../../app.js"></script>
+</body>
+</html>

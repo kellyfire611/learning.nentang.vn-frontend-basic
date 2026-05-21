@@ -1,0 +1,227 @@
+<!DOCTYPE html>
+<html lang="vi">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <meta name="description" content="Debug CSS Grid với Chrome DevTools — Grid overlay, line names, và area names." />
+  <title>Bài 06 - Debug với DevTools | Module 4 CSS Grid | NenTang.vn</title>
+  <link rel="stylesheet" href="../../shared.css" />
+</head>
+<body>
+  <header class="topbar">
+    <div class="topbar-inner">
+      <a class="brand" href="../../index.html"><span class="brand-mark">G</span><span>CSS Grid</span></a>
+      <nav class="nav-links">
+        <a href="../../../index.html">Trang chủ</a>
+        <a href="../../index.html#modules">Module</a>
+      </nav>
+    </div>
+  </header>
+  <section class="module-hero m4">
+    <div class="container">
+      <div class="breadcrumb"><a href="../../index.html">CSS Grid</a><span>/</span><a href="../index.html">Module 4</a><span>/</span><span>Bài 06</span></div>
+      <h1>Bài 06: Debug với DevTools</h1>
+      <p>Dùng Chrome/Firefox DevTools để inspect, visualize, và debug CSS Grid layouts hiệu quả.</p>
+    </div>
+  </section>
+  <main class="section">
+    <div class="container lesson-layout">
+      <aside class="side-nav">
+        <a href="#goal">Mục tiêu</a>
+        <a href="#theory">Lý thuyết</a>
+        <a href="#demo">Minh họa</a>
+        <a href="#code">Code ví dụ</a>
+        <a href="#exercise">Thực hành</a>
+        <a href="#solution">Bài giải</a>
+      </aside>
+      <article class="module-article">
+        <section class="lesson" id="goal">
+          <h2>Mục tiêu bài học</h2>
+          <ul>
+            <li>Dùng Chrome DevTools Grid overlay để thấy grid lines, areas, và track sizes.</li>
+            <li>Inspect grid properties trong Elements panel.</li>
+            <li>Debug các vấn đề phổ biến: items overflow, alignment sai, implicit tracks.</li>
+          </ul>
+        </section>
+        <section class="lesson" id="theory">
+          <h2>Lý thuyết thực tế</h2>
+          <p><strong>Chrome DevTools Grid Inspector:</strong> Mở DevTools → Elements panel → Click element có <code>display: grid</code> → Thấy badge "grid" nhỏ màu xanh → Click badge để toggle Grid overlay. Overlay hiển thị: grid lines, track sizes, named areas, và line numbers. Rất hữu ích để verify layout có đúng không.</p>
+          <p><strong>Firefox DevTools:</strong> Firefox có Grid Inspector tốt nhất — có thể xem tất cả grids trên trang cùng lúc, mỗi grid một màu khác nhau. Vào Layout panel → Grid section. Có thể highlight specific grid và xem track sizes detail. <strong>Các vấn đề thường gặp:</strong> Items không ở đúng vị trí → check explicit placement; Grid overflow → check minmax min value; Alignment sai → check justify-items/align-items; Unexpected implicit tracks → check grid-auto-rows.</p>
+          <ol class="steps">
+            <li>Mở Chrome DevTools (F12 hoặc Cmd+Opt+I).</li>
+            <li>Click element có display:grid trong Elements panel.</li>
+            <li>Click badge "grid" xanh lá nhỏ để toggle overlay.</li>
+            <li>Overlay hiện track sizes và line numbers trực tiếp trên trang.</li>
+          </ol>
+        </section>
+        <section class="lesson" id="demo">
+          <h2>Minh họa trực quan</h2>
+          <p>Grid layout để bạn thực hành debug với DevTools.</p>
+          <style>
+.debug-grid { display: grid; grid-template-columns: 1fr 2fr 1fr; grid-template-rows: 80px 120px; gap: 8px; }
+.dg-item { border-radius: 6px; display: grid; place-items: center; font-weight: 700; font-size: .75rem; text-align: center; color: white; }
+.dg-a { background: #7c3aed; grid-column: 1; grid-row: 1; }
+.dg-b { background: #2563eb; grid-column: 2; grid-row: 1 / 3; }
+.dg-c { background: #e85d4f; grid-column: 3; grid-row: 1; }
+.dg-d { background: #059669; grid-column: 1; grid-row: 2; }
+.dg-e { background: #d97706; grid-column: 3; grid-row: 2; }
+.debug-note { font-size: .78rem; color: #5e6b7a; margin-top: 10px; padding: 8px 12px; background: #fef3c7; border-radius: 6px; border-left: 3px solid #d97706; }
+          </style>
+          <div class="demo-surface">
+            <div class="debug-grid">
+              <div class="dg-item dg-a">col:1 row:1</div>
+              <div class="dg-item dg-b">col:2<br>row:1→3<br>(span 2)</div>
+              <div class="dg-item dg-c">col:3 row:1</div>
+              <div class="dg-item dg-d">col:1 row:2</div>
+              <div class="dg-item dg-e">col:3 row:2</div>
+            </div>
+            <div class="debug-note">💡 Inspect grid trên bằng DevTools để xem grid overlay. Mở DevTools → click div.debug-grid → click badge "grid" màu xanh.</div>
+          </div>
+          <div class="demo-code">
+            <h3>Grid layout để debug</h3>
+            <pre><code data-lang="css">.grid { display: grid;
+  grid-template-columns: 1fr 2fr 1fr;
+  grid-template-rows: 80px 120px; }
+.b { grid-column: 2; grid-row: 1 / 3; }</code></pre>
+          </div>
+        </section>
+        <section class="lesson" id="code">
+          <h2>Code ví dụ</h2>
+          <p>Checklist debug CSS Grid phổ biến.</p>
+          <div class="code-grid">
+            <div><h3>Common bugs</h3><pre><code data-lang="css">/* Bug 1: Item không đúng vị trí */
+/* Check: explicit placement */
+.item { grid-column: 2; grid-row: 1; }
+
+/* Bug 2: Grid overflow */
+/* Fix: thêm minmax */
+.grid { grid-template-columns:
+  repeat(3, minmax(0, 1fr)); }
+/* minmax(0, 1fr) thay vì 1fr */
+/* cho phép shrink về 0 */
+
+/* Bug 3: Implicit rows quá nhỏ */
+/* Fix: grid-auto-rows */
+.grid { grid-auto-rows: minmax(80px, auto); }</code></pre></div>
+            <div><h3>DevTools tricks</h3><pre><code data-lang="css">/* Highlight grid areas bằng background */
+/* Hữu ích khi debug template-areas */
+.header { background: rgba(124,58,237,.2); }
+.main   { background: rgba(37,99,235,.2); }
+.aside  { background: rgba(232,93,79,.2); }
+
+/* Đặt outline để thấy item boundaries */
+* { outline: 1px solid rgba(255,0,0,.3); }
+
+/* Xóa sau khi debug xong! */</code></pre></div>
+          </div>
+          <div class="result-panel">
+            <div class="result-head"><h3>Kết quả</h3><span>Colored areas cho dễ debug</span></div>
+            <iframe class="result-frame" title="debug grid demo" srcdoc="&lt;!DOCTYPE html&gt;&lt;html&gt;&lt;head&gt;&lt;meta charset='UTF-8'&gt;&lt;style&gt;*{box-sizing:border-box;margin:0}body{font-family:sans-serif;padding:20px;background:#f4f7fb}.page{display:grid;grid-template-columns:200px 1fr 180px;grid-template-rows:auto 1fr auto;grid-template-areas:'header header header' 'nav main aside' 'footer footer footer';gap:8px;min-height:260px}.region{padding:12px;border-radius:8px;font-size:.8rem;font-weight:700}header{grid-area:header;background:rgba(124,58,237,.2);border:2px solid #7c3aed;color:#4c1d95}.nav-r{grid-area:nav;background:rgba(37,99,235,.2);border:2px solid #2563eb;color:#1e40af}.main-r{grid-area:main;background:rgba(5,150,105,.15);border:2px solid #059669;color:#065f46}.aside-r{grid-area:aside;background:rgba(217,119,6,.2);border:2px solid #d97706;color:#92400e}footer{grid-area:footer;background:rgba(30,27,75,.2);border:2px solid #1e1b4b;color:#1e1b4b}.debug-note{font-size:.72rem;margin-top:4px;opacity:.8;font-weight:400}&lt;/style&gt;&lt;/head&gt;&lt;body&gt;&lt;div class='page'&gt;&lt;header class='region'&gt;header (col:1→4)&lt;div class='debug-note'&gt;grid-area: header&lt;/div&gt;&lt;/header&gt;&lt;nav class='nav-r region'&gt;nav&lt;div class='debug-note'&gt;grid-area: nav&lt;/div&gt;&lt;/nav&gt;&lt;main class='main-r region'&gt;main content&lt;div class='debug-note'&gt;grid-area: main&lt;/div&gt;&lt;/main&gt;&lt;aside class='aside-r region'&gt;aside&lt;div class='debug-note'&gt;grid-area: aside&lt;/div&gt;&lt;/aside&gt;&lt;footer class='region'&gt;footer (col:1→4)&lt;div class='debug-note'&gt;grid-area: footer&lt;/div&gt;&lt;/footer&gt;&lt;/div&gt;&lt;/body&gt;&lt;/html&gt;"></iframe>
+          </div>
+        </section>
+        <section class="exercise" id="exercise">
+          <span class="level">Bài tập thực hành</span>
+          <h2>Yêu cầu đề bài</h2>
+          <p>Debug và fix grid layout bị vỡ. <em>Tạo grid có 3 bugs cố ý, rồi fix chúng.</em></p>
+          <ol class="steps">
+            <li><strong>Bug 1:</strong> Grid item bị đặt sai vị trí (grid-column sai) → fix để đúng vị trí.</li>
+            <li><strong>Bug 2:</strong> Text overflow ra ngoài grid item → fix với <code>minmax(0, 1fr)</code>.</li>
+            <li><strong>Bug 3:</strong> Implicit rows quá nhỏ (thiếu grid-auto-rows) → thêm vào.</li>
+            <li>Dùng DevTools để inspect từng bug trước khi fix.</li>
+          </ol>
+          <h3>Tiêu chí chấm</h3>
+          <ul>
+            <li>Tất cả 3 bugs được fix.</li>
+            <li>Grid layout cuối cùng trông đúng và đẹp.</li>
+            <li>Code giải thích rõ bug và cách fix.</li>
+          </ul>
+        </section>
+        <section class="lesson solution" id="solution">
+          <h2>Bài giải tham khảo</h2>
+          <pre><code data-lang="html">&lt;!DOCTYPE html&gt;
+&lt;html lang="vi"&gt;
+&lt;head&gt;
+  &lt;meta charset="UTF-8"&gt;
+  &lt;style&gt;
+    * { box-sizing: border-box; margin: 0; }
+    body { font-family: sans-serif; padding: 20px; background: #f4f7fb; }
+    h2 { color: #1e293b; margin-bottom: 8px; font-size: .95rem; }
+    .section { margin-bottom: 24px; }
+
+    /* === BUGGY VERSION === */
+    .buggy-grid {
+      display: grid;
+      /* Bug 2: dùng 1fr thay vì minmax(0, 1fr) */
+      grid-template-columns: 1fr 1fr 1fr;
+      /* Bug 3: thiếu grid-auto-rows */
+      gap: 8px; margin-bottom: 8px;
+    }
+    .buggy-item {
+      background: #fecaca; border: 2px solid #ef4444;
+      border-radius: 6px; padding: 10px;
+      font-size: .8rem; color: #991b1b;
+    }
+    /* Bug 1: item B đặt nhầm cột */
+    .b-wrong { grid-column: 3; } /* Sai: phải là column 2 */
+
+    /* === FIXED VERSION === */
+    .fixed-grid {
+      display: grid;
+      /* Fix 2: minmax(0, 1fr) cho phép shrink */
+      grid-template-columns: repeat(3, minmax(0, 1fr));
+      /* Fix 3: thêm grid-auto-rows */
+      grid-auto-rows: minmax(60px, auto);
+      gap: 8px;
+    }
+    .fixed-item {
+      background: #dcfce7; border: 2px solid #16a34a;
+      border-radius: 6px; padding: 10px;
+      font-size: .8rem; color: #166534;
+      /* Fix 2: overflow hidden để text không tràn */
+      overflow: hidden; word-break: break-word;
+    }
+    /* Fix 1: item B đúng vị trí */
+    .b-fixed { grid-column: 2; }
+  &lt;/style&gt;
+&lt;/head&gt;
+&lt;body&gt;
+  &lt;div class="section"&gt;
+    &lt;h2&gt;❌ Có bugs:&lt;/h2&gt;
+    &lt;div class="buggy-grid"&gt;
+      &lt;div class="buggy-item"&gt;Item A (col 1)&lt;/div&gt;
+      &lt;div class="buggy-item b-wrong"&gt;Bug 1: Item B ở col 3 (sai!)&lt;/div&gt;
+      &lt;div class="buggy-item"&gt;Bug 2: TextTextTextTextTextTextTextText overflow&lt;/div&gt;
+      &lt;div class="buggy-item"&gt;Item D&lt;/div&gt;
+      &lt;div class="buggy-item"&gt;Item E&lt;/div&gt;
+      &lt;div class="buggy-item"&gt;Bug 3: Row này không có min-height&lt;/div&gt;
+    &lt;/div&gt;
+  &lt;/div&gt;
+  &lt;div class="section"&gt;
+    &lt;h2&gt;✅ Đã fix:&lt;/h2&gt;
+    &lt;div class="fixed-grid"&gt;
+      &lt;div class="fixed-item"&gt;Item A (col 1)&lt;/div&gt;
+      &lt;div class="fixed-item b-fixed"&gt;Fix 1: Item B đúng col 2 ✓&lt;/div&gt;
+      &lt;div class="fixed-item"&gt;Fix 2: Text wrap đúng, không overflow ✓&lt;/div&gt;
+      &lt;div class="fixed-item"&gt;Item D&lt;/div&gt;
+      &lt;div class="fixed-item"&gt;Item E&lt;/div&gt;
+      &lt;div class="fixed-item"&gt;Fix 3: Row có min-height 60px ✓&lt;/div&gt;
+    &lt;/div&gt;
+  &lt;/div&gt;
+&lt;/body&gt;
+&lt;/html&gt;</code></pre>
+          <div class="result-panel">
+            <div class="result-head"><h3>Kết quả bài giải</h3><span>Preview trực tiếp</span></div>
+            <iframe class="result-frame" title="Bài giải debug grid" srcdoc="&lt;!DOCTYPE html&gt;&lt;html&gt;&lt;head&gt;&lt;meta charset='UTF-8'&gt;&lt;style&gt;*{box-sizing:border-box;margin:0}body{font-family:sans-serif;padding:14px;background:#f4f7fb}h2{color:#1e293b;margin-bottom:8px;font-size:.88rem}.section{margin-bottom:18px}.buggy-grid{display:grid;grid-template-columns:1fr 1fr 1fr;gap:6px;margin-bottom:6px}.buggy-item{background:#fecaca;border:2px solid #ef4444;border-radius:5px;padding:8px;font-size:.75rem;color:#991b1b}.b-wrong{grid-column:3}.fixed-grid{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));grid-auto-rows:minmax(50px,auto);gap:6px}.fixed-item{background:#dcfce7;border:2px solid #16a34a;border-radius:5px;padding:8px;font-size:.75rem;color:#166534;overflow:hidden;word-break:break-word}.b-fixed{grid-column:2}&lt;/style&gt;&lt;/head&gt;&lt;body&gt;&lt;div class='section'&gt;&lt;h2&gt;❌ Có bugs:&lt;/h2&gt;&lt;div class='buggy-grid'&gt;&lt;div class='buggy-item'&gt;Item A&lt;/div&gt;&lt;div class='buggy-item b-wrong'&gt;Bug 1: B ở col 3&lt;/div&gt;&lt;div class='buggy-item'&gt;Bug 2: TextTextTextOverflow&lt;/div&gt;&lt;div class='buggy-item'&gt;D&lt;/div&gt;&lt;div class='buggy-item'&gt;E&lt;/div&gt;&lt;div class='buggy-item'&gt;F&lt;/div&gt;&lt;/div&gt;&lt;/div&gt;&lt;div class='section'&gt;&lt;h2&gt;✅ Đã fix:&lt;/h2&gt;&lt;div class='fixed-grid'&gt;&lt;div class='fixed-item'&gt;Item A ✓&lt;/div&gt;&lt;div class='fixed-item b-fixed'&gt;Fix 1: B col 2 ✓&lt;/div&gt;&lt;div class='fixed-item'&gt;Fix 2: Wrap ✓&lt;/div&gt;&lt;div class='fixed-item'&gt;D ✓&lt;/div&gt;&lt;div class='fixed-item'&gt;E ✓&lt;/div&gt;&lt;div class='fixed-item'&gt;Fix 3: min-height ✓&lt;/div&gt;&lt;/div&gt;&lt;/div&gt;&lt;/body&gt;&lt;/html&gt;"></iframe>
+          </div>
+        </section>
+        <div class="pager">
+          <a class="btn" href="../bai-05/index.html">← Bài trước</a>
+          <a class="btn primary" href="../../module-05-bai-thuc-hanh/bai-01/index.html">Module tiếp theo →</a>
+        </div>
+      </article>
+    </div>
+  </main>
+  <footer class="footer"><p><a href="../index.html">Quay lại Module 4</a></p></footer>
+  <script type="module" src="../../app.js"></script>
+</body>
+</html>
