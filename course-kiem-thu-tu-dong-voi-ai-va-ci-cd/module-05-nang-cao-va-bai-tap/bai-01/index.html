@@ -1,0 +1,163 @@
+<!DOCTYPE html>
+<html lang="vi">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <meta name="description" content="Các chủ đề nâng cao: mocking, test isolation, performance test cơ bản, security test và nguyên tắc viết code dễ test." />
+  <meta name="keywords" content="mocking, stub, test isolation, performance test, security test, SOLID, NenTang.vn" />
+  <meta name="author" content="NenTang.vn" />
+  <meta property="og:locale" content="vi_VN" />
+  <meta property="og:type" content="website" />
+  <meta property="og:title" content="Bài 1: Chủ đề nâng cao trong kiểm thử | Module 5 | NenTang.vn" />
+  <meta property="og:description" content="Các chủ đề nâng cao: mocking, test isolation, performance test cơ bản, security test và nguyên tắc viết code dễ test." />
+  <meta property="og:url" content="https://nentang.vn/course-kiem-thu-tu-dong-voi-ai-va-ci-cd/module-05-nang-cao-va-bai-tap/bai-01/" />
+  <meta property="og:site_name" content="Nền tảng Kiến thức" />
+  <title>Bài 1: Chủ đề nâng cao trong kiểm thử | Module 5 | NenTang.vn</title>
+  <link rel="stylesheet" href="../../shared.css" />
+</head>
+<body>
+  <header class="topbar">
+    <div class="container topbar-inner">
+      <a class="brand" href="../../index.html"><span class="brand-mark">T</span>&nbsp;AI Testing &amp; CI/CD</a>
+      <nav class="nav-links" aria-label="Điều hướng khóa học">
+        <a href="../../../index.html">Trang chủ</a>
+        <a href="../../index.html#modules">Module</a>
+        <a href="../index.html">Module 5</a>
+      </nav>
+    </div>
+  </header>
+
+  <section class="module-hero m5">
+    <div class="container">
+      <div class="breadcrumb">
+        <a href="../../index.html">AI Testing &amp; CI/CD</a>
+        <span>/</span>
+        <a href="../index.html">Module 5</a>
+        <span>/</span>
+        <span>Bài 1</span>
+      </div>
+      <h1>Bài 1: Chủ đề nâng cao trong kiểm thử</h1>
+      <p>Mocking, test isolation, performance test và nguyên tắc code sạch để dễ test.</p>
+    </div>
+  </section>
+
+  <main class="section">
+    <div class="container lesson-layout">
+      <aside class="side-nav">
+        <h3>Module 5</h3>
+        <ul>
+          <li class="active"><a href="index.html">Bài 1: Chủ đề nâng cao</a></li>
+          <li><a href="../bai-02/index.html">Bài 2: Bài tập tổng hợp &amp; Ôn tập</a></li>
+        </ul>
+      </aside>
+
+      <article class="module-article">
+        <section id="mocking" class="lesson">
+          <h2>9.1 Mocking &amp; Stub</h2>
+          <p>
+            <strong>Mock</strong> thay thế dependency thật (API call, database, email service)
+            bằng một phiên bản giả để kiểm soát trong test.
+            <strong>Stub</strong> là mock đơn giản hơn — chỉ trả về giá trị định sẵn.
+          </p>
+          <pre><code data-lang="javascript">// Vitest mock ví dụ
+import { vi, describe, it, expect } from 'vitest';
+import { placeOrder } from '../../src/js/order.js';
+import * as emailService from '../../src/js/emailService.js';
+
+describe('placeOrder', () =&gt; {
+  it('gửi email xác nhận sau khi đặt hàng', async () =&gt; {
+    const sendMock = vi.spyOn(emailService, 'sendEmail').mockResolvedValue(true);
+
+    await placeOrder({ items: [], userId: 1 });
+
+    expect(sendMock).toHaveBeenCalledOnce();
+    expect(sendMock).toHaveBeenCalledWith(
+      expect.objectContaining({ type: 'order_confirmation' })
+    );
+  });
+});</code></pre>
+        </section>
+
+        <section id="test-isolation" class="lesson">
+          <h2>9.2 Test isolation</h2>
+          <p>Mỗi test phải độc lập — không phụ thuộc vào kết quả của test khác.</p>
+          <ul>
+            <li>Dùng <code>beforeEach</code> để reset state (giỏ hàng, database giả, mock) trước mỗi test.</li>
+            <li>Không dùng biến global mutable chia sẻ giữa các test.</li>
+            <li>Không có thứ tự chạy test cố định — test nào cũng phải pass khi chạy độc lập.</li>
+          </ul>
+          <pre><code data-lang="javascript">import { beforeEach, describe, it, expect } from 'vitest';
+import { createCart } from '../../src/js/cart.js';
+
+let cart;
+
+beforeEach(() =&gt; {
+  cart = createCart(); // reset trước mỗi test
+});
+
+describe('cart', () =&gt; {
+  it('bắt đầu rỗng', () =&gt; {
+    expect(cart.items).toHaveLength(0);
+  });
+});</code></pre>
+        </section>
+
+        <section id="performance-test" class="lesson">
+          <h2>9.3 Performance test cơ bản</h2>
+          <p>Kiểm tra thời gian xử lý không vượt ngưỡng chấp nhận được:</p>
+          <pre><code data-lang="javascript">it('tính tổng 10,000 sản phẩm dưới 100ms', () =&gt; {
+  const items = Array.from({ length: 10000 }, (_, i) =&gt; ({
+    id: i, price: 100, qty: 1,
+  }));
+  const start = performance.now();
+  getTotal(items);
+  const elapsed = performance.now() - start;
+  expect(elapsed).toBeLessThan(100);
+});</code></pre>
+        </section>
+
+        <section id="security-test" class="lesson">
+          <h2>9.4 Security test cơ bản</h2>
+          <p>Kiểm tra input validation để tránh lỗ hổng phổ biến:</p>
+          <ul>
+            <li>Không cho phép giá trị âm, null hoặc undefined ở các trường quan trọng.</li>
+            <li>Sanitize input tránh XSS khi hiển thị dữ liệu người dùng lên DOM.</li>
+            <li>Kiểm tra hàm không để lộ thông tin nhạy cảm qua error message.</li>
+          </ul>
+          <pre><code data-lang="javascript">it('ném lỗi khi price là undefined', () =&gt; {
+  expect(() =&gt; addToCart([], { id: 1, price: undefined, qty: 1 }))
+    .toThrow();
+});
+
+it('sanitize tên sản phẩm — không chứa script tag', () =&gt; {
+  const name = sanitizeInput('&lt;script&gt;alert(1)&lt;/script&gt;');
+  expect(name).not.toContain('&lt;script&gt;');
+});</code></pre>
+        </section>
+
+        <section id="code-de-test" class="lesson">
+          <h2>9.5 Nguyên tắc code sạch để dễ test</h2>
+          <ul>
+            <li><strong>Pure functions:</strong> Không có side effect, cùng input luôn ra cùng output.</li>
+            <li><strong>Dependency injection:</strong> Không khởi tạo dependency bên trong hàm — nhận qua tham số.</li>
+            <li><strong>Single Responsibility:</strong> Mỗi hàm làm một việc — nhỏ hơn thì dễ test hơn.</li>
+            <li><strong>Avoid global state:</strong> Global mutable state là nguồn gốc của test không ổn định.</li>
+          </ul>
+        </section>
+
+        <nav class="pager">
+          <a href="../../module-04-ai-va-ci-cd/bai-02/index.html" class="btn">← Module 4 Bài 2</a>
+          <a href="../bai-02/index.html" class="btn primary">Bài 2: Bài tập tổng hợp →</a>
+        </nav>
+      </article>
+    </div>
+  </main>
+
+  <footer class="footer">
+    <div class="container">
+      <p><a href="../index.html">Quay lại Module 5</a></p>
+    </div>
+  </footer>
+  <script type="module" src="../../app.js"></script>
+</body>
+</html>

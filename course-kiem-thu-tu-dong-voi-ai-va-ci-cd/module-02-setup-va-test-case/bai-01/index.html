@@ -1,0 +1,152 @@
+<!DOCTYPE html>
+<html lang="vi">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <meta name="description" content="Tạo cấu trúc thư mục chuẩn cho dự án HTML CSS JS có test tự động, cài Vitest, Playwright và http-server." />
+  <meta name="keywords" content="setup dự án test, cấu trúc thư mục, Vitest, Playwright, package.json, NenTang.vn" />
+  <meta name="author" content="NenTang.vn" />
+  <meta property="og:locale" content="vi_VN" />
+  <meta property="og:type" content="website" />
+  <meta property="og:title" content="Bài 1: Setup dự án & cài công cụ test | Module 2 | NenTang.vn" />
+  <meta property="og:description" content="Tạo cấu trúc thư mục chuẩn cho dự án HTML CSS JS có test tự động, cài Vitest, Playwright và http-server." />
+  <meta property="og:url" content="https://nentang.vn/course-kiem-thu-tu-dong-voi-ai-va-ci-cd/module-02-setup-va-test-case/bai-01/" />
+  <meta property="og:site_name" content="Nền tảng Kiến thức" />
+  <title>Bài 1: Setup dự án & cài công cụ test | Module 2 | NenTang.vn</title>
+  <link rel="stylesheet" href="../../shared.css" />
+</head>
+<body>
+  <header class="topbar">
+    <div class="container topbar-inner">
+      <a class="brand" href="../../index.html"><span class="brand-mark">T</span>&nbsp;AI Testing &amp; CI/CD</a>
+      <nav class="nav-links" aria-label="Điều hướng khóa học">
+        <a href="../../../index.html">Trang chủ</a>
+        <a href="../../index.html#modules">Module</a>
+        <a href="../index.html">Module 2</a>
+      </nav>
+    </div>
+  </header>
+
+  <section class="module-hero m2">
+    <div class="container">
+      <div class="breadcrumb">
+        <a href="../../index.html">AI Testing &amp; CI/CD</a>
+        <span>/</span>
+        <a href="../index.html">Module 2</a>
+        <span>/</span>
+        <span>Bài 1</span>
+      </div>
+      <h1>Bài 1: Setup source HTML CSS JS và cài công cụ test</h1>
+      <p>Cấu trúc dự án đúng cách giúp bạn viết test dễ dàng ngay từ đầu.</p>
+    </div>
+  </section>
+
+  <main class="section">
+    <div class="container lesson-layout">
+      <aside class="side-nav">
+        <h3>Module 2</h3>
+        <ul>
+          <li class="active"><a href="index.html">Bài 1: Setup dự án &amp; công cụ test</a></li>
+          <li><a href="../bai-02/index.html">Bài 2: Viết test plan &amp; test case</a></li>
+        </ul>
+      </aside>
+
+      <article class="module-article">
+        <section id="cau-truc-thu-muc" class="lesson">
+          <h2>2.1 Cấu trúc thư mục chuẩn</h2>
+          <p>Tách code thành 2 phần rõ ràng: <code>src/</code> chứa logic thuần, <code>tests/</code> chứa file test.</p>
+          <pre><code data-lang="text">my-project/
+├── src/
+│   ├── js/
+│   │   ├── cart.js        ← logic nghiệp vụ (dễ import trong test)
+│   │   └── utils.js
+│   ├── css/
+│   │   └── style.css
+│   └── index.html
+├── tests/
+│   ├── unit/
+│   │   ├── cart.test.js
+│   │   └── utils.test.js
+│   ├── business/
+│   │   └── discount.test.js
+│   └── e2e/
+│       └── checkout.spec.js
+├── package.json
+└── vitest.config.js</code></pre>
+          <div class="callout">
+            <strong>Nguyên tắc:</strong> Logic nghiệp vụ <strong>không được</strong> viết trực tiếp trong file HTML
+            (nội dòng vào thẻ <code>&lt;script&gt;</code>). Hãy tách ra thành module JS riêng — chỉ khi đó mới
+            import vào test được.
+          </div>
+        </section>
+
+        <section id="cai-cong-cu" class="lesson">
+          <h2>2.2 Khởi tạo dự án và cài công cụ</h2>
+          <ol class="steps">
+            <li>
+              <strong>Khởi tạo package.json</strong>
+              <pre><code data-lang="bash">npm init -y</code></pre>
+            </li>
+            <li>
+              <strong>Cài Vitest</strong> (unit test &amp; business test)
+              <pre><code data-lang="bash">npm install --save-dev vitest</code></pre>
+            </li>
+            <li>
+              <strong>Cài Playwright</strong> (E2E test)
+              <pre><code data-lang="bash">npm install --save-dev @playwright/test
+npx playwright install chromium</code></pre>
+            </li>
+            <li>
+              <strong>Cài http-server</strong> (phục vụ file tĩnh cho E2E test)
+              <pre><code data-lang="bash">npm install --save-dev http-server</code></pre>
+            </li>
+          </ol>
+        </section>
+
+        <section id="package-json" class="lesson">
+          <h2>2.3 Cấu hình package.json</h2>
+          <pre><code data-lang="json">{
+  "name": "my-project",
+  "scripts": {
+    "test": "vitest run",
+    "test:watch": "vitest",
+    "test:e2e": "playwright test",
+    "serve": "http-server src -p 3000"
+  },
+  "devDependencies": {
+    "vitest": "^1.0.0",
+    "@playwright/test": "^1.40.0",
+    "http-server": "^14.0.0"
+  }
+}</code></pre>
+        </section>
+
+        <section id="vitest-config" class="lesson">
+          <h2>2.4 Cấu hình Vitest</h2>
+          <pre><code data-lang="javascript">// vitest.config.js
+import { defineConfig } from 'vitest/config';
+
+export default defineConfig({
+  test: {
+    include: ['tests/unit/**/*.test.js', 'tests/business/**/*.test.js'],
+    environment: 'node',
+  },
+});</code></pre>
+        </section>
+
+        <nav class="pager">
+          <a href="../../module-01-nen-tang-kiem-thu/bai-02/index.html" class="btn">← Module 1 Bài 2</a>
+          <a href="../bai-02/index.html" class="btn primary">Bài 2: Viết test plan →</a>
+        </nav>
+      </article>
+    </div>
+  </main>
+
+  <footer class="footer">
+    <div class="container">
+      <p><a href="../index.html">Quay lại Module 2</a></p>
+    </div>
+  </footer>
+  <script type="module" src="../../app.js"></script>
+</body>
+</html>

@@ -1,0 +1,166 @@
+<!DOCTYPE html>
+<html lang="vi">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <meta name="description" content="Bài tập tổng hợp 3 cấp độ (cơ bản, trung cấp, nâng cao) và câu hỏi ôn tập kiến thức toàn khóa kiểm thử tự động." />
+  <meta name="keywords" content="bài tập kiểm thử, ôn tập testing, automated test exercises, NenTang.vn" />
+  <meta name="author" content="NenTang.vn" />
+  <meta property="og:locale" content="vi_VN" />
+  <meta property="og:type" content="website" />
+  <meta property="og:title" content="Bài 2: Bài tập tổng hợp & Ôn tập | Module 5 | NenTang.vn" />
+  <meta property="og:description" content="Bài tập tổng hợp 3 cấp độ và câu hỏi ôn tập kiến thức toàn khóa kiểm thử tự động." />
+  <meta property="og:url" content="https://nentang.vn/course-kiem-thu-tu-dong-voi-ai-va-ci-cd/module-05-nang-cao-va-bai-tap/bai-02/" />
+  <meta property="og:site_name" content="Nền tảng Kiến thức" />
+  <title>Bài 2: Bài tập tổng hợp & Ôn tập | Module 5 | NenTang.vn</title>
+  <link rel="stylesheet" href="../../shared.css" />
+</head>
+<body>
+  <header class="topbar">
+    <div class="container topbar-inner">
+      <a class="brand" href="../../index.html"><span class="brand-mark">T</span>&nbsp;AI Testing &amp; CI/CD</a>
+      <nav class="nav-links" aria-label="Điều hướng khóa học">
+        <a href="../../../index.html">Trang chủ</a>
+        <a href="../../index.html#modules">Module</a>
+        <a href="../index.html">Module 5</a>
+      </nav>
+    </div>
+  </header>
+
+  <section class="module-hero m5">
+    <div class="container">
+      <div class="breadcrumb">
+        <a href="../../index.html">AI Testing &amp; CI/CD</a>
+        <span>/</span>
+        <a href="../index.html">Module 5</a>
+        <span>/</span>
+        <span>Bài 2</span>
+      </div>
+      <h1>Bài 2: Bài tập tổng hợp &amp; Ôn tập</h1>
+      <p>Thực chiến 3 cấp độ và câu hỏi ôn tập để kiểm tra lại toàn bộ kiến thức.</p>
+    </div>
+  </section>
+
+  <main class="section">
+    <div class="container lesson-layout">
+      <aside class="side-nav">
+        <h3>Module 5</h3>
+        <ul>
+          <li><a href="../bai-01/index.html">Bài 1: Chủ đề nâng cao</a></li>
+          <li class="active"><a href="index.html">Bài 2: Bài tập tổng hợp &amp; Ôn tập</a></li>
+        </ul>
+      </aside>
+
+      <article class="module-article">
+        <section id="cap-do-1" class="exercise">
+          <h2>🟢 Cấp độ 1 — Cơ bản</h2>
+          <ol class="steps">
+            <li>
+              <strong>Bài 1: Tách hàm và viết unit test</strong>
+              <p>
+                Cho file <code>calculator.js</code> với hàm <code>add(a, b)</code> và <code>divide(a, b)</code>
+                (throw error khi b = 0). Viết đầy đủ unit test bằng Vitest.
+              </p>
+            </li>
+            <li>
+              <strong>Bài 2: Liệt kê test case</strong>
+              <p>
+                Chức năng: Form đăng ký yêu cầu email hợp lệ, mật khẩu &gt;= 8 ký tự, mật khẩu xác nhận khớp.
+                Liệt kê tất cả test case cần thiết (happy, negative, boundary).
+              </p>
+            </li>
+            <li>
+              <strong>Bài 3: Chạy CI đầu tiên</strong>
+              <p>
+                Tạo repo GitHub, thêm file <code>.github/workflows/ci.yml</code> chạy <code>npm test</code>
+                mỗi khi push. Xem workflow pass trên tab Actions.
+              </p>
+            </li>
+          </ol>
+        </section>
+
+        <section id="cap-do-2" class="exercise">
+          <h2>🟡 Cấp độ 2 — Trung cấp</h2>
+          <ol class="steps">
+            <li>
+              <strong>Bài 4: Business test giỏ hàng đầy đủ</strong>
+              <p>
+                Implement và test đầy đủ module giỏ hàng: thêm/xóa/cập nhật sản phẩm, tính tổng,
+                áp giảm giá, tính phí vận chuyển. Coverage &gt;= 90%.
+              </p>
+            </li>
+            <li>
+              <strong>Bài 5: E2E test trang sản phẩm</strong>
+              <p>
+                Viết E2E test với Playwright: mở trang, tìm kiếm sản phẩm, thêm vào giỏ,
+                kiểm tra giỏ hàng cập nhật đúng.
+              </p>
+            </li>
+            <li>
+              <strong>Bài 6: Dùng AI sinh test</strong>
+              <p>
+                Dùng ChatGPT hoặc Copilot sinh unit test cho hàm của bạn. Review kết quả theo
+                checklist (Bài Module 4). Ghi lại điểm AI đúng và điểm AI sai/thiếu.
+              </p>
+            </li>
+          </ol>
+        </section>
+
+        <section id="cap-do-3" class="exercise">
+          <h2>🔴 Cấp độ 3 — Nâng cao</h2>
+          <ol class="steps">
+            <li>
+              <strong>Bài 7: Full pipeline</strong>
+              <p>
+                Xây dựng dự án hoàn chỉnh: unit test + business test + E2E test + GitHub Actions CI.
+                Branch protection rule: yêu cầu CI pass trước khi merge PR.
+              </p>
+            </li>
+            <li>
+              <strong>Bài 8: Mocking nâng cao</strong>
+              <p>
+                Module <code>order.js</code> gọi API gửi email và lưu database.
+                Mock cả 2 dependencies, viết test kiểm tra các trường hợp: gửi thành công,
+                API email lỗi, database lỗi.
+              </p>
+            </li>
+            <li>
+              <strong>Bài 9: Refactor và giữ test xanh</strong>
+              <p>
+                Nhận code giỏ hàng đã có test đầy đủ. Refactor để cải thiện performance
+                mà không làm bất kỳ test nào fail.
+              </p>
+            </li>
+          </ol>
+        </section>
+
+        <section id="on-tap" class="lesson">
+          <h2>📝 Câu hỏi ôn tập</h2>
+          <ol>
+            <li>Test pyramid là gì? Tại sao không nên có quá nhiều E2E test?</li>
+            <li>Sự khác nhau giữa unit test và business test là gì? Cho ví dụ.</li>
+            <li>Tại sao cần test isolation? Anti-pattern nào vi phạm isolation?</li>
+            <li>Mock và stub khác nhau ở điểm gì? Khi nào dùng mock?</li>
+            <li>CI/CD khác nhau ở điểm gì? Test có vai trò gì trong mỗi giai đoạn?</li>
+            <li>Kể 3 điều cần kiểm tra khi review test do AI sinh ra.</li>
+            <li>Shift-left testing nghĩa là gì trong quy trình Agile?</li>
+            <li>Boundary case là gì? Cho ví dụ với bài toán giảm giá.</li>
+          </ol>
+        </section>
+
+        <nav class="pager">
+          <a href="../bai-01/index.html" class="btn">← Bài 1: Chủ đề nâng cao</a>
+          <a href="../../index.html" class="btn primary">Hoàn thành khóa học 🎉</a>
+        </nav>
+      </article>
+    </div>
+  </main>
+
+  <footer class="footer">
+    <div class="container">
+      <p><a href="../index.html">Quay lại Module 5</a></p>
+    </div>
+  </footer>
+  <script type="module" src="../../app.js"></script>
+</body>
+</html>

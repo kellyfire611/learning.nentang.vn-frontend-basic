@@ -1,50 +1,235 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="vi">
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <meta http-equiv="X-UA-Compatible" content="ie=edge">
-    <title>Nền tảng Kiến thức | HTML CSS JS</title>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <meta name="description" content="Nền tảng học lập trình front-end thực hành: HTML, CSS, JavaScript, jQuery, CSS Flexbox và kiểm thử tự động." />
+  <meta name="keywords" content="học lập trình, frontend, HTML CSS JS, CSS Flexbox, kiểm thử tự động, AI testing, NenTang.vn" />
+  <meta name="author" content="NenTang.vn" />
+  <meta property="og:locale" content="vi_VN" />
+  <meta property="og:type" content="website" />
+  <meta property="og:title" content="Nền tảng Kiến thức | Học lập trình front-end thực hành" />
+  <meta property="og:description" content="Nền tảng học lập trình front-end thực hành: HTML, CSS, JavaScript, jQuery, CSS Flexbox và kiểm thử tự động." />
+  <meta property="og:url" content="https://nentang.vn/" />
+  <meta property="og:site_name" content="Nền tảng Kiến thức" />
+  <title>Nền tảng Kiến thức | Học lập trình front-end thực hành | NenTang.vn</title>
+  <style>
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+    :root {
+      --primary: #2357ff;
+      --text: #1f2937;
+      --muted: #5b6475;
+      --surface: #ffffff;
+      --bg: #f5f7fc;
+      --border: #d8dfec;
+      --radius: 18px;
+      --shadow: 0 8px 32px rgba(25,45,95,0.10);
+    }
+    body { font-family: system-ui, -apple-system, sans-serif; background: var(--bg); color: var(--text); line-height: 1.6; }
+    a { color: inherit; text-decoration: none; }
+    .container { max-width: 1080px; margin: 0 auto; padding: 0 24px; }
+
+    /* Topbar */
+    .topbar { background: rgba(12,18,35,0.92); backdrop-filter: blur(12px); position: sticky; top: 0; z-index: 100; }
+    .topbar-inner { display: flex; align-items: center; justify-content: space-between; padding: 16px 24px; max-width: 1080px; margin: 0 auto; }
+    .brand { font-size: 1.1rem; font-weight: 700; color: #fff; display: flex; align-items: center; gap: 8px; }
+    .brand-mark { background: var(--primary); color: #fff; border-radius: 8px; width: 28px; height: 28px; display: flex; align-items: center; justify-content: center; font-size: 0.85rem; font-weight: 800; flex-shrink: 0; }
+    .nav-links { display: flex; gap: 24px; }
+    .nav-links a { color: rgba(255,255,255,0.75); font-size: 0.9rem; transition: color 0.2s; }
+    .nav-links a:hover { color: #fff; }
+
+    /* Hero */
+    .hero { background: linear-gradient(135deg, #0c1223 0%, #1a2d5a 100%); color: #fff; padding: 80px 0 64px; }
+    .hero-inner { display: grid; grid-template-columns: 1fr 1fr; gap: 48px; align-items: center; max-width: 1080px; margin: 0 auto; padding: 0 24px; }
+    .eyebrow { font-size: 0.85rem; font-weight: 600; letter-spacing: 0.08em; text-transform: uppercase; color: #93c5fd; margin-bottom: 12px; }
+    .hero h1 { font-size: clamp(1.8rem, 4vw, 2.8rem); font-weight: 800; line-height: 1.2; margin-bottom: 16px; }
+    .hero p { color: rgba(255,255,255,0.75); font-size: 1.05rem; margin-bottom: 28px; }
+    .hero-actions { display: flex; gap: 12px; flex-wrap: wrap; }
+    .btn { display: inline-block; padding: 11px 22px; border-radius: 8px; font-weight: 600; font-size: 0.9rem; transition: all 0.2s; }
+    .btn.primary { background: var(--primary); color: #fff; }
+    .btn.primary:hover { background: #1a44e8; }
+    .btn.outline { border: 2px solid rgba(255,255,255,0.35); color: #fff; }
+    .btn.outline:hover { background: rgba(255,255,255,0.1); }
+    .hero-visual { background: rgba(255,255,255,0.07); border: 1px solid rgba(255,255,255,0.12); border-radius: var(--radius); padding: 28px; display: grid; grid-template-columns: 1fr 1fr; gap: 12px; }
+    .hero-badge { background: rgba(255,255,255,0.12); border-radius: 10px; padding: 14px 16px; }
+    .hero-badge strong { display: block; font-size: 1.4rem; color: #fff; }
+    .hero-badge span { font-size: 0.82rem; color: rgba(255,255,255,0.65); }
+
+    /* Courses section */
+    .section { padding: 64px 0; }
+    .section.alt { background: #fff; }
+    .section-head { text-align: center; margin-bottom: 40px; }
+    .section-head h2 { font-size: 1.8rem; font-weight: 800; margin-bottom: 8px; }
+    .section-head p { color: var(--muted); }
+
+    /* Course cards */
+    .course-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(300px, 1fr)); gap: 24px; }
+    .course-card { background: var(--surface); border: 1px solid var(--border); border-radius: var(--radius); overflow: hidden; transition: box-shadow 0.2s, transform 0.2s; display: flex; flex-direction: column; }
+    .course-card:hover { box-shadow: var(--shadow); transform: translateY(-3px); }
+    .course-card-header { padding: 24px 24px 16px; border-bottom: 1px solid var(--border); }
+    .course-tag { display: inline-block; font-size: 0.72rem; font-weight: 700; letter-spacing: 0.07em; text-transform: uppercase; padding: 3px 10px; border-radius: 100px; margin-bottom: 10px; }
+    .tag-css { background: #ede9fe; color: #5b21b6; }
+    .tag-test { background: #dcfce7; color: #166534; }
+    .tag-html { background: #fff7ed; color: #9a3412; }
+    .tag-js { background: #fefce8; color: #854d0e; }
+    .course-card-header h3 { font-size: 1.15rem; font-weight: 700; margin-bottom: 6px; }
+    .course-card-header p { font-size: 0.88rem; color: var(--muted); }
+    .course-card-body { padding: 16px 24px 24px; flex: 1; display: flex; flex-direction: column; gap: 12px; }
+    .module-links { list-style: none; display: flex; flex-direction: column; gap: 6px; flex: 1; }
+    .module-links li a { font-size: 0.85rem; color: var(--primary); display: flex; align-items: center; gap: 6px; padding: 4px 0; }
+    .module-links li a::before { content: '→'; font-size: 0.8rem; opacity: 0.6; }
+    .module-links li a:hover { text-decoration: underline; }
+    .lesson-links { list-style: none; display: flex; flex-direction: column; gap: 6px; }
+    .lesson-links li a { font-size: 0.82rem; color: var(--muted); padding: 3px 0; display: block; }
+    .lesson-links li a:hover { color: var(--primary); }
+    .card-cta { margin-top: auto; padding-top: 12px; border-top: 1px solid var(--border); }
+    .card-cta a { font-size: 0.88rem; font-weight: 600; color: var(--primary); }
+    .card-cta a:hover { text-decoration: underline; }
+
+    /* Footer */
+    .footer { background: #0c1223; color: rgba(255,255,255,0.55); text-align: center; padding: 32px 24px; font-size: 0.88rem; }
+    .footer a { color: rgba(255,255,255,0.75); }
+    .footer a:hover { color: #fff; }
+
+    @media (max-width: 680px) {
+      .hero-inner { grid-template-columns: 1fr; }
+      .hero-visual { display: none; }
+    }
+  </style>
 </head>
 <body>
-    <h1>Nền tảng Kiến thức | https://nentang.vn</h1>
-    <h2>Danh sách bài học</h2>
-     <h3>Khóa học chuyên đề</h3>
-     <ul>
-         <li><a href="course-css-flexbox/index.html">Học CSS Flexbox Toàn Tập - bài học, playground và bài tập thực hành</a></li>
-         <li><a href="course-kiem-thu-tu-dong-voi-ai-va-ci-cd/index.html">Kiểm thử tự động với AI và quy trình CI/CD - hướng dẫn chi tiết từ cơ bản đến nâng cao</a></li>
-     </ul>
+  <header class="topbar">
+    <div class="topbar-inner">
+      <a class="brand" href="index.html">
+        <span class="brand-mark">N</span>
+        NenTang.vn
+      </a>
+      <nav class="nav-links" aria-label="Điều hướng chính">
+        <a href="#courses">Khóa học</a>
+        <a href="course-css-flexbox/index.html">CSS Flexbox</a>
+        <a href="course-kiem-thu-tu-dong-voi-ai-va-ci-cd/index.html">AI Testing</a>
+      </nav>
+    </div>
+  </header>
 
-    <h3>HTML căn bản</h3>
-    <ul>
-        <li><a href="course-html-css-js/lesson1-cau-truc-file-html-co-ban/index.html">Cấu trúc file HTML cơ bản</a></li>
-    </ul>
-    
-    <h3>CSS căn bản</h3>
-    <ul>
-        <li><a href="course-html-css-js/lesson1-cau-truc-file-html-co-ban/index.html">Cấu trúc file HTML cơ bản</a></li>
-    </ul>
-    <h3>CSS flexbox</h3>
-    <ul>
-        <li><a href="course-css-flexbox/index.html">Học CSS Flexbox Toàn Tập</a></li>
-    </ul>
+  <section class="hero">
+    <div class="hero-inner">
+      <div>
+        <p class="eyebrow">Học lập trình thực hành</p>
+        <h1>Nền tảng Kiến thức Frontend</h1>
+        <p>Khóa học front-end thực tế: HTML, CSS, JavaScript, jQuery, CSS Flexbox và kiểm thử tự động với AI &amp; CI/CD.</p>
+        <div class="hero-actions">
+          <a class="btn primary" href="#courses">Xem khóa học</a>
+          <a class="btn outline" href="course-css-flexbox/index.html">CSS Flexbox</a>
+        </div>
+      </div>
+      <div class="hero-visual" aria-hidden="true">
+        <div class="hero-badge"><strong>2</strong><span>Khóa chuyên đề</span></div>
+        <div class="hero-badge"><strong>10+</strong><span>Module học</span></div>
+        <div class="hero-badge"><strong>30+</strong><span>Bài học</span></div>
+        <div class="hero-badge"><strong>Miễn phí</strong><span>Hoàn toàn</span></div>
+      </div>
+    </div>
+  </section>
 
-    <h3>JavaScript căn bản</h3>
-    <ul>
-        <li><a href="course-html-css-js/javascript/cac-cach-su-dung-javascript-trong-trang-web/index.html">Các cách sử dụng JavaScript trong trang web</a></li>
-        <li><a href="course-html-css-js/javascript/thu-thap-du-lieu-nguoi-dung-nhap-trong-form-bang-javascript/index.html">Thu thập dữ liệu người dùng nhập trong FORM bằng JavaScript</a></li>
-    </ul>
+  <main>
+    <section class="section alt" id="courses">
+      <div class="container">
+        <div class="section-head">
+          <h2>Khóa học hiện có</h2>
+          <p>Chọn khóa học phù hợp với mục tiêu của bạn.</p>
+        </div>
+        <div class="course-grid">
 
-    <h3>JQuery căn bản</h3>
-    <ul>
-        <li><a href="course-jquery/tao-trang-cau-hinh-tuy-chinh-giao-dien/index.html">Tạo trang cấu hình tùy chỉnh giao diện bằng JQUERY</a></li>
-        <li><a href="course-jquery/bai-tap-thuc-thi-sau-khoang-thoi-gian-bang-ham-setTimeout/hop-thoai-chao-mung.html">Thực thi hàm sau 1 khoảng thời gian bằng hàm setTimeout()</a></li>
-        <li><a href="course-jquery/bai-tap-thuc-thi-mot-ham-xu-ly-lien-tuc-sau-1-khoang-thoi-gian-bang-ham-setInterval/index.html">Thực thi hàm liên tục sau 1 khoảng thời gian bằng hàm setInterval()</a></li>
-        <li><a href="course-jquery/thu-thap-du-lieu-nguoi-dung-nhap-trong-form-bang-jquery/index.html">Thu thập dữ liệu người dùng nhập trong FORM bằng JQUERY</a></li>
-        <li><a href="course-jquery/tich-hop-bo-cong-cu-soan-thao-van-ban-truc-quan-wysiwyg-ckeditor/index.html">Tích hợp bộ công cụ soạn thảo văn bản trực quan WYSIWYG CKEDITOR</a></li>
-        <li><a href="course-jquery/tich-hop-cong-cu-chon-ngay-thang-date-picker/index.html">Tích hợp công cụ chọn ngày tháng Date Picker</a></li>
-    </ul>
+          <!-- CSS Flexbox -->
+          <div class="course-card">
+            <div class="course-card-header">
+              <span class="course-tag tag-css">CSS</span>
+              <h3>Học CSS Flexbox Toàn Tập</h3>
+              <p>32 bài tinh gọn, ví dụ thực tế, playground và bài tập có lời giải.</p>
+            </div>
+            <div class="course-card-body">
+              <ul class="module-links">
+                <li><a href="course-css-flexbox/module-01-nen-tang-flexbox/index.html">Module 1: Nền tảng Flexbox</a></li>
+                <li><a href="course-css-flexbox/module-02-pattern-giao-dien/index.html">Module 2: Pattern Giao diện</a></li>
+                <li><a href="course-css-flexbox/module-03-responsive-thuc-te/index.html">Module 3: Responsive thực tế</a></li>
+                <li><a href="course-css-flexbox/module-04-bai-thuc-hanh/index.html">Module 4: Bài thực hành</a></li>
+              </ul>
+              <div class="card-cta">
+                <a href="course-css-flexbox/index.html">Vào khóa học →</a>
+              </div>
+            </div>
+          </div>
 
+          <!-- AI Testing & CI/CD -->
+          <div class="course-card">
+            <div class="course-card-header">
+              <span class="course-tag tag-test">Testing</span>
+              <h3>Kiểm thử tự động với AI &amp; CI/CD</h3>
+              <p>Từ nền tảng đến pipeline CI/CD hoàn chỉnh, áp dụng AI đúng cách.</p>
+            </div>
+            <div class="course-card-body">
+              <ul class="module-links">
+                <li><a href="course-kiem-thu-tu-dong-voi-ai-va-ci-cd/module-01-nen-tang-kiem-thu/index.html">Module 1: Nền tảng kiểm thử</a></li>
+                <li><a href="course-kiem-thu-tu-dong-voi-ai-va-ci-cd/module-02-setup-va-test-case/index.html">Module 2: Setup &amp; Test case</a></li>
+                <li><a href="course-kiem-thu-tu-dong-voi-ai-va-ci-cd/module-03-viet-test/index.html">Module 3: Viết test (Vitest &amp; Playwright)</a></li>
+                <li><a href="course-kiem-thu-tu-dong-voi-ai-va-ci-cd/module-04-ai-va-ci-cd/index.html">Module 4: AI &amp; CI/CD</a></li>
+                <li><a href="course-kiem-thu-tu-dong-voi-ai-va-ci-cd/module-05-nang-cao-va-bai-tap/index.html">Module 5: Nâng cao &amp; Bài tập</a></li>
+              </ul>
+              <div class="card-cta">
+                <a href="course-kiem-thu-tu-dong-voi-ai-va-ci-cd/index.html">Vào khóa học →</a>
+              </div>
+            </div>
+          </div>
 
+          <!-- HTML CSS JS -->
+          <div class="course-card">
+            <div class="course-card-header">
+              <span class="course-tag tag-html">HTML &amp; CSS</span>
+              <h3>HTML, CSS &amp; JavaScript căn bản</h3>
+              <p>Các bài học nền tảng HTML, CSS và JavaScript cho người mới bắt đầu.</p>
+            </div>
+            <div class="course-card-body">
+              <ul class="lesson-links">
+                <li><a href="course-html-css-js/lesson1-cau-truc-file-html-co-ban/index.html">Cấu trúc file HTML cơ bản</a></li>
+                <li><a href="course-html-css-js/javascript/cac-cach-su-dung-javascript-trong-trang-web/index.html">Các cách sử dụng JavaScript trong trang web</a></li>
+                <li><a href="course-html-css-js/javascript/thu-thap-du-lieu-nguoi-dung-nhap-trong-form-bang-javascript/index.html">Thu thập dữ liệu từ FORM bằng JavaScript</a></li>
+              </ul>
+              <div class="card-cta">
+                <a href="course-html-css-js/lesson1-cau-truc-file-html-co-ban/index.html">Bắt đầu học →</a>
+              </div>
+            </div>
+          </div>
+
+          <!-- jQuery -->
+          <div class="course-card">
+            <div class="course-card-header">
+              <span class="course-tag tag-js">jQuery</span>
+              <h3>jQuery căn bản</h3>
+              <p>Tích hợp jQuery, xử lý sự kiện, thao tác DOM và các plugin phổ biến.</p>
+            </div>
+            <div class="course-card-body">
+              <ul class="lesson-links">
+                <li><a href="course-jquery/tao-trang-cau-hinh-tuy-chinh-giao-dien/index.html">Tạo trang cấu hình tùy chỉnh giao diện</a></li>
+                <li><a href="course-jquery/bai-tap-thuc-thi-sau-khoang-thoi-gian-bang-ham-setTimeout/hop-thoai-chao-mung.html">setTimeout() — thực thi sau khoảng thời gian</a></li>
+                <li><a href="course-jquery/bai-tap-thuc-thi-mot-ham-xu-ly-lien-tuc-sau-1-khoang-thoi-gian-bang-ham-setInterval/index.html">setInterval() — thực thi liên tục</a></li>
+                <li><a href="course-jquery/thu-thap-du-lieu-nguoi-dung-nhap-trong-form-bang-jquery/index.html">Thu thập dữ liệu từ FORM bằng jQuery</a></li>
+                <li><a href="course-jquery/tich-hop-bo-cong-cu-soan-thao-van-ban-truc-quan-wysiwyg-ckeditor/index.html">Tích hợp WYSIWYG CKEditor</a></li>
+                <li><a href="course-jquery/tich-hop-cong-cu-chon-ngay-thang-date-picker/index.html">Tích hợp Date Picker</a></li>
+              </ul>
+              <div class="card-cta">
+                <a href="course-jquery/tao-trang-cau-hinh-tuy-chinh-giao-dien/index.html">Bắt đầu học →</a>
+              </div>
+            </div>
+          </div>
+
+        </div>
+      </div>
+    </section>
+  </main>
+
+  <footer class="footer">
+    <p>NenTang.vn — Nền tảng học lập trình front-end miễn phí | <a href="https://nentang.vn">nentang.vn</a></p>
+  </footer>
 </body>
 </html>

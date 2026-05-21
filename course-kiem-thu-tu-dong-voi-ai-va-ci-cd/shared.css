@@ -296,9 +296,333 @@ thead th {
   color: var(--muted);
 }
 
+/* ─── Brand mark ─── */
+.brand-mark {
+  width: 34px;
+  height: 34px;
+  display: grid;
+  place-items: center;
+  border-radius: 8px;
+  background: var(--primary);
+  color: white;
+  font-weight: 900;
+  font-size: 1rem;
+}
+
+/* ─── Module cards on landing page ─── */
+.module-grid {
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: 18px;
+}
+
+.module-list {
+  grid-template-columns: repeat(auto-fit, minmax(290px, 1fr));
+}
+
+.module-link {
+  overflow: hidden;
+  color: inherit;
+  text-decoration: none;
+  border: 1px solid var(--border);
+  border-radius: var(--radius);
+  background: var(--surface);
+  box-shadow: var(--shadow);
+}
+
+.module-link header {
+  padding: 22px;
+  color: white;
+}
+
+.module-link.m1 header,
+.module-hero.m1 { background: var(--success); }
+.module-link.m2 header,
+.module-hero.m2 { background: #e85d4f; }
+.module-link.m3 header,
+.module-hero.m3 { background: var(--primary); }
+.module-link.m4 header,
+.module-hero.m4 { background: #d97706; }
+.module-link.m5 header,
+.module-hero.m5 { background: #7c3aed; }
+
+.module-link h3 {
+  margin: 0;
+  font-size: 1.18rem;
+}
+
+.module-link header p {
+  margin: 6px 0 0;
+  color: rgba(255,255,255,0.88);
+}
+
+.module-body {
+  padding: 18px 22px 22px;
+}
+
+.module-body ul {
+  margin: 8px 0 14px;
+  padding-left: 20px;
+}
+
+.module-body li {
+  margin: 5px 0;
+  color: var(--muted);
+}
+
+.tag-row {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 8px;
+}
+
+.tag {
+  display: inline-flex;
+  align-items: center;
+  min-height: 26px;
+  padding: 3px 10px;
+  border-radius: 999px;
+  background: rgba(35, 87, 255, 0.09);
+  color: var(--primary-dark);
+  font-size: 0.82rem;
+  font-weight: 700;
+}
+
+/* ─── Module hero (used on module index pages) ─── */
+.module-hero {
+  color: white;
+}
+
+.module-hero .container {
+  padding: 42px 16px;
+}
+
+.module-hero h1 {
+  margin: 0;
+  font-size: clamp(1.9rem, 4vw, 3rem);
+  line-height: 1.1;
+}
+
+.module-hero p {
+  max-width: 760px;
+  color: rgba(255,255,255,0.88);
+}
+
+/* ─── Breadcrumb ─── */
+.breadcrumb {
+  display: flex;
+  gap: 8px;
+  flex-wrap: wrap;
+  margin-bottom: 12px;
+  color: rgba(255,255,255,0.82);
+  font-size: 0.9rem;
+}
+
+.breadcrumb a {
+  color: white;
+  font-weight: 700;
+  text-decoration: none;
+}
+
+/* ─── Lesson layout ─── */
+.lesson-layout {
+  display: grid;
+  grid-template-columns: minmax(220px, 0.32fr) minmax(0, 1fr);
+  gap: 24px;
+  align-items: start;
+}
+
+/* ─── Side nav ─── */
+.side-nav {
+  position: sticky;
+  top: 74px;
+  display: grid;
+  gap: 6px;
+  padding: 14px;
+  border: 1px solid var(--border);
+  border-radius: 14px;
+  background: var(--surface);
+  box-shadow: var(--shadow);
+}
+
+.side-nav a {
+  padding: 8px 10px;
+  border-radius: 8px;
+  color: var(--muted);
+  text-decoration: none;
+  font-weight: 600;
+  font-size: 0.92rem;
+}
+
+.side-nav a:hover {
+  background: rgba(35,87,255,0.07);
+  color: var(--primary);
+}
+
+/* ─── Module article ─── */
+.module-article {
+  display: grid;
+  gap: 22px;
+}
+
+/* ─── Lesson / callout blocks ─── */
+.lesson,
+.exercise,
+.callout-block {
+  border: 1px solid var(--border);
+  border-radius: 14px;
+  background: var(--surface);
+  box-shadow: var(--shadow);
+  padding: 22px;
+}
+
+.lesson h2,
+.exercise h2 {
+  margin-top: 0;
+}
+
+.lesson ul,
+.exercise ul,
+.lesson ol,
+.exercise ol {
+  padding-left: 22px;
+}
+
+.lesson li,
+.exercise li {
+  margin: 6px 0;
+  color: var(--text);
+}
+
+/* ─── Steps (numbered list) ─── */
+.steps {
+  counter-reset: step;
+  list-style: none;
+  padding-left: 0;
+  margin: 14px 0;
+}
+
+.steps li {
+  position: relative;
+  padding-left: 42px;
+  margin: 10px 0;
+  color: var(--text);
+}
+
+.steps li::before {
+  counter-increment: step;
+  content: counter(step);
+  position: absolute;
+  left: 0;
+  top: 2px;
+  width: 28px;
+  height: 28px;
+  display: grid;
+  place-items: center;
+  border-radius: 50%;
+  background: var(--success);
+  color: white;
+  font-weight: 900;
+  font-size: 0.82rem;
+}
+
+/* ─── Pager (prev/next) ─── */
+.pager {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 10px;
+  justify-content: space-between;
+}
+
+.pager .btn {
+  border-radius: 999px;
+  padding: 10px 20px;
+  font-weight: 700;
+  font-size: 0.92rem;
+}
+
+.pager .btn.primary {
+  background: var(--primary);
+  color: white;
+}
+
+/* ─── Exercise card ─── */
+.exercise-grid {
+  display: grid;
+  gap: 14px;
+}
+
+.exercise-card {
+  display: flex;
+  gap: 14px;
+  padding: 18px;
+  color: inherit;
+  text-decoration: none;
+  border: 1px solid var(--border);
+  border-radius: 14px;
+  background: var(--surface);
+  box-shadow: var(--shadow);
+  border-left: 5px solid var(--success);
+}
+
+.exercise-card.m2 { border-left-color: #e85d4f; }
+.exercise-card.m3 { border-left-color: var(--primary); }
+.exercise-card.m4 { border-left-color: #d97706; }
+.exercise-card.m5 { border-left-color: #7c3aed; }
+
+.card-num {
+  flex: 0 0 42px;
+  height: 42px;
+  display: grid;
+  place-items: center;
+  border-radius: 8px;
+  background: rgba(35,87,255,0.09);
+  color: var(--primary-dark);
+  font-weight: 900;
+  font-size: 1rem;
+}
+
+.card-info h3 {
+  margin: 0 0 4px;
+  font-size: 1rem;
+}
+
+.card-info p {
+  margin: 0;
+  color: var(--muted);
+  font-size: 0.88rem;
+}
+
+/* ─── Code blocks in lessons ─── */
+.code-block {
+  margin: 0;
+}
+
+/* ─── Hero actions for course landing ─── */
+.hero-actions a {
+  font-weight: 700;
+  font-size: 0.95rem;
+  text-decoration: none;
+}
+
 @media (max-width: 900px) {
+  .module-grid,
+  .lesson-layout {
+    grid-template-columns: 1fr;
+  }
+
+  .side-nav {
+    position: static;
+  }
+
   .hero-grid,
   .stats-grid {
+    grid-template-columns: 1fr;
+  }
+}
+
+@media (max-width: 640px) {
+  .module-grid {
     grid-template-columns: 1fr;
   }
 }

@@ -1,0 +1,154 @@
+<!DOCTYPE html>
+<html lang="vi">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <meta name="description" content="Viết unit test bằng Vitest: tách hàm, cấu trúc test describe/it, coverage và xử lý lỗi thường gặp của người mới." />
+  <meta name="keywords" content="unit test, Vitest, describe, it, expect, coverage, NenTang.vn" />
+  <meta name="author" content="NenTang.vn" />
+  <meta property="og:locale" content="vi_VN" />
+  <meta property="og:type" content="website" />
+  <meta property="og:title" content="Bài 1: Unit test với Vitest | Module 3 | NenTang.vn" />
+  <meta property="og:description" content="Viết unit test bằng Vitest: tách hàm, cấu trúc test describe/it, coverage và xử lý lỗi thường gặp của người mới." />
+  <meta property="og:url" content="https://nentang.vn/course-kiem-thu-tu-dong-voi-ai-va-ci-cd/module-03-viet-test/bai-01/" />
+  <meta property="og:site_name" content="Nền tảng Kiến thức" />
+  <title>Bài 1: Unit test với Vitest | Module 3 | NenTang.vn</title>
+  <link rel="stylesheet" href="../../shared.css" />
+</head>
+<body>
+  <header class="topbar">
+    <div class="container topbar-inner">
+      <a class="brand" href="../../index.html"><span class="brand-mark">T</span>&nbsp;AI Testing &amp; CI/CD</a>
+      <nav class="nav-links" aria-label="Điều hướng khóa học">
+        <a href="../../../index.html">Trang chủ</a>
+        <a href="../../index.html#modules">Module</a>
+        <a href="../index.html">Module 3</a>
+      </nav>
+    </div>
+  </header>
+
+  <section class="module-hero m3">
+    <div class="container">
+      <div class="breadcrumb">
+        <a href="../../index.html">AI Testing &amp; CI/CD</a>
+        <span>/</span>
+        <a href="../index.html">Module 3</a>
+        <span>/</span>
+        <span>Bài 1</span>
+      </div>
+      <h1>Bài 1: Unit test với Vitest</h1>
+      <p>Tách hàm, viết test ngắn gọn và hiểu coverage report.</p>
+    </div>
+  </section>
+
+  <main class="section">
+    <div class="container lesson-layout">
+      <aside class="side-nav">
+        <h3>Module 3</h3>
+        <ul>
+          <li class="active"><a href="index.html">Bài 1: Unit test với Vitest</a></li>
+          <li><a href="../bai-02/index.html">Bài 2: Business test</a></li>
+          <li><a href="../bai-03/index.html">Bài 3: E2E test với Playwright</a></li>
+        </ul>
+      </aside>
+
+      <article class="module-article">
+        <section id="tach-ham" class="lesson">
+          <h2>4.1 Tách hàm để dễ test</h2>
+          <p>
+            Trước khi viết test, bạn cần đảm bảo logic có thể import được.
+            Tách logic ra khỏi HTML và export:
+          </p>
+          <pre><code data-lang="javascript">// src/js/cart.js
+export function addToCart(cart, item) {
+  if (!item || item.qty &lt;= 0) throw new Error('Số lượng không hợp lệ');
+  if (item.price &lt; 0) throw new Error('Giá không hợp lệ');
+  const existing = cart.find(i =&gt; i.id === item.id);
+  if (existing) {
+    existing.qty += item.qty;
+  } else {
+    cart.push({ ...item });
+  }
+  return cart;
+}
+
+export function getTotal(cart) {
+  return cart.reduce((sum, item) =&gt; sum + item.price * item.qty, 0);
+}</code></pre>
+        </section>
+
+        <section id="viet-unit-test" class="lesson">
+          <h2>4.2 Viết unit test với Vitest</h2>
+          <pre><code data-lang="javascript">// tests/unit/cart.test.js
+import { describe, it, expect } from 'vitest';
+import { addToCart, getTotal } from '../../src/js/cart.js';
+
+describe('addToCart', () =&gt; {
+  it('thêm sản phẩm mới vào giỏ rỗng', () =&gt; {
+    const cart = [];
+    const item = { id: 1, name: 'Áo', price: 100000, qty: 1 };
+    addToCart(cart, item);
+    expect(cart).toHaveLength(1);
+    expect(cart[0].name).toBe('Áo');
+  });
+
+  it('cộng dồn số lượng nếu sản phẩm đã có trong giỏ', () =&gt; {
+    const cart = [{ id: 1, name: 'Áo', price: 100000, qty: 1 }];
+    addToCart(cart, { id: 1, name: 'Áo', price: 100000, qty: 2 });
+    expect(cart[0].qty).toBe(3);
+  });
+
+  it('ném lỗi khi qty &lt;= 0', () =&gt; {
+    expect(() =&gt; addToCart([], { id: 1, price: 100000, qty: 0 }))
+      .toThrow('Số lượng không hợp lệ');
+  });
+});
+
+describe('getTotal', () =&gt; {
+  it('tính tổng đúng với nhiều sản phẩm', () =&gt; {
+    const cart = [
+      { id: 1, price: 100000, qty: 2 },
+      { id: 2, price: 50000, qty: 1 },
+    ];
+    expect(getTotal(cart)).toBe(250000);
+  });
+
+  it('trả về 0 với giỏ rỗng', () =&gt; {
+    expect(getTotal([])).toBe(0);
+  });
+});</code></pre>
+        </section>
+
+        <section id="chay-test" class="lesson">
+          <h2>4.3 Chạy test và xem coverage</h2>
+          <pre><code data-lang="bash"># chạy một lần
+npm test
+
+# chạy watch mode (tự reload khi lưu file)
+npm run test:watch
+
+# xem coverage report
+npx vitest run --coverage</code></pre>
+          <div class="callout">
+            <strong>Lỗi thường gặp:</strong> <code>Cannot use import statement outside a module</code> —
+            thêm <code>"type": "module"</code> vào <code>package.json</code> hoặc cấu hình Vitest dùng
+            transform. Vitest thường tự xử lý nếu dùng đúng config.
+          </div>
+        </section>
+
+        <nav class="pager">
+          <a href="../../module-02-setup-va-test-case/bai-02/index.html" class="btn">← Module 2 Bài 2</a>
+          <a href="../bai-02/index.html" class="btn primary">Bài 2: Business test →</a>
+        </nav>
+      </article>
+    </div>
+  </main>
+
+  <footer class="footer">
+    <div class="container">
+      <p><a href="../index.html">Quay lại Module 3</a></p>
+    </div>
+  </footer>
+  <script type="module" src="../../app.js"></script>
+</body>
+</html>

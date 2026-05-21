@@ -1,0 +1,145 @@
+<!DOCTYPE html>
+<html lang="vi">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <meta name="description" content="Viết E2E test với Playwright: cấu hình, selector ổn định, mô phỏng thao tác người dùng từ đầu đến cuối." />
+  <meta name="keywords" content="E2E test, Playwright, end-to-end test, selector, test ổn định, NenTang.vn" />
+  <meta name="author" content="NenTang.vn" />
+  <meta property="og:locale" content="vi_VN" />
+  <meta property="og:type" content="website" />
+  <meta property="og:title" content="Bài 3: E2E test với Playwright | Module 3 | NenTang.vn" />
+  <meta property="og:description" content="Viết E2E test với Playwright: cấu hình, selector ổn định, mô phỏng thao tác người dùng từ đầu đến cuối." />
+  <meta property="og:url" content="https://nentang.vn/course-kiem-thu-tu-dong-voi-ai-va-ci-cd/module-03-viet-test/bai-03/" />
+  <meta property="og:site_name" content="Nền tảng Kiến thức" />
+  <title>Bài 3: E2E test với Playwright | Module 3 | NenTang.vn</title>
+  <link rel="stylesheet" href="../../shared.css" />
+</head>
+<body>
+  <header class="topbar">
+    <div class="container topbar-inner">
+      <a class="brand" href="../../index.html"><span class="brand-mark">T</span>&nbsp;AI Testing &amp; CI/CD</a>
+      <nav class="nav-links" aria-label="Điều hướng khóa học">
+        <a href="../../../index.html">Trang chủ</a>
+        <a href="../../index.html#modules">Module</a>
+        <a href="../index.html">Module 3</a>
+      </nav>
+    </div>
+  </header>
+
+  <section class="module-hero m3">
+    <div class="container">
+      <div class="breadcrumb">
+        <a href="../../index.html">AI Testing &amp; CI/CD</a>
+        <span>/</span>
+        <a href="../index.html">Module 3</a>
+        <span>/</span>
+        <span>Bài 3</span>
+      </div>
+      <h1>Bài 3: E2E test với Playwright</h1>
+      <p>Mô phỏng thao tác người dùng thật trong trình duyệt, từ click đến kiểm tra kết quả.</p>
+    </div>
+  </section>
+
+  <main class="section">
+    <div class="container lesson-layout">
+      <aside class="side-nav">
+        <h3>Module 3</h3>
+        <ul>
+          <li><a href="../bai-01/index.html">Bài 1: Unit test với Vitest</a></li>
+          <li><a href="../bai-02/index.html">Bài 2: Business test</a></li>
+          <li class="active"><a href="index.html">Bài 3: E2E test với Playwright</a></li>
+        </ul>
+      </aside>
+
+      <article class="module-article">
+        <section id="cau-hinh-playwright" class="lesson">
+          <h2>6.1 Cấu hình Playwright</h2>
+          <pre><code data-lang="javascript">// playwright.config.js
+import { defineConfig } from '@playwright/test';
+
+export default defineConfig({
+  testDir: './tests/e2e',
+  use: {
+    baseURL: 'http://localhost:3000',
+    headless: true,
+  },
+  webServer: {
+    command: 'npm run serve',
+    port: 3000,
+    reuseExistingServer: !process.env.CI,
+  },
+});</code></pre>
+        </section>
+
+        <section id="viet-e2e-test" class="lesson">
+          <h2>6.2 Viết E2E test mẫu</h2>
+          <pre><code data-lang="javascript">// tests/e2e/checkout.spec.js
+import { test, expect } from '@playwright/test';
+
+test.describe('Luồng mua hàng cơ bản', () =&gt; {
+  test('thêm sản phẩm và kiểm tra giỏ hàng', async ({ page }) =&gt; {
+    await page.goto('/');
+
+    // Nhấn nút "Thêm vào giỏ"
+    await page.getByTestId('add-to-cart-1').click();
+
+    // Kiểm tra số lượng trong icon giỏ
+    await expect(page.getByTestId('cart-count')).toHaveText('1');
+  });
+
+  test('tổng tiền hiển thị đúng', async ({ page }) =&gt; {
+    await page.goto('/cart.html');
+    const total = page.getByTestId('cart-total');
+    await expect(total).toBeVisible();
+    await expect(total).not.toHaveText('0');
+  });
+});</code></pre>
+          <div class="callout">
+            <strong>Selector tốt nhất:</strong> Dùng <code>data-testid</code> attribute trên HTML —
+            không bị ảnh hưởng bởi thay đổi CSS class hay text. Tránh dùng CSS class hay XPath phức tạp.
+          </div>
+        </section>
+
+        <section id="chay-e2e" class="lesson">
+          <h2>6.3 Chạy E2E test</h2>
+          <pre><code data-lang="bash"># Chạy tất cả E2E test
+npm run test:e2e
+
+# Chạy với UI mode (xem trực quan)
+npx playwright test --ui
+
+# Chạy một file cụ thể
+npx playwright test tests/e2e/checkout.spec.js
+
+# Xem báo cáo HTML sau khi chạy
+npx playwright show-report</code></pre>
+        </section>
+
+        <section id="tips-e2e" class="lesson">
+          <h2>6.4 Tips viết E2E test ổn định</h2>
+          <ul>
+            <li>Luôn dùng <code>await expect(...).toBeVisible()</code> thay vì sleep/wait cố định.</li>
+            <li>Tránh test phụ thuộc vào thứ tự — mỗi test phải độc lập.</li>
+            <li>Dùng <code>test.beforeEach</code> để reset trạng thái trước mỗi test.</li>
+            <li>Không hard-code URL — dùng <code>baseURL</code> trong config.</li>
+            <li>Chạy headless trong CI, có thể dùng headed khi debug local.</li>
+          </ul>
+        </section>
+
+        <nav class="pager">
+          <a href="../bai-02/index.html" class="btn">← Bài 2: Business test</a>
+          <a href="../../module-04-ai-va-ci-cd/bai-01/index.html" class="btn primary">Module 4: AI &amp; CI/CD →</a>
+        </nav>
+      </article>
+    </div>
+  </main>
+
+  <footer class="footer">
+    <div class="container">
+      <p><a href="../index.html">Quay lại Module 3</a></p>
+    </div>
+  </footer>
+  <script type="module" src="../../app.js"></script>
+</body>
+</html>

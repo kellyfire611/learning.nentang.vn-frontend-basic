@@ -1,0 +1,146 @@
+<!DOCTYPE html>
+<html lang="vi">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <meta name="description" content="Viết test plan và test case đúng chuẩn: phân tích yêu cầu, test scenario, happy path, negative case và boundary case." />
+  <meta name="keywords" content="test plan, test case, test scenario, boundary case, negative case, NenTang.vn" />
+  <meta name="author" content="NenTang.vn" />
+  <meta property="og:locale" content="vi_VN" />
+  <meta property="og:type" content="website" />
+  <meta property="og:title" content="Bài 2: Viết test plan & test case | Module 2 | NenTang.vn" />
+  <meta property="og:description" content="Viết test plan và test case đúng chuẩn: phân tích yêu cầu, test scenario, happy path, negative case và boundary case." />
+  <meta property="og:url" content="https://nentang.vn/course-kiem-thu-tu-dong-voi-ai-va-ci-cd/module-02-setup-va-test-case/bai-02/" />
+  <meta property="og:site_name" content="Nền tảng Kiến thức" />
+  <title>Bài 2: Viết test plan & test case | Module 2 | NenTang.vn</title>
+  <link rel="stylesheet" href="../../shared.css" />
+</head>
+<body>
+  <header class="topbar">
+    <div class="container topbar-inner">
+      <a class="brand" href="../../index.html"><span class="brand-mark">T</span>&nbsp;AI Testing &amp; CI/CD</a>
+      <nav class="nav-links" aria-label="Điều hướng khóa học">
+        <a href="../../../index.html">Trang chủ</a>
+        <a href="../../index.html#modules">Module</a>
+        <a href="../index.html">Module 2</a>
+      </nav>
+    </div>
+  </header>
+
+  <section class="module-hero m2">
+    <div class="container">
+      <div class="breadcrumb">
+        <a href="../../index.html">AI Testing &amp; CI/CD</a>
+        <span>/</span>
+        <a href="../index.html">Module 2</a>
+        <span>/</span>
+        <span>Bài 2</span>
+      </div>
+      <h1>Bài 2: Viết test plan và test case</h1>
+      <p>Lập kế hoạch kiểm thử trước khi code giúp không bỏ sót luồng quan trọng.</p>
+    </div>
+  </section>
+
+  <main class="section">
+    <div class="container lesson-layout">
+      <aside class="side-nav">
+        <h3>Module 2</h3>
+        <ul>
+          <li><a href="../bai-01/index.html">Bài 1: Setup dự án &amp; công cụ test</a></li>
+          <li class="active"><a href="index.html">Bài 2: Viết test plan &amp; test case</a></li>
+        </ul>
+      </aside>
+
+      <article class="module-article">
+        <section id="test-plan" class="lesson">
+          <h2>3.1 Test plan là gì?</h2>
+          <p>
+            <strong>Test plan</strong> là tài liệu mô tả <em>phạm vi kiểm thử</em>: chức năng nào cần test,
+            loại test nào sẽ dùng, ai test, dùng công cụ gì và khi nào coi là done.
+          </p>
+          <p>Một test plan tối giản cho dự án nhỏ chỉ cần:</p>
+          <ul>
+            <li>Danh sách chức năng cần test.</li>
+            <li>Loại test: unit / business / E2E.</li>
+            <li>Công cụ: Vitest, Playwright.</li>
+            <li>Điều kiện pass: coverage &gt;= 80%, 0 test fail.</li>
+          </ul>
+        </section>
+
+        <section id="test-case-structure" class="lesson">
+          <h2>3.2 Cấu trúc một test case</h2>
+          <div class="table-wrap">
+            <table>
+              <thead>
+                <tr><th>Trường</th><th>Ví dụ</th></tr>
+              </thead>
+              <tbody>
+                <tr><td><strong>ID</strong></td><td>TC-CART-001</td></tr>
+                <tr><td><strong>Tên</strong></td><td>Thêm sản phẩm vào giỏ hàng thành công</td></tr>
+                <tr><td><strong>Tiền điều kiện</strong></td><td>Giỏ hàng đang rỗng</td></tr>
+                <tr><td><strong>Bước thực hiện</strong></td><td>Gọi addToCart({ id: 1, name: "Áo", price: 100000, qty: 1 })</td></tr>
+                <tr><td><strong>Kết quả kỳ vọng</strong></td><td>Giỏ hàng có 1 sản phẩm, tổng tiền = 100,000</td></tr>
+                <tr><td><strong>Loại</strong></td><td>Happy path</td></tr>
+              </tbody>
+            </table>
+          </div>
+        </section>
+
+        <section id="cac-loai-test-case" class="lesson">
+          <h2>3.3 Happy path, Negative và Boundary case</h2>
+          <ul>
+            <li>
+              <strong>Happy path:</strong> Luồng chính hoạt động đúng với dữ liệu hợp lệ.
+              Ví dụ: thêm sản phẩm hợp lệ, tính tổng đúng.
+            </li>
+            <li>
+              <strong>Negative case:</strong> Dữ liệu sai, không hợp lệ hoặc thiếu.
+              Ví dụ: thêm sản phẩm có giá âm, quantity = 0.
+            </li>
+            <li>
+              <strong>Boundary case (dữ liệu biên):</strong> Kiểm tra ngưỡng giới hạn.
+              Ví dụ: đơn hàng đúng 500,000đ (ngưỡng miễn phí vận chuyển), không phải 499,999 hay 500,001.
+            </li>
+          </ul>
+          <div class="callout">
+            <strong>Tip:</strong> Với mỗi chức năng, hãy tự hỏi: "Điều gì xảy ra nếu người dùng làm sai?
+            Điều gì xảy ra đúng ở ranh giới điều kiện?" — đó là negative và boundary case.
+          </div>
+        </section>
+
+        <section id="vi-du-gio-hang" class="lesson">
+          <h2>3.4 Ví dụ: Test case cho giỏ hàng</h2>
+          <div class="table-wrap">
+            <table>
+              <thead>
+                <tr><th>ID</th><th>Tình huống</th><th>Input</th><th>Kỳ vọng</th><th>Loại</th></tr>
+              </thead>
+              <tbody>
+                <tr><td>TC-001</td><td>Thêm 1 sản phẩm</td><td>qty=1, price=100k</td><td>total=100k</td><td>Happy</td></tr>
+                <tr><td>TC-002</td><td>Thêm 2 sản phẩm khác nhau</td><td>100k + 200k</td><td>total=300k</td><td>Happy</td></tr>
+                <tr><td>TC-003</td><td>Xóa sản phẩm khỏi giỏ</td><td>removeItem(id)</td><td>giỏ rỗng</td><td>Happy</td></tr>
+                <tr><td>TC-004</td><td>Thêm qty=0</td><td>qty=0</td><td>throw error</td><td>Negative</td></tr>
+                <tr><td>TC-005</td><td>Thêm price âm</td><td>price=-1</td><td>throw error</td><td>Negative</td></tr>
+                <tr><td>TC-006</td><td>Tổng đúng ngưỡng miễn phí ship</td><td>total=500k</td><td>freeShipping=true</td><td>Boundary</td></tr>
+                <tr><td>TC-007</td><td>Tổng dưới ngưỡng 1đ</td><td>total=499,999đ</td><td>freeShipping=false</td><td>Boundary</td></tr>
+              </tbody>
+            </table>
+          </div>
+        </section>
+
+        <nav class="pager">
+          <a href="../bai-01/index.html" class="btn">← Bài 1: Setup dự án</a>
+          <a href="../../module-03-viet-test/bai-01/index.html" class="btn primary">Module 3: Unit test →</a>
+        </nav>
+      </article>
+    </div>
+  </main>
+
+  <footer class="footer">
+    <div class="container">
+      <p><a href="../index.html">Quay lại Module 2</a></p>
+    </div>
+  </footer>
+  <script type="module" src="../../app.js"></script>
+</body>
+</html>
