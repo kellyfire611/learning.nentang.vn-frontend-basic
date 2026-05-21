@@ -441,6 +441,18 @@ pre code {
 .module-article {
   display: grid;
   gap: 20px;
+  min-width: 0;
+}
+
+.lesson-layout > .side-nav,
+.lesson-layout > .module-article,
+.code-grid > div,
+.module-article > .lesson,
+.module-article > .exercise,
+.module-article > .callout,
+.result-panel,
+.demo-code {
+  min-width: 0;
 }
 
 .lesson h3,
