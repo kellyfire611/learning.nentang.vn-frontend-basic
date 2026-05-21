@@ -1,0 +1,203 @@
+<!DOCTYPE html>
+<html lang="vi">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <meta name="description" content="Blog layout — featured post + article list với CSS Grid." />
+  <title>Bài 01 - Blog Layout | Module 5 CSS Grid | NenTang.vn</title>
+  <link rel="stylesheet" href="../../shared.css" />
+</head>
+<body>
+  <header class="topbar">
+    <div class="topbar-inner">
+      <a class="brand" href="../../index.html"><span class="brand-mark">G</span><span>CSS Grid</span></a>
+      <nav class="nav-links">
+        <a href="../../../index.html">Trang chủ</a>
+        <a href="../../index.html#modules">Module</a>
+      </nav>
+    </div>
+  </header>
+  <section class="module-hero m5">
+    <div class="container">
+      <div class="breadcrumb"><a href="../../index.html">CSS Grid</a><span>/</span><a href="../index.html">Module 5</a><span>/</span><span>Bài 01</span></div>
+      <h1>Bài 01: Blog Layout</h1>
+      <p>Xây dựng trang blog với featured post nổi bật và danh sách bài viết dùng CSS Grid.</p>
+    </div>
+  </section>
+  <main class="section">
+    <div class="container lesson-layout">
+      <aside class="side-nav">
+        <a href="#goal">Mục tiêu</a>
+        <a href="#theory">Lý thuyết</a>
+        <a href="#demo">Minh họa</a>
+        <a href="#code">Code ví dụ</a>
+        <a href="#exercise">Thực hành</a>
+        <a href="#solution">Bài giải</a>
+      </aside>
+      <article class="module-article">
+        <section class="lesson" id="goal">
+          <h2>Mục tiêu bài học</h2>
+          <ul>
+            <li>Tạo layout blog có featured post chiếm toàn bộ chiều rộng.</li>
+            <li>Dùng Grid để chia danh sách bài viết thành nhiều cột.</li>
+            <li>Kết hợp <code>grid-column: span</code> để làm nổi bật bài viết đặc biệt.</li>
+          </ul>
+        </section>
+        <section class="lesson" id="theory">
+          <h2>Lý thuyết thực tế</h2>
+          <p><strong>Blog layout</strong> thường gồm: một featured post lớn chiếm đầu trang, và bên dưới là grid các bài viết thông thường. CSS Grid giải quyết bài toán này cực kỳ gọn.</p>
+          <p>Kỹ thuật chính: đặt container là <code>display: grid; grid-template-columns: repeat(3, 1fr)</code>. Featured post dùng <code>grid-column: 1 / -1</code> để trải dài toàn bộ chiều rộng. Các bài viết còn lại tự động điền vào các ô còn lại.</p>
+          <ol class="steps">
+            <li>Tạo grid 3 cột với <code>repeat(3, 1fr)</code>.</li>
+            <li>Featured post: <code>grid-column: 1 / -1</code> để span toàn bộ.</li>
+            <li>Article cards tự điền vào 3 cột còn lại.</li>
+            <li>Dùng <code>gap</code> để tạo khoảng cách đều giữa các bài.</li>
+          </ol>
+        </section>
+        <section class="lesson" id="demo">
+          <h2>Minh họa trực quan</h2>
+          <p>Featured post trải rộng 3 cột, article list lấp đầy bên dưới.</p>
+          <style>
+.blog-demo { display: grid; grid-template-columns: repeat(3, 1fr); gap: 12px; }
+.blog-featured { grid-column: 1 / -1; background: linear-gradient(135deg,#7c3aed,#4c1d95); color: white; padding: 28px; border-radius: 10px; }
+.blog-featured h3 { font-size: 1.2rem; margin-bottom: 6px; }
+.blog-featured p { font-size: .85rem; opacity: .85; }
+.blog-card { background: white; border: 1px solid #e2e8f0; border-radius: 8px; overflow: hidden; }
+.blog-card-img { height: 80px; background: linear-gradient(135deg,#ede9fe,#ddd6fe); }
+.blog-card-body { padding: 12px; }
+.blog-card-body h4 { font-size: .85rem; color: #1e293b; margin-bottom: 4px; }
+.blog-card-body p { font-size: .76rem; color: #64748b; }
+          </style>
+          <div class="demo-surface">
+            <div class="blog-demo">
+              <div class="blog-featured">
+                <h3>Featured: CSS Grid hoàn toàn thay thế Bootstrap?</h3>
+                <p>grid-column: 1 / -1 — trải dài toàn bộ 3 cột</p>
+              </div>
+              <div class="blog-card"><div class="blog-card-img"></div><div class="blog-card-body"><h4>Grid Template Areas</h4><p>Đặt tên vùng layout trực quan</p></div></div>
+              <div class="blog-card"><div class="blog-card-img"></div><div class="blog-card-body"><h4>Auto-fit vs Auto-fill</h4><p>Khác nhau thế nào?</p></div></div>
+              <div class="blog-card"><div class="blog-card-img"></div><div class="blog-card-body"><h4>Responsive Grid</h4><p>Không cần media query</p></div></div>
+            </div>
+          </div>
+          <div class="demo-code">
+            <h3>Cấu trúc Grid blog</h3>
+            <pre><code data-lang="css">.blog { display: grid; grid-template-columns: repeat(3, 1fr); gap: 16px; }
+.featured { grid-column: 1 / -1; } /* span toàn bộ */</code></pre>
+          </div>
+        </section>
+        <section class="lesson" id="code">
+          <h2>Code ví dụ</h2>
+          <p>Layout blog hoàn chỉnh với featured post và article grid.</p>
+          <div class="code-grid">
+            <div><h3>HTML</h3><pre><code data-lang="html">&lt;div class="blog"&gt;
+  &lt;article class="featured"&gt;
+    &lt;span class="tag"&gt;Featured&lt;/span&gt;
+    &lt;h2&gt;Tiêu đề bài nổi bật&lt;/h2&gt;
+    &lt;p&gt;Mô tả ngắn...&lt;/p&gt;
+  &lt;/article&gt;
+  &lt;article class="card"&gt;...&lt;/article&gt;
+  &lt;article class="card"&gt;...&lt;/article&gt;
+  &lt;article class="card"&gt;...&lt;/article&gt;
+&lt;/div&gt;</code></pre></div>
+            <div><h3>CSS</h3><pre><code data-lang="css">.blog {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 24px;
+}
+.featured {
+  grid-column: 1 / -1;
+  background: #1e1b4b;
+  color: white;
+  padding: 40px;
+  border-radius: 12px;
+}
+.card {
+  background: white;
+  border-radius: 10px;
+  overflow: hidden;
+  border: 1px solid #e2e8f0;
+}</code></pre></div>
+          </div>
+          <div class="result-panel">
+            <div class="result-head"><h3>Kết quả</h3><span>Blog Layout Preview</span></div>
+            <iframe class="result-frame" title="blog layout demo" srcdoc="&lt;!DOCTYPE html&gt;&lt;html&gt;&lt;head&gt;&lt;meta charset='UTF-8'&gt;&lt;style&gt;*{box-sizing:border-box;margin:0}body{font-family:sans-serif;background:#f4f7fb;padding:16px}.blog{display:grid;grid-template-columns:repeat(3,1fr);gap:14px}.featured{grid-column:1/-1;background:linear-gradient(135deg,#1e1b4b,#4c1d95);color:white;padding:28px;border-radius:12px}.feat-tag{background:#7c3aed;color:white;font-size:.72rem;padding:3px 10px;border-radius:99px;font-weight:700;display:inline-block;margin-bottom:10px}.featured h2{font-size:1.2rem;margin-bottom:8px}.featured p{font-size:.85rem;opacity:.8}.card{background:white;border-radius:8px;overflow:hidden;border:1px solid #e2e8f0}.card-img{height:100px;background:linear-gradient(135deg,#ede9fe,#ddd6fe)}.card-body{padding:12px}.card-body h3{font-size:.9rem;color:#1e293b;margin-bottom:4px}.card-body p{font-size:.78rem;color:#64748b}.card-meta{font-size:.72rem;color:#94a3b8;margin-top:8px}&lt;/style&gt;&lt;/head&gt;&lt;body&gt;&lt;div class='blog'&gt;&lt;article class='featured'&gt;&lt;span class='feat-tag'&gt;Featured&lt;/span&gt;&lt;h2&gt;CSS Grid hoàn toàn thay thế Bootstrap?&lt;/h2&gt;&lt;p&gt;Khám phá sức mạnh của CSS Grid trong việc xây dựng layout hiện đại mà không cần framework.&lt;/p&gt;&lt;/article&gt;&lt;article class='card'&gt;&lt;div class='card-img'&gt;&lt;/div&gt;&lt;div class='card-body'&gt;&lt;h3&gt;Grid Template Areas&lt;/h3&gt;&lt;p&gt;Đặt tên vùng layout trực quan&lt;/p&gt;&lt;div class='card-meta'&gt;5 phút đọc&lt;/div&gt;&lt;/div&gt;&lt;/article&gt;&lt;article class='card'&gt;&lt;div class='card-img'&gt;&lt;/div&gt;&lt;div class='card-body'&gt;&lt;h3&gt;Auto-fit vs Auto-fill&lt;/h3&gt;&lt;p&gt;Phân biệt hai giá trị responsive&lt;/p&gt;&lt;div class='card-meta'&gt;4 phút đọc&lt;/div&gt;&lt;/div&gt;&lt;/article&gt;&lt;article class='card'&gt;&lt;div class='card-img'&gt;&lt;/div&gt;&lt;div class='card-body'&gt;&lt;h3&gt;Responsive Grid&lt;/h3&gt;&lt;p&gt;Không cần media query&lt;/p&gt;&lt;div class='card-meta'&gt;3 phút đọc&lt;/div&gt;&lt;/div&gt;&lt;/article&gt;&lt;/div&gt;&lt;/body&gt;&lt;/html&gt;"></iframe>
+          </div>
+        </section>
+        <section class="exercise" id="exercise">
+          <span class="level">Bài tập thực hành</span>
+          <h2>Yêu cầu đề bài</h2>
+          <p>Tạo trang blog công nghệ với layout 2 cột: cột trái rộng hơn (2fr) cho featured post, cột phải (1fr) cho sidebar bài viết gần đây.</p>
+          <ol class="steps">
+            <li>Grid 2 cột: <code>grid-template-columns: 2fr 1fr</code>.</li>
+            <li>Featured post chiếm cột trái, danh sách sidebar chiếm cột phải.</li>
+            <li>Bên dưới: grid 3 cột cho các bài viết liên quan (<code>grid-column: 1 / -1</code> cho tiêu đề section).</li>
+            <li>Thêm màu sắc phân biệt featured / sidebar / related.</li>
+          </ol>
+          <h3>Tiêu chí chấm</h3>
+          <ul>
+            <li>Dùng đúng <code>grid-template-columns: 2fr 1fr</code>.</li>
+            <li>Sidebar hiển thị bên phải featured post.</li>
+            <li>Section bài liên quan có tiêu đề span toàn bộ.</li>
+          </ul>
+        </section>
+        <section class="lesson solution" id="solution">
+          <h2>Bài giải tham khảo</h2>
+          <pre><code data-lang="html">&lt;!DOCTYPE html&gt;
+&lt;html lang="vi"&gt;
+&lt;head&gt;
+  &lt;meta charset="UTF-8"&gt;
+  &lt;style&gt;
+    * { box-sizing: border-box; margin: 0; }
+    body { font-family: sans-serif; background: #f8f9fc; padding: 20px; }
+    .blog-main { display: grid; grid-template-columns: 2fr 1fr; gap: 20px; margin-bottom: 20px; }
+    .featured { background: #1e1b4b; color: white; padding: 32px; border-radius: 12px; }
+    .featured h2 { margin-bottom: 10px; }
+    .featured p { opacity: .8; line-height: 1.6; }
+    .sidebar { background: white; border: 1px solid #e2e8f0; border-radius: 12px; padding: 16px; }
+    .sidebar h3 { color: #7c3aed; margin-bottom: 12px; font-size: .9rem; }
+    .sidebar-item { padding: 8px 0; border-bottom: 1px solid #f1f5f9; font-size: .85rem; color: #374151; }
+    .related { display: grid; grid-template-columns: repeat(3, 1fr); gap: 16px; }
+    .related-title { grid-column: 1 / -1; font-size: 1.1rem; font-weight: 700; color: #1e293b; }
+    .rel-card { background: white; border-radius: 8px; border: 1px solid #e2e8f0; overflow: hidden; }
+    .rel-img { height: 80px; background: linear-gradient(135deg, #ede9fe, #ddd6fe); }
+    .rel-body { padding: 12px; font-size: .85rem; }
+  &lt;/style&gt;
+&lt;/head&gt;
+&lt;body&gt;
+  &lt;div class="blog-main"&gt;
+    &lt;article class="featured"&gt;
+      &lt;h2&gt;CSS Grid trong thực tế&lt;/h2&gt;
+      &lt;p&gt;Hướng dẫn xây dựng layout blog hiện đại chỉ với CSS Grid thuần túy, không cần framework.&lt;/p&gt;
+    &lt;/article&gt;
+    &lt;aside class="sidebar"&gt;
+      &lt;h3&gt;Bài viết gần đây&lt;/h3&gt;
+      &lt;div class="sidebar-item"&gt;Grid Template Areas&lt;/div&gt;
+      &lt;div class="sidebar-item"&gt;Auto-fit vs Auto-fill&lt;/div&gt;
+      &lt;div class="sidebar-item"&gt;Responsive không media query&lt;/div&gt;
+      &lt;div class="sidebar-item"&gt;Grid vs Flexbox&lt;/div&gt;
+    &lt;/aside&gt;
+  &lt;/div&gt;
+  &lt;div class="related"&gt;
+    &lt;h2 class="related-title"&gt;Bài viết liên quan&lt;/h2&gt;
+    &lt;div class="rel-card"&gt;&lt;div class="rel-img"&gt;&lt;/div&gt;&lt;div class="rel-body"&gt;Grid Basics&lt;/div&gt;&lt;/div&gt;
+    &lt;div class="rel-card"&gt;&lt;div class="rel-img"&gt;&lt;/div&gt;&lt;div class="rel-body"&gt;Placement Algorithms&lt;/div&gt;&lt;/div&gt;
+    &lt;div class="rel-card"&gt;&lt;div class="rel-img"&gt;&lt;/div&gt;&lt;div class="rel-body"&gt;Subgrid Deep Dive&lt;/div&gt;&lt;/div&gt;
+  &lt;/div&gt;
+&lt;/body&gt;
+&lt;/html&gt;</code></pre>
+          <div class="result-panel">
+            <div class="result-head"><h3>Kết quả bài giải</h3><span>Preview trực tiếp</span></div>
+            <iframe class="result-frame" title="Bài giải blog layout" srcdoc="&lt;!DOCTYPE html&gt;&lt;html&gt;&lt;head&gt;&lt;meta charset='UTF-8'&gt;&lt;style&gt;*{box-sizing:border-box;margin:0}body{font-family:sans-serif;background:#f8f9fc;padding:14px}.blog-main{display:grid;grid-template-columns:2fr 1fr;gap:14px;margin-bottom:14px}.featured{background:#1e1b4b;color:white;padding:24px;border-radius:10px}.featured h2{margin-bottom:8px;font-size:1rem}.featured p{opacity:.8;line-height:1.5;font-size:.85rem}.sidebar{background:white;border:1px solid #e2e8f0;border-radius:10px;padding:14px}.sidebar h3{color:#7c3aed;margin-bottom:10px;font-size:.85rem}.sidebar-item{padding:6px 0;border-bottom:1px solid #f1f5f9;font-size:.8rem;color:#374151}.related{display:grid;grid-template-columns:repeat(3,1fr);gap:12px}.related-title{grid-column:1/-1;font-size:.95rem;font-weight:700;color:#1e293b}.rel-card{background:white;border-radius:8px;border:1px solid #e2e8f0;overflow:hidden}.rel-img{height:60px;background:linear-gradient(135deg,#ede9fe,#ddd6fe)}.rel-body{padding:10px;font-size:.8rem}&lt;/style&gt;&lt;/head&gt;&lt;body&gt;&lt;div class='blog-main'&gt;&lt;article class='featured'&gt;&lt;h2&gt;CSS Grid trong thực tế&lt;/h2&gt;&lt;p&gt;Hướng dẫn xây dựng layout blog hiện đại chỉ với CSS Grid thuần túy.&lt;/p&gt;&lt;/article&gt;&lt;aside class='sidebar'&gt;&lt;h3&gt;Bài viết gần đây&lt;/h3&gt;&lt;div class='sidebar-item'&gt;Grid Template Areas&lt;/div&gt;&lt;div class='sidebar-item'&gt;Auto-fit vs Auto-fill&lt;/div&gt;&lt;div class='sidebar-item'&gt;Responsive không media query&lt;/div&gt;&lt;div class='sidebar-item'&gt;Grid vs Flexbox&lt;/div&gt;&lt;/aside&gt;&lt;/div&gt;&lt;div class='related'&gt;&lt;h2 class='related-title'&gt;Bài viết liên quan&lt;/h2&gt;&lt;div class='rel-card'&gt;&lt;div class='rel-img'&gt;&lt;/div&gt;&lt;div class='rel-body'&gt;Grid Basics&lt;/div&gt;&lt;/div&gt;&lt;div class='rel-card'&gt;&lt;div class='rel-img'&gt;&lt;/div&gt;&lt;div class='rel-body'&gt;Placement Algorithms&lt;/div&gt;&lt;/div&gt;&lt;div class='rel-card'&gt;&lt;div class='rel-img'&gt;&lt;/div&gt;&lt;div class='rel-body'&gt;Subgrid Deep Dive&lt;/div&gt;&lt;/div&gt;&lt;/div&gt;&lt;/body&gt;&lt;/html&gt;"></iframe>
+          </div>
+        </section>
+        <div class="pager">
+          <a class="btn" href="../index.html">← Module 5</a>
+          <a class="btn primary" href="../bai-02/index.html">Bài tiếp theo →</a>
+        </div>
+      </article>
+    </div>
+  </main>
+  <footer class="footer"><p><a href="../index.html">Quay lại Module 5</a></p></footer>
+  <script type="module" src="../../app.js"></script>
+</body>
+</html>

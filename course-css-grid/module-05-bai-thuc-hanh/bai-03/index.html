@@ -1,0 +1,334 @@
+<!DOCTYPE html>
+<html lang="vi">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <meta name="description" content="Pricing table — bảng giá 3 gói dịch vụ với gói nổi bật dùng CSS Grid." />
+  <title>Bài 03 - Pricing Table | Module 5 CSS Grid | NenTang.vn</title>
+  <link rel="stylesheet" href="../../shared.css" />
+</head>
+<body>
+  <header class="topbar">
+    <div class="topbar-inner">
+      <a class="brand" href="../../index.html"><span class="brand-mark">G</span><span>CSS Grid</span></a>
+      <nav class="nav-links">
+        <a href="../../../index.html">Trang chủ</a>
+        <a href="../../index.html#modules">Module</a>
+      </nav>
+    </div>
+  </header>
+  <section class="module-hero m5">
+    <div class="container">
+      <div class="breadcrumb"><a href="../../index.html">CSS Grid</a><span>/</span><a href="../index.html">Module 5</a><span>/</span><span>Bài 03</span></div>
+      <h1>Bài 03: Pricing Table</h1>
+      <p>Xây dựng bảng giá 3 gói dịch vụ với gói nổi bật được highlight bằng CSS Grid.</p>
+    </div>
+  </section>
+  <main class="section">
+    <div class="container lesson-layout">
+      <aside class="side-nav">
+        <a href="#goal">Mục tiêu</a>
+        <a href="#theory">Lý thuyết</a>
+        <a href="#demo">Minh họa</a>
+        <a href="#code">Code ví dụ</a>
+        <a href="#exercise">Thực hành</a>
+        <a href="#solution">Bài giải</a>
+      </aside>
+      <article class="module-article">
+        <section class="lesson" id="goal">
+          <h2>Mục tiêu bài học</h2>
+          <ul>
+            <li>Tạo layout bảng giá 3 cột cân đối bằng CSS Grid.</li>
+            <li>Dùng <code>align-self: stretch</code> để các card có chiều cao bằng nhau.</li>
+            <li>Làm gói nổi bật lớn hơn bằng cách thêm padding hoặc <code>transform: scale()</code>.</li>
+          </ul>
+        </section>
+        <section class="lesson" id="theory">
+          <h2>Lý thuyết thực tế</h2>
+          <p>Bảng giá (pricing table) là một UI pattern cực kỳ phổ biến. CSS Grid giúp tạo 3 cột cân đối chỉ bằng <code>grid-template-columns: repeat(3, 1fr)</code>. Mỗi pricing card là một grid item tự động giãn theo chiều cao của card cao nhất trong hàng.</p>
+          <p>Để làm gói nổi bật (featured plan) nổi bật hơn, ta có thể dùng màu nền khác, thêm box-shadow, hoặc kết hợp <code>margin-top: -16px; margin-bottom: -16px; padding-top: calc(24px + 16px)</code> để tạo hiệu ứng card nhô ra.</p>
+          <ol class="steps">
+            <li>Tạo <code>div.pricing</code> với <code>display: grid; grid-template-columns: repeat(3, 1fr); gap: 24px; align-items: start</code>.</li>
+            <li>Mỗi <code>.plan</code> có padding, border, border-radius để trông như card.</li>
+            <li>Gói nổi bật (class <code>featured</code>): dùng màu nền tối và <code>color: white</code>.</li>
+            <li>Thêm tag "Phổ biến nhất" vào gói featured bằng một <code>span.badge</code>.</li>
+          </ol>
+        </section>
+        <section class="lesson" id="demo">
+          <h2>Minh họa trực quan</h2>
+          <style>
+            .pricing-demo {
+              display: grid;
+              grid-template-columns: repeat(3, 1fr);
+              gap: 16px;
+            }
+            .plan-demo {
+              border: 2px solid #e2e8f0;
+              border-radius: 12px;
+              padding: 20px;
+              text-align: center;
+              background: white;
+            }
+            .plan-demo.featured {
+              background: #7c3aed;
+              color: white;
+              border-color: #7c3aed;
+              transform: scale(1.04);
+            }
+            .plan-demo strong { display: block; font-size: 1.4rem; margin: 8px 0 4px; }
+            .plan-demo em { font-size: 0.8rem; opacity: 0.7; }
+          </style>
+          <div class="pricing-demo">
+            <div class="plan-demo"><em>Cơ bản</em><strong>0đ</strong><p>Miễn phí</p></div>
+            <div class="plan-demo featured"><em>⭐ Nổi bật</em><strong>199k</strong><p>Pro</p></div>
+            <div class="plan-demo"><em>Doanh nghiệp</em><strong>499k</strong><p>Unlimited</p></div>
+          </div>
+          <div class="demo-code">
+            <h3>Code tạo minh họa</h3>
+            <pre><code data-lang="css">.pricing {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 24px;
+  align-items: start;
+}
+.plan.featured {
+  background: #7c3aed;
+  color: white;
+  transform: scale(1.05);
+}</code></pre>
+          </div>
+        </section>
+        <section class="lesson" id="code">
+          <h2>Code ví dụ</h2>
+          <div class="code-grid">
+            <div><h3>HTML</h3><pre><code data-lang="html">&lt;div class="pricing"&gt;
+  &lt;div class="plan"&gt;
+    &lt;h3&gt;Cơ Bản&lt;/h3&gt;
+    &lt;p class="price"&gt;Miễn phí&lt;/p&gt;
+    &lt;ul&gt;
+      &lt;li&gt;✅ 5 dự án&lt;/li&gt;
+      &lt;li&gt;✅ 1 GB lưu trữ&lt;/li&gt;
+      &lt;li&gt;❌ Hỗ trợ ưu tiên&lt;/li&gt;
+    &lt;/ul&gt;
+    &lt;a class="btn-plan" href="#"&gt;Bắt đầu ngay&lt;/a&gt;
+  &lt;/div&gt;
+  &lt;div class="plan featured"&gt;
+    &lt;span class="badge"&gt;⭐ Phổ biến nhất&lt;/span&gt;
+    &lt;h3&gt;Pro&lt;/h3&gt;
+    &lt;p class="price"&gt;199.000đ/tháng&lt;/p&gt;
+    &lt;ul&gt;
+      &lt;li&gt;✅ Không giới hạn dự án&lt;/li&gt;
+      &lt;li&gt;✅ 50 GB lưu trữ&lt;/li&gt;
+      &lt;li&gt;✅ Hỗ trợ ưu tiên&lt;/li&gt;
+    &lt;/ul&gt;
+    &lt;a class="btn-plan featured-btn" href="#"&gt;Nâng cấp ngay&lt;/a&gt;
+  &lt;/div&gt;
+  &lt;div class="plan"&gt;
+    &lt;h3&gt;Doanh Nghiệp&lt;/h3&gt;
+    &lt;p class="price"&gt;499.000đ/tháng&lt;/p&gt;
+    &lt;ul&gt;
+      &lt;li&gt;✅ Không giới hạn dự án&lt;/li&gt;
+      &lt;li&gt;✅ 500 GB lưu trữ&lt;/li&gt;
+      &lt;li&gt;✅ Account manager riêng&lt;/li&gt;
+    &lt;/ul&gt;
+    &lt;a class="btn-plan" href="#"&gt;Liên hệ tư vấn&lt;/a&gt;
+  &lt;/div&gt;
+&lt;/div&gt;</code></pre></div>
+            <div><h3>CSS</h3><pre><code data-lang="css">.pricing {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 24px;
+  align-items: start;
+}
+.plan {
+  border: 2px solid #e2e8f0;
+  border-radius: 16px;
+  padding: 28px 24px;
+  background: #fff;
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+}
+.plan.featured {
+  background: #4c1d95;
+  color: white;
+  border-color: #7c3aed;
+  transform: scale(1.04);
+  box-shadow: 0 20px 40px rgba(124,58,237,0.3);
+}
+.badge {
+  font-size: 0.8rem;
+  font-weight: 800;
+  background: #fde68a;
+  color: #78350f;
+  padding: 4px 10px;
+  border-radius: 100px;
+  align-self: flex-start;
+}
+.price {
+  font-size: 1.4rem;
+  font-weight: 900;
+}
+.btn-plan {
+  display: block;
+  text-align: center;
+  padding: 10px;
+  border-radius: 8px;
+  font-weight: 700;
+  background: #f1f5f9;
+  color: #1e293b;
+  text-decoration: none;
+  margin-top: auto;
+}
+.featured-btn {
+  background: #fde68a;
+  color: #78350f;
+}</code></pre></div>
+          </div>
+          <div class="result-panel">
+            <div class="result-head"><h3>Kết quả khi chạy code ví dụ</h3><span>Preview trực tiếp</span></div>
+            <iframe class="result-frame" title="Pricing Table" srcdoc="<!DOCTYPE html><html><head><meta charset='UTF-8'><style>*{box-sizing:border-box;margin:0;padding:0}body{font-family:sans-serif;padding:24px;background:#f5f7fc}.pricing{display:grid;grid-template-columns:repeat(3,1fr);gap:20px;align-items:start}.plan{border:2px solid #e2e8f0;border-radius:14px;padding:24px 20px;background:#fff;display:flex;flex-direction:column;gap:10px}.plan.featured{background:#4c1d95;color:white;border-color:#7c3aed;transform:scale(1.04);box-shadow:0 16px 32px rgba(124,58,237,.3)}.badge{font-size:.75rem;font-weight:800;background:#fde68a;color:#78350f;padding:3px 9px;border-radius:100px;align-self:flex-start}.plan h3{font-size:1rem}.price{font-size:1.3rem;font-weight:900}.plan ul{padding-left:0;list-style:none;display:flex;flex-direction:column;gap:6px;font-size:.85rem}.plan.featured ul{opacity:.9}.btn-plan{display:block;text-align:center;padding:9px;border-radius:8px;font-weight:700;background:#f1f5f9;color:#1e293b;text-decoration:none;margin-top:8px}.featured-btn{background:#fde68a;color:#78350f}</style></head><body><div class='pricing'><div class='plan'><h3>Cơ Bản</h3><p class='price'>Miễn phí</p><ul><li>✅ 5 dự án</li><li>✅ 1 GB lưu trữ</li><li>❌ Hỗ trợ ưu tiên</li></ul><a class='btn-plan' href='#'>Bắt đầu ngay</a></div><div class='plan featured'><span class='badge'>⭐ Phổ biến nhất</span><h3>Pro</h3><p class='price'>199.000đ/tháng</p><ul><li>✅ Không giới hạn dự án</li><li>✅ 50 GB lưu trữ</li><li>✅ Hỗ trợ ưu tiên</li></ul><a class='btn-plan featured-btn' href='#'>Nâng cấp ngay</a></div><div class='plan'><h3>Doanh Nghiệp</h3><p class='price'>499.000đ/tháng</p><ul><li>✅ Không giới hạn dự án</li><li>✅ 500 GB lưu trữ</li><li>✅ Account manager riêng</li></ul><a class='btn-plan' href='#'>Liên hệ tư vấn</a></div></div></body></html>"></iframe>
+          </div>
+        </section>
+        <section class="exercise" id="exercise">
+          <span class="level">Bài tập thực hành</span>
+          <h2>Yêu cầu đề bài</h2>
+          <p>Tạo bảng giá <strong>dịch vụ hosting</strong> với 4 gói (Starter, Basic, Pro, Enterprise). Gói Pro là gói nổi bật. Layout responsive: 2 cột trên màn hình nhỏ, 4 cột trên màn hình rộng.</p>
+          <ol class="steps">
+            <li>Dùng <code>grid-template-columns: repeat(auto-fit, minmax(200px, 1fr))</code> để tự responsive.</li>
+            <li>Mỗi card có tên gói, giá, 4 tính năng, và nút CTA.</li>
+            <li>Card Pro dùng màu nổi bật và badge "Best Value".</li>
+            <li>Thêm icon ✅ cho tính năng có sẵn và ❌ cho tính năng không có.</li>
+          </ol>
+          <h3>Tiêu chí chấm</h3>
+          <ul>
+            <li>4 gói hiển thị cân đối, layout tự điều chỉnh theo màn hình.</li>
+            <li>Gói Pro trông khác biệt so với 3 gói còn lại.</li>
+            <li>Nút CTA trên mỗi card luôn nằm ở đáy card (dùng flex-direction: column trên card).</li>
+          </ul>
+        </section>
+        <section class="lesson solution" id="solution">
+          <h2>Bài giải tham khảo</h2>
+          <pre><code data-lang="html"><!DOCTYPE html>
+<html lang="vi">
+<head>
+  <meta charset="UTF-8">
+  <style>
+    * { box-sizing: border-box; margin: 0; padding: 0; }
+    body { font-family: sans-serif; padding: 28px; background: #f5f7fc; }
+    h1 { text-align: center; margin-bottom: 24px; color: #1e293b; }
+    .pricing {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+      gap: 20px;
+      align-items: start;
+    }
+    .plan {
+      border: 2px solid #e2e8f0;
+      border-radius: 14px;
+      padding: 24px 18px;
+      background: white;
+      display: flex;
+      flex-direction: column;
+      gap: 10px;
+    }
+    .plan.featured {
+      background: #4c1d95;
+      color: white;
+      border-color: #7c3aed;
+      box-shadow: 0 16px 32px rgba(124,58,237,.25);
+    }
+    .badge {
+      align-self: flex-start;
+      font-size: .75rem; font-weight: 800;
+      background: #fde68a; color: #78350f;
+      padding: 3px 9px; border-radius: 100px;
+    }
+    .plan h3 { font-size: 1.05rem; }
+    .price { font-size: 1.5rem; font-weight: 900; }
+    .features { list-style: none; display: flex; flex-direction: column; gap: 5px; font-size: .85rem; flex: 1; }
+    .cta {
+      display: block; text-align: center;
+      padding: 10px; border-radius: 8px;
+      font-weight: 700; text-decoration: none;
+      background: #f1f5f9; color: #1e293b;
+      margin-top: 8px;
+    }
+    .plan.featured .cta { background: #fde68a; color: #78350f; }
+  </style>
+</head>
+<body>
+  <h1>🖥️ Hosting Plans</h1>
+  <div class="pricing">
+    <div class="plan">
+      <h3>Starter</h3>
+      <p class="price">0đ/tháng</p>
+      <ul class="features">
+        <li>✅ 1 website</li>
+        <li>✅ 500MB dung lượng</li>
+        <li>❌ SSL miễn phí</li>
+        <li>❌ Hỗ trợ 24/7</li>
+      </ul>
+      <a class="cta" href="#">Bắt đầu miễn phí</a>
+    </div>
+    <div class="plan">
+      <h3>Basic</h3>
+      <p class="price">59k/tháng</p>
+      <ul class="features">
+        <li>✅ 5 website</li>
+        <li>✅ 5GB dung lượng</li>
+        <li>✅ SSL miễn phí</li>
+        <li>❌ Hỗ trợ 24/7</li>
+      </ul>
+      <a class="cta" href="#">Mua ngay</a>
+    </div>
+    <div class="plan featured">
+      <span class="badge">💎 Best Value</span>
+      <h3>Pro</h3>
+      <p class="price">149k/tháng</p>
+      <ul class="features">
+        <li>✅ Không giới hạn website</li>
+        <li>✅ 50GB dung lượng</li>
+        <li>✅ SSL miễn phí</li>
+        <li>✅ Hỗ trợ 24/7</li>
+      </ul>
+      <a class="cta" href="#">Nâng cấp Pro</a>
+    </div>
+    <div class="plan">
+      <h3>Enterprise</h3>
+      <p class="price">499k/tháng</p>
+      <ul class="features">
+        <li>✅ Không giới hạn website</li>
+        <li>✅ 500GB dung lượng</li>
+        <li>✅ SSL miễn phí</li>
+        <li>✅ Account manager riêng</li>
+      </ul>
+      <a class="cta" href="#">Liên hệ</a>
+    </div>
+  </div>
+</body>
+</html></code></pre>
+          <div class="result-panel">
+            <div class="result-head"><h3>Kết quả bài giải</h3><span>Preview trực tiếp</span></div>
+            <iframe class="result-frame" title="Bài giải Pricing" srcdoc="<!DOCTYPE html><html><head><meta charset='UTF-8'><style>*{box-sizing:border-box;margin:0;padding:0}body{font-family:sans-serif;padding:24px;background:#f5f7fc}h1{text-align:center;margin-bottom:20px;color:#1e293b;font-size:1.1rem}.pricing{display:grid;grid-template-columns:repeat(auto-fit,minmax(180px,1fr));gap:16px;align-items:start}.plan{border:2px solid #e2e8f0;border-radius:12px;padding:20px 16px;background:white;display:flex;flex-direction:column;gap:8px}.plan.featured{background:#4c1d95;color:white;border-color:#7c3aed;box-shadow:0 12px 24px rgba(124,58,237,.25)}.badge{align-self:flex-start;font-size:.72rem;font-weight:800;background:#fde68a;color:#78350f;padding:2px 8px;border-radius:100px}.plan h3{font-size:1rem}.price{font-size:1.3rem;font-weight:900}.features{list-style:none;display:flex;flex-direction:column;gap:4px;font-size:.8rem;flex:1}.cta{display:block;text-align:center;padding:8px;border-radius:8px;font-weight:700;text-decoration:none;background:#f1f5f9;color:#1e293b;margin-top:6px}.plan.featured .cta{background:#fde68a;color:#78350f}</style></head><body><h1>🖥️ Hosting Plans</h1><div class='pricing'><div class='plan'><h3>Starter</h3><p class='price'>0đ/tháng</p><ul class='features'><li>✅ 1 website</li><li>✅ 500MB</li><li>❌ SSL</li><li>❌ 24/7</li></ul><a class='cta' href='#'>Miễn phí</a></div><div class='plan'><h3>Basic</h3><p class='price'>59k/tháng</p><ul class='features'><li>✅ 5 website</li><li>✅ 5GB</li><li>✅ SSL</li><li>❌ 24/7</li></ul><a class='cta' href='#'>Mua ngay</a></div><div class='plan featured'><span class='badge'>💎 Best Value</span><h3>Pro</h3><p class='price'>149k/tháng</p><ul class='features'><li>✅ Không giới hạn</li><li>✅ 50GB</li><li>✅ SSL</li><li>✅ 24/7</li></ul><a class='cta' href='#'>Nâng cấp Pro</a></div><div class='plan'><h3>Enterprise</h3><p class='price'>499k/tháng</p><ul class='features'><li>✅ Không giới hạn</li><li>✅ 500GB</li><li>✅ SSL</li><li>✅ Manager riêng</li></ul><a class='cta' href='#'>Liên hệ</a></div></div></body></html>"></iframe>
+          </div>
+        </section>
+        <section class="callout">
+          <h2>Lỗi thường gặp</h2>
+          <ul>
+            <li>Không dùng <code>align-items: start</code> trên grid container khiến các card giãn đều chiều cao.</li>
+            <li>Nút CTA không nằm ở đáy vì quên dùng <code>flex-direction: column</code> và <code>margin-top: auto</code> trên card.</li>
+            <li>Quên <code>transform: scale()</code> cho gói featured hoặc scale quá lớn gây vỡ layout.</li>
+          </ul>
+        </section>
+        <div class="pager">
+          <a class="btn" href="../bai-02/index.html">← Bài trước</a>
+          <a class="btn primary" href="../bai-04/index.html">Bài tiếp theo →</a>
+        </div>
+      </article>
+    </div>
+  </main>
+  <footer class="footer"><p><a href="../index.html">Quay lại Module 5</a></p></footer>
+  <script type="module" src="../../app.js"></script>
+</body>
+</html>
