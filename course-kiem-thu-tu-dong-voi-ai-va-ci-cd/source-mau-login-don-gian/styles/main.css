@@ -1,0 +1,187 @@
+:root {
+  color-scheme: light;
+  --bg-start: #f6f3ea;
+  --bg-end: #e8efe9;
+  --surface: #ffffff;
+  --surface-muted: #f5f7f5;
+  --text: #152015;
+  --muted: #5d6a60;
+  --primary: #1f7a4d;
+  --primary-strong: #145534;
+  --border: #d8e0d8;
+  --shadow: 0 24px 80px rgba(28, 49, 32, 0.12);
+}
+
+* {
+  box-sizing: border-box;
+}
+
+body {
+  margin: 0;
+  min-height: 100vh;
+  font-family: "Segoe UI", Tahoma, Geneva, Verdana, sans-serif;
+  color: var(--text);
+  background:
+    radial-gradient(circle at top left, rgba(31, 122, 77, 0.12), transparent 34%),
+    radial-gradient(circle at bottom right, rgba(145, 179, 154, 0.2), transparent 30%),
+    linear-gradient(135deg, var(--bg-start), var(--bg-end));
+}
+
+.page-shell {
+  width: min(980px, calc(100% - 32px));
+  margin: 0 auto;
+  padding: 48px 0;
+  display: grid;
+  gap: 24px;
+  grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+  align-items: start;
+}
+
+.card {
+  background: var(--surface);
+  border: 1px solid rgba(21, 32, 21, 0.08);
+  border-radius: 24px;
+  padding: 28px;
+  box-shadow: var(--shadow);
+}
+
+.eyebrow {
+  margin: 0 0 10px;
+  text-transform: uppercase;
+  letter-spacing: 0.14em;
+  font-size: 0.75rem;
+  color: var(--primary);
+  font-weight: 700;
+}
+
+h1,
+h2,
+p {
+  margin-top: 0;
+}
+
+h1 {
+  margin-bottom: 12px;
+  font-size: clamp(2rem, 4vw, 3rem);
+  line-height: 1.05;
+}
+
+.description,
+.session-summary,
+.message {
+  color: var(--muted);
+}
+
+.login-form {
+  display: grid;
+  gap: 14px;
+  margin-top: 20px;
+}
+
+.login-form label {
+  display: grid;
+  gap: 8px;
+  font-weight: 600;
+}
+
+.login-form input[type="email"],
+.login-form input[type="password"] {
+  width: 100%;
+  border: 1px solid var(--border);
+  border-radius: 14px;
+  padding: 14px 16px;
+  font: inherit;
+  background: var(--surface-muted);
+}
+
+.login-form input:focus {
+  outline: 2px solid rgba(31, 122, 77, 0.25);
+  outline-offset: 2px;
+  border-color: var(--primary);
+}
+
+.checkbox-row {
+  grid-template-columns: auto 1fr;
+  align-items: center;
+  font-weight: 500;
+}
+
+.checkbox-row input {
+  width: 16px;
+  height: 16px;
+}
+
+button {
+  border: 0;
+  border-radius: 14px;
+  padding: 14px 18px;
+  font: inherit;
+  font-weight: 700;
+  cursor: pointer;
+}
+
+#login-button,
+#logout-button {
+  color: #fff;
+  background: linear-gradient(135deg, var(--primary), var(--primary-strong));
+}
+
+.message {
+  min-height: 24px;
+  margin: 20px 0 0;
+  font-weight: 600;
+}
+
+.stats {
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: 12px;
+  margin: 20px 0 0;
+}
+
+.stats div {
+  border: 1px solid var(--border);
+  border-radius: 18px;
+  padding: 14px;
+  background: var(--surface-muted);
+}
+
+.stats dt {
+  color: var(--muted);
+  font-size: 0.9rem;
+}
+
+.stats dd {
+  margin: 6px 0 0;
+  font-size: 1.25rem;
+  font-weight: 800;
+}
+
+.session-card[hidden] {
+  display: none;
+}
+
+.session-card {
+  display: grid;
+  gap: 12px;
+  align-content: start;
+}
+
+.session-card h2 {
+  margin-bottom: 0;
+}
+
+@media (max-width: 640px) {
+  .page-shell {
+    padding: 20px 0 32px;
+  }
+
+  .card {
+    padding: 22px;
+    border-radius: 20px;
+  }
+
+  .stats {
+    grid-template-columns: 1fr;
+  }
+}

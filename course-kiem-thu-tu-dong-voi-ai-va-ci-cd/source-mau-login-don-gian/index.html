@@ -1,0 +1,60 @@
+<!doctype html>
+<html lang="vi">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Mẫu login đơn giản</title>
+    <link rel="stylesheet" href="./styles/main.css" />
+  </head>
+  <body>
+    <main class="page-shell">
+      <section class="card intro-card">
+        <p class="eyebrow">Mẫu học test đơn giản</p>
+        <h1>Đăng nhập</h1>
+        <p class="description">
+          Một luồng duy nhất để học viên luyện unit test, business test và E2E test mà không bị rối.
+        </p>
+
+        <form id="login-form" class="login-form" novalidate>
+          <label>
+            Email
+            <input id="email-input" type="email" autocomplete="username" placeholder="student@example.com" />
+          </label>
+
+          <label>
+            Mật khẩu
+            <input id="password-input" type="password" autocomplete="current-password" placeholder="123456" />
+          </label>
+
+          <label class="checkbox-row">
+            <input id="remember-input" type="checkbox" />
+            Ghi nhớ đăng nhập
+          </label>
+
+          <button id="login-button" type="submit" data-testid="login-submit">Đăng nhập</button>
+        </form>
+
+        <p id="message" class="message" role="status" aria-live="polite" data-testid="message"></p>
+
+        <dl class="stats">
+          <div>
+            <dt>Lượt thử</dt>
+            <dd data-testid="attempts-count">0</dd>
+          </div>
+          <div>
+            <dt>Trạng thái</dt>
+            <dd data-testid="auth-status">Chưa đăng nhập</dd>
+          </div>
+        </dl>
+      </section>
+
+      <section class="card session-card" id="session-card" hidden data-testid="session-panel">
+        <h2 id="welcome-title">Xin chào</h2>
+        <p id="session-summary" class="session-summary"></p>
+        <button id="logout-button" type="button" data-testid="logout-button">Đăng xuất</button>
+      </section>
+    </main>
+
+    <script type="module" src="./src/main.js"></script>
+  </body>
+</html>

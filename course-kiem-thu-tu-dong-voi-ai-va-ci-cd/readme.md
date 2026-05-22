@@ -19,6 +19,14 @@
 9. Kiến thức nâng cao: flaky test, mocking, coverage, visual regression, security testing.
 10. Bài tập thực hành theo 3 cấp độ.
 
+## Source mẫu
+- [source-mau-todo-don-gian](./source-mau-todo-don-gian) để học theo luồng TODO.
+- [source-mau-login-don-gian](./source-mau-login-don-gian) để học theo luồng đăng nhập rất nhỏ.
+
+## Source starter
+- [source-starter-todo-don-gian](./source-starter-todo-don-gian) để tự làm test TODO trước khi xem đáp án.
+- [source-starter-login-don-gian](./source-starter-login-don-gian) để tự làm test cho luồng đăng nhập.
+
 ## Hướng dẫn học
 - Xem bản đầy đủ tại [index.html](./index.html).
 - Học theo đúng thứ tự các phần để không bị hổng kiến thức.
