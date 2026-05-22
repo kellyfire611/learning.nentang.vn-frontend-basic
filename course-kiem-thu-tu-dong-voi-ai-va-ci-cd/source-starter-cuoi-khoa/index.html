@@ -1,0 +1,98 @@
+<!DOCTYPE html>
+<html lang="vi">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <meta name="description" content="Starter project cuối khóa: mini shop để học viên tự viết unit test, business test, E2E test và CI/CD." />
+  <title>Starter Project Cuối Khóa | AI Testing & CI/CD</title>
+  <link rel="stylesheet" href="./styles/main.css" />
+</head>
+<body>
+  <main class="page-shell">
+    <section class="hero-panel">
+      <p class="eyebrow">Starter project cho học viên</p>
+      <h1>Mini Shop tự luyện kiểm thử</h1>
+      <p class="hero-copy">
+        Đây là bản starter để học viên tự viết test plan, unit test, business test, E2E test
+        và workflow CI/CD trước khi so sánh với bản đáp án hoàn chỉnh.
+      </p>
+      <div class="hero-metrics">
+        <div>
+          <strong>3</strong>
+          <span>Loại test</span>
+        </div>
+        <div>
+          <strong>1</strong>
+          <span>Workflow CI</span>
+        </div>
+        <div>
+          <strong>4</strong>
+          <span>Sản phẩm mẫu</span>
+        </div>
+      </div>
+    </section>
+
+    <section class="content-grid">
+      <section class="catalog-panel">
+        <div class="panel-head">
+          <div>
+            <p class="eyebrow">Danh sách sản phẩm</p>
+            <h2>Mua thử để chạy E2E test</h2>
+          </div>
+          <label class="search-box" for="search-input">
+            <span>Tìm kiếm</span>
+            <input id="search-input" data-testid="search-input" type="search" placeholder="Ví dụ: Playwright" />
+          </label>
+        </div>
+        <div id="product-list" class="product-grid" aria-live="polite"></div>
+      </section>
+
+      <aside class="cart-panel">
+        <div class="cart-head">
+          <div>
+            <p class="eyebrow">Giỏ hàng</p>
+            <h2>Đơn hàng hiện tại</h2>
+          </div>
+          <div class="cart-badge" id="cart-count" data-testid="cart-count">0</div>
+        </div>
+
+        <div id="status-message" class="status-message" data-testid="status-message">
+          Chưa có thao tác nào.
+        </div>
+
+        <div id="cart-items" class="cart-items"></div>
+
+        <div class="coupon-box">
+          <label for="coupon-input">Mã giảm giá</label>
+          <div class="coupon-row">
+            <input id="coupon-input" data-testid="coupon-input" type="text" placeholder="SAVE10 hoặc FREESHIP" />
+            <button id="apply-coupon" data-testid="apply-coupon" type="button">Áp dụng</button>
+          </div>
+          <p class="coupon-hint">SAVE10: giảm 10% từ 500.000đ. FREESHIP: miễn phí ship.</p>
+        </div>
+
+        <dl class="summary-box">
+          <div>
+            <dt>Tạm tính</dt>
+            <dd data-testid="cart-subtotal" id="cart-subtotal">0 đ</dd>
+          </div>
+          <div>
+            <dt>Giảm giá</dt>
+            <dd data-testid="cart-discount" id="cart-discount">0 đ</dd>
+          </div>
+          <div>
+            <dt>Phí vận chuyển</dt>
+            <dd data-testid="cart-shipping" id="cart-shipping">0 đ</dd>
+          </div>
+          <div class="summary-total">
+            <dt>Tổng thanh toán</dt>
+            <dd data-testid="cart-total" id="cart-total">0 đ</dd>
+          </div>
+        </dl>
+      </aside>
+    </section>
+  </main>
+
+  <script type="module" src="./src/main.js"></script>
+</body>
+</html>

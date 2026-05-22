@@ -1,0 +1,18 @@
+{
+  "name": "source-starter-cuoi-khoa-ai-testing-ci-cd",
+  "version": "1.0.0",
+  "private": true,
+  "type": "module",
+  "scripts": {
+    "serve": "http-server . -p 3105 -c-1 --silent",
+    "test": "vitest run --coverage",
+    "test:e2e": "playwright test",
+    "test:all": "npm run test && npm run test:e2e"
+  },
+  "devDependencies": {
+    "@playwright/test": "^1.54.1",
+    "@vitest/coverage-v8": "^3.2.4",
+    "http-server": "^14.1.1",
+    "vitest": "^3.2.4"
+  }
+}
