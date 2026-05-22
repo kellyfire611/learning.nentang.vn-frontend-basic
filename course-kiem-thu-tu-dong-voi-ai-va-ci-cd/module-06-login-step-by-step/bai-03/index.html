@@ -5,22 +5,67 @@
   <header class="topbar"><div class="container topbar-inner"><a class="brand" href="../../index.html"><span class="brand-mark">T</span>&nbsp;AI Testing &amp; CI/CD</a><nav class="nav-links" aria-label="Điều hướng khóa học"><a href="../../../index.html">Trang chủ</a><a href="../../index.html#modules">Module</a><a href="../index.html">Module 6</a></nav></div></header>
   <section class="module-hero m6"><div class="container"><div class="breadcrumb"><a href="../../index.html">AI Testing &amp; CI/CD</a><span>/</span><a href="../index.html">Module 6</a><span>/</span><span>Bài 3</span></div><h1>Bài 3: Tách login store và state</h1><p>Đây là bước quan trọng nhất để bài login có thể test được tử tế.</p></div></section>
   <main class="section"><div class="container lesson-layout"><aside class="side-nav"><h3>Module 6</h3><ul><li><a href="../bai-01/index.html">Bài 1: Cài môi trường</a></li><li><a href="../bai-02/index.html">Bài 2: Giao diện login</a></li><li class="active"><a href="index.html">Bài 3: Login store</a></li><li><a href="../bai-04/index.html">Bài 4: Test plan &amp; cases</a></li><li><a href="../bai-05/index.html">Bài 5: Unit test</a></li><li><a href="../bai-06/index.html">Bài 6: Business test</a></li><li><a href="../bai-07/index.html">Bài 7: E2E test</a></li><li><a href="../bai-08/index.html">Bài 8: Hoàn thiện bài</a></li></ul></aside><article class="module-article">
-    <section class="lesson"><h2>6.3.1 Tư duy tách logic</h2><p>Không nhét validate và state trực tiếp vào file HTML. Hãy đặt các hàm như <code>normalizeText</code>, <code>normalizeEmail</code>, <code>isValidEmail</code>, <code>login</code>, <code>logout</code> trong <code>src/loginStore.js</code>.</p></section>
-    <section class="lesson"><h2>6.3.2 State tối thiểu</h2><pre><code data-lang="javascript">const state = {
+    <section class="lesson"><h2>6.3.1 Bước này sẽ sửa những file nào?</h2><ul><li><code>src/loginStore.js</code>: chứa toàn bộ logic nghiệp vụ của bài login.</li><li><code>src/main.js</code>: lấy dữ liệu từ giao diện, gọi store và render lại UI.</li></ul><p>Đây là chỗ học viên phải hiểu rõ: <strong>logic</strong> nằm ở <code>loginStore.js</code>, còn <strong>giao tiếp với HTML</strong> nằm ở <code>main.js</code>.</p></section>
+    <section class="lesson"><h2>6.3.2 Nội dung file <code>src/loginStore.js</code></h2><p>File này nên có 3 nhóm nội dung:</p><ol class="steps"><li>Dữ liệu tài khoản mẫu</li><li>Hàm tiện ích như <code>normalizeText</code>, <code>normalizeEmail</code>, <code>isValidEmail</code></li><li>Store chính với state, login, logout, getState</li></ol><pre><code data-lang="javascript">export const DEMO_ACCOUNT = {
+  email: "student@example.com",
+  password: "123456",
+  name: "Học viên"
+};
+
+export function normalizeText(value) {
+  return String(value ?? "").trim();
+}
+
+export function normalizeEmail(value) {
+  return normalizeText(value).toLowerCase();
+}
+
+export function isValidEmail(email) {
+  return /^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email);
+}</code></pre></section>
+    <section class="lesson"><h2>6.3.3 State tối thiểu</h2><pre><code data-lang="javascript">const state = {
   attempts: 0,
   authenticated: false,
   rememberMe: false,
   message: "",
   user: null
-};</code></pre><p>State này đủ để support cả unit test, business test lẫn E2E test.</p></section>
-    <section class="lesson"><h2>6.3.3 Luật nghiệp vụ cần có</h2><ol class="steps"><li>Mỗi lần submit đều tăng <code>attempts</code>.</li><li>Email rỗng báo <code>Vui lòng nhập email.</code></li><li>Email sai format báo <code>Email không hợp lệ.</code></li><li>Mật khẩu rỗng báo <code>Vui lòng nhập mật khẩu.</code></li><li>Sai tài khoản báo <code>Email hoặc mật khẩu không đúng.</code></li><li>Đúng tài khoản thì set <code>authenticated = true</code> và gán <code>user</code>.</li><li>Logout phải trả app về trạng thái chưa đăng nhập.</li></ol><pre><code data-lang="javascript">export function isValidEmail(email) {
-  return /^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email);
-}
-
-function login(emailInput, passwordInput, rememberMe = false) {
+};</code></pre><p>State này đủ để support cả unit test, business test lẫn E2E test. Học viên không nên thêm state lung tung nếu chưa thật sự cần.</p></section>
+    <section class="lesson"><h2>6.3.4 Luật nghiệp vụ cần code trong <code>login()</code></h2><ol class="steps"><li>Mỗi lần submit đều tăng <code>attempts</code>.</li><li>Email rỗng báo <code>Vui lòng nhập email.</code></li><li>Email sai format báo <code>Email không hợp lệ.</code></li><li>Mật khẩu rỗng báo <code>Vui lòng nhập mật khẩu.</code></li><li>Sai tài khoản báo <code>Email hoặc mật khẩu không đúng.</code></li><li>Đúng tài khoản thì set <code>authenticated = true</code> và gán <code>user</code>.</li><li>Logout phải trả app về trạng thái chưa đăng nhập.</li></ol><pre><code data-lang="javascript">function login(emailInput, passwordInput, rememberMe = false) {
   state.attempts += 1;
-  // validate và cập nhật state
+
+  const email = normalizeEmail(emailInput);
+  const password = normalizeText(passwordInput);
+
+  if (!email) {
+    return setFailure("Vui lòng nhập email.");
+  }
+
+  if (!isValidEmail(email)) {
+    return setFailure("Email không hợp lệ.");
+  }
+
+  if (!password) {
+    return setFailure("Vui lòng nhập mật khẩu.");
+  }
+
+  if (email !== account.email || password !== account.password) {
+    return setFailure("Email hoặc mật khẩu không đúng.");
+  }
 }</code></pre></section>
+    <section class="lesson"><h2>6.3.5 Nội dung file <code>src/main.js</code></h2><p>File này không chứa luật nghiệp vụ. Nó chỉ làm 3 việc:</p><ul><li>Lấy element từ HTML</li><li>Gọi store khi submit hoặc logout</li><li>Render state ra UI</li></ul><pre><code data-lang="javascript">const elements = {
+  form: document.querySelector("#login-form"),
+  email: document.querySelector("#email-input"),
+  password: document.querySelector("#password-input"),
+  remember: document.querySelector("#remember-input"),
+  message: document.querySelector("#message")
+};
+
+function handleLogin(event) {
+  event.preventDefault();
+  store.login(elements.email.value, elements.password.value, elements.remember.checked);
+  render();
+}</code></pre><div class="callout"><strong>Nguyên tắc:</strong> nếu một đoạn code có thể test mà không cần mở trình duyệt, hãy ưu tiên đặt nó ở <code>loginStore.js</code> thay vì nhét vào <code>main.js</code>.</div></section>
+    <section class="lesson"><h2>6.3.6 Tự kiểm tra sau bài 3</h2><ul><li>Đã có file <code>src/loginStore.js</code>.</li><li>Đã có file <code>src/main.js</code>.</li><li>Đã tách logic validate khỏi HTML.</li><li>Đã có state với <code>attempts</code>, <code>authenticated</code>, <code>rememberMe</code>, <code>message</code>, <code>user</code>.</li><li>Đã có hàm <code>login()</code>, <code>logout()</code>, <code>getState()</code>.</li></ul></section>
     <nav class="pager"><a href="../bai-02/index.html" class="btn">← Bài 2</a><a href="../bai-04/index.html" class="btn primary">Bài 4: Test plan &amp; test cases →</a></nav>
   </article></div></main>
   <footer class="footer"><div class="container"><p><a href="../index.html">Quay lại Module 6</a></p></div></footer><script type="module" src="../../app.js"></script>

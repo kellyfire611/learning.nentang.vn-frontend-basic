@@ -40,6 +40,41 @@
 
   <main class="section">
     <div class="container">
+      <section class="lesson">
+        <h2>Module này dành cho ai?</h2>
+        <p>Module này dành cho học viên mới bắt đầu, còn yếu công nghệ, chưa quen Node.js, chưa quen cấu trúc source có test, và cần một bài nhỏ để đi từng bước một. Mục tiêu không phải là học viên nhớ hết mọi lệnh ngay, mà là hiểu được <strong>mình đang tạo file gì, sửa file nào, file đó dùng để làm gì</strong>.</p>
+        <div class="callout">
+          <strong>Kết quả sau module này:</strong> học viên sẽ tự làm được một app login HTML/CSS/JS đơn giản có đầy đủ <code>unit test</code>, <code>business test</code>, <code>E2E test</code>, kèm tài liệu <code>test-plan</code> và <code>test-cases</code>.
+        </div>
+      </section>
+
+      <section class="lesson">
+        <h2>Cấu trúc source bài cuối</h2>
+        <p>Đây là cấu trúc thư mục học viên sẽ từng bước xây dựng ra trong module này:</p>
+        <pre><code data-lang="text">source-mau-login-don-gian/
+├── index.html
+├── package.json
+├── vitest.config.js
+├── playwright.config.js
+├── styles/
+│   └── main.css
+├── src/
+│   ├── main.js
+│   └── loginStore.js
+├── tests/
+│   ├── unit/
+│   │   └── loginStore.test.js
+│   ├── business/
+│   │   └── loginFlow.business.test.js
+│   └── e2e/
+│       └── login.spec.js
+└── docs/
+    ├── test-plan.md
+    ├── test-cases.md
+    └── student-checklist.md</code></pre>
+        <p>Mỗi bài học phía dưới sẽ chỉ rõ: bước này cần <strong>tạo file nào</strong>, <strong>sửa file nào</strong>, <strong>copy đoạn code nào</strong>, và <strong>chạy lệnh nào</strong>.</p>
+      </section>
+
       <div class="section-head">
         <h2>Danh sách bài học</h2>
         <p>Học theo đúng thứ tự để đi hết một vòng đời nhỏ của kiểm thử tự động trên web.</p>
@@ -49,56 +84,56 @@
           <div class="card-num">01</div>
           <div class="card-info">
             <h3>Cài môi trường và công cụ</h3>
-            <p>Cài Node.js, VS Code, Git và các package cần thiết để chạy app và test local.</p>
+            <p>Cài Node.js, VS Code, Git, npm package và hiểu vì sao dự án cần từng công cụ.</p>
           </div>
         </a>
         <a href="bai-02/index.html" class="exercise-card m6">
           <div class="card-num">02</div>
           <div class="card-info">
             <h3>Tạo giao diện login để test</h3>
-            <p>Dựng form login, khu vực trạng thái và các `data-testid` cần cho Playwright.</p>
+            <p>Dựng từng phần của <code>index.html</code>, gắn <code>id</code>, <code>data-testid</code> và tạo CSS cơ bản.</p>
           </div>
         </a>
         <a href="bai-03/index.html" class="exercise-card m6">
           <div class="card-num">03</div>
           <div class="card-info">
             <h3>Tách login store và state</h3>
-            <p>Viết `loginStore.js`, chuẩn hóa dữ liệu đầu vào và quản lý trạng thái đăng nhập.</p>
+            <p>Viết <code>src/loginStore.js</code> và <code>src/main.js</code>, biết rõ file nào chứa logic, file nào nối với giao diện.</p>
           </div>
         </a>
         <a href="bai-04/index.html" class="exercise-card m6">
           <div class="card-num">04</div>
           <div class="card-info">
             <h3>Viết test plan và test cases</h3>
-            <p>Xác định rõ cần test gì trước khi viết test code.</p>
+            <p>Tạo thư mục <code>docs/</code> và viết đủ tài liệu trước khi viết test code.</p>
           </div>
         </a>
         <a href="bai-05/index.html" class="exercise-card m6">
           <div class="card-num">05</div>
           <div class="card-info">
             <h3>Viết unit test</h3>
-            <p>Test validate, login thành công, login lỗi và logout bằng Vitest.</p>
+            <p>Tạo file <code>tests/unit/loginStore.test.js</code> và test từng hàm nhỏ trong store.</p>
           </div>
         </a>
         <a href="bai-06/index.html" class="exercise-card m6">
           <div class="card-num">06</div>
           <div class="card-info">
             <h3>Viết business test</h3>
-            <p>Kiểm tra flow sai một lần rồi đúng, rememberMe và trạng thái logout.</p>
+            <p>Tạo file <code>tests/business/loginFlow.business.test.js</code> để test flow sai rồi đúng, rememberMe và logout.</p>
           </div>
         </a>
         <a href="bai-07/index.html" class="exercise-card m6">
           <div class="card-num">07</div>
           <div class="card-info">
             <h3>Viết E2E test với Playwright</h3>
-            <p>Mô phỏng thao tác người dùng thật trên form login và nút đăng xuất.</p>
+            <p>Tạo file <code>tests/e2e/login.spec.js</code> và mô phỏng thao tác người dùng trên trình duyệt.</p>
           </div>
         </a>
         <a href="bai-08/index.html" class="exercise-card m6">
           <div class="card-num">08</div>
           <div class="card-info">
             <h3>Hoàn thiện bài và tự kiểm tra</h3>
-            <p>Chạy lại toàn bộ test, rà checklist và đối chiếu với source mẫu cuối cùng.</p>
+            <p>Chạy lại toàn bộ lệnh test, so source, rà checklist và biết thế nào là bài hoàn chỉnh.</p>
           </div>
         </a>
       </div>

@@ -1,26 +1,54 @@
 <!DOCTYPE html>
 <html lang="vi">
-<head><meta charset="UTF-8" /><meta name="viewport" content="width=device-width, initial-scale=1.0" /><meta name="description" content="Dựng giao diện login đủ điểm bám để test bằng JavaScript và Playwright." /><title>Bài 2: Tạo giao diện login | Module 6 | NenTang.vn</title><link rel="stylesheet" href="../../shared.css" /></head>
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <meta name="description" content="Dựng giao diện login đủ điểm bám để test bằng JavaScript và Playwright." />
+  <title>Bài 2: Tạo giao diện login | Module 6 | NenTang.vn</title>
+  <link rel="stylesheet" href="../../shared.css" />
+</head>
 <body>
   <header class="topbar"><div class="container topbar-inner"><a class="brand" href="../../index.html"><span class="brand-mark">T</span>&nbsp;AI Testing &amp; CI/CD</a><nav class="nav-links" aria-label="Điều hướng khóa học"><a href="../../../index.html">Trang chủ</a><a href="../../index.html#modules">Module</a><a href="../index.html">Module 6</a></nav></div></header>
   <section class="module-hero m6"><div class="container"><div class="breadcrumb"><a href="../../index.html">AI Testing &amp; CI/CD</a><span>/</span><a href="../index.html">Module 6</a><span>/</span><span>Bài 2</span></div><h1>Bài 2: Tạo giao diện login để test</h1><p>Dựng một giao diện nhỏ nhưng có đủ input, trạng thái và selector ổn định để hỗ trợ test về sau.</p></div></section>
   <main class="section"><div class="container lesson-layout"><aside class="side-nav"><h3>Module 6</h3><ul><li><a href="../bai-01/index.html">Bài 1: Cài môi trường</a></li><li class="active"><a href="index.html">Bài 2: Giao diện login</a></li><li><a href="../bai-03/index.html">Bài 3: Login store</a></li><li><a href="../bai-04/index.html">Bài 4: Test plan &amp; cases</a></li><li><a href="../bai-05/index.html">Bài 5: Unit test</a></li><li><a href="../bai-06/index.html">Bài 6: Business test</a></li><li><a href="../bai-07/index.html">Bài 7: E2E test</a></li><li><a href="../bai-08/index.html">Bài 8: Hoàn thiện bài</a></li></ul></aside><article class="module-article">
-    <section class="lesson"><h2>6.2.1 Những khối giao diện bắt buộc</h2><ul><li>Ô nhập email</li><li>Ô nhập mật khẩu</li><li>Checkbox ghi nhớ đăng nhập</li><li>Nút đăng nhập</li><li>Vùng hiển thị thông báo lỗi hoặc thành công</li><li>Vùng hiển thị số lượt thử và trạng thái đăng nhập</li><li>Panel phiên đăng nhập kèm nút đăng xuất</li></ul></section>
-    <section class="lesson"><h2>6.2.2 HTML mẫu học viên cần tạo</h2><pre><code data-lang="html">&lt;form id="login-form" novalidate&gt;
-  &lt;input id="email-input" type="email" /&gt;
-  &lt;input id="password-input" type="password" /&gt;
-  &lt;input id="remember-input" type="checkbox" /&gt;
-  &lt;button type="submit" data-testid="login-submit"&gt;Đăng nhập&lt;/button&gt;
-&lt;/form&gt;
+    <section class="lesson"><h2>6.2.1 Ở bước này học viên sẽ tạo những file nào?</h2><p>Bước 2 tập trung chủ yếu vào 2 file:</p><ul><li><code>index.html</code>: chứa cấu trúc giao diện login.</li><li><code>styles/main.css</code>: chứa phần nhìn của giao diện.</li></ul><p>Chưa viết logic ở bước này. Mục tiêu là làm cho giao diện nhìn thấy được và đủ điểm bám để code JS và test ở bước sau.</p></section>
+    <section class="lesson"><h2>6.2.2 Những khối giao diện bắt buộc</h2><ul><li>Ô nhập email</li><li>Ô nhập mật khẩu</li><li>Checkbox ghi nhớ đăng nhập</li><li>Nút đăng nhập</li><li>Vùng hiển thị thông báo lỗi hoặc thành công</li><li>Vùng hiển thị số lượt thử và trạng thái đăng nhập</li><li>Panel phiên đăng nhập kèm nút đăng xuất</li></ul></section>
+    <section class="lesson"><h2>6.2.3 Cấu trúc <code>index.html</code> nên viết ra sao?</h2><pre><code data-lang="html">&lt;main class="page-shell"&gt;
+  &lt;section class="card intro-card"&gt;
+    &lt;form id="login-form" class="login-form" novalidate&gt;
+      &lt;label&gt;
+        Email
+        &lt;input id="email-input" type="email" autocomplete="username" /&gt;
+      &lt;/label&gt;
 
-&lt;p id="message" data-testid="message"&gt;&lt;/p&gt;
-&lt;dd data-testid="attempts-count"&gt;0&lt;/dd&gt;
-&lt;dd data-testid="auth-status"&gt;Chưa đăng nhập&lt;/dd&gt;
+      &lt;label&gt;
+        Mật khẩu
+        &lt;input id="password-input" type="password" autocomplete="current-password" /&gt;
+      &lt;/label&gt;
 
-&lt;section id="session-card" hidden data-testid="session-panel"&gt;
-  &lt;button id="logout-button" data-testid="logout-button"&gt;Đăng xuất&lt;/button&gt;
-&lt;/section&gt;</code></pre></section>
-    <section class="lesson"><h2>6.2.3 Vì sao phải gắn <code>data-testid</code></h2><p>Khi viết Playwright, selector theo class hay text rất dễ gãy nếu bạn chỉnh UI. Với bài học này, học viên nên làm quen từ sớm với selector ổn định như <code>data-testid="login-submit"</code> và <code>data-testid="session-panel"</code>.</p><div class="callout"><strong>Tự kiểm tra:</strong> mở app và xác nhận panel phiên đăng nhập đang ẩn ở trạng thái ban đầu.</div></section>
+      &lt;label class="checkbox-row"&gt;
+        &lt;input id="remember-input" type="checkbox" /&gt;
+        Ghi nhớ đăng nhập
+      &lt;/label&gt;
+
+      &lt;button id="login-button" type="submit" data-testid="login-submit"&gt;Đăng nhập&lt;/button&gt;
+    &lt;/form&gt;
+
+    &lt;p id="message" data-testid="message"&gt;&lt;/p&gt;
+
+    &lt;dl class="stats"&gt;
+      &lt;dd data-testid="attempts-count"&gt;0&lt;/dd&gt;
+      &lt;dd data-testid="auth-status"&gt;Chưa đăng nhập&lt;/dd&gt;
+    &lt;/dl&gt;
+  &lt;/section&gt;
+
+  &lt;section id="session-card" hidden data-testid="session-panel"&gt;
+    &lt;button id="logout-button" data-testid="logout-button" type="button"&gt;Đăng xuất&lt;/button&gt;
+  &lt;/section&gt;
+&lt;/main&gt;</code></pre><p>Nếu học viên chưa quen HTML, cứ làm đúng theo từng khối trên, không cần sáng tạo thêm ở giai đoạn đầu.</p></section>
+    <section class="lesson"><h2>6.2.4 File <code>styles/main.css</code> dùng để làm gì?</h2><p>File này không ảnh hưởng trực tiếp tới logic đăng nhập, nhưng giúp học viên nhìn rõ các phần của UI. Ở mức tối thiểu, học viên chỉ cần có các class chính như <code>page-shell</code>, <code>card</code>, <code>login-form</code>, <code>checkbox-row</code>, <code>message</code>, <code>stats</code>, <code>session-card</code>.</p><div class="callout"><strong>Nguyên tắc:</strong> CSS làm đẹp giao diện, nhưng các <code>id</code> và <code>data-testid</code> mới là thứ hỗ trợ mạnh cho JavaScript và test code.</div></section>
+    <section class="lesson"><h2>6.2.5 Vì sao phải gắn <code>data-testid</code>?</h2><p>Khi viết Playwright, selector theo class hay text rất dễ gãy nếu bạn chỉnh UI. Với bài học này, học viên nên làm quen từ sớm với selector ổn định như <code>data-testid="login-submit"</code>, <code>data-testid="message"</code> và <code>data-testid="session-panel"</code>.</p><ul><li>Dùng <code>getByLabel()</code> cho input email và mật khẩu.</li><li>Dùng <code>getByTestId()</code> cho nút, message, vùng trạng thái.</li></ul></section>
+    <section class="lesson"><h2>6.2.6 Tự kiểm tra sau bài 2</h2><ul><li>Mở app bằng local server.</li><li>Kiểm tra đã có đủ ô Email, Mật khẩu, checkbox và nút Đăng nhập.</li><li>Kiểm tra vùng trạng thái đang hiện <code>0</code> và <code>Chưa đăng nhập</code>.</li><li>Kiểm tra panel phiên đăng nhập đang ẩn.</li><li>Kiểm tra file <code>index.html</code> đã có đủ <code>id</code> và <code>data-testid</code>.</li></ul></section>
     <nav class="pager"><a href="../bai-01/index.html" class="btn">← Bài 1</a><a href="../bai-03/index.html" class="btn primary">Bài 3: Tách login store →</a></nav>
   </article></div></main>
   <footer class="footer"><div class="container"><p><a href="../index.html">Quay lại Module 6</a></p></div></footer><script type="module" src="../../app.js"></script>

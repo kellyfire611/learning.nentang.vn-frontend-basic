@@ -5,12 +5,30 @@
   <header class="topbar"><div class="container topbar-inner"><a class="brand" href="../../index.html"><span class="brand-mark">T</span>&nbsp;AI Testing &amp; CI/CD</a><nav class="nav-links" aria-label="Điều hướng khóa học"><a href="../../../index.html">Trang chủ</a><a href="../../index.html#modules">Module</a><a href="../index.html">Module 6</a></nav></div></header>
   <section class="module-hero m6"><div class="container"><div class="breadcrumb"><a href="../../index.html">AI Testing &amp; CI/CD</a><span>/</span><a href="../index.html">Module 6</a><span>/</span><span>Bài 7</span></div><h1>Bài 7: Viết E2E test với Playwright</h1><p>Đến đây học viên đã có đủ UI, logic và test case để viết E2E ổn định.</p></div></section>
   <main class="section"><div class="container lesson-layout"><aside class="side-nav"><h3>Module 6</h3><ul><li><a href="../bai-01/index.html">Bài 1: Cài môi trường</a></li><li><a href="../bai-02/index.html">Bài 2: Giao diện login</a></li><li><a href="../bai-03/index.html">Bài 3: Login store</a></li><li><a href="../bai-04/index.html">Bài 4: Test plan &amp; cases</a></li><li><a href="../bai-05/index.html">Bài 5: Unit test</a></li><li><a href="../bai-06/index.html">Bài 6: Business test</a></li><li class="active"><a href="index.html">Bài 7: E2E test</a></li><li><a href="../bai-08/index.html">Bài 8: Hoàn thiện bài</a></li></ul></aside><article class="module-article">
-    <section class="lesson"><h2>6.7.1 Những selector nên dùng</h2><ul><li><code>page.getByLabel("Email")</code></li><li><code>page.getByLabel("Mật khẩu")</code></li><li><code>page.getByTestId("login-submit")</code></li><li><code>page.getByTestId("message")</code></li><li><code>page.getByTestId("session-panel")</code></li></ul></section>
-    <section class="lesson"><h2>6.7.2 Hai case E2E tối thiểu</h2><ol class="steps"><li>Submit form rỗng và kiểm tra thông báo lỗi.</li><li>Đăng nhập đúng rồi đăng xuất và kiểm tra trạng thái UI ở cả 2 bước.</li></ol><pre><code data-lang="javascript">await page.getByLabel("Email").fill("student@example.com");
-await page.getByLabel("Mật khẩu").fill("123456");
-await page.getByTestId("login-submit").click();
-await expect(page.getByTestId("message")).toHaveText("Đăng nhập thành công.");</code></pre></section>
-    <section class="lesson"><h2>6.7.3 Cách debug khi E2E fail</h2><ul><li>Kiểm tra lại <code>baseURL</code> và cổng trong <code>playwright.config.js</code>.</li><li>Kiểm tra <code>data-testid</code> trong HTML có khớp test không.</li><li>Kiểm tra text expected có đúng dấu, đúng khoảng trắng.</li><li>Tự bấm app bằng tay để xác nhận lỗi nằm ở app hay ở test.</li></ul></section>
+    <section class="lesson"><h2>6.7.1 Bước này cần tạo file nào?</h2><p>Tạo file <code>tests/e2e/login.spec.js</code>. Đây là file test thao tác thật trên trình duyệt.</p><pre><code data-lang="text">tests/
+└── e2e/
+    └── login.spec.js</code></pre></section>
+    <section class="lesson"><h2>6.7.2 Những selector nên dùng</h2><ul><li><code>page.getByLabel("Email")</code></li><li><code>page.getByLabel("Mật khẩu")</code></li><li><code>page.getByTestId("login-submit")</code></li><li><code>page.getByTestId("message")</code></li><li><code>page.getByTestId("session-panel")</code></li></ul><p>Nếu học viên đã làm đúng bài 2 thì các selector này đã có sẵn trong <code>index.html</code>.</p></section>
+    <section class="lesson"><h2>6.7.3 Hai case E2E tối thiểu</h2><ol class="steps"><li>Submit form rỗng và kiểm tra thông báo lỗi.</li><li>Đăng nhập đúng rồi đăng xuất và kiểm tra trạng thái UI ở cả 2 bước.</li></ol><pre><code data-lang="javascript">import { expect, test } from "@playwright/test";
+
+test("đăng nhập thành công rồi đăng xuất", async ({ page }) =&gt; {
+  await page.goto("/");
+
+  await page.getByLabel("Email").fill("student@example.com");
+  await page.getByLabel("Mật khẩu").fill("123456");
+  await page.getByTestId("login-submit").click();
+
+  await expect(page.getByTestId("message")).toHaveText("Đăng nhập thành công.");
+});</code></pre></section>
+    <section class="lesson"><h2>6.7.4 Cấu hình liên quan cần kiểm tra</h2><p>Trước khi đổ lỗi cho test, hãy nhìn lại 2 chỗ:</p><ul><li><code>playwright.config.js</code>: đúng cổng và <code>baseURL</code> chưa</li><li><code>package.json</code>: script <code>serve</code> có chạy đúng cổng không</li></ul><pre><code data-lang="javascript">use: {
+  baseURL: "http://127.0.0.1:3108",
+  headless: true
+},
+webServer: {
+  command: "npm run serve",
+  port: 3108
+}</code></pre></section>
+    <section class="lesson"><h2>6.7.5 Cách debug khi E2E fail</h2><ul><li>Kiểm tra lại <code>baseURL</code> và cổng trong <code>playwright.config.js</code>.</li><li>Kiểm tra <code>data-testid</code> trong HTML có khớp test không.</li><li>Kiểm tra text expected có đúng dấu, đúng khoảng trắng.</li><li>Tự bấm app bằng tay để xác nhận lỗi nằm ở app hay ở test.</li></ul><div class="callout"><strong>Mẹo cho học viên yếu:</strong> nếu E2E fail, đừng sửa lung tung cả app lẫn test. Hãy kiểm tra theo đúng thứ tự: app chạy chưa, selector đúng chưa, text đúng chưa.</div></section>
     <nav class="pager"><a href="../bai-06/index.html" class="btn">← Bài 6</a><a href="../bai-08/index.html" class="btn primary">Bài 8: Hoàn thiện bài →</a></nav>
   </article></div></main>
   <footer class="footer"><div class="container"><p><a href="../index.html">Quay lại Module 6</a></p></div></footer><script type="module" src="../../app.js"></script>

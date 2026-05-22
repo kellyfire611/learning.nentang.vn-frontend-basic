@@ -5,22 +5,32 @@
   <header class="topbar"><div class="container topbar-inner"><a class="brand" href="../../index.html"><span class="brand-mark">T</span>&nbsp;AI Testing &amp; CI/CD</a><nav class="nav-links" aria-label="Điều hướng khóa học"><a href="../../../index.html">Trang chủ</a><a href="../../index.html#modules">Module</a><a href="../index.html">Module 6</a></nav></div></header>
   <section class="module-hero m6"><div class="container"><div class="breadcrumb"><a href="../../index.html">AI Testing &amp; CI/CD</a><span>/</span><a href="../index.html">Module 6</a><span>/</span><span>Bài 5</span></div><h1>Bài 5: Viết unit test với Vitest</h1><p>Bắt đầu từ các hàm nhỏ, sau đó test các nhánh thành công và thất bại của login store.</p></div></section>
   <main class="section"><div class="container lesson-layout"><aside class="side-nav"><h3>Module 6</h3><ul><li><a href="../bai-01/index.html">Bài 1: Cài môi trường</a></li><li><a href="../bai-02/index.html">Bài 2: Giao diện login</a></li><li><a href="../bai-03/index.html">Bài 3: Login store</a></li><li><a href="../bai-04/index.html">Bài 4: Test plan &amp; cases</a></li><li class="active"><a href="index.html">Bài 5: Unit test</a></li><li><a href="../bai-06/index.html">Bài 6: Business test</a></li><li><a href="../bai-07/index.html">Bài 7: E2E test</a></li><li><a href="../bai-08/index.html">Bài 8: Hoàn thiện bài</a></li></ul></aside><article class="module-article">
-    <section class="lesson"><h2>6.5.1 Thứ tự viết unit test</h2><ol class="steps"><li>Test <code>normalizeText</code></li><li>Test <code>normalizeEmail</code></li><li>Test <code>isValidEmail</code></li><li>Test login thành công</li><li>Test từng case lỗi</li><li>Test logout</li></ol></section>
-    <section class="lesson"><h2>6.5.2 Ví dụ code</h2><pre><code data-lang="javascript">import { describe, expect, test } from "vitest";
-import { createLoginStore, normalizeEmail } from "../../src/loginStore.js";
+    <section class="lesson"><h2>6.5.1 Bước này cần tạo file nào?</h2><p>Tạo file <code>tests/unit/loginStore.test.js</code>. File này chỉ test logic trong <code>src/loginStore.js</code>, không test trực tiếp HTML.</p><pre><code data-lang="text">tests/
+└── unit/
+    └── loginStore.test.js</code></pre></section>
+    <section class="lesson"><h2>6.5.2 Thứ tự viết unit test</h2><ol class="steps"><li>Test <code>normalizeText</code></li><li>Test <code>normalizeEmail</code></li><li>Test <code>isValidEmail</code></li><li>Test login thành công</li><li>Test từng case lỗi</li><li>Test logout</li></ol><p>Thứ tự này giúp học viên đi từ dễ đến khó.</p></section>
+    <section class="lesson"><h2>6.5.3 Khung code nên viết đầu tiên</h2><pre><code data-lang="javascript">import { describe, expect, test } from "vitest";
+import {
+  createLoginStore,
+  isValidEmail,
+  normalizeEmail,
+  normalizeText
+} from "../../src/loginStore.js";
 
 describe("loginStore unit", () =&gt; {
   test("normalizeEmail chuyển về chữ thường", () =&gt; {
     expect(normalizeEmail(" Student@Example.com ")).toBe("student@example.com");
   });
-
-  test("báo lỗi khi thiếu email", () =&gt; {
-    const store = createLoginStore();
-    const state = store.login("", "123456");
-    expect(state.message).toBe("Vui lòng nhập email.");
-  });
 });</code></pre></section>
-    <section class="lesson"><h2>6.5.3 Cách chạy</h2><pre><code data-lang="bash">npm test</code></pre><p>Nếu test fail, hãy kiểm tra trước chuỗi message, số <code>attempts</code> và trạng thái <code>authenticated</code>. Đừng nhảy sang E2E khi unit test còn đang đỏ.</p></section>
+    <section class="lesson"><h2>6.5.4 Những test tối thiểu phải có</h2><ul><li>Chuẩn hóa text</li><li>Chuẩn hóa email</li><li>Email hợp lệ và không hợp lệ</li><li>Đăng nhập thành công</li><li>Thiếu email</li><li>Email sai định dạng</li><li>Thiếu mật khẩu</li><li>Sai tài khoản</li><li>Logout</li></ul><pre><code data-lang="javascript">test("báo lỗi khi thiếu email", () =&gt; {
+  const store = createLoginStore();
+  const state = store.login("", "123456");
+
+  expect(state.attempts).toBe(1);
+  expect(state.authenticated).toBe(false);
+  expect(state.message).toBe("Vui lòng nhập email.");
+});</code></pre></section>
+    <section class="lesson"><h2>6.5.5 Cách chạy và cách đọc lỗi</h2><pre><code data-lang="bash">npm test</code></pre><p>Nếu test fail, hãy kiểm tra trước:</p><ul><li>Chuỗi message expected có khớp 100% với code không</li><li><code>attempts</code> có tăng đúng số lần không</li><li><code>authenticated</code> đang true hay false</li><li><code>user</code> có null hay đã có dữ liệu</li></ul><div class="callout"><strong>Lưu ý:</strong> chưa cần nghĩ đến Playwright ở bước này. Chỉ tập trung làm cho logic trong store đúng và test được.</div></section>
     <nav class="pager"><a href="../bai-04/index.html" class="btn">← Bài 4</a><a href="../bai-06/index.html" class="btn primary">Bài 6: Viết business test →</a></nav>
   </article></div></main>
   <footer class="footer"><div class="container"><p><a href="../index.html">Quay lại Module 6</a></p></div></footer><script type="module" src="../../app.js"></script>
