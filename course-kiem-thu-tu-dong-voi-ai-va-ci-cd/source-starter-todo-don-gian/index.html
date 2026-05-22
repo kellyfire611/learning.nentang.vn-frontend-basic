@@ -1,0 +1,56 @@
+<!DOCTYPE html>
+<html lang="vi">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <meta name="description" content="Starter TODO app rất đơn giản để học viên mới bắt đầu tự viết test và CI/CD." />
+  <title>Starter TODO App đơn giản | AI Testing & CI/CD</title>
+  <link rel="stylesheet" href="./styles/main.css" />
+</head>
+<body>
+  <main class="todo-shell">
+    <section class="intro-card">
+      <p class="eyebrow">Starter cho người mới học</p>
+      <h1>TODO App tự luyện kiểm thử</h1>
+      <p>
+        Đây là bản starter giữ logic thật ngắn để học viên tự viết unit test, business test,
+        E2E test và CI trước khi so sánh với bản đáp án hoàn chỉnh.
+      </p>
+    </section>
+
+    <section class="app-card">
+      <div class="input-row">
+        <label class="input-box" for="todo-input">
+          <span>Việc cần làm</span>
+          <input id="todo-input" data-testid="todo-input" type="text" placeholder="Ví dụ: Học bài Unit Test" />
+        </label>
+        <button id="add-button" data-testid="add-button" type="button">Thêm việc</button>
+      </div>
+
+      <p id="message" class="message" data-testid="message">Chưa có thao tác nào.</p>
+
+      <div class="toolbar">
+        <div class="stats">
+          <span data-testid="total-count">0 việc</span>
+          <span data-testid="active-count">0 đang làm</span>
+          <span data-testid="done-count">0 đã xong</span>
+        </div>
+        <div class="filters" role="tablist" aria-label="Lọc công việc">
+          <button class="filter-button active" data-testid="filter-all" data-filter="all" type="button">Tất cả</button>
+          <button class="filter-button" data-testid="filter-active" data-filter="active" type="button">Chưa xong</button>
+          <button class="filter-button" data-testid="filter-done" data-filter="done" type="button">Đã xong</button>
+        </div>
+      </div>
+
+      <div id="todo-list" class="todo-list" aria-live="polite"></div>
+
+      <div class="footer-row">
+        <span data-testid="current-filter" id="current-filter">Đang xem: tất cả</span>
+        <button id="clear-done" data-testid="clear-done" type="button">Xóa việc đã xong</button>
+      </div>
+    </section>
+  </main>
+
+  <script type="module" src="./src/main.js"></script>
+</body>
+</html>
