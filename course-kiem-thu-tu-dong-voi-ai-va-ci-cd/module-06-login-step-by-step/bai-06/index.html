@@ -1,0 +1,24 @@
+<!DOCTYPE html>
+<html lang="vi">
+<head><meta charset="UTF-8" /><meta name="viewport" content="width=device-width, initial-scale=1.0" /><meta name="description" content="Viết business test cho flow login của app đơn giản." /><title>Bài 6: Viết business test | Module 6 | NenTang.vn</title><link rel="stylesheet" href="../../shared.css" /></head>
+<body>
+  <header class="topbar"><div class="container topbar-inner"><a class="brand" href="../../index.html"><span class="brand-mark">T</span>&nbsp;AI Testing &amp; CI/CD</a><nav class="nav-links" aria-label="Điều hướng khóa học"><a href="../../../index.html">Trang chủ</a><a href="../../index.html#modules">Module</a><a href="../index.html">Module 6</a></nav></div></header>
+  <section class="module-hero m6"><div class="container"><div class="breadcrumb"><a href="../../index.html">AI Testing &amp; CI/CD</a><span>/</span><a href="../index.html">Module 6</a><span>/</span><span>Bài 6</span></div><h1>Bài 6: Viết business test</h1><p>Business test giúp học viên nhìn được cả flow nghiệp vụ mà chưa cần mở trình duyệt.</p></div></section>
+  <main class="section"><div class="container lesson-layout"><aside class="side-nav"><h3>Module 6</h3><ul><li><a href="../bai-01/index.html">Bài 1: Cài môi trường</a></li><li><a href="../bai-02/index.html">Bài 2: Giao diện login</a></li><li><a href="../bai-03/index.html">Bài 3: Login store</a></li><li><a href="../bai-04/index.html">Bài 4: Test plan &amp; cases</a></li><li><a href="../bai-05/index.html">Bài 5: Unit test</a></li><li class="active"><a href="index.html">Bài 6: Business test</a></li><li><a href="../bai-07/index.html">Bài 7: E2E test</a></li><li><a href="../bai-08/index.html">Bài 8: Hoàn thiện bài</a></li></ul></aside><article class="module-article">
+    <section class="lesson"><h2>6.6.1 Flow nghiệp vụ nên có</h2><ul><li>Sai mật khẩu một lần rồi đăng nhập đúng</li><li>Đăng nhập thành công với <code>rememberMe = true</code></li><li>Logout trả app về trạng thái ban đầu</li></ul></section>
+    <section class="lesson"><h2>6.6.2 Ví dụ flow sai rồi đúng</h2><pre><code data-lang="javascript">test("đi qua một lần sai rồi đăng nhập đúng", () =&gt; {
+  const store = createLoginStore();
+
+  const firstTry = store.login("student@example.com", "sai-mat-khau");
+  const secondTry = store.login("student@example.com", "123456");
+
+  expect(firstTry.attempts).toBe(1);
+  expect(secondTry.attempts).toBe(2);
+  expect(secondTry.authenticated).toBe(true);
+});</code></pre></section>
+    <section class="lesson"><h2>6.6.3 Phân biệt với unit test</h2><p>Unit test kiểm từng hàm nhỏ. Business test kiểm một flow có ý nghĩa nghiệp vụ. Với bài login, business test nên ngắn gọn và nhấn mạnh sự chuyển trạng thái qua nhiều bước liên tiếp.</p><div class="callout"><strong>Lỗi thường gặp:</strong> viết business test quá chi tiết như unit test, làm mất ý nghĩa của một kịch bản nghiệp vụ.</div></section>
+    <nav class="pager"><a href="../bai-05/index.html" class="btn">← Bài 5</a><a href="../bai-07/index.html" class="btn primary">Bài 7: E2E test →</a></nav>
+  </article></div></main>
+  <footer class="footer"><div class="container"><p><a href="../index.html">Quay lại Module 6</a></p></div></footer><script type="module" src="../../app.js"></script>
+</body>
+</html>

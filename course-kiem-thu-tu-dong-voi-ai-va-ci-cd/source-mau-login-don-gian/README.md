@@ -20,6 +20,11 @@ npm test
 npm run test:e2e
 ```
 
+## Học step-by-step
+- Xem lộ trình tại `docs/README.md`.
+- Đi theo từng bước từ cài đặt, tạo giao diện, tách logic, viết tài liệu, rồi mới sang unit test, business test và E2E test.
+- Tài liệu mẫu hoàn chỉnh có sẵn trong `docs/test-plan.md`, `docs/test-cases.md` và `docs/student-checklist.md`.
+
 ## Các file quan trọng
 - `src/loginStore.js`: logic login để viết test.
 - `src/main.js`: gắn store vào giao diện.

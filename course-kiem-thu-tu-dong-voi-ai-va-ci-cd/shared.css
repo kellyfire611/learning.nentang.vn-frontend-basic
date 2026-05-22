@@ -345,6 +345,8 @@ thead th {
 .module-hero.m4 { background: #d97706; }
 .module-link.m5 header,
 .module-hero.m5 { background: #7c3aed; }
+.module-link.m6 header,
+.module-hero.m6 { background: #0f766e; }
 
 .module-link h3 {
   margin: 0;

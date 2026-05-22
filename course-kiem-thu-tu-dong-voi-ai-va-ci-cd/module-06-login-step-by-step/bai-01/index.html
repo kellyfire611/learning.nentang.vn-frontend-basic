@@ -1,0 +1,38 @@
+<!DOCTYPE html>
+<html lang="vi">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <meta name="description" content="Cài môi trường để làm app login có test tự động: VS Code, Node.js, Git và các package cần thiết." />
+  <meta name="keywords" content="nodejs, vscode, git, vitest, playwright, cài môi trường, NenTang.vn" />
+  <title>Bài 1: Cài môi trường và công cụ | Module 6 | NenTang.vn</title>
+  <link rel="stylesheet" href="../../shared.css" />
+</head>
+<body>
+  <header class="topbar"><div class="container topbar-inner"><a class="brand" href="../../index.html"><span class="brand-mark">T</span>&nbsp;AI Testing &amp; CI/CD</a><nav class="nav-links" aria-label="Điều hướng khóa học"><a href="../../../index.html">Trang chủ</a><a href="../../index.html#modules">Module</a><a href="../index.html">Module 6</a></nav></div></header>
+  <section class="module-hero m6"><div class="container"><div class="breadcrumb"><a href="../../index.html">AI Testing &amp; CI/CD</a><span>/</span><a href="../index.html">Module 6</a><span>/</span><span>Bài 1</span></div><h1>Bài 1: Cài môi trường và công cụ</h1><p>Chuẩn bị đầy đủ phần mềm và package để học viên có thể tự chạy app login và bộ test trên máy local.</p></div></section>
+  <main class="section"><div class="container lesson-layout"><aside class="side-nav"><h3>Module 6</h3><ul><li class="active"><a href="index.html">Bài 1: Cài môi trường</a></li><li><a href="../bai-02/index.html">Bài 2: Giao diện login</a></li><li><a href="../bai-03/index.html">Bài 3: Login store</a></li><li><a href="../bai-04/index.html">Bài 4: Test plan &amp; cases</a></li><li><a href="../bai-05/index.html">Bài 5: Unit test</a></li><li><a href="../bai-06/index.html">Bài 6: Business test</a></li><li><a href="../bai-07/index.html">Bài 7: E2E test</a></li><li><a href="../bai-08/index.html">Bài 8: Hoàn thiện bài</a></li></ul></aside><article class="module-article">
+    <section class="lesson"><h2>6.1 Phần mềm cần cài</h2><ol class="steps"><li><strong>Visual Studio Code</strong> để viết code, mở terminal và đọc test.</li><li><strong>Node.js bản LTS</strong>, tối thiểu Node.js 18 để chạy npm, Vitest và Playwright.</li><li><strong>Git</strong> để lưu lịch sử thay đổi và đẩy bài lên repository.</li><li><strong>Chrome hoặc Edge</strong> để tự thao tác thử app trước khi viết E2E test.</li></ol><div class="callout"><strong>Mục tiêu của bước này:</strong> học viên hiểu mỗi công cụ dùng để làm gì, không chỉ cài theo hướng dẫn một cách máy móc.</div></section>
+    <section class="lesson"><h2>6.2 Package cần dùng trong project</h2><pre><code data-lang="json">{
+  "scripts": {
+    "serve": "http-server . -p 3108 -c-1 --silent",
+    "test": "vitest run --coverage",
+    "test:e2e": "playwright test"
+  },
+  "devDependencies": {
+    "@playwright/test": "^1.54.1",
+    "@vitest/coverage-v8": "^3.2.4",
+    "http-server": "^14.1.1",
+    "vitest": "^3.2.4"
+  }
+}</code></pre><ul><li><code>vitest</code> để viết unit test và business test.</li><li><code>@vitest/coverage-v8</code> để xem coverage.</li><li><code>@playwright/test</code> để chạy E2E test.</li><li><code>http-server</code> để serve app HTML/CSS/JS local.</li></ul></section>
+    <section class="lesson"><h2>6.3 Lệnh kiểm tra môi trường</h2><pre><code data-lang="bash">node -v
+npm -v
+git --version
+npm install</code></pre><p>Nếu 4 lệnh trên chạy ổn, học viên đã sẵn sàng bước sang phần dựng app. Sau đó có thể chạy <code>npm run serve</code> để xem giao diện local.</p></section>
+    <nav class="pager"><a href="../../module-05-nang-cao-va-bai-tap/index.html" class="btn">← Module 5</a><a href="../bai-02/index.html" class="btn primary">Bài 2: Tạo giao diện login →</a></nav>
+  </article></div></main>
+  <footer class="footer"><div class="container"><p><a href="../index.html">Quay lại Module 6</a></p></div></footer>
+  <script type="module" src="../../app.js"></script>
+</body>
+</html>
