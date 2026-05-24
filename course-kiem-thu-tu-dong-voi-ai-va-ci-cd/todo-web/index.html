@@ -1,0 +1,50 @@
+<!DOCTYPE html>
+<html lang="vi">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Đăng nhập - TODO Web</title>
+    <link type="text/css" href="styles/main.css" rel="stylesheet" />
+    <script type="module" src="src/loginStore.js"></script>
+</head>
+<body>
+    <h1>Đăng nhập</h1>
+    <!-- Thẻ FORM | FORM tag | FORM element -->
+    <form id="form-login" method="post" action="xulydangnhap.php">
+        <label>Email</label>
+        <input type="email" id="email-input" />
+        <br />
+
+        <label>Mật khẩu</label>
+        <input type="password" id="password-input" />
+        <br />
+
+        <button type="submit" id="login-button" data-testid="login-submit">Đăng nhập</button>
+
+        <div id="login-message" class="login-message" data-testid="login-message"></div>
+    </form>
+    <script>
+        // Tìm phần tử có id "form-login"
+        const loginForm = document.getElementById("form-login");
+        // Đăng ký sự kiện "submit"
+        loginForm.addEventListener("submit", function(event) {
+            event.preventDefault(); // chặn form gởi dữ liệu đi
+            // Thu thập thông tin trên các ô nhập liệu
+            var email = document.getElementById("email-input").value;
+            var password = document.getElementById("password-input").value;
+            // Gọi hàm xử lý
+            var thongbao = login(email, password);
+            const loginMessage = document.getElementById("login-message");
+            loginMessage.textContent = thongbao;
+
+            // Gắn class trạng thái để đổi màu theo kết quả đăng nhập.
+            loginMessage.className = "login-message";
+            if (thongbao === "Đăng nhập thành công!") {
+                loginMessage.classList.add("is-success");
+            } else {
+                loginMessage.classList.add("is-error");
+            }
+        });
+    </script>
+</body>
+</html>

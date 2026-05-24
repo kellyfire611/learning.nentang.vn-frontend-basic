@@ -1,0 +1,31 @@
+h1 {
+    color: red;
+}
+
+.login-message {
+    margin-top: 12px;
+    padding: 10px 12px;
+    border-radius: 8px;
+    font-weight: 600;
+    display: inline-block;
+    min-width: 260px;
+    border: 1px solid transparent;
+}
+
+.login-message.is-success {
+    color: #14532d;
+    background: #dcfce7;
+    border-color: #86efac;
+}
+
+.login-message.is-error {
+    color: #991b1b;
+    background: #fee2e2;
+    border-color: #fca5a5;
+}
+
+.form-dep {
+    background: purple;
+    font-size: 30px;
+    color: red;
+}
