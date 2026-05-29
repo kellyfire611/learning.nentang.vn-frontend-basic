@@ -38,6 +38,76 @@ describe("Unit test - Bài tập tính tiền giảm giá", () =&gt; {
   });
 });</code></pre><p><strong>Giải thích:</strong> Unit test tập trung từng hàm nhỏ, assert rõ input-output, không chạy trình duyệt.</p></section>
 <section class="lesson"><h2>7.5.3 Lệnh chạy</h2><pre><code data-lang="bash">npm run test:unit</code></pre></section>
+<section class="lesson"><h2>7.5.4 Code đầy đủ file <code>tests/unit/discount.unit.test.js</code></h2><pre><code data-lang="javascript">import { describe, expect, it } from "vitest";
+import {
+  validatePrice,
+  validateDiscountPercent,
+  calculateFinalPrice,
+  formatCurrencyVnd,
+  calculatePayment,
+} from "../../src/discountCalculatorStore.js";
+
+describe("Unit test - Bài tập tính tiền giảm giá", () =&gt; {
+  it("Mã TC-UNIT-01: validatePrice trả lỗi khi bỏ trống giá gốc", () =&gt; {
+    expect(validatePrice("")).toBe("Vui lòng nhập giá gốc!");
+  });
+
+  it("Mã TC-UNIT-02: validatePrice trả lỗi khi giá gốc bằng 0", () =&gt; {
+    expect(validatePrice("0")).toBe("Giá gốc phải là số lớn hơn 0!");
+  });
+
+  it("Mã TC-UNIT-03: validatePrice trả lỗi khi giá gốc âm", () =&gt; {
+    expect(validatePrice("-1000")).toBe("Giá gốc phải là số lớn hơn 0!");
+  });
+
+  it("Mã TC-UNIT-04: validatePrice trả lỗi khi giá gốc không phải số", () =&gt; {
+    expect(validatePrice("abc")).toBe("Giá gốc phải là số lớn hơn 0!");
+  });
+
+  it("Mã TC-UNIT-05: validatePrice hợp lệ với giá gốc dương", () =&gt; {
+    expect(validatePrice("250000")).toBe("");
+  });
+
+  it("Mã TC-UNIT-06: validateDiscountPercent trả lỗi khi bỏ trống", () =&gt; {
+    expect(validateDiscountPercent("")).toBe("Vui lòng nhập phần trăm giảm giá!");
+  });
+
+  it("Mã TC-UNIT-07: validateDiscountPercent trả lỗi khi nhỏ hơn 0", () =&gt; {
+    expect(validateDiscountPercent("-1")).toBe("Phần trăm giảm giá phải từ 0 đến 100!");
+  });
+
+  it("Mã TC-UNIT-08: validateDiscountPercent trả lỗi khi lớn hơn 100", () =&gt; {
+    expect(validateDiscountPercent("101")).toBe("Phần trăm giảm giá phải từ 0 đến 100!");
+  });
+
+  it("Mã TC-UNIT-09: validateDiscountPercent trả lỗi khi không phải số", () =&gt; {
+    expect(validateDiscountPercent("abc")).toBe("Phần trăm giảm giá phải từ 0 đến 100!");
+  });
+
+  it("Mã TC-UNIT-10: validateDiscountPercent hợp lệ tại biên 0 và 100", () =&gt; {
+    expect(validateDiscountPercent("0")).toBe("");
+    expect(validateDiscountPercent("100")).toBe("");
+  });
+
+  it("Mã TC-UNIT-11: calculateFinalPrice tính đúng giá sau giảm", () =&gt; {
+    expect(calculateFinalPrice(200000, 10)).toBe(180000);
+  });
+
+  it("Mã TC-UNIT-12: calculateFinalPrice đúng tại biên 0% và 100%", () =&gt; {
+    expect(calculateFinalPrice(200000, 0)).toBe(200000);
+    expect(calculateFinalPrice(200000, 100)).toBe(0);
+  });
+
+  it("Mã TC-UNIT-13: formatCurrencyVnd làm tròn trước khi gắn đơn vị", () =&gt; {
+    expect(formatCurrencyVnd(180000.6)).toBe("180001 VNĐ");
+  });
+
+  it("Mã TC-UNIT-14: calculatePayment trả đúng chuỗi kết quả với dữ liệu hợp lệ", () =&gt; {
+    expect(calculatePayment("200000", "10")).toBe("Số tiền cần trả: 180000 VNĐ");
+  });
+});</code></pre></section>
+<section class="lesson"><h2>7.5.5 Giải thích cấu trúc test</h2><ul><li><code>describe</code> gom nhóm các test cùng chủ đề.</li><li><code>it</code> là một test case cụ thể, tên phải chứa mã TC.</li><li><code>expect(...).toBe(...)</code> so sánh kết quả thực tế với kết quả mong đợi.</li><li>Unit test không cần mở trình duyệt, nên chạy nhanh và dễ debug.</li></ul></section>
+<section class="lesson"><h2>7.5.6 Khi unit test fail thì làm gì?</h2><ol class="steps"><li>Đọc tên test fail để biết mã TC nào sai.</li><li>So sánh input trong test với rule nghiệp vụ.</li><li>Kiểm tra text expected có đúng dấu tiếng Việt và khoảng trắng không.</li><li>Sửa logic trong <code>discountCalculatorStore.js</code>, không sửa expected nếu expected đang đúng theo tài liệu.</li></ol></section>
   <nav class="pager"><a href="../bai-04/index.html" class="btn">← Bài trước</a><a href="../bai-06/index.html" class="btn primary">Bài tiếp theo →</a></nav>
   </article></div></main>
   <footer class="footer"><div class="container"><p><a href="../index.html">Quay lại Module 7</a></p></div></footer><script type="module" src="../../app.js"></script>

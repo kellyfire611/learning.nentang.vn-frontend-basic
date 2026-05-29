@@ -47,6 +47,54 @@
     messageElement.classList.add("is-error");
   }
 });</code></pre><p><strong>Giải thích:</strong> đoạn này biến kết quả business thành trạng thái UI để user thấy được và E2E test kiểm tra được.</p></section>
+<section class="lesson"><h2>7.2.4 Code đầy đủ file <code>index.html</code></h2><p>Học viên có thể dùng đoạn dưới để đối chiếu. Khi mới học, nên gõ lại từng phần thay vì dán toàn bộ để hiểu mỗi dòng làm gì.</p><pre><code data-lang="html">&lt;!DOCTYPE html&gt;
+&lt;html lang="vi"&gt;
+&lt;head&gt;
+  &lt;meta charset="UTF-8" /&gt;
+  &lt;meta name="viewport" content="width=device-width, initial-scale=1.0" /&gt;
+  &lt;title&gt;Bài thực hành tính tiền sau giảm giá&lt;/title&gt;
+  &lt;link type="text/css" href="styles/main.css" rel="stylesheet" /&gt;
+  &lt;script type="module" src="src/discountCalculatorStore.js"&gt;&lt;/script&gt;
+&lt;/head&gt;
+&lt;body&gt;
+  &lt;h1&gt;Tính tiền sau giảm giá&lt;/h1&gt;
+
+  &lt;form id="discount-form" method="post" action="#" novalidate&gt;
+    &lt;label&gt;Giá gốc (VNĐ)&lt;/label&gt;
+    &lt;input type="number" id="price-input" min="0" step="1000" /&gt;
+
+    &lt;label&gt;Giảm giá (%)&lt;/label&gt;
+    &lt;input type="number" id="discount-input" min="0" max="100" step="1" /&gt;
+
+    &lt;button type="submit" id="calculate-button"&gt;Tính tiền&lt;/button&gt;
+    &lt;div id="calculation-message" class="calculation-message"&gt;&lt;/div&gt;
+  &lt;/form&gt;
+
+  &lt;script&gt;
+    const discountForm = document.getElementById("discount-form");
+
+    discountForm.addEventListener("submit", function (event) {
+      event.preventDefault();
+
+      const price = document.getElementById("price-input").value;
+      const discountPercent = document.getElementById("discount-input").value;
+      const message = calculatePayment(price, discountPercent);
+
+      const messageElement = document.getElementById("calculation-message");
+      messageElement.textContent = message;
+
+      messageElement.className = "calculation-message";
+      if (message.startsWith("Số tiền cần trả:")) {
+        messageElement.classList.add("is-success");
+      } else {
+        messageElement.classList.add("is-error");
+      }
+    });
+  &lt;/script&gt;
+&lt;/body&gt;
+&lt;/html&gt;</code></pre></section>
+<section class="lesson"><h2>7.2.5 Giải thích cho học viên mới</h2><ul><li><code>type="module"</code> giúp trình duyệt đọc file JavaScript có <code>export</code>.</li><li><code>novalidate</code> tắt validate mặc định của trình duyệt để mình tự kiểm tra lỗi bằng JavaScript.</li><li><code>id</code> phải viết đúng vì test E2E sẽ tìm đúng các id này.</li><li><code>event.preventDefault()</code> giúp form không reload trang sau khi bấm nút.</li><li><code>is-success</code> và <code>is-error</code> là dấu hiệu để kiểm tra trạng thái UI.</li></ul></section>
+<section class="lesson"><h2>7.2.6 Lỗi thường gặp</h2><ul><li>Sai id, ví dụ viết <code>price</code> thay vì <code>price-input</code>, làm test không tìm thấy ô nhập.</li><li>Quên import script <code>discountCalculatorStore.js</code>, làm trình duyệt báo <code>calculatePayment is not defined</code>.</li><li>Quên <code>preventDefault()</code>, làm trang reload và message biến mất.</li></ul></section>
   <nav class="pager"><a href="../bai-01/index.html" class="btn">← Bài trước</a><a href="../bai-03/index.html" class="btn primary">Bài tiếp theo →</a></nav>
   </article></div></main>
   <footer class="footer"><div class="container"><p><a href="../index.html">Quay lại Module 7</a></p></div></footer><script type="module" src="../../app.js"></script>

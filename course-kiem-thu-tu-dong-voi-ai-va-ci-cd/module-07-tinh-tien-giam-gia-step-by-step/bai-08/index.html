@@ -24,6 +24,336 @@ npm run test:business
 npm run test:e2e</code></pre></section>
 <section class="lesson"><h2>7.8.2 Checklist giao bài</h2><ul><li>Đã có tài liệu <code>docs/test-plan.md</code> và cột phân loại case.</li><li>Tên test có tiền tố <code>Mã TC-</code>.</li><li>Có đủ test mức Unit/Business/E2E.</li><li>Không còn lỗi console khi submit form trên trình duyệt.</li></ul></section>
 <section class="lesson"><h2>7.8.3 Tự đánh giá cho học viên mới</h2><ol class="steps"><li>Nếu chỉ làm được code mà không giải thích được từng hàm thì chưa đạt.</li><li>Nếu chỉ pass Happy path mà thiếu boundary/negative thì chưa đạt.</li><li>Nếu không map được test code về tài liệu mã TC thì chưa đạt.</li></ol></section>
+<section class="lesson"><h2>7.8.4 Full code đối chiếu - <code>package.json</code></h2><pre><code data-lang="json">{
+  "name": "todo-web",
+  "version": "1.0.0",
+  "type": "module",
+  "scripts": {
+    "test": "npm run test:all",
+    "test:unit": "vitest run tests/unit",
+    "test:business": "vitest run tests/business",
+    "test:coverage": "vitest run --coverage",
+    "test:e2e": "playwright test",
+    "test:e2e:ui": "playwright test --ui",
+    "test:e2e:report": "playwright show-report",
+    "test:all": "npm run test:unit &amp;&amp; npm run test:business &amp;&amp; npm run test:e2e"
+  },
+  "devDependencies": {
+    "@playwright/test": "^1.60.0",
+    "@vitest/coverage-v8": "^4.1.7",
+    "http-server": "^14.1.1",
+    "vitest": "^4.1.7"
+  }
+}</code></pre><p><strong>Giải thích:</strong> file này khai báo project dùng ES Module và các lệnh chạy test.</p></section>
+<section class="lesson"><h2>7.8.5 Full code đối chiếu - <code>src/discountCalculatorStore.js</code></h2><pre><code data-lang="javascript">export function validatePrice(priceInput) {
+  if (priceInput === "" || priceInput === null || priceInput === undefined) {
+    return "Vui lòng nhập giá gốc!";
+  }
+
+  const parsedPrice = Number(priceInput);
+  if (!Number.isFinite(parsedPrice) || parsedPrice &lt;= 0) {
+    return "Giá gốc phải là số lớn hơn 0!";
+  }
+
+  return "";
+}
+
+export function validateDiscountPercent(discountPercentInput) {
+  if (discountPercentInput === "" || discountPercentInput === null || discountPercentInput === undefined) {
+    return "Vui lòng nhập phần trăm giảm giá!";
+  }
+
+  const parsedDiscountPercent = Number(discountPercentInput);
+  if (!Number.isFinite(parsedDiscountPercent) || parsedDiscountPercent &lt; 0 || parsedDiscountPercent &gt; 100) {
+    return "Phần trăm giảm giá phải từ 0 đến 100!";
+  }
+
+  return "";
+}
+
+export function calculateFinalPrice(price, discountPercent) {
+  const discountAmount = (price * discountPercent) / 100;
+  return price - discountAmount;
+}
+
+export function formatCurrencyVnd(amount) {
+  return `${Math.round(amount)} VNĐ`;
+}
+
+export function calculatePayment(priceInput, discountPercentInput) {
+  const priceError = validatePrice(priceInput);
+  if (priceError) return priceError;
+
+  const discountError = validateDiscountPercent(discountPercentInput);
+  if (discountError) return discountError;
+
+  const finalPrice = calculateFinalPrice(Number(priceInput), Number(discountPercentInput));
+  return `Số tiền cần trả: ${formatCurrencyVnd(finalPrice)}`;
+}
+
+if (typeof window !== "undefined") {
+  window.calculatePayment = calculatePayment;
+}</code></pre></section>
+<section class="lesson"><h2>7.8.6 Full code đối chiếu - <code>index.html</code></h2><pre><code data-lang="html">&lt;!DOCTYPE html&gt;
+&lt;html lang="vi"&gt;
+&lt;head&gt;
+  &lt;meta charset="UTF-8" /&gt;
+  &lt;meta name="viewport" content="width=device-width, initial-scale=1.0" /&gt;
+  &lt;title&gt;Bài thực hành tính tiền sau giảm giá&lt;/title&gt;
+  &lt;link type="text/css" href="styles/main.css" rel="stylesheet" /&gt;
+  &lt;script type="module" src="src/discountCalculatorStore.js"&gt;&lt;/script&gt;
+&lt;/head&gt;
+&lt;body&gt;
+  &lt;h1&gt;Tính tiền sau giảm giá&lt;/h1&gt;
+
+  &lt;form id="discount-form" method="post" action="#" novalidate&gt;
+    &lt;label&gt;Giá gốc (VNĐ)&lt;/label&gt;
+    &lt;input type="number" id="price-input" min="0" step="1000" /&gt;
+
+    &lt;label&gt;Giảm giá (%)&lt;/label&gt;
+    &lt;input type="number" id="discount-input" min="0" max="100" step="1" /&gt;
+
+    &lt;button type="submit" id="calculate-button"&gt;Tính tiền&lt;/button&gt;
+    &lt;div id="calculation-message" class="calculation-message"&gt;&lt;/div&gt;
+  &lt;/form&gt;
+
+  &lt;script&gt;
+    const discountForm = document.getElementById("discount-form");
+
+    discountForm.addEventListener("submit", function (event) {
+      event.preventDefault();
+
+      const price = document.getElementById("price-input").value;
+      const discountPercent = document.getElementById("discount-input").value;
+      const message = calculatePayment(price, discountPercent);
+
+      const messageElement = document.getElementById("calculation-message");
+      messageElement.textContent = message;
+
+      messageElement.className = "calculation-message";
+      if (message.startsWith("Số tiền cần trả:")) {
+        messageElement.classList.add("is-success");
+      } else {
+        messageElement.classList.add("is-error");
+      }
+    });
+  &lt;/script&gt;
+&lt;/body&gt;
+&lt;/html&gt;</code></pre></section>
+<section class="lesson"><h2>7.8.7 Full code đối chiếu - <code>styles/main.css</code></h2><pre><code data-lang="css">.calculation-message {
+  margin-top: 12px;
+  padding: 10px 12px;
+  border-radius: 8px;
+  font-weight: 600;
+  display: inline-block;
+  min-width: 260px;
+  border: 1px solid transparent;
+}
+
+.calculation-message.is-success {
+  color: #14532d;
+  background: #dcfce7;
+  border-color: #86efac;
+}
+
+.calculation-message.is-error {
+  color: #991b1b;
+  background: #fee2e2;
+  border-color: #fca5a5;
+}</code></pre></section>
+<section class="lesson"><h2>7.8.8 Full code đối chiếu - <code>tests/unit/discount.unit.test.js</code></h2><pre><code data-lang="javascript">import { describe, expect, it } from "vitest";
+import {
+  validatePrice,
+  validateDiscountPercent,
+  calculateFinalPrice,
+  formatCurrencyVnd,
+  calculatePayment,
+} from "../../src/discountCalculatorStore.js";
+
+describe("Unit test - Bài tập tính tiền giảm giá", () =&gt; {
+  it("Mã TC-UNIT-01: validatePrice trả lỗi khi bỏ trống giá gốc", () =&gt; {
+    expect(validatePrice("")).toBe("Vui lòng nhập giá gốc!");
+  });
+
+  it("Mã TC-UNIT-02: validatePrice trả lỗi khi giá gốc bằng 0", () =&gt; {
+    expect(validatePrice("0")).toBe("Giá gốc phải là số lớn hơn 0!");
+  });
+
+  it("Mã TC-UNIT-03: validatePrice trả lỗi khi giá gốc âm", () =&gt; {
+    expect(validatePrice("-1000")).toBe("Giá gốc phải là số lớn hơn 0!");
+  });
+
+  it("Mã TC-UNIT-04: validatePrice trả lỗi khi giá gốc không phải số", () =&gt; {
+    expect(validatePrice("abc")).toBe("Giá gốc phải là số lớn hơn 0!");
+  });
+
+  it("Mã TC-UNIT-05: validatePrice hợp lệ với giá gốc dương", () =&gt; {
+    expect(validatePrice("250000")).toBe("");
+  });
+
+  it("Mã TC-UNIT-06: validateDiscountPercent trả lỗi khi bỏ trống", () =&gt; {
+    expect(validateDiscountPercent("")).toBe("Vui lòng nhập phần trăm giảm giá!");
+  });
+
+  it("Mã TC-UNIT-07: validateDiscountPercent trả lỗi khi nhỏ hơn 0", () =&gt; {
+    expect(validateDiscountPercent("-1")).toBe("Phần trăm giảm giá phải từ 0 đến 100!");
+  });
+
+  it("Mã TC-UNIT-08: validateDiscountPercent trả lỗi khi lớn hơn 100", () =&gt; {
+    expect(validateDiscountPercent("101")).toBe("Phần trăm giảm giá phải từ 0 đến 100!");
+  });
+
+  it("Mã TC-UNIT-09: validateDiscountPercent trả lỗi khi không phải số", () =&gt; {
+    expect(validateDiscountPercent("abc")).toBe("Phần trăm giảm giá phải từ 0 đến 100!");
+  });
+
+  it("Mã TC-UNIT-10: validateDiscountPercent hợp lệ tại biên 0 và 100", () =&gt; {
+    expect(validateDiscountPercent("0")).toBe("");
+    expect(validateDiscountPercent("100")).toBe("");
+  });
+
+  it("Mã TC-UNIT-11: calculateFinalPrice tính đúng giá sau giảm", () =&gt; {
+    expect(calculateFinalPrice(200000, 10)).toBe(180000);
+  });
+
+  it("Mã TC-UNIT-12: calculateFinalPrice đúng tại biên 0% và 100%", () =&gt; {
+    expect(calculateFinalPrice(200000, 0)).toBe(200000);
+    expect(calculateFinalPrice(200000, 100)).toBe(0);
+  });
+
+  it("Mã TC-UNIT-13: formatCurrencyVnd làm tròn trước khi gắn đơn vị", () =&gt; {
+    expect(formatCurrencyVnd(180000.6)).toBe("180001 VNĐ");
+  });
+
+  it("Mã TC-UNIT-14: calculatePayment trả đúng chuỗi kết quả với dữ liệu hợp lệ", () =&gt; {
+    expect(calculatePayment("200000", "10")).toBe("Số tiền cần trả: 180000 VNĐ");
+  });
+});</code></pre></section>
+<section class="lesson"><h2>7.8.9 Full code đối chiếu - <code>tests/business/discount.business.test.js</code></h2><pre><code data-lang="javascript">import { describe, expect, it } from "vitest";
+import { calculatePayment } from "../../src/discountCalculatorStore.js";
+
+describe("Business test - Kịch bản nghiệp vụ tính tiền giảm giá", () =&gt; {
+  it("Mã TC-BIZ-01: Cho trước bỏ trống giá gốc, Khi tính tiền, Thì yêu cầu nhập giá gốc", () =&gt; {
+    expect(calculatePayment("", "10")).toBe("Vui lòng nhập giá gốc!");
+  });
+
+  it("Mã TC-BIZ-02: Cho trước giá gốc âm, Khi tính tiền, Thì báo giá gốc không hợp lệ", () =&gt; {
+    expect(calculatePayment("-50000", "10")).toBe("Giá gốc phải là số lớn hơn 0!");
+  });
+
+  it("Mã TC-BIZ-03: Cho trước bỏ trống phần trăm giảm, Khi tính tiền, Thì yêu cầu nhập phần trăm giảm", () =&gt; {
+    expect(calculatePayment("200000", "")).toBe("Vui lòng nhập phần trăm giảm giá!");
+  });
+
+  it("Mã TC-BIZ-04: Cho trước phần trăm giảm vượt quá 100, Khi tính tiền, Thì báo lỗi nghiệp vụ", () =&gt; {
+    expect(calculatePayment("200000", "101")).toBe("Phần trăm giảm giá phải từ 0 đến 100!");
+  });
+
+  it("Mã TC-BIZ-05: Cho trước giảm giá 0 phần trăm, Khi tính tiền, Thì số tiền cần trả bằng giá gốc", () =&gt; {
+    expect(calculatePayment("200000", "0")).toBe("Số tiền cần trả: 200000 VNĐ");
+  });
+
+  it("Mã TC-BIZ-06: Cho trước giảm giá 100 phần trăm, Khi tính tiền, Thì số tiền cần trả bằng 0", () =&gt; {
+    expect(calculatePayment("200000", "100")).toBe("Số tiền cần trả: 0 VNĐ");
+  });
+
+  it("Mã TC-BIZ-07: Cho trước dữ liệu hợp lệ thông thường, Khi tính tiền, Thì trả đúng số tiền cuối", () =&gt; {
+    expect(calculatePayment("200000", "10")).toBe("Số tiền cần trả: 180000 VNĐ");
+  });
+
+  it("Mã TC-BIZ-08: Cho trước dữ liệu thập phân, Khi tính tiền, Thì kết quả được làm tròn đúng", () =&gt; {
+    expect(calculatePayment("99999.9", "10")).toBe("Số tiền cần trả: 90000 VNĐ");
+  });
+});</code></pre></section>
+<section class="lesson"><h2>7.8.10 Full code đối chiếu - <code>tests/e2e/discount.e2e.spec.js</code></h2><pre><code data-lang="javascript">import { test, expect } from "@playwright/test";
+
+test.describe("E2E test - Bài tập tính tiền giảm giá", () =&gt; {
+  test.beforeEach(async ({ page }) =&gt; {
+    await page.goto("/");
+  });
+
+  test("Mã TC-E2E-01: UI hiển thị lỗi khi bỏ trống giá gốc", async ({ page }) =&gt; {
+    await page.fill("#discount-input", "10");
+    await page.click("#calculate-button");
+
+    const message = page.locator("#calculation-message");
+    await expect(message).toHaveText("Vui lòng nhập giá gốc!");
+    await expect(message).toHaveClass(/is-error/);
+  });
+
+  test("Mã TC-E2E-02: UI hiển thị lỗi khi bỏ trống phần trăm giảm", async ({ page }) =&gt; {
+    await page.fill("#price-input", "200000");
+    await page.click("#calculate-button");
+
+    const message = page.locator("#calculation-message");
+    await expect(message).toHaveText("Vui lòng nhập phần trăm giảm giá!");
+    await expect(message).toHaveClass(/is-error/);
+  });
+
+  test("Mã TC-E2E-03: UI hiển thị lỗi khi nhập giảm giá vượt quá 100", async ({ page }) =&gt; {
+    await page.fill("#price-input", "200000");
+    await page.fill("#discount-input", "101");
+    await page.click("#calculate-button");
+
+    const message = page.locator("#calculation-message");
+    await expect(message).toHaveText("Phần trăm giảm giá phải từ 0 đến 100!");
+    await expect(message).toHaveClass(/is-error/);
+  });
+
+  test("Mã TC-E2E-04: UI tính đúng tiền khi dữ liệu hợp lệ", async ({ page }) =&gt; {
+    await page.fill("#price-input", "200000");
+    await page.fill("#discount-input", "10");
+    await page.click("#calculate-button");
+
+    const message = page.locator("#calculation-message");
+    await expect(message).toHaveText("Số tiền cần trả: 180000 VNĐ");
+    await expect(message).toHaveClass(/is-success/);
+  });
+
+  test("Mã TC-E2E-05: UI xử lý đúng biên giảm giá 0 phần trăm", async ({ page }) =&gt; {
+    await page.fill("#price-input", "200000");
+    await page.fill("#discount-input", "0");
+    await page.click("#calculate-button");
+
+    const message = page.locator("#calculation-message");
+    await expect(message).toHaveText("Số tiền cần trả: 200000 VNĐ");
+    await expect(message).toHaveClass(/is-success/);
+  });
+
+  test("Mã TC-E2E-06: UI xử lý đúng biên giảm giá 100 phần trăm", async ({ page }) =&gt; {
+    await page.fill("#price-input", "200000");
+    await page.fill("#discount-input", "100");
+    await page.click("#calculate-button");
+
+    const message = page.locator("#calculation-message");
+    await expect(message).toHaveText("Số tiền cần trả: 0 VNĐ");
+    await expect(message).toHaveClass(/is-success/);
+  });
+});</code></pre></section>
+<section class="lesson"><h2>7.8.11 Full code đối chiếu - <code>playwright.config.js</code></h2><pre><code data-lang="javascript">import { defineConfig } from "@playwright/test";
+
+export default defineConfig({
+  testDir: "./tests/e2e",
+  timeout: 30000,
+  use: {
+    baseURL: "http://127.0.0.1:4173",
+    headless: false,
+    screenshot: "on",
+    video: "on",
+    trace: "on",
+    launchOptions: {
+      slowMo: 800,
+    },
+  },
+  reporter: [["list"], ["html", { open: "never" }]],
+  webServer: {
+    command: "npx http-server . -p 4173 -c-1",
+    port: 4173,
+    reuseExistingServer: true,
+    timeout: 120000,
+  },
+});</code></pre><p><strong>Giải thích:</strong> Playwright cần web server để mở trang HTML như người dùng thật.</p></section>
+<section class="lesson"><h2>7.8.12 Cách đối chiếu bài làm</h2><ol class="steps"><li>So từng file của mình với code trong các bài 2 đến 8.</li><li>Nếu test fail, đọc mã TC trong tên test để quay lại dòng tương ứng trong <code>test-plan.md</code>.</li><li>Chạy lại theo thứ tự: unit trước, business sau, E2E cuối cùng.</li><li>Khi cả 3 nhóm pass, mở app bằng tay và thử 3 dữ liệu: rỗng, 10%, 100%.</li></ol></section>
   <nav class="pager"><a href="../bai-07/index.html" class="btn">← Bài trước</a><a href="../index.html" class="btn primary">Bài tiếp theo →</a></nav>
   </article></div></main>
   <footer class="footer"><div class="container"><p><a href="../index.html">Quay lại Module 7</a></p></div></footer><script type="module" src="../../app.js"></script>

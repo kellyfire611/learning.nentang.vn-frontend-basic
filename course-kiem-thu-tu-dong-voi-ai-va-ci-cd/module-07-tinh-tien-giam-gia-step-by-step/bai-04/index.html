@@ -24,6 +24,29 @@
 |---|---|---|---|---|---|
 | Mã TC-UNIT-10 | Unit | Boundary case | Chấp nhận % giảm tại biên | "0", "100" | Không lỗi |</code></pre><p><strong>Giải thích:</strong> cột phân loại giúp học viên tự kiểm tra độ phủ test, tránh chỉ viết Happy path.</p></section>
 <section class="lesson"><h2>7.4.3 Quy tắc mapping</h2><p>Mỗi test code đặt tên chứa đúng mã TC. Ví dụ: <code>it("Mã TC-UNIT-10: ...")</code>.</p></section>
+<section class="lesson"><h2>7.4.4 Mẫu nội dung <code>docs/test-plan.md</code></h2><pre><code data-lang="markdown"># Kế hoạch kiểm thử - Bài tập "Tính tiền giảm giá"
+
+## 1. Mục tiêu
+- Kiểm tra validate giá gốc.
+- Kiểm tra validate phần trăm giảm giá.
+- Kiểm tra tính đúng số tiền cần trả.
+- Kiểm tra UI hiển thị đúng thông báo.
+
+## 2. Phân loại test case
+- Happy path: dữ liệu đúng, hệ thống tính tiền thành công.
+- Negative case: dữ liệu thiếu hoặc sai kiểu.
+- Boundary case: dữ liệu ở ranh giới như 0%, 100%, 101%.
+
+## 3. Danh sách test case
+
+| Mã TC | Cấp độ | Phân loại | Mục tiêu | Dữ liệu vào | Kết quả mong đợi |
+|---|---|---|---|---|---|
+| Mã TC-UNIT-01 | Unit | Negative case | Bỏ trống giá gốc | price = "" | Vui lòng nhập giá gốc! |
+| Mã TC-UNIT-10 | Unit | Boundary case | Giảm giá ở biên | discount = "0", "100" | Không có lỗi |
+| Mã TC-BIZ-07 | Business | Happy path | Tính tiền hợp lệ | "200000", "10" | Số tiền cần trả: 180000 VNĐ |
+| Mã TC-E2E-04 | E2E | Happy path | UI tính đúng | Nhập form hợp lệ | Message success |</code></pre></section>
+<section class="lesson"><h2>7.4.5 Cách học viên tự nghĩ thêm case</h2><ol class="steps"><li>Nhìn từng ô input và hỏi: bỏ trống thì sao?</li><li>Nhìn từng rule và hỏi: nhỏ hơn rule thì sao, lớn hơn rule thì sao?</li><li>Nhìn kết quả và hỏi: kết quả có cần làm tròn không?</li><li>Nhìn UI và hỏi: khi lỗi thì class có đổi không?</li></ol></section>
+<section class="lesson"><h2>7.4.6 Checklist tài liệu</h2><ul><li>Mỗi dòng có đúng một mã TC.</li><li>Có đủ 3 loại: Happy path, Negative case, Boundary case.</li><li>Dữ liệu vào viết cụ thể, không ghi chung chung.</li><li>Kết quả mong đợi phải đủ text để test code so sánh được.</li></ul></section>
   <nav class="pager"><a href="../bai-03/index.html" class="btn">← Bài trước</a><a href="../bai-05/index.html" class="btn primary">Bài tiếp theo →</a></nav>
   </article></div></main>
   <footer class="footer"><div class="container"><p><a href="../index.html">Quay lại Module 7</a></p></div></footer><script type="module" src="../../app.js"></script>

@@ -37,6 +37,73 @@ test.describe("E2E test - Bài tập tính tiền giảm giá", () =&gt; {
   });
 });</code></pre><p><strong>Giải thích:</strong> E2E kiểm tra cả chuỗi: input → submit → render message + css class.</p></section>
 <section class="lesson"><h2>7.7.3 Lệnh chạy</h2><pre><code data-lang="bash">npm run test:e2e</code></pre></section>
+<section class="lesson"><h2>7.7.4 Code đầy đủ file <code>tests/e2e/discount.e2e.spec.js</code></h2><pre><code data-lang="javascript">import { test, expect } from "@playwright/test";
+
+test.describe("E2E test - Bài tập tính tiền giảm giá", () =&gt; {
+  test.beforeEach(async ({ page }) =&gt; {
+    await page.goto("/");
+  });
+
+  test("Mã TC-E2E-01: UI hiển thị lỗi khi bỏ trống giá gốc", async ({ page }) =&gt; {
+    await page.fill("#discount-input", "10");
+    await page.click("#calculate-button");
+
+    const message = page.locator("#calculation-message");
+    await expect(message).toHaveText("Vui lòng nhập giá gốc!");
+    await expect(message).toHaveClass(/is-error/);
+  });
+
+  test("Mã TC-E2E-02: UI hiển thị lỗi khi bỏ trống phần trăm giảm", async ({ page }) =&gt; {
+    await page.fill("#price-input", "200000");
+    await page.click("#calculate-button");
+
+    const message = page.locator("#calculation-message");
+    await expect(message).toHaveText("Vui lòng nhập phần trăm giảm giá!");
+    await expect(message).toHaveClass(/is-error/);
+  });
+
+  test("Mã TC-E2E-03: UI hiển thị lỗi khi nhập giảm giá vượt quá 100", async ({ page }) =&gt; {
+    await page.fill("#price-input", "200000");
+    await page.fill("#discount-input", "101");
+    await page.click("#calculate-button");
+
+    const message = page.locator("#calculation-message");
+    await expect(message).toHaveText("Phần trăm giảm giá phải từ 0 đến 100!");
+    await expect(message).toHaveClass(/is-error/);
+  });
+
+  test("Mã TC-E2E-04: UI tính đúng tiền khi dữ liệu hợp lệ", async ({ page }) =&gt; {
+    await page.fill("#price-input", "200000");
+    await page.fill("#discount-input", "10");
+    await page.click("#calculate-button");
+
+    const message = page.locator("#calculation-message");
+    await expect(message).toHaveText("Số tiền cần trả: 180000 VNĐ");
+    await expect(message).toHaveClass(/is-success/);
+  });
+
+  test("Mã TC-E2E-05: UI xử lý đúng biên giảm giá 0 phần trăm", async ({ page }) =&gt; {
+    await page.fill("#price-input", "200000");
+    await page.fill("#discount-input", "0");
+    await page.click("#calculate-button");
+
+    const message = page.locator("#calculation-message");
+    await expect(message).toHaveText("Số tiền cần trả: 200000 VNĐ");
+    await expect(message).toHaveClass(/is-success/);
+  });
+
+  test("Mã TC-E2E-06: UI xử lý đúng biên giảm giá 100 phần trăm", async ({ page }) =&gt; {
+    await page.fill("#price-input", "200000");
+    await page.fill("#discount-input", "100");
+    await page.click("#calculate-button");
+
+    const message = page.locator("#calculation-message");
+    await expect(message).toHaveText("Số tiền cần trả: 0 VNĐ");
+    await expect(message).toHaveClass(/is-success/);
+  });
+});</code></pre></section>
+<section class="lesson"><h2>7.7.5 Giải thích từng lệnh Playwright</h2><ul><li><code>page.goto("/")</code>: mở trang web cần test.</li><li><code>page.fill(selector, value)</code>: nhập dữ liệu vào ô input.</li><li><code>page.click(selector)</code>: bấm nút giống người dùng thật.</li><li><code>page.locator(selector)</code>: tìm phần tử trên UI.</li><li><code>toHaveText</code>: kiểm tra nội dung hiển thị.</li><li><code>toHaveClass</code>: kiểm tra trạng thái lỗi hoặc thành công.</li></ul></section>
+<section class="lesson"><h2>7.7.6 Khi E2E fail thì kiểm tra theo thứ tự</h2><ol class="steps"><li>Mở app bằng tay xem form có chạy không.</li><li>Kiểm tra id trong HTML có khớp selector trong test không.</li><li>Kiểm tra message có đúng từng dấu tiếng Việt không.</li><li>Kiểm tra <code>playwright.config.js</code> có đúng <code>baseURL</code> và <code>webServer</code> không.</li></ol></section>
   <nav class="pager"><a href="../bai-06/index.html" class="btn">← Bài trước</a><a href="../bai-08/index.html" class="btn primary">Bài tiếp theo →</a></nav>
   </article></div></main>
   <footer class="footer"><div class="container"><p><a href="../index.html">Quay lại Module 7</a></p></div></footer><script type="module" src="../../app.js"></script>
