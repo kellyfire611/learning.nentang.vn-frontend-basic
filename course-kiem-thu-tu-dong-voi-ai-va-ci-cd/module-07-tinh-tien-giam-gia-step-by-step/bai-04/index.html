@@ -1,10 +1,31 @@
 ﻿<!DOCTYPE html>
 <html lang="vi">
-<head><meta charset="UTF-8" /><meta name="viewport" content="width=device-width, initial-scale=1.0" /><title>Bài 4: Viết test plan và test case | Module 7 | NenTang.vn</title><link rel="stylesheet" href="../../shared.css" /></head>
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Bài 4: Viết test plan và test case | Module 7 | NenTang.vn</title>
+  <link rel="stylesheet" href="../../shared.css" />
+</head>
 <body>
-<header class="topbar"><div class="container topbar-inner"><a class="brand" href="../../index.html"><span class="brand-mark">T</span>&nbsp;AI Testing &amp; CI/CD</a><nav class="nav-links" aria-label="Điều hướng khóa học"><a href="../../../index.html">Trang chủ</a><a href="../../index.html#modules">Module</a><a href="../index.html">Module 7</a></nav></div></header>
-<section class="module-hero m6"><div class="container"><div class="breadcrumb"><a href="../../index.html">AI Testing &amp; CI/CD</a><span>/</span><a href="../index.html">Module 7</a><span>/</span><span>Bài 04</span></div><h1>Bài 4: Viết test plan và test case</h1></div></section>
-<main class="section"><div class="container lesson-layout"><aside class="side-nav"><h3>Module 7</h3><ul><li><a href="../bai-01/index.html">Bài 1</a></li><li><a href="../bai-02/index.html">Bài 2</a></li><li><a href="../bai-03/index.html">Bài 3</a></li><li class="active"><a href="../bai-04/index.html">Bài 4</a></li><li><a href="../bai-05/index.html">Bài 5</a></li><li><a href="../bai-06/index.html">Bài 6</a></li><li><a href="../bai-07/index.html">Bài 7</a></li><li><a href="../bai-08/index.html">Bài 8</a></li></ul></aside><article class="module-article"><section class="lesson"><h2>7.4.1 Viết test plan trước khi viết test code</h2><p>Cập nhật <code>docs/test-plan.md</code> với đầy đủ cột:</p><ul><li>Mã TC</li><li>Cấp độ</li><li>Phân loại: Happy path / Negative case / Boundary case</li><li>Mục tiêu, dữ liệu vào, kết quả mong đợi</li></ul></section><section class="lesson"><h2>7.4.2 Nguyên tắc mapping</h2><p>Mỗi test code phải bám đúng một mã TC trong tài liệu để học viên dễ truy vết.</p></section><nav class="pager"><a href="../bai-03/index.html" class="btn">← Bài trước</a><a href="../bai-05/index.html" class="btn primary">Bài tiếp theo →</a></nav></article></div></main>
-<footer class="footer"><div class="container"><p><a href="../index.html">Quay lại Module 7</a></p></div></footer><script type="module" src="../../app.js"></script>
+  <header class="topbar"><div class="container topbar-inner"><a class="brand" href="../../index.html"><span class="brand-mark">T</span>&nbsp;AI Testing &amp; CI/CD</a><nav class="nav-links" aria-label="Điều hướng khóa học"><a href="../../../index.html">Trang chủ</a><a href="../../index.html#modules">Module</a><a href="../index.html">Module 7</a></nav></div></header>
+  <section class="module-hero m6"><div class="container"><div class="breadcrumb"><a href="../../index.html">AI Testing &amp; CI/CD</a><span>/</span><a href="../index.html">Module 7</a><span>/</span><span>Bài 04</span></div><h1>Bài 4: Viết test plan và test case</h1></div></section>
+  <main class="section"><div class="container lesson-layout"><aside class="side-nav"><h3>Module 7</h3><ul>
+    <li><a href="../bai-01/index.html">Bài 1</a></li>
+    <li><a href="../bai-02/index.html">Bài 2</a></li>
+    <li><a href="../bai-03/index.html">Bài 3</a></li>
+    <li class="active"><a href="../bai-04/index.html">Bài 4</a></li>
+    <li><a href="../bai-05/index.html">Bài 5</a></li>
+    <li><a href="../bai-06/index.html">Bài 6</a></li>
+    <li><a href="../bai-07/index.html">Bài 7</a></li>
+    <li><a href="../bai-08/index.html">Bài 8</a></li>
+  </ul></aside><article class="module-article">
+<section class="lesson"><h2>7.4.1 Mục tiêu bài học</h2><p>Viết tài liệu trước để học viên hiểu “mình test cái gì” trước khi viết code test.</p></section>
+<section class="lesson"><h2>7.4.2 File cần sửa: <code>docs/test-plan.md</code></h2><p>Bảng test case bắt buộc có cột phân loại:</p><ul><li>Happy path: luồng hợp lệ đi đúng.</li><li>Negative case: dữ liệu sai, thiếu.</li><li>Boundary case: giá trị biên như 0, 100, 101.</li></ul><pre><code data-lang="markdown">| Mã TC | Cấp độ | Phân loại | Mục tiêu | Dữ liệu vào | Kết quả mong đợi |
+|---|---|---|---|---|---|
+| Mã TC-UNIT-10 | Unit | Boundary case | Chấp nhận % giảm tại biên | "0", "100" | Không lỗi |</code></pre><p><strong>Giải thích:</strong> cột phân loại giúp học viên tự kiểm tra độ phủ test, tránh chỉ viết Happy path.</p></section>
+<section class="lesson"><h2>7.4.3 Quy tắc mapping</h2><p>Mỗi test code đặt tên chứa đúng mã TC. Ví dụ: <code>it("Mã TC-UNIT-10: ...")</code>.</p></section>
+  <nav class="pager"><a href="../bai-03/index.html" class="btn">← Bài trước</a><a href="../bai-05/index.html" class="btn primary">Bài tiếp theo →</a></nav>
+  </article></div></main>
+  <footer class="footer"><div class="container"><p><a href="../index.html">Quay lại Module 7</a></p></div></footer><script type="module" src="../../app.js"></script>
 </body>
 </html>

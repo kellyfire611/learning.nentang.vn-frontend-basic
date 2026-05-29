@@ -1,10 +1,54 @@
 ﻿<!DOCTYPE html>
 <html lang="vi">
-<head><meta charset="UTF-8" /><meta name="viewport" content="width=device-width, initial-scale=1.0" /><title>Bài 2: Tạo giao diện tính tiền giảm giá | Module 7 | NenTang.vn</title><link rel="stylesheet" href="../../shared.css" /></head>
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Bài 2: Tạo giao diện tính tiền giảm giá | Module 7 | NenTang.vn</title>
+  <link rel="stylesheet" href="../../shared.css" />
+</head>
 <body>
-<header class="topbar"><div class="container topbar-inner"><a class="brand" href="../../index.html"><span class="brand-mark">T</span>&nbsp;AI Testing &amp; CI/CD</a><nav class="nav-links" aria-label="Điều hướng khóa học"><a href="../../../index.html">Trang chủ</a><a href="../../index.html#modules">Module</a><a href="../index.html">Module 7</a></nav></div></header>
-<section class="module-hero m6"><div class="container"><div class="breadcrumb"><a href="../../index.html">AI Testing &amp; CI/CD</a><span>/</span><a href="../index.html">Module 7</a><span>/</span><span>Bài 02</span></div><h1>Bài 2: Tạo giao diện tính tiền giảm giá</h1></div></section>
-<main class="section"><div class="container lesson-layout"><aside class="side-nav"><h3>Module 7</h3><ul><li><a href="../bai-01/index.html">Bài 1</a></li><li class="active"><a href="../bai-02/index.html">Bài 2</a></li><li><a href="../bai-03/index.html">Bài 3</a></li><li><a href="../bai-04/index.html">Bài 4</a></li><li><a href="../bai-05/index.html">Bài 5</a></li><li><a href="../bai-06/index.html">Bài 6</a></li><li><a href="../bai-07/index.html">Bài 7</a></li><li><a href="../bai-08/index.html">Bài 8</a></li></ul></aside><article class="module-article"><section class="lesson"><h2>7.2.1 Tạo form</h2><p>Trong <code>index.html</code>, tạo các phần tử có id cố định: <code>#price-input</code>, <code>#discount-input</code>, <code>#calculate-button</code>, <code>#calculation-message</code>.</p></section><section class="lesson"><h2>7.2.2 Gắn luồng submit</h2><ol class="steps"><li>Bắt sự kiện submit của form.</li><li>Ngăn submit mặc định bằng <code>preventDefault()</code>.</li><li>Đọc giá trị input và gọi <code>calculatePayment</code>.</li><li>Hiển thị message, gắn class <code>is-success</code> hoặc <code>is-error</code>.</li></ol></section><nav class="pager"><a href="../bai-01/index.html" class="btn">← Bài trước</a><a href="../bai-03/index.html" class="btn primary">Bài tiếp theo →</a></nav></article></div></main>
-<footer class="footer"><div class="container"><p><a href="../index.html">Quay lại Module 7</a></p></div></footer><script type="module" src="../../app.js"></script>
+  <header class="topbar"><div class="container topbar-inner"><a class="brand" href="../../index.html"><span class="brand-mark">T</span>&nbsp;AI Testing &amp; CI/CD</a><nav class="nav-links" aria-label="Điều hướng khóa học"><a href="../../../index.html">Trang chủ</a><a href="../../index.html#modules">Module</a><a href="../index.html">Module 7</a></nav></div></header>
+  <section class="module-hero m6"><div class="container"><div class="breadcrumb"><a href="../../index.html">AI Testing &amp; CI/CD</a><span>/</span><a href="../index.html">Module 7</a><span>/</span><span>Bài 02</span></div><h1>Bài 2: Tạo giao diện tính tiền giảm giá</h1></div></section>
+  <main class="section"><div class="container lesson-layout"><aside class="side-nav"><h3>Module 7</h3><ul>
+    <li><a href="../bai-01/index.html">Bài 1</a></li>
+    <li class="active"><a href="../bai-02/index.html">Bài 2</a></li>
+    <li><a href="../bai-03/index.html">Bài 3</a></li>
+    <li><a href="../bai-04/index.html">Bài 4</a></li>
+    <li><a href="../bai-05/index.html">Bài 5</a></li>
+    <li><a href="../bai-06/index.html">Bài 6</a></li>
+    <li><a href="../bai-07/index.html">Bài 7</a></li>
+    <li><a href="../bai-08/index.html">Bài 8</a></li>
+  </ul></aside><article class="module-article">
+<section class="lesson"><h2>7.2.1 Mục tiêu bài học</h2><p>Dựng giao diện form nhập giá và giảm giá để chuẩn bị cho test E2E.</p></section>
+<section class="lesson"><h2>7.2.2 File cần sửa: <code>index.html</code></h2><pre><code data-lang="html">&lt;form id="discount-form" novalidate&gt;
+  &lt;label&gt;Giá gốc (VNĐ)&lt;/label&gt;
+  &lt;input type="number" id="price-input" min="0" step="1000" /&gt;
+
+  &lt;label&gt;Giảm giá (%)&lt;/label&gt;
+  &lt;input type="number" id="discount-input" min="0" max="100" step="1" /&gt;
+
+  &lt;button type="submit" id="calculate-button"&gt;Tính tiền&lt;/button&gt;
+  &lt;div id="calculation-message" class="calculation-message"&gt;&lt;/div&gt;
+&lt;/form&gt;</code></pre><p><strong>Giải thích từng id:</strong> <code>#price-input</code> và <code>#discount-input</code> để đọc dữ liệu, <code>#calculate-button</code> để submit, <code>#calculation-message</code> để assert ở E2E.</p></section>
+<section class="lesson"><h2>7.2.3 Nối form với hàm xử lý</h2><pre><code data-lang="javascript">discountForm.addEventListener("submit", function (event) {
+  event.preventDefault();
+
+  const price = document.getElementById("price-input").value;
+  const discountPercent = document.getElementById("discount-input").value;
+  const message = calculatePayment(price, discountPercent);
+
+  const messageElement = document.getElementById("calculation-message");
+  messageElement.textContent = message;
+
+  messageElement.className = "calculation-message";
+  if (message.startsWith("Số tiền cần trả:")) {
+    messageElement.classList.add("is-success");
+  } else {
+    messageElement.classList.add("is-error");
+  }
+});</code></pre><p><strong>Giải thích:</strong> đoạn này biến kết quả business thành trạng thái UI để user thấy được và E2E test kiểm tra được.</p></section>
+  <nav class="pager"><a href="../bai-01/index.html" class="btn">← Bài trước</a><a href="../bai-03/index.html" class="btn primary">Bài tiếp theo →</a></nav>
+  </article></div></main>
+  <footer class="footer"><div class="container"><p><a href="../index.html">Quay lại Module 7</a></p></div></footer><script type="module" src="../../app.js"></script>
 </body>
 </html>
