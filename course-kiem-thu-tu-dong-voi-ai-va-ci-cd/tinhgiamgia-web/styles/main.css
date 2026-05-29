@@ -1,0 +1,32 @@
+.calculation-message {
+    margin-top: 12px;
+    padding: 10px 12px;
+    border-radius: 8px;
+    font-weight: 600;
+    display: inline-block;
+    min-width: 260px;
+    border: 1px solid transparent;
+}
+
+.calculation-message.is-success {
+    color: #14532d;
+    background: #dcfce7;
+    border-color: #86efac;
+}
+
+.calculation-message.is-error {
+    color: #991b1b;
+    background: #fee2e2;
+    border-color: #fca5a5;
+}
+
+.practice-link {
+    display: inline-block;
+    margin-top: 16px;
+}
+
+.form-dep {
+    background: purple;
+    font-size: 30px;
+    color: red;
+}
