@@ -1,0 +1,66 @@
+<!DOCTYPE html>
+<html lang="vi">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Bài 5: Tính tiền theo bậc | Module 8</title>
+  <link rel="stylesheet" href="../../shared.css" />
+</head>
+<body>
+  <header class="topbar"><div class="container topbar-inner"><a class="brand" href="../../index.html"><span class="brand-mark">T</span>&nbsp;AI Testing &amp; CI/CD</a><nav class="nav-links"><a href="../../../index.html">Trang chu</a><a href="../../index.html#modules">Module</a><a href="../index.html">Module 8</a></nav></div></header>
+  <section class="module-hero m6"><div class="container"><div class="breadcrumb"><a href="../../index.html">AI Testing &amp; CI/CD</a><span>/</span><a href="../index.html">Module 8</a><span>/</span><span>Bài 05</span></div><h1>Bài 5: Viết hàm tính tiền điện theo 3 bậc</h1></div></section>
+
+  <main class="section"><div class="container lesson-layout"><aside class="side-nav"><h3>Module 8</h3><ul><li><a href="../bai-01/index.html">Bài 1</a></li><li><a href="../bai-02/index.html">Bài 2</a></li><li><a href="../bai-03/index.html">Bài 3</a></li><li><a href="../bai-04/index.html">Bài 4</a></li><li class="active"><a href="../bai-05/index.html">Bài 5</a></li><li><a href="../bai-06/index.html">Bài 6</a></li><li><a href="../bai-07/index.html">Bài 7</a></li><li><a href="../bai-08/index.html">Bài 8</a></li></ul></aside><article class="module-article">
+
+  <section class="lesson"><h2>8.5.1 Mục tiêu bài học</h2><p>Hoàn thiện 3 hàm còn lại: calculateElectricityBill, formatCurrencyVnd, calculateElectricityPayment.</p></section>
+
+  <section class="lesson"><h2>8.5.2 Bước 1 - Viết calculateElectricityBill</h2><pre><code data-lang="javascript">export function calculateElectricityBill(kwh) {
+  let total = 0;
+
+  if (kwh <= 50) {
+    return kwh * 1800;
+  }
+
+  total += 50 * 1800;
+
+  if (kwh <= 100) {
+    return total + (kwh - 50) * 2000;
+  }
+
+  total += 50 * 2000;
+  total += (kwh - 100) * 2500;
+
+  return total;
+}</code></pre><p>Giải thích: tách theo từng bậc, cộng dồn từ bậc thấp lên bậc cao.</p></section>
+
+  <section class="lesson"><h2>8.5.3 Bước 2 - Viết formatCurrencyVnd</h2><pre><code data-lang="javascript">export function formatCurrencyVnd(amount) {
+  return `${Math.round(amount)} VNĐ`;
+}</code></pre><p>Không format dấu chấm hàng nghìn để test đơn giản hơn.</p></section>
+
+  <section class="lesson"><h2>8.5.4 Bước 3 - Viết hàm tổng hợp calculateElectricityPayment</h2><pre><code data-lang="javascript">export function calculateElectricityPayment(kwhInput) {
+  const kwhError = validateKwh(kwhInput);
+  if (kwhError) {
+    return kwhError;
+  }
+
+  const parsedKwh = Number(kwhInput);
+  const totalAmount = calculateElectricityBill(parsedKwh);
+
+  return `Số tiền điện cần trả: ${formatCurrencyVnd(totalAmount)}`;
+}</code></pre></section>
+
+  <section class="lesson"><h2>8.5.5 Bước 4 - Gắn hàm vào window cho HTML gọi</h2><pre><code data-lang="javascript">if (typeof window !== "undefined") {
+  window.calculateElectricityPayment = calculateElectricityPayment;
+}</code></pre></section>
+
+  <section class="lesson"><h2>8.5.6 Test nhanh bằng console</h2><pre><code data-lang="javascript">calculateElectricityPayment("30")
+calculateElectricityPayment("80")
+calculateElectricityPayment("120")</code></pre><p>Kết quả phải lần lượt là: 54000, 150000, 240000 VNĐ.</p></section>
+
+  <nav class="pager"><a href="../bai-04/index.html" class="btn">← Bài trước</a><a href="../bai-06/index.html" class="btn primary">Bài tiếp theo →</a></nav>
+
+  </article></div></main>
+  <footer class="footer"><div class="container"><p><a href="../index.html">Quay lại Module 8</a></p></div></footer>
+  <script type="module" src="../../app.js"></script>
+</body>
+</html>
