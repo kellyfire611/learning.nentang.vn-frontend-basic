@@ -1,40 +1,40 @@
 import { describe, expect, it } from "vitest";
 import { calculateElectricityPayment } from "../../src/electricityCalculatorStore.js";
 
-describe("Business test - Kịch bản nghiệp vụ tính tiền điện", () => {
-  it("TC-BIZ-01: Cho trước bỏ trống số kWh, Khi tính tiền điện, Thì yêu cầu nhập số kWh", () => {
-    expect(calculateElectricityPayment("")).toBe("Vui lòng nhập số kWh điện!");
+describe("Business test - Kich ban nghiep vu tinh tien dien", () => {
+  it("TC-BIZ-01: Cho truoc bo trong so kWh, Khi tinh tien dien, Thi yeu cau nhap so kWh", () => {
+    expect(calculateElectricityPayment("")).toBe("Vui long nhap so kWh dien!");
   });
 
-  it("TC-BIZ-02: Cho trước số kWh không phải số, Khi tính tiền điện, Thì báo dữ liệu không hợp lệ", () => {
-    expect(calculateElectricityPayment("abc")).toBe("Số kWh điện phải là số hợp lệ!");
+  it("TC-BIZ-02: Cho truoc so kWh khong phai so, Khi tinh tien dien, Thi bao du lieu khong hop le", () => {
+    expect(calculateElectricityPayment("abc")).toBe("So kWh dien phai la so hop le!");
   });
 
-  it("TC-BIZ-03: Cho trước số kWh âm, Khi tính tiền điện, Thì báo số kWh không được âm", () => {
-    expect(calculateElectricityPayment("-5")).toBe("Số kWh điện không được âm!");
+  it("TC-BIZ-03: Cho truoc so kWh am, Khi tinh tien dien, Thi bao so kWh khong duoc am", () => {
+    expect(calculateElectricityPayment("-5")).toBe("So kWh dien khong duoc am!");
   });
 
-  it("TC-BIZ-04: Cho trước 0 kWh, Khi tính tiền điện, Thì tiền điện bằng 0", () => {
-    expect(calculateElectricityPayment("0")).toBe("Số tiền điện cần trả: 0 VNĐ");
+  it("TC-BIZ-04: Cho truoc 0 kWh, Khi tinh tien dien, Thi tien dien bang 0", () => {
+    expect(calculateElectricityPayment("0")).toBe("So tien dien can tra: 0 VND");
   });
 
-  it("TC-BIZ-05: Cho trước 30 kWh, Khi tính tiền điện, Thì tính theo bậc 1", () => {
-    expect(calculateElectricityPayment("30")).toBe("Số tiền điện cần trả: 54000 VNĐ");
+  it("TC-BIZ-05: Cho truoc 30 kWh, Khi tinh tien dien, Thi tinh theo bac 1", () => {
+    expect(calculateElectricityPayment("30")).toBe("So tien dien can tra: 54000 VND");
   });
 
-  it("TC-BIZ-06: Cho trước 50 kWh, Khi tính tiền điện, Thì tính đúng tại biên bậc 1", () => {
-    expect(calculateElectricityPayment("50")).toBe("Số tiền điện cần trả: 90000 VNĐ");
+  it("TC-BIZ-06: Cho truoc 50 kWh, Khi tinh tien dien, Thi tinh dung tai bien bac 1", () => {
+    expect(calculateElectricityPayment("50")).toBe("So tien dien can tra: 90000 VND");
   });
 
-  it("TC-BIZ-07: Cho trước 80 kWh, Khi tính tiền điện, Thì tính đúng bậc 1 và bậc 2", () => {
-    expect(calculateElectricityPayment("80")).toBe("Số tiền điện cần trả: 150000 VNĐ");
+  it("TC-BIZ-07: Cho truoc 80 kWh, Khi tinh tien dien, Thi tinh dung bac 1 va bac 2", () => {
+    expect(calculateElectricityPayment("80")).toBe("So tien dien can tra: 150000 VND");
   });
 
-  it("TC-BIZ-08: Cho trước 100 kWh, Khi tính tiền điện, Thì tính đúng tại biên bậc 2", () => {
-    expect(calculateElectricityPayment("100")).toBe("Số tiền điện cần trả: 190000 VNĐ");
+  it("TC-BIZ-08: Cho truoc 100 kWh, Khi tinh tien dien, Thi tinh dung tai bien bac 2", () => {
+    expect(calculateElectricityPayment("100")).toBe("So tien dien can tra: 190000 VND");
   });
 
-  it("TC-BIZ-09: Cho trước 120 kWh, Khi tính tiền điện, Thì tính đúng cả 3 bậc", () => {
-    expect(calculateElectricityPayment("120")).toBe("Số tiền điện cần trả: 240000 VNĐ");
+  it("TC-BIZ-09: Cho truoc 120 kWh, Khi tinh tien dien, Thi tinh dung ca 3 bac", () => {
+    expect(calculateElectricityPayment("120")).toBe("So tien dien can tra: 240000 VND");
   });
 });

@@ -1,39 +1,52 @@
-# Hướng dẫn kiểm thử - Bài tính tiền điện cơ bản
+# Huong dan kiem thu - Bai tinh tien dien co ban + Public API
 
-## 1. Mục tiêu kiểm thử
-- Unit test: kiểm tra từng hàm validate, tính tiền và format tiền.
-- Business test: kiểm tra các kịch bản nghiệp vụ theo đầu vào người dùng.
-- E2E test: mô phỏng thao tác nhập liệu và bấm nút trên giao diện thật.
+## 1. Muc tieu kiem thu
+- Unit test: kiem tra tung ham validate, tinh tien, format tien.
+- Unit test: kiem tra tung ham goi API, validate JSON va format danh sach customer.
+- Business test: kiem tra cac kich ban nghiep vu theo dau vao nguoi dung.
+- E2E test: mo phong thao tac nhap lieu, bam nut va mock API tren giao dien that.
 
-## 2. Cấu trúc test
-- tests/unit/electricity.unit.test.js: kiểm thử đơn vị cho từng hàm trong store.
-- tests/business/electricity.business.test.js: kiểm thử nghiệp vụ hàm calculateElectricityPayment.
-- tests/e2e/electricity.e2e.spec.js: kiểm thử giao diện bằng Playwright.
+## 2. Cau truc test
+- `tests/unit/electricity.unit.test.js`: kiem thu don vi cho tung ham tinh tien dien.
+- `tests/unit/customer-api.unit.test.js`: kiem thu don vi cho `fetchCustomers`, `validateCustomers`, `formatCustomerList`.
+- `tests/business/electricity.business.test.js`: kiem thu nghiep vu ham `calculateElectricityPayment`.
+- `tests/business/customer-api.business.test.js`: kiem thu flow nghiep vu tai customer.
+- `tests/e2e/electricity.e2e.spec.js`: kiem thu giao dien tinh tien dien bang Playwright.
+- `tests/e2e/customer-api.e2e.spec.js`: kiem thu UI API va mock route.
 
-## 3. Cách viết test mới
-1. Xác định đầu vào cụ thể và kết quả mong đợi rõ ràng.
-2. Đặt tên test theo mã TC để dễ đối chiếu với test-plan.
-3. Với Unit và Business test:
-- Import hàm từ src/electricityCalculatorStore.js.
-- Gọi hàm với dữ liệu test.
-- Dùng expect(...).toBe(...) để so sánh kết quả.
-4. Với E2E test:
-- Điều hướng tới trang bằng page.goto("/").
-- Dùng đúng selector: #kwh-input, #calculate-button, #calculation-message.
-- Kiểm tra nội dung và class trạng thái is-error hoặc is-success.
+## 3. Cach viet test moi
+1. Xac dinh dau vao cu the va ket qua mong doi ro rang.
+2. Dat ten test theo ma TC de de doi chieu voi test-plan.
+3. Voi Unit va Business test:
+   - Import ham tu file `src/*.js`.
+   - Goi ham voi du lieu test.
+   - Dung `expect(...).toBe(...)` hoac `toEqual(...)` de so sanh ket qua.
+4. Voi E2E test:
+   - Dieu huong toi trang bang `page.goto("/")`.
+   - Dung dung selector: `#kwh-input`, `#calculate-button`, `#calculation-message`.
+   - Voi phan API dung `#load-customers-button`, `#customer-api-message`, `#customer-list`.
+   - Kiem tra noi dung va class trang thai `is-error` hoac `is-success`.
 
-## 4. Lệnh chạy test
-- Chạy unit test: npm run test:unit
-- Chạy business test: npm run test:business
-- Chạy e2e test: npm run test:e2e
-- Chạy toàn bộ test: npm run test
-- Chạy test kèm coverage: npm run test:coverage
+## 4. Thuc hanh goi Public API
+- Public API la API cong khai, cho phep goi thu ma khong can tai khoan hoac API key.
+- `fetch` la API co san trong trinh duyet de gui HTTP request va nhan response JSON.
+- Unit test nen mock API de test nhanh, on dinh va khong phu thuoc internet.
+- E2E test nen mock API bang Playwright `route` de kiem tra UI on dinh, tranh flakey test.
+- Chi nen goi API that khi test tich hop hoac co moi truong rieng de xac nhan ket noi that.
 
-## 5. Tiêu chí đạt
-- Tất cả test pass.
-- Không có lỗi JavaScript khi submit form.
-- Giao diện hiển thị đúng thông báo theo từng tình huống.
+## 5. Lenh chay test
+- Chay unit test: `npm run test:unit`
+- Chay business test: `npm run test:business`
+- Chay e2e test: `npm run test:e2e`
+- Chay toan bo test: `npm run test`
+- Chay test kem coverage: `npm run test:coverage`
 
-## 6. Lưu ý khi thay đổi chức năng
-- Nếu thay đổi nghiệp vụ tính tiền điện, cập nhật đồng thời Unit, Business và E2E test.
-- Nếu thay đổi selector UI, cập nhật test E2E tương ứng trước khi chạy lại pipeline.
+## 6. Tieu chi dat
+- Tat ca test pass.
+- Khong co loi JavaScript khi submit form hoac tai customer.
+- Giao dien hien thi dung thong bao theo tung tinh huong.
+
+## 7. Luu y khi thay doi chuc nang
+- Neu thay doi nghiep vu tinh tien dien, cap nhat dong thoi Unit, Business va E2E test.
+- Neu thay doi format customer hoac message API, cap nhat dong thoi cac test `customer-api`.
+- Neu thay doi selector UI, cap nhat test E2E tuong ung truoc khi chay lai pipeline.

@@ -3,27 +3,45 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>Bài thực hành tính tiền điện cơ bản</title>
+  <title>Bai thuc hanh tinh tien dien co ban va Public API</title>
   <link type="text/css" href="styles/main.css" rel="stylesheet" />
   <script type="module" src="src/electricityCalculatorStore.js"></script>
+  <script type="module" src="src/customerApiStore.js"></script>
 </head>
 <body>
   <main class="page-wrapper">
-    <form id="electricity-form" class="calculator-form" method="post" action="#" novalidate>
-      <h1>Tính tiền điện cơ bản</h1>
+    <div class="content-stack">
+      <form id="electricity-form" class="calculator-form" method="post" action="#" novalidate>
+        <h1>Tinh tien dien co ban</h1>
 
-      <label for="kwh-input">Số kWh điện đã sử dụng</label>
-      <input type="number" id="kwh-input" min="0" step="1" placeholder="Ví dụ: 80" />
+        <label for="kwh-input">So kWh dien da su dung</label>
+        <input type="number" id="kwh-input" min="0" step="1" placeholder="Vi du: 80" />
 
-      <button type="submit" id="calculate-button">Tính tiền điện</button>
+        <button type="submit" id="calculate-button">Tinh tien dien</button>
 
-      <div id="calculation-message" class="calculation-message" aria-live="polite"></div>
-    </form>
+        <div id="calculation-message" class="calculation-message" aria-live="polite"></div>
+      </form>
+
+      <section class="api-section" aria-labelledby="customer-api-heading">
+        <h2 id="customer-api-heading">Thuc hanh goi Public API</h2>
+        <p class="section-description">
+          Bam nut ben duoi de tai danh sach khach hang mau tu API cong khai.
+        </p>
+
+        <button type="button" id="load-customers-button">Tai danh sach khach hang mau</button>
+
+        <div id="customer-api-message" class="calculation-message" aria-live="polite"></div>
+        <ul id="customer-list" class="customer-list"></ul>
+      </section>
+    </div>
   </main>
 
   <script>
     const electricityForm = document.getElementById("electricity-form");
     const messageElement = document.getElementById("calculation-message");
+    const loadCustomersButton = document.getElementById("load-customers-button");
+    const customerApiMessageElement = document.getElementById("customer-api-message");
+    const customerListElement = document.getElementById("customer-list");
 
     electricityForm.addEventListener("submit", function (event) {
       event.preventDefault();
@@ -34,10 +52,41 @@
       messageElement.textContent = message;
       messageElement.className = "calculation-message";
 
-      if (message.startsWith("Số tiền điện cần trả:")) {
+      if (message.startsWith("So tien dien can tra:")) {
         messageElement.classList.add("is-success");
       } else {
         messageElement.classList.add("is-error");
+      }
+    });
+
+    loadCustomersButton.addEventListener("click", async function () {
+      customerApiMessageElement.textContent = "Dang tai du lieu...";
+      customerApiMessageElement.className = "calculation-message";
+      customerListElement.innerHTML = "";
+
+      try {
+        const customers = await window.customerApiStore.fetchCustomers();
+        const isValid = window.customerApiStore.validateCustomers(customers);
+
+        if (!isValid) {
+          throw new Error("Khong the tai danh sach khach hang!");
+        }
+
+        const formattedCustomers = window.customerApiStore
+          .formatCustomerList(customers)
+          .slice(0, 5);
+
+        customerApiMessageElement.textContent = "Tai danh sach khach hang thanh cong!";
+        customerApiMessageElement.classList.add("is-success");
+
+        formattedCustomers.forEach(function (customer) {
+          const customerItem = document.createElement("li");
+          customerItem.textContent = customer;
+          customerListElement.appendChild(customerItem);
+        });
+      } catch (error) {
+        customerApiMessageElement.textContent = "Khong the tai danh sach khach hang!";
+        customerApiMessageElement.classList.add("is-error");
       }
     });
   </script>

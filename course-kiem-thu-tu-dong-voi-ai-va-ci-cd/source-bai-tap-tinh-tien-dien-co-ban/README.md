@@ -1,50 +1,59 @@
-# Bài thực hành tính tiền điện cơ bản
+# Bai thuc hanh tinh tien dien co ban + Public API
 
-## Mục tiêu bài học
-- Biết cách tách logic nghiệp vụ sang file JavaScript riêng để test.
-- Viết được Unit test, Business test và E2E test cho cùng một chức năng.
-- Chạy được toàn bộ test bằng npm script có sẵn.
+## Muc tieu bai hoc
+- Biet cach tach logic nghiep vu sang file JavaScript rieng de test.
+- Viet duoc Unit test, Business test va E2E test cho cung mot chuc nang.
+- Biet cach goi Public API bang `fetch` va hien thi JSON len UI.
+- Biet vi sao can mock API trong unit test va E2E test.
+- Chay duoc toan bo test bang npm script co san.
 
-## Cài đặt
-1. Mở terminal tại thư mục project.
-2. Cài package:
+## Cai dat
+1. Mo terminal tai thu muc project.
+2. Cai package:
 
 ```bash
 npm install
 ```
 
-## Chạy web
+## Chay web
 
 ```bash
 npx http-server -p 3000
 ```
 
-Sau đó mở trình duyệt tại địa chỉ `http://127.0.0.1:3000`.
+Sau do mo trinh duyet tai dia chi `http://127.0.0.1:3000`.
 
-## Chạy test unit
+## Chay test unit
 
 ```bash
 npm run test:unit
 ```
 
-## Chạy test business
+## Chay test business
 
 ```bash
 npm run test:business
 ```
 
-## Chạy test e2e
+## Chay test e2e
 
 ```bash
 npm run test:e2e
 ```
 
-## Chạy tất cả test
+## Chay tat ca test
 
 ```bash
 npm run test
 ```
 
-## Tài liệu kiểm thử
-- Kế hoạch kiểm thử: [docs/test-plan.md](docs/test-plan.md)
-- Hướng dẫn kiểm thử: [docs/testing-guide.md](docs/testing-guide.md)
+## Tai lieu kiem thu
+- Ke hoach kiem thu: [docs/test-plan.md](docs/test-plan.md)
+- Huong dan kiem thu: [docs/testing-guide.md](docs/testing-guide.md)
+
+## Phan thuc hanh Public API
+- API demo: `https://jsonplaceholder.typicode.com/users`
+- File xu ly API: `src/customerApiStore.js`
+- Tren giao dien se co 2 phan:
+  1. Tinh tien dien co ban
+  2. Thuc hanh goi Public API

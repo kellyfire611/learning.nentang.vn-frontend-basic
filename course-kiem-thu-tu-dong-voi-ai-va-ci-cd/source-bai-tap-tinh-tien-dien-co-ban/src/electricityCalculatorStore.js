@@ -1,15 +1,15 @@
 export function validateKwh(kwhInput) {
   if (kwhInput === "" || kwhInput === null || kwhInput === undefined) {
-    return "Vui lòng nhập số kWh điện!";
+    return "Vui long nhap so kWh dien!";
   }
 
   const parsedKwh = Number(kwhInput);
   if (!Number.isFinite(parsedKwh)) {
-    return "Số kWh điện phải là số hợp lệ!";
+    return "So kWh dien phai la so hop le!";
   }
 
   if (parsedKwh < 0) {
-    return "Số kWh điện không được âm!";
+    return "So kWh dien khong duoc am!";
   }
 
   return "";
@@ -35,7 +35,7 @@ export function calculateElectricityBill(kwh) {
 }
 
 export function formatCurrencyVnd(amount) {
-  return `${Math.round(amount)} VNĐ`;
+  return `${Math.round(amount)} VND`;
 }
 
 export function calculateElectricityPayment(kwhInput) {
@@ -47,7 +47,7 @@ export function calculateElectricityPayment(kwhInput) {
   const parsedKwh = Number(kwhInput);
   const totalAmount = calculateElectricityBill(parsedKwh);
 
-  return `Số tiền điện cần trả: ${formatCurrencyVnd(totalAmount)}`;
+  return `So tien dien can tra: ${formatCurrencyVnd(totalAmount)}`;
 }
 
 if (typeof window !== "undefined") {

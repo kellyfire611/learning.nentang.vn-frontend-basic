@@ -17,9 +17,17 @@ body {
     padding: 24px;
 }
 
-.calculator-form {
+.content-stack {
     width: 100%;
     max-width: 420px;
+    display: flex;
+    flex-direction: column;
+    gap: 24px;
+}
+
+.calculator-form,
+.api-section {
+    width: 100%;
     background: #ffffff;
     border-radius: 12px;
     padding: 24px;
@@ -29,11 +37,19 @@ body {
     gap: 12px;
 }
 
-h1 {
+h1,
+.api-section h2 {
     margin: 0 0 8px;
+    color: #1f2937;
+}
+
+h1 {
     font-size: 28px;
     text-align: center;
-    color: #1f2937;
+}
+
+.api-section h2 {
+    font-size: 24px;
 }
 
 label {
@@ -62,6 +78,12 @@ button:hover {
     background: #115e59;
 }
 
+.section-description {
+    margin: 0;
+    color: #475569;
+    line-height: 1.6;
+}
+
 .calculation-message {
     min-height: 44px;
     margin-top: 4px;
@@ -81,4 +103,17 @@ button:hover {
     color: #991b1b;
     background: #fee2e2;
     border-color: #fca5a5;
+}
+
+.customer-list {
+    margin: 0;
+    padding-left: 20px;
+    color: #1e293b;
+    display: flex;
+    flex-direction: column;
+    gap: 8px;
+}
+
+.customer-list li {
+    line-height: 1.5;
 }
