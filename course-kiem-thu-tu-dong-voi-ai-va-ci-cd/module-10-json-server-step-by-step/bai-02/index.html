@@ -1,0 +1,40 @@
+<!DOCTYPE html><html lang="vi"><head><meta charset="UTF-8"><meta name="viewport" content="width=device-width, initial-scale=1.0"><title>Bai 2: Cai dat JSON Server | Module 10</title><link rel="stylesheet" href="../../shared.css"></head><body>
+<header class="topbar"><div class="container topbar-inner"><a class="brand" href="../../index.html"><span class="brand-mark">T</span>&nbsp;AI Testing &amp; CI/CD</a><nav class="nav-links"><a href="../../index.html#modules">Module</a><a href="../index.html">Module 10</a></nav></div></header><section class="module-hero m6"><div class="container"><div class="breadcrumb"><a href="../index.html">Module 10</a><span>/</span><span>Bai 02</span></div><h1>Bai 2: Cai dat JSON Server va du lieu mau</h1></div></section>
+<main class="section"><div class="container lesson-layout"><aside class="side-nav"><h3>Module 10</h3><ul><li><a href="../bai-01/index.html">Bai 1</a></li><li class="active"><a href="../bai-02/index.html">Bai 2</a></li><li><a href="../bai-03/index.html">Bai 3</a></li><li><a href="../bai-04/index.html">Bai 4</a></li><li><a href="../bai-05/index.html">Bai 5</a></li><li><a href="../bai-06/index.html">Bai 6</a></li><li><a href="../bai-07/index.html">Bai 7</a></li><li><a href="../bai-08/index.html">Bai 8</a></li><li><a href="../bai-09/index.html">Bai 9</a></li><li><a href="../bai-10/index.html">Bai 10</a></li></ul></aside><article class="module-article">
+<section class="lesson"><h2>10.2.1 Tao package.json</h2><pre><code data-lang="json">{
+  "name": "todo-json-server",
+  "version": "1.0.0",
+  "private": true,
+  "type": "module",
+  "scripts": {
+    "dev:web": "http-server . -p 3000 -c-1",
+    "dev:api": "json-server --watch db.json --port 3001",
+    "dev": "concurrently \"npm run dev:web\" \"npm run dev:api\"",
+    "test:unit": "vitest run tests/unit",
+    "test:business": "vitest run tests/business",
+    "test:integration": "vitest run tests/integration",
+    "test:e2e": "playwright test",
+    "test:all": "npm run test:unit &amp;&amp; npm run test:business",
+    "test:all-with-api": "npm run test:unit &amp;&amp; npm run test:business &amp;&amp; npm run test:integration &amp;&amp; npm run test:e2e"
+  },
+  "devDependencies": {
+    "@playwright/test": "^1.44.1",
+    "concurrently": "^8.2.2",
+    "http-server": "^14.1.1",
+    "json-server": "^0.17.4",
+    "vitest": "^1.6.0"
+  }
+}</code></pre></section>
+<section class="lesson"><h2>10.2.2 Tao db.json</h2><pre><code data-lang="json">{
+  "todos": [
+    { "id": "1", "title": "Hoc HTML co ban", "completed": false },
+    { "id": "2", "title": "Viet test bang Vitest", "completed": true }
+  ]
+}</code></pre><p>Ten khoa <code>todos</code> tu dong tao endpoint <code>http://localhost:3001/todos</code>.</p></section>
+<section class="lesson"><h2>10.2.3 Cai va chay</h2><pre><code data-lang="bash">cd course-kiem-thu-tu-dong-voi-ai-va-ci-cd/todo-json-server
+npm install
+npx playwright install
+npm run dev</code></pre><p>Web chay tai <code>http://localhost:3000</code>, API chay tai <code>http://localhost:3001/todos</code>.</p></section>
+<section class="lesson"><h2>10.2.4 Tu kiem tra API</h2><pre><code data-lang="bash">curl http://localhost:3001/todos
+curl http://localhost:3001/todos/1</code></pre></section>
+<nav class="pager"><a href="../bai-01/index.html" class="btn">&larr; Bai truoc</a><a href="../bai-03/index.html" class="btn primary">Bai tiep theo &rarr;</a></nav></article></div></main><script type="module" src="../../app.js"></script></body></html>

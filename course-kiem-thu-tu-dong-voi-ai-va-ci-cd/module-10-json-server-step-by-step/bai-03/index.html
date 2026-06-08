@@ -1,0 +1,37 @@
+<!DOCTYPE html><html lang="vi"><head><meta charset="UTF-8"><meta name="viewport" content="width=device-width, initial-scale=1.0"><title>Bai 3: Lop nghiep vu | Module 10</title><link rel="stylesheet" href="../../shared.css"></head><body>
+<header class="topbar"><div class="container topbar-inner"><a class="brand" href="../../index.html"><span class="brand-mark">T</span>&nbsp;AI Testing &amp; CI/CD</a><nav class="nav-links"><a href="../../index.html#modules">Module</a><a href="../index.html">Module 10</a></nav></div></header><section class="module-hero m6"><div class="container"><div class="breadcrumb"><a href="../index.html">Module 10</a><span>/</span><span>Bai 03</span></div><h1>Bai 3: Viet lop nghiep vu Todo</h1></div></section>
+<main class="section"><div class="container lesson-layout"><aside class="side-nav"><h3>Module 10</h3><ul><li><a href="../bai-01/index.html">Bai 1</a></li><li><a href="../bai-02/index.html">Bai 2</a></li><li class="active"><a href="../bai-03/index.html">Bai 3</a></li><li><a href="../bai-04/index.html">Bai 4</a></li><li><a href="../bai-05/index.html">Bai 5</a></li><li><a href="../bai-06/index.html">Bai 6</a></li><li><a href="../bai-07/index.html">Bai 7</a></li><li><a href="../bai-08/index.html">Bai 8</a></li><li><a href="../bai-09/index.html">Bai 9</a></li><li><a href="../bai-10/index.html">Bai 10</a></li></ul></aside><article class="module-article">
+<section class="lesson"><h2>10.3.1 Nguyen tac</h2><p>File <code>src/todoBusiness.js</code> chi nhan du lieu va tra du lieu. Khong goi <code>fetch</code>, khong dung <code>document</code>; vi vay unit test se nhanh va on dinh.</p></section>
+<section class="lesson"><h2>10.3.2 Code day du todoBusiness.js</h2><pre><code data-lang="js">export function validateTodoTitle(title) {
+  const trimmedTitle = title.trim();
+  if (trimmedTitle.length === 0) return "Vui long nhap ten cong viec!";
+  if (trimmedTitle.length &lt; 3) return "Ten cong viec phai co it nhat 3 ky tu!";
+  if (trimmedTitle.length &gt; 100) return "Ten cong viec khong duoc vuot qua 100 ky tu!";
+  return "";
+}
+
+export function createTodoPayload(title) {
+  return { title: title.trim(), completed: false };
+}
+
+export function filterTodos(todos, filter) {
+  if (filter === "active") return todos.filter((todo) =&gt; todo.completed === false);
+  if (filter === "completed") return todos.filter((todo) =&gt; todo.completed === true);
+  return todos;
+}
+
+export function findTodoById(todos, id) {
+  return todos.find((todo) =&gt; String(todo.id) === String(id));
+}
+
+export function updateTodoInList(todos, updatedTodo) {
+  return todos.map((todo) =&gt;
+    String(todo.id) === String(updatedTodo.id) ? updatedTodo : todo
+  );
+}
+
+export function removeTodoFromList(todos, id) {
+  return todos.filter((todo) =&gt; String(todo.id) !== String(id));
+}</code></pre></section>
+<section class="lesson"><h2>10.3.3 Diem can hieu</h2><ul><li>Luon <code>trim()</code> truoc khi tao payload.</li><li>So sanh id qua <code>String()</code> de dung voi ca id so va chuoi.</li><li><code>map</code> va <code>filter</code> tao mang moi, khong mutate state cu.</li></ul></section>
+<nav class="pager"><a href="../bai-02/index.html" class="btn">&larr; Bai truoc</a><a href="../bai-04/index.html" class="btn primary">Bai tiep theo &rarr;</a></nav></article></div></main><script type="module" src="../../app.js"></script></body></html>

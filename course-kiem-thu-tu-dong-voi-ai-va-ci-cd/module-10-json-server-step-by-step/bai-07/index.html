@@ -1,0 +1,58 @@
+<!DOCTYPE html><html lang="vi"><head><meta charset="UTF-8"><meta name="viewport" content="width=device-width, initial-scale=1.0"><title>Bai 7: Unit test | Module 10</title><link rel="stylesheet" href="../../shared.css"></head><body>
+<header class="topbar"><div class="container topbar-inner"><a class="brand" href="../../index.html"><span class="brand-mark">T</span>&nbsp;AI Testing &amp; CI/CD</a><nav class="nav-links"><a href="../../index.html#modules">Module</a><a href="../index.html">Module 10</a></nav></div></header><section class="module-hero m6"><div class="container"><div class="breadcrumb"><a href="../index.html">Module 10</a><span>/</span><span>Bai 07</span></div><h1>Bai 7: Viet Unit test cho business va API</h1></div></section>
+<main class="section"><div class="container lesson-layout"><aside class="side-nav"><h3>Module 10</h3><ul><li><a href="../bai-01/index.html">Bai 1</a></li><li><a href="../bai-02/index.html">Bai 2</a></li><li><a href="../bai-03/index.html">Bai 3</a></li><li><a href="../bai-04/index.html">Bai 4</a></li><li><a href="../bai-05/index.html">Bai 5</a></li><li><a href="../bai-06/index.html">Bai 6</a></li><li class="active"><a href="../bai-07/index.html">Bai 7</a></li><li><a href="../bai-08/index.html">Bai 8</a></li><li><a href="../bai-09/index.html">Bai 9</a></li><li><a href="../bai-10/index.html">Bai 10</a></li></ul></aside><article class="module-article">
+<section class="lesson"><h2>10.7.1 Test logic thuan</h2><pre><code data-lang="js">import { describe, expect, it } from "vitest";
+import {
+  createTodoPayload, filterTodos, removeTodoFromList,
+  updateTodoInList, validateTodoTitle,
+} from "../../src/todoBusiness.js";
+
+describe("Unit test nghiep vu Todo", () =&gt; {
+  it("bao loi khi title rong", () =&gt; {
+    expect(validateTodoTitle("   ")).toBe("Vui long nhap ten cong viec!");
+  });
+
+  it("tao payload da trim va chua hoan thanh", () =&gt; {
+    expect(createTodoPayload("  Hoc API  ")).toEqual({
+      title: "Hoc API", completed: false,
+    });
+  });
+
+  it("loc Todo active", () =&gt; {
+    const todos = [
+      { id: "1", completed: true },
+      { id: "2", completed: false },
+    ];
+    expect(filterTodos(todos, "active")).toEqual([{ id: "2", completed: false }]);
+  });
+});</code></pre></section>
+<section class="lesson"><h2>10.7.2 Mock fetch de test API</h2><pre><code data-lang="js">import { describe, expect, it, vi } from "vitest";
+import { TODO_API_URL, createTodo, deleteTodo, fetchTodos } from "../../src/todoApiStore.js";
+
+function successFetch(data) {
+  return vi.fn().mockResolvedValue({ ok: true, json: async () =&gt; data });
+}
+
+describe("Unit test API Todo", () =&gt; {
+  it("GET dung endpoint", async () =&gt; {
+    const fetchFn = successFetch([]);
+    await fetchTodos(fetchFn);
+    expect(fetchFn).toHaveBeenCalledWith(TODO_API_URL);
+  });
+
+  it("POST dung method va body", async () =&gt; {
+    const todo = { title: "Hoc API", completed: false };
+    const fetchFn = successFetch({ id: "3", ...todo });
+    await createTodo(todo, fetchFn);
+    expect(fetchFn.mock.calls[0][1].method).toBe("POST");
+    expect(fetchFn.mock.calls[0][1].body).toBe(JSON.stringify(todo));
+  });
+
+  it("DELETE dung URL co id", async () =&gt; {
+    const fetchFn = successFetch({});
+    await deleteTodo("99", fetchFn);
+    expect(fetchFn.mock.calls[0][0]).toBe(`${TODO_API_URL}/99`);
+  });
+});</code></pre></section>
+<section class="lesson"><h2>10.7.3 Chay test</h2><pre><code data-lang="bash">npm run test:unit</code></pre><p>Unit test khong can JSON Server dang chay. Bo source mau hien co 13 test business unit va 14 test API unit.</p></section>
+<nav class="pager"><a href="../bai-06/index.html" class="btn">&larr; Bai truoc</a><a href="../bai-08/index.html" class="btn primary">Bai tiep theo &rarr;</a></nav></article></div></main><script type="module" src="../../app.js"></script></body></html>

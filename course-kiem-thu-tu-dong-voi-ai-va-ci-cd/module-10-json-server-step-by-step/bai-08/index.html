@@ -1,0 +1,48 @@
+<!DOCTYPE html><html lang="vi"><head><meta charset="UTF-8"><meta name="viewport" content="width=device-width, initial-scale=1.0"><title>Bai 8: Business test | Module 10</title><link rel="stylesheet" href="../../shared.css"></head><body>
+<header class="topbar"><div class="container topbar-inner"><a class="brand" href="../../index.html"><span class="brand-mark">T</span>&nbsp;AI Testing &amp; CI/CD</a><nav class="nav-links"><a href="../../index.html#modules">Module</a><a href="../index.html">Module 10</a></nav></div></header><section class="module-hero m6"><div class="container"><div class="breadcrumb"><a href="../index.html">Module 10</a><span>/</span><span>Bai 08</span></div><h1>Bai 8: Viet Business test theo tinh huong</h1></div></section>
+<main class="section"><div class="container lesson-layout"><aside class="side-nav"><h3>Module 10</h3><ul><li><a href="../bai-01/index.html">Bai 1</a></li><li><a href="../bai-02/index.html">Bai 2</a></li><li><a href="../bai-03/index.html">Bai 3</a></li><li><a href="../bai-04/index.html">Bai 4</a></li><li><a href="../bai-05/index.html">Bai 5</a></li><li><a href="../bai-06/index.html">Bai 6</a></li><li><a href="../bai-07/index.html">Bai 7</a></li><li class="active"><a href="../bai-08/index.html">Bai 8</a></li><li><a href="../bai-09/index.html">Bai 9</a></li><li><a href="../bai-10/index.html">Bai 10</a></li></ul></aside><article class="module-article">
+<section class="lesson"><h2>10.8.1 Business test khac unit test o dau?</h2><p>Unit test hoi: ham co tra dung gia tri khong. Business test hoi: tinh huong nguoi dung can co duoc dap ung khong. Cach viet nen doc theo mau <strong>Cho truoc - Khi - Thi</strong>.</p></section>
+<section class="lesson"><h2>10.8.2 Code day du vi du business test</h2><pre><code data-lang="js">import { describe, expect, it, vi } from "vitest";
+import { createTodo } from "../../src/todoApiStore.js";
+import {
+  createTodoPayload, filterTodos, removeTodoFromList,
+  updateTodoInList, validateTodoTitle,
+} from "../../src/todoBusiness.js";
+
+describe("Business test Todo theo Cho truoc - Khi - Thi", () =&gt; {
+  it("tao payload tu ten cong viec hop le", () =&gt; {
+    // Cho truoc
+    const title = "Hoc JSON Server";
+    // Khi
+    const payload = createTodoPayload(title);
+    // Thi
+    expect(payload).toEqual({ title: "Hoc JSON Server", completed: false });
+  });
+
+  it("khong cho them khi ten cong viec rong", () =&gt; {
+    const errorMessage = validateTodoTitle("   ");
+    expect(errorMessage).toBe("Vui long nhap ten cong viec!");
+  });
+
+  it("loc cong viec chua hoan thanh", () =&gt; {
+    const todos = [
+      { id: "1", title: "Da xong", completed: true },
+      { id: "2", title: "Chua xong", completed: false },
+    ];
+    expect(filterTodos(todos, "active")).toEqual([
+      { id: "2", title: "Chua xong", completed: false },
+    ]);
+  });
+
+  it("API tra ve thanh cong khi them Todo hop le", async () =&gt; {
+    const payload = createTodoPayload("Hoc Vitest");
+    const fetchFn = vi.fn().mockResolvedValue({
+      ok: true,
+      json: async () =&gt; ({ id: "10", ...payload }),
+    });
+    const newTodo = await createTodo(payload, fetchFn);
+    expect(newTodo.id).toBe("10");
+  });
+});</code></pre></section>
+<section class="lesson"><h2>10.8.3 Chay test</h2><pre><code data-lang="bash">npm run test:business</code></pre><p>Business test trong source mau gom ca logic thuan va luong API mock thanh cong, that bai.</p></section>
+<nav class="pager"><a href="../bai-07/index.html" class="btn">&larr; Bai truoc</a><a href="../bai-09/index.html" class="btn primary">Bai tiep theo &rarr;</a></nav></article></div></main><script type="module" src="../../app.js"></script></body></html>

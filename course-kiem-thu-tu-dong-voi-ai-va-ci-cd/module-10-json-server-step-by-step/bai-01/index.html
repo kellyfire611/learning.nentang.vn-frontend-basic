@@ -1,0 +1,24 @@
+<!DOCTYPE html><html lang="vi"><head><meta charset="UTF-8"><meta name="viewport" content="width=device-width, initial-scale=1.0"><title>Bai 1: Yeu cau va kien truc | Module 10</title><link rel="stylesheet" href="../../shared.css"></head><body>
+<header class="topbar"><div class="container topbar-inner"><a class="brand" href="../../index.html"><span class="brand-mark">T</span>&nbsp;AI Testing &amp; CI/CD</a><nav class="nav-links"><a href="../../index.html#modules">Module</a><a href="../index.html">Module 10</a></nav></div></header>
+<section class="module-hero m6"><div class="container"><div class="breadcrumb"><a href="../index.html">Module 10</a><span>/</span><span>Bai 01</span></div><h1>Bai 1: Doc yeu cau va kien truc project</h1></div></section>
+<main class="section"><div class="container lesson-layout"><aside class="side-nav"><h3>Module 10</h3><ul><li class="active"><a href="../bai-01/index.html">Bai 1</a></li><li><a href="../bai-02/index.html">Bai 2</a></li><li><a href="../bai-03/index.html">Bai 3</a></li><li><a href="../bai-04/index.html">Bai 4</a></li><li><a href="../bai-05/index.html">Bai 5</a></li><li><a href="../bai-06/index.html">Bai 6</a></li><li><a href="../bai-07/index.html">Bai 7</a></li><li><a href="../bai-08/index.html">Bai 8</a></li><li><a href="../bai-09/index.html">Bai 9</a></li><li><a href="../bai-10/index.html">Bai 10</a></li></ul></aside><article class="module-article">
+<section class="lesson"><h2>10.1.1 Ket qua can dat</h2><p>Ung dung phai tai danh sach Todo tu API, them, sua, xoa, danh dau hoan thanh va loc theo trang thai.</p><table><thead><tr><th>Thao tac</th><th>HTTP method</th><th>Endpoint</th></tr></thead><tbody><tr><td>Lay danh sach</td><td>GET</td><td><code>/todos</code></td></tr><tr><td>Them moi</td><td>POST</td><td><code>/todos</code></td></tr><tr><td>Doi trang thai</td><td>PATCH</td><td><code>/todos/:id</code></td></tr><tr><td>Sua toan bo</td><td>PUT</td><td><code>/todos/:id</code></td></tr><tr><td>Xoa</td><td>DELETE</td><td><code>/todos/:id</code></td></tr></tbody></table></section>
+<section class="lesson"><h2>10.1.2 Cau truc project hoan chinh</h2><pre><code data-lang="text">todo-json-server/
+|-- db.json
+|-- index.html
+|-- package.json
+|-- playwright.config.js
+|-- src/
+|   |-- todoBusiness.js
+|   |-- todoApiStore.js
+|   |-- app.js
+|   `-- style.css
+|-- tests/
+|   |-- unit/
+|   |-- business/
+|   |-- integration/
+|   `-- e2e/
+`-- docs/</code></pre></section>
+<section class="lesson"><h2>10.1.3 Tach trach nhiem</h2><ul><li><code>todoBusiness.js</code>: xu ly du lieu thuan, khong API, khong DOM.</li><li><code>todoApiStore.js</code>: chi gui request va xu ly response.</li><li><code>app.js</code>: noi DOM, state, business va API.</li><li>Unit test test ham nho; Integration test goi API that; E2E test mo trinh duyet that.</li></ul></section>
+<section class="lesson"><h2>10.1.4 Checklist</h2><ul><li>Phan biet duoc POST, PATCH va PUT.</li><li>Hieu vi sao can tach 3 lop code.</li><li>Da mo source <a href="../../todo-json-server/index.html"><code>todo-json-server</code></a>.</li></ul></section>
+<nav class="pager"><a href="../index.html" class="btn">Danh sach bai</a><a href="../bai-02/index.html" class="btn primary">Bai tiep theo &rarr;</a></nav></article></div></main><script type="module" src="../../app.js"></script></body></html>

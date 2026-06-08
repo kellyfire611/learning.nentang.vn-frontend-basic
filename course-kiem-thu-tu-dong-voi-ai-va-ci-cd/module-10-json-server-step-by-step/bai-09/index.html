@@ -1,0 +1,64 @@
+<!DOCTYPE html><html lang="vi"><head><meta charset="UTF-8"><meta name="viewport" content="width=device-width, initial-scale=1.0"><title>Bai 9: Integration test | Module 10</title><link rel="stylesheet" href="../../shared.css"></head><body>
+<header class="topbar"><div class="container topbar-inner"><a class="brand" href="../../index.html"><span class="brand-mark">T</span>&nbsp;AI Testing &amp; CI/CD</a><nav class="nav-links"><a href="../../index.html#modules">Module</a><a href="../index.html">Module 10</a></nav></div></header><section class="module-hero m6"><div class="container"><div class="breadcrumb"><a href="../index.html">Module 10</a><span>/</span><span>Bai 09</span></div><h1>Bai 9: Viet Integration test goi JSON Server that</h1></div></section>
+<main class="section"><div class="container lesson-layout"><aside class="side-nav"><h3>Module 10</h3><ul><li><a href="../bai-01/index.html">Bai 1</a></li><li><a href="../bai-02/index.html">Bai 2</a></li><li><a href="../bai-03/index.html">Bai 3</a></li><li><a href="../bai-04/index.html">Bai 4</a></li><li><a href="../bai-05/index.html">Bai 5</a></li><li><a href="../bai-06/index.html">Bai 6</a></li><li><a href="../bai-07/index.html">Bai 7</a></li><li><a href="../bai-08/index.html">Bai 8</a></li><li class="active"><a href="../bai-09/index.html">Bai 9</a></li><li><a href="../bai-10/index.html">Bai 10</a></li></ul></aside><article class="module-article">
+<section class="lesson"><h2>10.9.1 Nguyen tac integration test</h2><ul><li>Can JSON Server that dang chay tai <code>http://localhost:3001</code>.</li><li>Moi Todo tao trong test phai duoc xoa sau test.</li><li>Test nen kiem tra ca status, schema va cac thao tac CRUD.</li></ul></section>
+<section class="lesson"><h2>10.9.2 Code khung cleanup</h2><pre><code data-lang="js">import { afterEach, beforeAll, describe, expect, it } from "vitest";
+import {
+  TODO_API_URL, createTodo, deleteTodo,
+  fetchTodos, updateTodo, updateTodoStatus,
+} from "../../src/todoApiStore.js";
+
+const createdTodoIds = [];
+
+async function checkApiIsRunning() {
+  const response = await fetch(TODO_API_URL);
+  if (!response.ok) {
+    throw new Error("JSON Server chua chay. Hay chay npm run dev:api truoc.");
+  }
+}
+
+async function createTestTodo(title = "Integration test Todo") {
+  const todo = await createTodo({ title, completed: false });
+  createdTodoIds.push(todo.id);
+  return todo;
+}
+
+afterEach(async () =&gt; {
+  while (createdTodoIds.length &gt; 0) {
+    const id = createdTodoIds.pop();
+    try { await deleteTodo(id); } catch (error) {}
+  }
+});</code></pre></section>
+<section class="lesson"><h2>10.9.3 Code cac test chinh</h2><pre><code data-lang="js">describe("Integration test API that voi JSON Server", () =&gt; {
+  beforeAll(checkApiIsRunning);
+
+  it("GET /todos tra status 200 va array", async () =&gt; {
+    const response = await fetch(TODO_API_URL);
+    const todos = await response.json();
+    expect(response.status).toBe(200);
+    expect(Array.isArray(todos)).toBe(true);
+  });
+
+  it("POST tao Todo moi co id", async () =&gt; {
+    const todo = await createTestTodo("Integration POST Todo");
+    expect(todo.id).toBeDefined();
+  });
+
+  it("PATCH cap nhat completed", async () =&gt; {
+    const todo = await createTestTodo("Integration PATCH Todo");
+    const updatedTodo = await updateTodoStatus(todo.id, true);
+    expect(updatedTodo.completed).toBe(true);
+  });
+
+  it("PUT cap nhat title", async () =&gt; {
+    const todo = await createTestTodo("Integration PUT Todo");
+    const updatedTodo = await updateTodo(todo.id, {
+      id: todo.id, title: "Integration PUT Todo Updated", completed: false,
+    });
+    expect(updatedTodo.title).toBe("Integration PUT Todo Updated");
+  });
+});</code></pre></section>
+<section class="lesson"><h2>10.9.4 Chay test</h2><pre><code data-lang="bash">npm run dev:api
+# mo terminal khac
+npm run test:integration</code></pre></section>
+<nav class="pager"><a href="../bai-08/index.html" class="btn">&larr; Bai truoc</a><a href="../bai-10/index.html" class="btn primary">Bai tiep theo &rarr;</a></nav></article></div></main><script type="module" src="../../app.js"></script></body></html>

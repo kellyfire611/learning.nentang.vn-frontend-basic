@@ -1,0 +1,49 @@
+<!DOCTYPE html><html lang="vi"><head><meta charset="UTF-8"><meta name="viewport" content="width=device-width, initial-scale=1.0"><title>Bai 5: Giao dien Todo | Module 10</title><link rel="stylesheet" href="../../shared.css"></head><body>
+<header class="topbar"><div class="container topbar-inner"><a class="brand" href="../../index.html"><span class="brand-mark">T</span>&nbsp;AI Testing &amp; CI/CD</a><nav class="nav-links"><a href="../../index.html#modules">Module</a><a href="../index.html">Module 10</a></nav></div></header><section class="module-hero m6"><div class="container"><div class="breadcrumb"><a href="../index.html">Module 10</a><span>/</span><span>Bai 05</span></div><h1>Bai 5: Tao giao dien Todo</h1></div></section>
+<main class="section"><div class="container lesson-layout"><aside class="side-nav"><h3>Module 10</h3><ul><li><a href="../bai-01/index.html">Bai 1</a></li><li><a href="../bai-02/index.html">Bai 2</a></li><li><a href="../bai-03/index.html">Bai 3</a></li><li><a href="../bai-04/index.html">Bai 4</a></li><li class="active"><a href="../bai-05/index.html">Bai 5</a></li><li><a href="../bai-06/index.html">Bai 6</a></li><li><a href="../bai-07/index.html">Bai 7</a></li><li><a href="../bai-08/index.html">Bai 8</a></li><li><a href="../bai-09/index.html">Bai 9</a></li><li><a href="../bai-10/index.html">Bai 10</a></li></ul></aside><article class="module-article">
+<section class="lesson"><h2>10.5.1 Tao index.html</h2><p>Cac <code>id</code> va <code>data-testid</code> la hop dong giua HTML, JavaScript va E2E test. Khong doi tuy tien sau khi da viet test.</p><pre><code data-lang="html">&lt;!DOCTYPE html&gt;
+&lt;html lang="vi"&gt;
+&lt;head&gt;
+  &lt;meta charset="UTF-8" /&gt;
+  &lt;meta name="viewport" content="width=device-width, initial-scale=1.0" /&gt;
+  &lt;title&gt;Todo CRUD voi JSON Server&lt;/title&gt;
+  &lt;link rel="stylesheet" href="src/style.css" /&gt;
+&lt;/head&gt;
+&lt;body&gt;
+  &lt;main class="app"&gt;
+    &lt;header class="app-header"&gt;
+      &lt;p class="lesson-label"&gt;Module 10 - API, JSON Server va Testing&lt;/p&gt;
+      &lt;h1&gt;Quan ly cong viec Todo&lt;/h1&gt;
+    &lt;/header&gt;
+
+    &lt;section class="panel"&gt;
+      &lt;h2&gt;Them cong viec&lt;/h2&gt;
+      &lt;form id="todo-form" class="todo-form"&gt;
+        &lt;label for="todo-title-input"&gt;Ten cong viec&lt;/label&gt;
+        &lt;div class="form-row"&gt;
+          &lt;input id="todo-title-input" type="text" autocomplete="off" /&gt;
+          &lt;button id="add-todo-button" type="submit"&gt;Them cong viec&lt;/button&gt;
+        &lt;/div&gt;
+        &lt;p id="form-message" class="message" role="status"&gt;&lt;/p&gt;
+      &lt;/form&gt;
+    &lt;/section&gt;
+
+    &lt;section class="panel"&gt;
+      &lt;div class="toolbar"&gt;
+        &lt;h2&gt;Danh sach cong viec&lt;/h2&gt;
+        &lt;div class="filters" aria-label="Bo loc cong viec"&gt;
+          &lt;button id="filter-all" class="filter-button active" type="button"&gt;Tat ca&lt;/button&gt;
+          &lt;button id="filter-active" class="filter-button" type="button"&gt;Chua hoan thanh&lt;/button&gt;
+          &lt;button id="filter-completed" class="filter-button" type="button"&gt;Da hoan thanh&lt;/button&gt;
+        &lt;/div&gt;
+      &lt;/div&gt;
+      &lt;p id="loading-message"&gt;&lt;/p&gt;
+      &lt;p id="api-message" class="message" role="status"&gt;&lt;/p&gt;
+      &lt;ul id="todo-list" class="todo-list"&gt;&lt;/ul&gt;
+    &lt;/section&gt;
+  &lt;/main&gt;
+  &lt;script type="module" src="src/app.js"&gt;&lt;/script&gt;
+&lt;/body&gt;
+&lt;/html&gt;</code></pre></section>
+<section class="lesson"><h2>10.5.2 Trang thai UI can co</h2><ul><li>Loading khi dang tai API.</li><li>Success va error message.</li><li>Danh sach rong.</li><li>Todo da hoan thanh co gach ngang.</li><li>Nut loc dang chon co class <code>active</code>.</li></ul></section>
+<nav class="pager"><a href="../bai-04/index.html" class="btn">&larr; Bai truoc</a><a href="../bai-06/index.html" class="btn primary">Bai tiep theo &rarr;</a></nav></article></div></main><script type="module" src="../../app.js"></script></body></html>

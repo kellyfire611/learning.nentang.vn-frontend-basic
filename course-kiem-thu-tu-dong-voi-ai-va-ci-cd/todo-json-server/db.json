@@ -1,0 +1,24 @@
+{
+  "todos": [
+    {
+      "id": "1",
+      "title": "Học HTML cơ bản",
+      "completed": false
+    },
+    {
+      "id": "3",
+      "title": "Viết test bằng Vitest",
+      "completed": true
+    },
+    {
+      "title": "dgdfgfd",
+      "completed": false,
+      "id": "2H6kYL_"
+    },
+    {
+      "title": "543534",
+      "completed": false,
+      "id": "DIAoflt"
+    }
+  ]
+}

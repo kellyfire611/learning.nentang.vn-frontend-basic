@@ -1,0 +1,81 @@
+<!DOCTYPE html><html lang="vi"><head><meta charset="UTF-8"><meta name="viewport" content="width=device-width, initial-scale=1.0"><title>Bai 6: Hoan thanh CRUD | Module 10</title><link rel="stylesheet" href="../../shared.css"></head><body>
+<header class="topbar"><div class="container topbar-inner"><a class="brand" href="../../index.html"><span class="brand-mark">T</span>&nbsp;AI Testing &amp; CI/CD</a><nav class="nav-links"><a href="../../index.html#modules">Module</a><a href="../index.html">Module 10</a></nav></div></header><section class="module-hero m6"><div class="container"><div class="breadcrumb"><a href="../index.html">Module 10</a><span>/</span><span>Bai 06</span></div><h1>Bai 6: Noi UI voi API va hoan thanh CRUD</h1></div></section>
+<main class="section"><div class="container lesson-layout"><aside class="side-nav"><h3>Module 10</h3><ul><li><a href="../bai-01/index.html">Bai 1</a></li><li><a href="../bai-02/index.html">Bai 2</a></li><li><a href="../bai-03/index.html">Bai 3</a></li><li><a href="../bai-04/index.html">Bai 4</a></li><li><a href="../bai-05/index.html">Bai 5</a></li><li class="active"><a href="../bai-06/index.html">Bai 6</a></li><li><a href="../bai-07/index.html">Bai 7</a></li><li><a href="../bai-08/index.html">Bai 8</a></li><li><a href="../bai-09/index.html">Bai 9</a></li><li><a href="../bai-10/index.html">Bai 10</a></li></ul></aside><article class="module-article">
+<section class="lesson"><h2>10.6.1 Import va state</h2><pre><code data-lang="js">import { createTodo, deleteTodo, fetchTodos, updateTodo, updateTodoStatus } from "./todoApiStore.js";
+import {
+  createTodoPayload, filterTodos, findTodoById,
+  removeTodoFromList, updateTodoInList, validateTodoTitle,
+} from "./todoBusiness.js";
+
+let todos = [];
+let currentFilter = "all";</code></pre></section>
+<section class="lesson"><h2>10.6.2 Tai va render danh sach</h2><pre><code data-lang="js">async function loadTodos() {
+  loadingMessage.textContent = "Dang tai danh sach cong viec...";
+  try {
+    todos = await fetchTodos();
+    renderTodos();
+    showMessage(apiMessage, "Tai du lieu thanh cong!", "success");
+  } catch (error) {
+    showMessage(apiMessage, "Khong the tai danh sach cong viec!", "error");
+  } finally {
+    loadingMessage.textContent = "";
+  }
+}
+
+function renderTodos() {
+  const visibleTodos = filterTodos(todos, currentFilter);
+  todoList.textContent = "";
+  visibleTodos.forEach((todo) =&gt; todoList.appendChild(renderTodoItem(todo)));
+}</code></pre></section>
+<section class="lesson"><h2>10.6.3 Code day du cac handler CRUD</h2><pre><code data-lang="js">async function handleCreateTodo(event) {
+  event.preventDefault();
+  const errorMessage = validateTodoTitle(todoTitleInput.value);
+  if (errorMessage) return showMessage(formMessage, errorMessage, "error");
+
+  try {
+    const newTodo = await createTodo(createTodoPayload(todoTitleInput.value));
+    todos = [...todos, newTodo];
+    todoTitleInput.value = "";
+    renderTodos();
+    showMessage(formMessage, "Them cong viec thanh cong!", "success");
+  } catch (error) {
+    showMessage(formMessage, error.message, "error");
+  }
+}
+
+async function handleToggleTodo(id, completed) {
+  try {
+    const updatedTodo = await updateTodoStatus(id, completed);
+    todos = updateTodoInList(todos, updatedTodo);
+    renderTodos();
+  } catch (error) {
+    showMessage(apiMessage, error.message, "error");
+    renderTodos();
+  }
+}
+
+async function handleEditTodo(id) {
+  const currentTodo = findTodoById(todos, id);
+  const newTitle = prompt("Nhap ten cong viec moi:", currentTodo.title);
+  if (newTitle === null) return;
+  const errorMessage = validateTodoTitle(newTitle);
+  if (errorMessage) return showMessage(apiMessage, errorMessage, "error");
+
+  const updatedTodo = await updateTodo(id, { ...currentTodo, title: newTitle.trim() });
+  todos = updateTodoInList(todos, updatedTodo);
+  renderTodos();
+}
+
+async function handleDeleteTodo(id) {
+  if (!confirm("Ban co chac muon xoa cong viec nay?")) return;
+  await deleteTodo(id);
+  todos = removeTodoFromList(todos, id);
+  renderTodos();
+}
+
+function setFilter(filter) {
+  currentFilter = filter;
+  renderTodos();
+}</code></pre><p>Phan tao DOM trong <code>renderTodoItem</code> gan tung nut vao dung handler. Xem source hoan chinh tai <a href="../../todo-json-server/index.html"><code>todo-json-server/src/app.js</code></a>.</p></section>
+<section class="lesson"><h2>10.6.4 Checklist thu cong</h2><ul><li>Reload trang van thay du lieu da them.</li><li>PATCH chi doi <code>completed</code>; PUT giu du cac thuoc tinh.</li><li>Xoa va loc cap nhat UI ngay, khong can reload.</li><li>Khi API tat, giao dien hien loi thay vi vo trang.</li></ul></section>
+<nav class="pager"><a href="../bai-05/index.html" class="btn">&larr; Bai truoc</a><a href="../bai-07/index.html" class="btn primary">Bai tiep theo &rarr;</a></nav></article></div></main><script type="module" src="../../app.js"></script></body></html>

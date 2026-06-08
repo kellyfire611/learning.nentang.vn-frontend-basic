@@ -1,0 +1,61 @@
+<!DOCTYPE html>
+<html lang="vi">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Todo CRUD với JSON Server</title>
+  <link rel="stylesheet" href="src/style.css" />
+</head>
+<body>
+  <main class="app">
+    <section class="app-header">
+      <p class="lesson-label">Module 10 - API, JSON Server và Testing</p>
+      <h1>Quản lý công việc Todo</h1>
+      <p>Thực hành GET, POST, PATCH, PUT, DELETE bằng Fetch API và JSON Server.</p>
+    </section>
+
+    <section class="panel">
+      <h2>Thêm công việc</h2>
+      <form id="todo-form" class="todo-form">
+        <label for="todo-title-input">Tên công việc</label>
+        <div class="form-row">
+          <input id="todo-title-input" type="text" placeholder="Ví dụ: Học Fetch API" autocomplete="off" />
+          <button id="add-todo-button" type="submit">Thêm công việc</button>
+        </div>
+        <p id="form-message" class="message" role="status"></p>
+      </form>
+    </section>
+
+    <section class="panel">
+      <div class="toolbar">
+        <h2>Danh sách công việc</h2>
+        <div class="filters" aria-label="Bộ lọc công việc">
+          <button id="filter-all" class="filter-button active" type="button">Tất cả</button>
+          <button id="filter-active" class="filter-button" type="button">Chưa hoàn thành</button>
+          <button id="filter-completed" class="filter-button" type="button">Đã hoàn thành</button>
+        </div>
+      </div>
+
+      <p id="loading-message" class="loading-message"></p>
+      <p id="api-message" class="message" role="status"></p>
+      <ul id="todo-list" class="todo-list"></ul>
+    </section>
+
+    <section class="guide">
+      <h2>Hướng dẫn thực hiện từng bước</h2>
+      <ol>
+        <li>Cài dependencies bằng lệnh <code>npm install</code>.</li>
+        <li>Chạy API local bằng <code>npm run dev:api</code>, endpoint là <code>http://localhost:3001/todos</code>.</li>
+        <li>Chạy web bằng <code>npm run dev:web</code> và mở <code>http://localhost:3000</code>.</li>
+        <li>Đọc <code>src/todoApiStore.js</code> để hiểu các hàm gọi API.</li>
+        <li>Đọc <code>src/todoBusiness.js</code> để hiểu validate, lọc và cập nhật danh sách.</li>
+        <li>Đọc <code>src/app.js</code> để hiểu cách nối giao diện với API.</li>
+        <li>Chạy <code>npm run test:unit</code> và <code>npm run test:business</code> trước.</li>
+        <li>Khi API đang chạy, chạy thêm <code>npm run test:integration</code> và <code>npm run test:e2e</code>.</li>
+      </ol>
+    </section>
+  </main>
+
+  <script type="module" src="src/app.js"></script>
+</body>
+</html>

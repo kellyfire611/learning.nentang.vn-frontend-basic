@@ -1,0 +1,28 @@
+{
+  "name": "todo-json-server",
+  "version": "1.0.0",
+  "private": true,
+  "type": "module",
+  "scripts": {
+    "dev:web": "http-server . -p 3000 -c-1",
+    "dev:api": "json-server --watch db.json --port 3001",
+    "dev": "concurrently \"npm run dev:web\" \"npm run dev:api\"",
+    "test": "npm run test:all",
+    "test:unit": "vitest run tests/unit",
+    "test:business": "vitest run tests/business",
+    "test:integration": "vitest run tests/integration",
+    "test:e2e": "playwright test",
+    "test:e2e:ui": "playwright test --ui",
+    "test:coverage": "vitest run --coverage",
+    "test:all": "npm run test:unit && npm run test:business",
+    "test:all-with-api": "npm run test:unit && npm run test:business && npm run test:integration && npm run test:e2e"
+  },
+  "devDependencies": {
+    "@playwright/test": "^1.44.1",
+    "@vitest/coverage-v8": "^1.6.0",
+    "concurrently": "^8.2.2",
+    "http-server": "^14.1.1",
+    "json-server": "^0.17.4",
+    "vitest": "^1.6.0"
+  }
+}

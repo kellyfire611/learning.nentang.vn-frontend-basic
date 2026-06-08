@@ -1,0 +1,60 @@
+<!DOCTYPE html><html lang="vi"><head><meta charset="UTF-8"><meta name="viewport" content="width=device-width, initial-scale=1.0"><title>Bai 10: E2E va full test | Module 10</title><link rel="stylesheet" href="../../shared.css"></head><body>
+<header class="topbar"><div class="container topbar-inner"><a class="brand" href="../../index.html"><span class="brand-mark">T</span>&nbsp;AI Testing &amp; CI/CD</a><nav class="nav-links"><a href="../../index.html#modules">Module</a><a href="../index.html">Module 10</a></nav></div></header><section class="module-hero m6"><div class="container"><div class="breadcrumb"><a href="../index.html">Module 10</a><span>/</span><span>Bai 10</span></div><h1>Bai 10: Viet E2E test va chay full test</h1></div></section>
+<main class="section"><div class="container lesson-layout"><aside class="side-nav"><h3>Module 10</h3><ul><li><a href="../bai-01/index.html">Bai 1</a></li><li><a href="../bai-02/index.html">Bai 2</a></li><li><a href="../bai-03/index.html">Bai 3</a></li><li><a href="../bai-04/index.html">Bai 4</a></li><li><a href="../bai-05/index.html">Bai 5</a></li><li><a href="../bai-06/index.html">Bai 6</a></li><li><a href="../bai-07/index.html">Bai 7</a></li><li><a href="../bai-08/index.html">Bai 8</a></li><li><a href="../bai-09/index.html">Bai 9</a></li><li class="active"><a href="../bai-10/index.html">Bai 10</a></li></ul></aside><article class="module-article">
+<section class="lesson"><h2>10.10.1 Cau hinh Playwright</h2><pre><code data-lang="js">import { defineConfig } from "@playwright/test";
+
+export default defineConfig({
+  testDir: "./tests/e2e",
+  use: { baseURL: "http://localhost:3000" },
+  webServer: [
+    { command: "npm run dev:web", port: 3000, reuseExistingServer: true },
+    { command: "npm run dev:api", port: 3001, reuseExistingServer: true },
+  ],
+});</code></pre></section>
+<section class="lesson"><h2>10.10.2 Code E2E mau</h2><pre><code data-lang="js">import { expect, test } from "@playwright/test";
+
+const API_URL = "http://localhost:3001/todos";
+const TEST_PREFIX = "E2E Todo";
+
+async function createTodoByApi(request, title, completed = false) {
+  const response = await request.post(API_URL, { data: { title, completed } });
+  return response.json();
+}
+
+async function cleanupE2eTodos(request) {
+  const response = await request.get(API_URL);
+  const todos = await response.json();
+  for (const todo of todos.filter((todo) =&gt; todo.title.startsWith(TEST_PREFIX))) {
+    await request.delete(`${API_URL}/${todo.id}`);
+  }
+}
+
+test.afterEach(async ({ request }) =&gt; cleanupE2eTodos(request));
+
+test("mo trang va tai danh sach Todo", async ({ page }) =&gt; {
+  await page.goto("/");
+  await expect(page.locator("h1")).toContainText("Quan ly cong viec Todo");
+  await expect(page.locator('[data-testid="todo-item"]').first()).toBeVisible();
+});
+
+test("them Todo moi thanh cong", async ({ page }) =&gt; {
+  await page.goto("/");
+  await page.locator("#todo-title-input").fill(`${TEST_PREFIX} them moi`);
+  await page.locator("#add-todo-button").click();
+  await expect(page.locator("#todo-list")).toContainText(`${TEST_PREFIX} them moi`);
+});
+
+test("sua ten Todo", async ({ page, request }) =&gt; {
+  const todo = await createTodoByApi(request, `${TEST_PREFIX} can sua`, false);
+  await page.goto("/");
+  page.on("dialog", async (dialog) =&gt; dialog.accept(`${TEST_PREFIX} da sua`));
+  await page.locator(`[data-id="${todo.id}"]`).locator('[data-testid="edit-todo-button"]').click();
+  await expect(page.locator("#todo-list")).toContainText(`${TEST_PREFIX} da sua`);
+});</code></pre></section>
+<section class="lesson"><h2>10.10.3 Thu tu chay cuoi module</h2><pre><code data-lang="bash">npm run test:unit
+npm run test:business
+npm run test:integration
+npm run test:e2e
+npm run test:all-with-api</code></pre></section>
+<section class="lesson"><h2>10.10.4 Checklist hoan thanh</h2><ul><li>Ung dung CRUD chay duoc voi JSON Server.</li><li>Test nho pass truoc khi chay E2E.</li><li>Integration va E2E co cleanup du lieu test.</li><li>README, test plan va testing guide da mo ta du lenh chay.</li></ul></section>
+<nav class="pager"><a href="../bai-09/index.html" class="btn">&larr; Bai truoc</a><a href="../index.html" class="btn primary">Hoan tat module &rarr;</a></nav></article></div></main><script type="module" src="../../app.js"></script></body></html>

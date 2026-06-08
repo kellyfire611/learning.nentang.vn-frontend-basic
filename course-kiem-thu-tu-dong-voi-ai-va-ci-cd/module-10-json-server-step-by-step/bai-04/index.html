@@ -1,0 +1,63 @@
+<!DOCTYPE html><html lang="vi"><head><meta charset="UTF-8"><meta name="viewport" content="width=device-width, initial-scale=1.0"><title>Bai 4: Lop REST API | Module 10</title><link rel="stylesheet" href="../../shared.css"></head><body>
+<header class="topbar"><div class="container topbar-inner"><a class="brand" href="../../index.html"><span class="brand-mark">T</span>&nbsp;AI Testing &amp; CI/CD</a><nav class="nav-links"><a href="../../index.html#modules">Module</a><a href="../index.html">Module 10</a></nav></div></header><section class="module-hero m6"><div class="container"><div class="breadcrumb"><a href="../index.html">Module 10</a><span>/</span><span>Bai 04</span></div><h1>Bai 4: Viet lop goi REST API</h1></div></section>
+<main class="section"><div class="container lesson-layout"><aside class="side-nav"><h3>Module 10</h3><ul><li><a href="../bai-01/index.html">Bai 1</a></li><li><a href="../bai-02/index.html">Bai 2</a></li><li><a href="../bai-03/index.html">Bai 3</a></li><li class="active"><a href="../bai-04/index.html">Bai 4</a></li><li><a href="../bai-05/index.html">Bai 5</a></li><li><a href="../bai-06/index.html">Bai 6</a></li><li><a href="../bai-07/index.html">Bai 7</a></li><li><a href="../bai-08/index.html">Bai 8</a></li><li><a href="../bai-09/index.html">Bai 9</a></li><li><a href="../bai-10/index.html">Bai 10</a></li></ul></aside><article class="module-article">
+<section class="lesson"><h2>10.4.1 Code day du todoApiStore.js</h2><pre><code data-lang="js">export const TODO_API_URL = "http://localhost:3001/todos";
+
+function buildTodoUrl(id) {
+  return `${TODO_API_URL}/${id}`;
+}
+
+async function parseJson(response) {
+  return response.json();
+}
+
+export async function fetchTodos(fetchFn = fetch) {
+  const response = await fetchFn(TODO_API_URL);
+  if (!response.ok) throw new Error("Khong the tai danh sach cong viec!");
+  return parseJson(response);
+}
+
+export async function fetchTodoById(id, fetchFn = fetch) {
+  const response = await fetchFn(buildTodoUrl(id));
+  if (!response.ok) throw new Error("Khong the tai cong viec!");
+  return parseJson(response);
+}
+
+export async function createTodo(todo, fetchFn = fetch) {
+  const response = await fetchFn(TODO_API_URL, {
+    method: "POST",
+    headers: { "Content-Type": "application/json" },
+    body: JSON.stringify(todo),
+  });
+  if (!response.ok) throw new Error("Khong the them cong viec!");
+  return parseJson(response);
+}
+
+export async function updateTodo(id, todo, fetchFn = fetch) {
+  const response = await fetchFn(buildTodoUrl(id), {
+    method: "PUT",
+    headers: { "Content-Type": "application/json" },
+    body: JSON.stringify(todo),
+  });
+  if (!response.ok) throw new Error("Khong the cap nhat cong viec!");
+  return parseJson(response);
+}
+
+export async function updateTodoStatus(id, completed, fetchFn = fetch) {
+  const response = await fetchFn(buildTodoUrl(id), {
+    method: "PATCH",
+    headers: { "Content-Type": "application/json" },
+    body: JSON.stringify({ completed }),
+  });
+  if (!response.ok) throw new Error("Khong the cap nhat trang thai cong viec!");
+  return parseJson(response);
+}
+
+export async function deleteTodo(id, fetchFn = fetch) {
+  const response = await fetchFn(buildTodoUrl(id), { method: "DELETE" });
+  if (!response.ok) throw new Error("Khong the xoa cong viec!");
+  return parseJson(response);
+}</code></pre></section>
+<section class="lesson"><h2>10.4.2 Vi sao truyen fetchFn?</h2><p>Gia tri mac dinh van la <code>fetch</code> that. Trong unit test, ta truyen ham mock vao de kiem tra URL, method, header va body ma khong can khoi dong server.</p></section>
+<section class="lesson"><h2>10.4.3 Tu thu bang DevTools</h2><p>Mo Network, thao tac tren app, sau do xac nhan request dung method, dung endpoint va response co JSON hop le.</p></section>
+<nav class="pager"><a href="../bai-03/index.html" class="btn">&larr; Bai truoc</a><a href="../bai-05/index.html" class="btn primary">Bai tiep theo &rarr;</a></nav></article></div></main><script type="module" src="../../app.js"></script></body></html>
