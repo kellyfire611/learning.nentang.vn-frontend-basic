@@ -1,0 +1,111 @@
+<!DOCTYPE html>
+<html lang="vi">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Bài tập tự làm: Quản lý danh bạ khách hàng với JSON Server</title>
+  <link rel="stylesheet" href="src/style.css" />
+</head>
+<body>
+  <main class="app">
+    <section class="app-header">
+      <p class="lesson-label">Bài tập tự làm - JSON Server, Fetch API và Testing</p>
+      <h1>Quản lý danh bạ khách hàng</h1>
+      <p>Tự xây dựng ứng dụng CRUD khách hàng bằng HTML, CSS, JavaScript thuần, JSON Server, Vitest và Playwright.</p>
+    </section>
+
+    <section class="summary-grid" aria-label="Thống kê khách hàng">
+      <article class="summary-card"><strong id="summary-total">0</strong><span>Tổng khách</span></article>
+      <article class="summary-card"><strong id="summary-new">0</strong><span>Khách mới</span></article>
+      <article class="summary-card"><strong id="summary-contacted">0</strong><span>Đã tư vấn</span></article>
+      <article class="summary-card"><strong id="summary-registered">0</strong><span>Đã đăng ký</span></article>
+      <article class="summary-card"><strong id="summary-favorite">0</strong><span>Yêu thích</span></article>
+    </section>
+
+    <section class="panel">
+      <h2 id="form-title">Thêm khách hàng mới</h2>
+      <form id="customer-form" class="customer-form">
+        <div class="form-grid">
+          <label>
+            Họ tên
+            <input id="customer-full-name-input" type="text" placeholder="Ví dụ: Nguyễn Văn An" autocomplete="off" />
+          </label>
+          <label>
+            Số điện thoại
+            <input id="customer-phone-input" type="tel" placeholder="Ví dụ: 0912345678" autocomplete="off" />
+          </label>
+          <label>
+            Email
+            <input id="customer-email-input" type="email" placeholder="Ví dụ: an@example.com" autocomplete="off" />
+          </label>
+          <label>
+            Khóa học quan tâm
+            <input id="customer-course-input" type="text" placeholder="Ví dụ: Playwright E2E Testing" autocomplete="off" />
+          </label>
+          <label>
+            Trạng thái
+            <select id="customer-status-select">
+              <option value="new">Khách mới</option>
+              <option value="contacted">Đã tư vấn</option>
+              <option value="registered">Đã đăng ký</option>
+            </select>
+          </label>
+          <label class="checkbox-label">
+            <input id="customer-favorite-checkbox" type="checkbox" />
+            Khách hàng yêu thích
+          </label>
+        </div>
+        <label>
+          Ghi chú
+          <textarea id="customer-note-input" rows="3" placeholder="Nhập ghi chú ngắn nếu có"></textarea>
+        </label>
+        <div class="form-actions">
+          <button id="submit-customer-button" type="submit">Thêm khách hàng</button>
+          <button id="cancel-edit-button" type="button" class="secondary" hidden>Hủy sửa</button>
+        </div>
+        <p id="form-message" class="message" role="status"></p>
+      </form>
+    </section>
+
+    <section class="panel">
+      <div class="toolbar">
+        <div>
+          <h2>Danh sách khách hàng</h2>
+          <p>Gọi API tại <code>http://localhost:3001/customers</code></p>
+        </div>
+        <label class="search-box">
+          Tìm kiếm
+          <input id="customer-search-input" type="search" placeholder="Tên, điện thoại, email, khóa học" />
+        </label>
+      </div>
+
+      <div class="filters" aria-label="Bộ lọc khách hàng">
+        <button class="filter-button active" type="button" data-filter="all">Tất cả</button>
+        <button class="filter-button" type="button" data-filter="new">Khách mới</button>
+        <button class="filter-button" type="button" data-filter="contacted">Đã tư vấn</button>
+        <button class="filter-button" type="button" data-filter="registered">Đã đăng ký</button>
+        <button class="filter-button" type="button" data-filter="favorite">Yêu thích</button>
+      </div>
+
+      <p id="loading-message" class="loading-message"></p>
+      <p id="api-message" class="message" role="status"></p>
+      <p id="empty-message" class="empty-message" hidden>Không có khách hàng phù hợp.</p>
+      <div id="customer-list" class="customer-list"></div>
+    </section>
+
+    <section class="guide">
+      <h2>Yêu cầu học viên tự làm</h2>
+      <ol>
+        <li>Đọc <code>docs/de-bai.md</code> để hiểu nghiệp vụ.</li>
+        <li>Hoàn thành các hàm xử lý trong <code>src/customerBusiness.js</code>.</li>
+        <li>Hoàn thành các hàm gọi API trong <code>src/customerApiStore.js</code>.</li>
+        <li>Nối giao diện với API trong <code>src/app.js</code>.</li>
+        <li>Viết Unit test, Business test, Integration test và E2E test theo tài liệu.</li>
+      </ol>
+      <p>Đây là bài tự làm sau bài Todo JSON Server. Học viên nên tự code lại, không copy nguyên bài Todo.</p>
+    </section>
+  </main>
+
+  <script type="module" src="src/app.js"></script>
+</body>
+</html>
