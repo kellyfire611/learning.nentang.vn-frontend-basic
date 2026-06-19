@@ -1,0 +1,34 @@
+{
+  "customers": [
+    {
+      "id": "1",
+      "fullName": "Nguyen Van An",
+      "phone": "0912345678",
+      "email": "an@example.com",
+      "course": "Kiem thu tu dong voi AI va CI/CD",
+      "status": "new",
+      "isFavorite": true,
+      "note": "Quan tam lop cuoi tuan"
+    },
+    {
+      "id": "2",
+      "fullName": "Tran Thi Binh",
+      "phone": "0987654321",
+      "email": "binh@example.com",
+      "course": "HTML CSS JavaScript co ban",
+      "status": "contacted",
+      "isFavorite": false,
+      "note": "Da goi tu van lan 1"
+    },
+    {
+      "id": "3",
+      "fullName": "Le Quoc Cuong",
+      "phone": "0901122334",
+      "email": "cuong@example.com",
+      "course": "Playwright E2E Testing",
+      "status": "registered",
+      "isFavorite": false,
+      "note": "Da dang ky va cho thanh toan"
+    }
+  ]
+}
