@@ -1,0 +1,34 @@
+{
+  "customers": [
+    {
+      "id": "1",
+      "fullName": "Nguyễn Văn An",
+      "phone": "0912345678",
+      "email": "an@example.com",
+      "course": "Lập trình Web",
+      "status": "new",
+      "isFavorite": false,
+      "note": "Muốn học buổi tối"
+    },
+    {
+      "id": "2",
+      "fullName": "Trần Thị Bình",
+      "phone": "0987654321",
+      "email": "binh@example.com",
+      "course": "Kiểm thử phần mềm",
+      "status": "contacted",
+      "isFavorite": true,
+      "note": "Đã gọi tư vấn lần 1"
+    },
+    {
+      "id": "3",
+      "fullName": "Dương Nguyễn Phú Cường",
+      "phone": "0909123456",
+      "email": "",
+      "course": "JavaScript cơ bản",
+      "status": "registered",
+      "isFavorite": false,
+      "note": "Đã đăng ký học cuối tuần"
+    }
+  ]
+}

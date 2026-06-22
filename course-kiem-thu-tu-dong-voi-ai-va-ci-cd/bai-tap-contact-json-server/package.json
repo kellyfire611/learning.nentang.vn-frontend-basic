@@ -1,0 +1,26 @@
+{
+  "name": "bai-tap-contact-json-server",
+  "version": "1.0.0",
+  "private": true,
+  "type": "module",
+  "scripts": {
+    "dev": "vite",
+    "server": "json-server --watch db.json --port 3001",
+    "server:e2e": "node scripts/reset-e2e-db.js && json-server tests/e2e/db.e2e.json --port 3001",
+    "test": "vitest run tests/unit tests/business",
+    "test:unit": "vitest run tests/unit",
+    "test:business": "vitest run tests/business",
+    "test:integration": "vitest run tests/integration --pool=forks --testTimeout=15000",
+    "test:e2e": "playwright test",
+    "test:all": "npm run test && npm run test:integration && npm run test:e2e"
+  },
+  "devDependencies": {
+    "@playwright/test": "^1.54.0",
+    "json-server": "0.17.4",
+    "vite": "^5.4.0",
+    "vitest": "^2.1.0"
+  },
+  "engines": {
+    "node": ">=18"
+  }
+}

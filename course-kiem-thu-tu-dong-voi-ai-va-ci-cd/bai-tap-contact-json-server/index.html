@@ -1,0 +1,130 @@
+<!doctype html>
+<html lang="vi">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Quản lý khách hàng quan tâm khóa học</title>
+    <link rel="stylesheet" href="src/style.css" />
+  </head>
+  <body>
+    <header class="page-header">
+      <h1>Quản lý khách hàng quan tâm khóa học</h1>
+      <p>Ứng dụng HTML, CSS, JavaScript thuần dùng JSON Server làm REST API local.</p>
+    </header>
+
+    <main class="container">
+      <section class="summary-grid" aria-label="Thống kê khách hàng">
+        <div class="summary-card">
+          <span>Khách mới</span>
+          <strong class="summary-number" data-testid="newCount">0</strong>
+        </div>
+        <div class="summary-card">
+          <span>Đã tư vấn</span>
+          <strong class="summary-number" data-testid="contactedCount">0</strong>
+        </div>
+        <div class="summary-card">
+          <span>Đã đăng ký</span>
+          <strong class="summary-number" data-testid="registeredCount">0</strong>
+        </div>
+      </section>
+
+      <section class="card">
+        <h2 data-testid="formTitle">Thêm khách hàng mới</h2>
+
+        <form data-testid="customerForm" novalidate>
+          <div class="form-grid">
+            <div class="form-field">
+              <label for="fullName">Họ tên <span aria-hidden="true">*</span></label>
+              <input id="fullName" data-testid="fullNameInput" name="fullName" autocomplete="name" />
+              <span class="error-text" data-error-for="fullName"></span>
+            </div>
+
+            <div class="form-field">
+              <label for="phone">Số điện thoại <span aria-hidden="true">*</span></label>
+              <input id="phone" data-testid="phoneInput" name="phone" autocomplete="tel" />
+              <span class="error-text" data-error-for="phone"></span>
+            </div>
+
+            <div class="form-field">
+              <label for="email">Email</label>
+              <input id="email" data-testid="emailInput" name="email" autocomplete="email" />
+              <span class="error-text" data-error-for="email"></span>
+            </div>
+
+            <div class="form-field">
+              <label for="course">Khóa học quan tâm <span aria-hidden="true">*</span></label>
+              <input id="course" data-testid="courseInput" name="course" />
+              <span class="error-text" data-error-for="course"></span>
+            </div>
+
+            <div class="form-field">
+              <label for="status">Trạng thái</label>
+              <select id="status" data-testid="statusInput" name="status">
+                <option value="new">Khách mới</option>
+                <option value="contacted">Đã tư vấn</option>
+                <option value="registered">Đã đăng ký</option>
+              </select>
+            </div>
+
+            <div class="form-field checkbox-field">
+              <label>
+                <input type="checkbox" data-testid="isFavoriteInput" name="isFavorite" />
+                Đánh dấu yêu thích
+              </label>
+            </div>
+
+            <div class="form-field full">
+              <label for="note">Ghi chú</label>
+              <textarea id="note" data-testid="noteInput" name="note"></textarea>
+            </div>
+          </div>
+
+          <div class="form-actions">
+            <button class="button" type="submit" data-testid="submitButton">Thêm khách hàng</button>
+            <button class="button button-secondary" type="button" data-testid="cancelEditButton" hidden>Hủy sửa</button>
+          </div>
+        </form>
+      </section>
+
+      <section class="card">
+        <div class="toolbar">
+          <div class="filter-group" data-testid="filterGroup" aria-label="Bộ lọc khách hàng">
+            <button class="button filter-button active" type="button" data-filter="all" data-testid="filterAll">Tất cả</button>
+            <button class="button filter-button" type="button" data-filter="new" data-testid="filterNew">Khách mới</button>
+            <button class="button filter-button" type="button" data-filter="contacted" data-testid="filterContacted">Đã tư vấn</button>
+            <button class="button filter-button" type="button" data-filter="registered" data-testid="filterRegistered">Đã đăng ký</button>
+            <button class="button filter-button" type="button" data-filter="favorite" data-testid="filterFavorite">Yêu thích</button>
+          </div>
+
+          <input class="search-box" data-testid="searchInput" placeholder="Tìm theo họ tên, số điện thoại, email, khóa học..." />
+        </div>
+
+        <div class="status-line">
+          <span>Tổng số đang hiển thị: <strong data-testid="customerCount">0</strong></span>
+          <span class="loading" data-testid="loading" hidden>Đang tải dữ liệu...</span>
+        </div>
+
+        <div class="message" data-testid="message" hidden></div>
+
+        <div class="table-wrap">
+          <table>
+            <thead>
+              <tr>
+                <th>Họ tên</th>
+                <th>Số điện thoại</th>
+                <th>Email</th>
+                <th>Khóa học</th>
+                <th>Trạng thái</th>
+                <th>Ghi chú</th>
+                <th>Thao tác</th>
+              </tr>
+            </thead>
+            <tbody data-testid="customerList"></tbody>
+          </table>
+        </div>
+      </section>
+    </main>
+
+    <script type="module" src="src/app.js"></script>
+  </body>
+</html>

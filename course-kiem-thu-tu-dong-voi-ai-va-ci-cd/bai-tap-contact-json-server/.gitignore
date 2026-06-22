@@ -1,0 +1,8 @@
+node_modules/
+dist/
+playwright-report/
+test-results/
+coverage/
+tests/e2e/db.e2e.json
+.env
+.DS_Store
