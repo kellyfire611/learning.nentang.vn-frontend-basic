@@ -1,0 +1,40 @@
+{
+  "products": [
+    {
+      "id": "1",
+      "code": "SP001",
+      "name": "Trà sữa",
+      "price": 25000,
+      "stock": 6
+    },
+    {
+      "id": "2",
+      "code": "SP002",
+      "name": "Bánh mì",
+      "price": 15000,
+      "stock": 2
+    },
+    {
+      "id": "3",
+      "code": "SP003",
+      "name": "Cà phê",
+      "price": 20000,
+      "stock": 5
+    },
+    {
+      "id": "4",
+      "code": "SP004",
+      "name": "Nước suối",
+      "price": 10000,
+      "stock": 15
+    },
+    {
+      "id": "5",
+      "code": "SP005",
+      "name": "Mì ly",
+      "price": 12000,
+      "stock": 8
+    }
+  ],
+  "$schema": "./node_modules/json-server/schema.json"
+}

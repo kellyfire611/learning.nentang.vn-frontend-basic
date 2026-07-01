@@ -1,0 +1,22 @@
+{
+  "name": "mini-pos-playwright",
+  "version": "1.0.0",
+  "description": "Bài mẫu Mini POS bán hàng trừ kho bằng HTML/CSS/JS, json-server, Vitest và Playwright",
+  "type": "module",
+  "scripts": {
+    "api": "json-server --watch db.json --port 3000",
+    "dev": "vite --host 127.0.0.1 --port 5173",
+    "reset-db": "node scripts/reset-db.mjs",
+    "test": "vitest run",
+    "test:watch": "vitest",
+    "test:e2e": "playwright test",
+    "test:e2e:ui": "playwright test --ui",
+    "install:browsers": "playwright install"
+  },
+  "devDependencies": {
+    "@playwright/test": "^1.55.0",
+    "json-server": "^1.0.0-beta.3",
+    "vite": "^7.0.0",
+    "vitest": "^3.2.0"
+  }
+}

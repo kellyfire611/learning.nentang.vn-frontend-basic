@@ -1,0 +1,85 @@
+<!DOCTYPE html>
+<html lang="vi">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Mini POS - Bán hàng trừ kho</title>
+  <link rel="stylesheet" href="/src/styles.css" />
+</head>
+<body>
+  <div class="app-shell">
+    <header class="app-header">
+      <div>
+        <p class="eyebrow">Bài thực hành kiểm thử tự động</p>
+        <h1>Mini POS bán hàng và trừ kho</h1>
+        <p class="subtitle">HTML, CSS, JavaScript, json-server, Vitest và Playwright</p>
+      </div>
+
+      <div class="header-card">
+        <span>API</span>
+        <strong>json-server</strong>
+      </div>
+    </header>
+
+    <main class="layout">
+      <section class="card">
+        <div class="section-title">
+          <div>
+            <h2>Danh sách sản phẩm</h2>
+            <p>Nhập số lượng và thêm vào giỏ hàng</p>
+          </div>
+          <button id="reload-button" data-testid="reload-button" class="secondary-button">
+            Tải lại
+          </button>
+        </div>
+
+        <div class="table-wrap">
+          <table>
+            <thead>
+              <tr>
+                <th>Mã</th>
+                <th>Sản phẩm</th>
+                <th>Giá</th>
+                <th>Tồn kho</th>
+                <th>Số lượng mua</th>
+                <th>Thao tác</th>
+              </tr>
+            </thead>
+            <tbody id="product-list" data-testid="product-list">
+              <tr>
+                <td colspan="6">Đang tải sản phẩm...</td>
+              </tr>
+            </tbody>
+          </table>
+        </div>
+      </section>
+
+      <aside class="card cart-card">
+        <div class="section-title">
+          <div>
+            <h2>Giỏ hàng</h2>
+            <p>Kiểm tra tổng tiền trước khi thanh toán</p>
+          </div>
+        </div>
+
+        <div id="message" data-testid="message" class="message hidden"></div>
+
+        <div id="cart-items" data-testid="cart-items" class="cart-items">
+          Giỏ hàng trống
+        </div>
+
+        <div class="cart-total">
+          <span>Tổng tiền</span>
+          <strong id="cart-total" data-testid="cart-total">0 ₫</strong>
+        </div>
+
+        <button id="checkout-button" data-testid="checkout-button" class="primary-button">
+          Thanh toán
+        </button>
+      </aside>
+    </main>
+  </div>
+
+  <script type="module" src="/src/main.js"></script>
+</body>
+</html>
