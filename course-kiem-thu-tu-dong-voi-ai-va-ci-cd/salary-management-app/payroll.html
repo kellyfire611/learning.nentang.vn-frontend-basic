@@ -1,0 +1,125 @@
+<!doctype html>
+<html lang="vi">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Lập bảng lương</title>
+    <link rel="stylesheet" href="./src/css/style.css" />
+  </head>
+  <body>
+    <div class="container wide">
+      <header class="page-header">
+        <nav class="top-nav" aria-label="Điều hướng">
+          <a href="./index.html">Trang chủ</a>
+          <a href="./employees.html">Nhân viên</a>
+          <a class="active" href="./payroll.html">Bảng lương</a>
+        </nav>
+        <p class="eyebrow">Trang 2</p>
+        <h1>Lập bảng lương</h1>
+        <p class="page-description">
+          Tạo bảng lương theo tháng, nhập ngày công, tăng ca, thưởng, khấu trừ, tạm ứng và khóa bảng lương sau khi chốt.
+        </p>
+      </header>
+
+      <section class="card">
+        <h2>Chọn kỳ lương</h2>
+        <div class="toolbar">
+          <label>
+            <span>Tháng</span>
+            <select id="payroll-month-select">
+              <option value="1">Tháng 1</option>
+              <option value="2">Tháng 2</option>
+              <option value="3">Tháng 3</option>
+              <option value="4">Tháng 4</option>
+              <option value="5">Tháng 5</option>
+              <option value="6">Tháng 6</option>
+              <option value="7">Tháng 7</option>
+              <option value="8">Tháng 8</option>
+              <option value="9">Tháng 9</option>
+              <option value="10">Tháng 10</option>
+              <option value="11">Tháng 11</option>
+              <option value="12">Tháng 12</option>
+            </select>
+          </label>
+          <label>
+            <span>Năm</span>
+            <input id="payroll-year-input" type="number" min="2000" />
+          </label>
+          <button id="create-payroll-button" type="button">Tạo bảng lương</button>
+          <button id="load-payroll-button" class="secondary" type="button">Tải bảng lương</button>
+        </div>
+        <div class="summary-row">
+          <div>
+            Trạng thái:
+            <strong id="payroll-status" class="badge muted">Chưa tải</strong>
+          </div>
+          <div>
+            Tổng quỹ lương:
+            <strong id="total-net-salary">0 ₫</strong>
+          </div>
+        </div>
+        <div id="payroll-message" class="message" role="status"></div>
+      </section>
+
+      <section class="card">
+        <div class="section-header">
+          <h2>Chi tiết bảng lương</h2>
+          <div class="form-actions compact">
+            <button id="save-payroll-button" type="button">Lưu bảng lương</button>
+            <button id="lock-payroll-button" class="danger" type="button">Khóa bảng lương</button>
+          </div>
+        </div>
+
+        <div class="table-wrapper payroll-table-wrapper">
+          <table class="payroll-table">
+            <colgroup>
+              <col style="width: 5%" />
+              <col style="width: 9%" />
+              <col style="width: 7%" />
+              <col style="width: 8%" />
+              <col style="width: 7%" />
+              <col style="width: 4%" />
+              <col style="width: 5%" />
+              <col style="width: 5%" />
+              <col style="width: 6%" />
+              <col style="width: 6%" />
+              <col style="width: 6%" />
+              <col style="width: 6%" />
+              <col style="width: 7%" />
+              <col style="width: 6%" />
+              <col style="width: 5%" />
+              <col style="width: 8%" />
+            </colgroup>
+            <thead>
+              <tr>
+                <th>Mã NV</th>
+                <th>Họ tên</th>
+                <th>Phòng ban</th>
+                <th>Chức vụ</th>
+                <th>Lương CB</th>
+                <th>Hệ số</th>
+                <th>Công</th>
+                <th>OT</th>
+                <th>Phụ cấp</th>
+                <th>Thưởng</th>
+                <th>Khấu trừ</th>
+                <th>Tạm ứng</th>
+                <th>Tổng TN</th>
+                <th>BH</th>
+                <th>Thuế</th>
+                <th>Thực nhận</th>
+              </tr>
+            </thead>
+            <tbody id="payroll-table-body">
+              <tr>
+                <td colspan="16" class="empty-cell">Chưa có bảng lương được tải.</td>
+              </tr>
+            </tbody>
+          </table>
+        </div>
+      </section>
+    </div>
+
+    <script type="module" src="./src/js/payrollPage.js"></script>
+  </body>
+</html>

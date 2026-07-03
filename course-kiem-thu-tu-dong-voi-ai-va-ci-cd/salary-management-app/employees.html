@@ -1,0 +1,121 @@
+<!doctype html>
+<html lang="vi">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Quản lý nhân viên</title>
+    <link rel="stylesheet" href="./src/css/style.css" />
+  </head>
+  <body>
+    <div class="container">
+      <header class="page-header">
+        <nav class="top-nav" aria-label="Điều hướng">
+          <a href="./index.html">Trang chủ</a>
+          <a class="active" href="./employees.html">Nhân viên</a>
+          <a href="./payroll.html">Bảng lương</a>
+        </nav>
+        <p class="eyebrow">Trang 1</p>
+        <h1>Quản lý nhân viên</h1>
+        <p class="page-description">
+          Thêm, sửa, tìm kiếm và ngừng hoạt động nhân viên. Nhân viên nghỉ việc sẽ không được đưa vào bảng lương mới.
+        </p>
+      </header>
+
+      <section class="card">
+        <h2>Thông tin nhân viên</h2>
+        <form id="employee-form" class="form-grid">
+          <input type="hidden" id="employee-id-input" />
+
+          <label>
+            <span>Mã nhân viên</span>
+            <input id="employee-code-input" type="text" placeholder="Ví dụ: NV006" />
+          </label>
+
+          <label>
+            <span>Họ tên</span>
+            <input id="employee-name-input" type="text" placeholder="Nhập họ tên" />
+          </label>
+
+          <label>
+            <span>Phòng ban</span>
+            <input id="employee-department-input" type="text" placeholder="Đào tạo, Tư vấn..." />
+          </label>
+
+          <label>
+            <span>Chức vụ</span>
+            <input id="employee-position-input" type="text" placeholder="Giảng viên, Nhân viên..." />
+          </label>
+
+          <label>
+            <span>Lương cơ bản</span>
+            <input id="base-salary-input" type="number" min="0" step="1000" value="2530000" />
+          </label>
+
+          <label>
+            <span>Hệ số lương</span>
+            <input id="salary-coefficient-input" type="number" min="0" step="0.01" value="2.34" />
+          </label>
+
+          <label>
+            <span>Phụ cấp</span>
+            <input id="allowance-input" type="number" min="0" step="1000" value="0" />
+          </label>
+
+          <label>
+            <span>Số người phụ thuộc</span>
+            <input id="dependent-count-input" type="number" min="0" step="1" value="0" />
+          </label>
+
+          <label>
+            <span>Trạng thái</span>
+            <select id="employee-status-select">
+              <option value="active">Đang làm việc</option>
+              <option value="inactive">Nghỉ việc</option>
+            </select>
+          </label>
+
+          <div class="form-actions">
+            <button id="save-employee-button" type="submit">Lưu nhân viên</button>
+            <button id="reset-employee-button" class="secondary" type="button">Làm mới</button>
+          </div>
+        </form>
+        <div id="employee-message" class="message" role="status"></div>
+      </section>
+
+      <section class="card">
+        <div class="section-header">
+          <h2>Danh sách nhân viên</h2>
+          <div class="filter-row">
+            <input id="search-employee-input" type="search" placeholder="Tìm theo mã, tên, phòng ban..." />
+            <select id="filter-status-select">
+              <option value="all">Tất cả trạng thái</option>
+              <option value="active">Đang làm việc</option>
+              <option value="inactive">Nghỉ việc</option>
+            </select>
+          </div>
+        </div>
+
+        <div class="table-wrapper">
+          <table>
+            <thead>
+              <tr>
+                <th>Mã NV</th>
+                <th>Họ tên</th>
+                <th>Phòng ban</th>
+                <th>Chức vụ</th>
+                <th>Lương cơ bản</th>
+                <th>Hệ số</th>
+                <th>Phụ cấp</th>
+                <th>Trạng thái</th>
+                <th>Thao tác</th>
+              </tr>
+            </thead>
+            <tbody id="employee-table-body"></tbody>
+          </table>
+        </div>
+      </section>
+    </div>
+
+    <script type="module" src="./src/js/employeesPage.js"></script>
+  </body>
+</html>
