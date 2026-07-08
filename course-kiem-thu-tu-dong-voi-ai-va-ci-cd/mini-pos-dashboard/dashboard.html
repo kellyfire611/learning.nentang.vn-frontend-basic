@@ -1,0 +1,83 @@
+<!doctype html>
+<html lang="vi">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Dashboard báo cáo bán hàng</title>
+    <link rel="stylesheet" href="/src/styles.css" />
+  </head>
+  <body>
+    <main class="container">
+      <header class="page-header">
+        <div>
+          <p class="eyebrow">Báo cáo Mini POS</p>
+          <h1 data-testid="dashboard-title">Dashboard báo cáo bán hàng</h1>
+          <p class="page-description">
+            Theo dõi doanh thu, đơn hàng, sản phẩm bán chạy và tồn kho hiện tại.
+          </p>
+        </div>
+        <nav class="nav-actions">
+          <a class="nav-link" href="/index.html">Quay về bán hàng</a>
+        </nav>
+      </header>
+
+      <section class="message" data-testid="dashboard-message" id="dashboard-message" aria-live="polite"></section>
+
+      <section class="dashboard-grid">
+        <article class="stat-card">
+          <span class="stat-label">Tổng doanh thu</span>
+          <strong class="stat-value" data-testid="total-revenue" id="total-revenue">0đ</strong>
+        </article>
+        <article class="stat-card">
+          <span class="stat-label">Tổng đơn hàng</span>
+          <strong class="stat-value" data-testid="total-orders" id="total-orders">0</strong>
+        </article>
+        <article class="stat-card">
+          <span class="stat-label">Sản phẩm đã bán</span>
+          <strong class="stat-value" data-testid="total-sold-quantity" id="total-sold-quantity">0</strong>
+        </article>
+        <article class="stat-card">
+          <span class="stat-label">Bán chạy nhất</span>
+          <strong class="stat-value" data-testid="best-selling-product" id="best-selling-product">Chưa có dữ liệu</strong>
+        </article>
+      </section>
+
+      <section class="card low-stock-section">
+        <div class="section-heading">
+          <h2>Sản phẩm sắp hết hàng</h2>
+          <p>Cảnh báo các sản phẩm có tồn kho nhỏ hơn hoặc bằng 5.</p>
+        </div>
+        <ul class="low-stock-list" data-testid="low-stock-list" id="low-stock-list"></ul>
+      </section>
+
+      <section class="chart-section">
+        <article class="chart-card">
+          <div class="section-heading">
+            <h2>Doanh thu theo ngày</h2>
+            <p>Gom doanh thu từ các đơn hàng theo ngày tạo đơn.</p>
+          </div>
+          <canvas data-testid="revenue-chart" id="revenue-chart" height="120"></canvas>
+        </article>
+
+        <article class="chart-card">
+          <div class="section-heading">
+            <h2>Tồn kho hiện tại</h2>
+            <p>Số lượng còn lại của từng sản phẩm.</p>
+          </div>
+          <canvas data-testid="stock-chart" id="stock-chart" height="120"></canvas>
+        </article>
+
+        <article class="chart-card wide-chart">
+          <div class="section-heading">
+            <h2>Số lượng bán theo sản phẩm</h2>
+            <p>Tổng quantity đã bán của từng sản phẩm.</p>
+          </div>
+          <canvas data-testid="sold-quantity-chart" id="sold-quantity-chart" height="120"></canvas>
+        </article>
+      </section>
+    </main>
+
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+    <script type="module" src="/src/dashboard.js"></script>
+  </body>
+</html>

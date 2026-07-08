@@ -1,0 +1,79 @@
+<!doctype html>
+<html lang="vi">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Mini POS - Bán hàng và trừ kho</title>
+    <link rel="stylesheet" href="/src/styles.css" />
+  </head>
+  <body>
+    <main class="container">
+      <header class="page-header">
+        <div>
+          <p class="eyebrow">NenTang.vn</p>
+          <h1>Mini POS bán hàng và trừ kho</h1>
+          <p class="page-description">
+            Ứng dụng thực hành HTML, CSS, JavaScript, json-server, Vitest và Playwright.
+          </p>
+        </div>
+        <nav class="nav-actions">
+          <a class="nav-link" href="/dashboard.html">Xem dashboard</a>
+          <button class="secondary-button" data-testid="reload-button" type="button">Tải lại sản phẩm</button>
+        </nav>
+      </header>
+
+      <section class="message" data-testid="message" aria-live="polite"></section>
+
+      <section class="layout-grid">
+        <section class="card">
+          <div class="section-heading">
+            <h2>Danh sách sản phẩm</h2>
+            <p>Nhập số lượng và thêm sản phẩm vào giỏ hàng.</p>
+          </div>
+
+          <div class="table-wrapper">
+            <table class="data-table">
+              <thead>
+                <tr>
+                  <th>Mã</th>
+                  <th>Tên sản phẩm</th>
+                  <th>Đơn giá</th>
+                  <th>Tồn kho</th>
+                  <th>Số lượng</th>
+                  <th>Thao tác</th>
+                </tr>
+              </thead>
+              <tbody data-testid="product-list" id="product-list">
+                <tr>
+                  <td colspan="6">Đang tải sản phẩm...</td>
+                </tr>
+              </tbody>
+            </table>
+          </div>
+        </section>
+
+        <aside class="card cart-card">
+          <div class="section-heading">
+            <h2>Giỏ hàng</h2>
+            <p>Kiểm tra tổng tiền trước khi thanh toán.</p>
+          </div>
+
+          <div class="cart-items" data-testid="cart-items" id="cart-items">
+            <p class="muted-text">Giỏ hàng đang rỗng.</p>
+          </div>
+
+          <div class="cart-summary">
+            <span>Tổng tiền</span>
+            <strong data-testid="cart-total" id="cart-total">0đ</strong>
+          </div>
+
+          <button class="primary-button full-width" data-testid="checkout-button" id="checkout-button" type="button">
+            Thanh toán
+          </button>
+        </aside>
+      </section>
+    </main>
+
+    <script type="module" src="/src/main.js"></script>
+  </body>
+</html>

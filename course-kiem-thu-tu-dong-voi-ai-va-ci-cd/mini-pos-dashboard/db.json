@@ -1,0 +1,168 @@
+{
+  "products": [
+    {
+      "id": "p01",
+      "code": "TS01",
+      "name": "Trà sữa",
+      "price": 25000,
+      "stock": 9
+    },
+    {
+      "id": "p02",
+      "code": "BM01",
+      "name": "Bánh mì",
+      "price": 18000,
+      "stock": 1
+    },
+    {
+      "id": "p03",
+      "code": "CF01",
+      "name": "Cà phê sữa",
+      "price": 20000,
+      "stock": 14
+    },
+    {
+      "id": "p04",
+      "code": "NS01",
+      "name": "Nước suối",
+      "price": 8000,
+      "stock": 30
+    },
+    {
+      "id": "p05",
+      "code": "ML01",
+      "name": "Mì ly",
+      "price": 12000,
+      "stock": 5
+    },
+    {
+      "id": "p06",
+      "code": "SN01",
+      "name": "Snack khoai tây",
+      "price": 15000,
+      "stock": 8
+    }
+  ],
+  "orders": [
+    {
+      "id": "o001",
+      "customerName": "Khách lẻ",
+      "items": [
+        {
+          "productId": "p01",
+          "code": "TS01",
+          "name": "Trà sữa",
+          "price": 25000,
+          "quantity": 2,
+          "lineTotal": 50000
+        },
+        {
+          "productId": "p04",
+          "code": "NS01",
+          "name": "Nước suối",
+          "price": 8000,
+          "quantity": 1,
+          "lineTotal": 8000
+        }
+      ],
+      "totalAmount": 58000,
+      "createdAt": "2026-07-04T08:30:00.000Z"
+    },
+    {
+      "id": "o002",
+      "customerName": "Nguyễn Văn A",
+      "items": [
+        {
+          "productId": "p02",
+          "code": "BM01",
+          "name": "Bánh mì",
+          "price": 18000,
+          "quantity": 3,
+          "lineTotal": 54000
+        },
+        {
+          "productId": "p03",
+          "code": "CF01",
+          "name": "Cà phê sữa",
+          "price": 20000,
+          "quantity": 2,
+          "lineTotal": 40000
+        }
+      ],
+      "totalAmount": 94000,
+      "createdAt": "2026-07-05T09:15:00.000Z"
+    },
+    {
+      "id": "o003",
+      "customerName": "Trần Thị B",
+      "items": [
+        {
+          "productId": "p01",
+          "code": "TS01",
+          "name": "Trà sữa",
+          "price": 25000,
+          "quantity": 1,
+          "lineTotal": 25000
+        },
+        {
+          "productId": "p05",
+          "code": "ML01",
+          "name": "Mì ly",
+          "price": 12000,
+          "quantity": 4,
+          "lineTotal": 48000
+        }
+      ],
+      "totalAmount": 73000,
+      "createdAt": "2026-07-06T10:45:00.000Z"
+    },
+    {
+      "id": "o-1783333198912",
+      "customerName": "Khách lẻ",
+      "items": [
+        {
+          "productId": "p02",
+          "code": "BM01",
+          "name": "Bánh mì",
+          "price": 18000,
+          "quantity": 2,
+          "lineTotal": 36000
+        },
+        {
+          "productId": "p01",
+          "code": "TS01",
+          "name": "Trà sữa",
+          "price": 25000,
+          "quantity": 1,
+          "lineTotal": 25000
+        }
+      ],
+      "totalAmount": 61000,
+      "createdAt": "2026-07-06T10:19:58.912Z"
+    },
+    {
+      "id": "o-1783333216281",
+      "customerName": "Khách lẻ",
+      "items": [
+        {
+          "productId": "p03",
+          "code": "CF01",
+          "name": "Cà phê sữa",
+          "price": 20000,
+          "quantity": 1,
+          "lineTotal": 20000
+        },
+        {
+          "productId": "p02",
+          "code": "BM01",
+          "name": "Bánh mì",
+          "price": 18000,
+          "quantity": 1,
+          "lineTotal": 18000
+        }
+      ],
+      "totalAmount": 38000,
+      "createdAt": "2026-07-06T10:20:16.281Z"
+    }
+  ]
+}
