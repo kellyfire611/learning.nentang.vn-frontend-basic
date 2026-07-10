@@ -15,7 +15,7 @@
   "devDependencies": {
     "@playwright/test": "^1.49.1",
     "json-server": "^0.17.4",
-    "vite": "^5.4.11",
+    "vite": "^6.4.3",
     "vitest": "^2.1.8"
   }
 }
